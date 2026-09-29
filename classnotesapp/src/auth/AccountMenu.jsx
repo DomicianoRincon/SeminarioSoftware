@@ -1,0 +1,105 @@
+// src/auth/AccountMenu.jsx
+// Compact avatar + menu for the app bar: shows who's signed in and lets them
+// sign out. Sign-in is optional here, so a signed-out visitor gets an
+// "Iniciar sesión" button instead. Renders nothing when Firebase isn't
+// configured, so it's safe to drop into the AppBar unconditionally.
+
+import React, { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import GavelIcon from '@mui/icons-material/Gavel';
+import GroupsIcon from '@mui/icons-material/Groups';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import { useThemeMode } from '@/theme/ThemeContext';
+import TermsDialog from './TermsDialog';
+
+const AccountMenu = () => {
+  const { configured, user, profile, isTeacher, authError, signInWithGoogle, signOutUser } = useAuth();
+  const { theme } = useThemeMode();
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [termsOpen, setTermsOpen] = useState(false);
+
+  if (!configured) return null;
+
+  if (!user) {
+    return (
+      <Tooltip title={authError || 'Opcional: habilita el asistente de IA'}>
+        <Button
+          onClick={signInWithGoogle}
+          size="small"
+          startIcon={<LoginIcon />}
+          sx={{ color: theme.accent, textTransform: 'none', fontWeight: 600, whiteSpace: 'nowrap' }}
+        >
+          Iniciar sesión
+        </Button>
+      </Tooltip>
+    );
+  }
+
+  const name = profile?.fullName || user.displayName || user.email;
+  const initial = (name || '?').trim().charAt(0).toUpperCase();
+
+  return (
+    <>
+      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} size="small" aria-label="Cuenta">
+        <Avatar
+          src={user.photoURL || undefined}
+          // Google avatar URLs (lh3.googleusercontent.com) 403 when a referrer is
+          // sent, which makes the Avatar fall back to the initial — suppress it.
+          imgProps={{ referrerPolicy: 'no-referrer' }}
+          sx={{ width: 32, height: 32, fontSize: '0.9rem', bgcolor: theme.accent, color: theme.appBarText }}
+        >
+          {initial}
+        </Avatar>
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={() => setAnchorEl(null)}>
+        <Box sx={{ px: 2, py: 1, maxWidth: 260 }}>
+          <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }} noWrap>{name}</Typography>
+          {user.email && (
+            <Typography sx={{ fontSize: '0.78rem', color: 'text.secondary' }} noWrap>{user.email}</Typography>
+          )}
+          {profile?.github && (
+            <Typography sx={{ fontSize: '0.78rem', color: 'text.secondary' }} noWrap>{profile.github}</Typography>
+          )}
+        </Box>
+        <Divider />
+        {/* Solo con el custom claim, no con `profile.role`: el rol lo escribe el
+            propio usuario en el formulario de perfil, así que declararse profesor
+            no puede ni siquiera revelar que la vista existe. Esconderla es
+            cosmético —el acceso real lo deciden el claim y las reglas de
+            Firestore—, pero mantiene el menú del estudiante limpio. */}
+        {isTeacher && (
+          <MenuItem onClick={() => { setAnchorEl(null); navigate('/admin'); }}>
+            <GroupsIcon fontSize="small" sx={{ mr: 1 }} />
+            <Typography sx={{ fontSize: '0.9rem' }}>Estudiantes</Typography>
+          </MenuItem>
+        )}
+        <Divider />
+        {/* Consulta del documento aceptado y única vía de retiro del
+            consentimiento (requisito ético de analitics/plan.md). */}
+        <MenuItem onClick={() => { setAnchorEl(null); setTermsOpen(true); }}>
+          <GavelIcon fontSize="small" sx={{ mr: 1 }} />
+          <Typography sx={{ fontSize: '0.9rem' }}>Términos y condiciones</Typography>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={() => { setAnchorEl(null); signOutUser(); }}>
+          <LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Cerrar sesión
+        </MenuItem>
+      </Menu>
+      <TermsDialog open={termsOpen} onClose={() => setTermsOpen(false)} />
+    </>
+  );
+};
+
+export default AccountMenu;

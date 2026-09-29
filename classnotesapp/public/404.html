@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirigiendo...</title>
+    <script type="text/javascript">
+      var base = '/SeminarioSoftware/';
+      var path = window.location.pathname.replace(base, '');
+      if (!path.startsWith('/')) path = '/' + path;
+      var search = window.location.search;
+      var hash = window.location.hash;
+      window.location.replace(
+        base + '?p=' + encodeURIComponent(path) +
+        (search ? '&' + search.slice(1) : '') + hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,67 @@
+name: Deploy classnotesapp to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'classnotesapp/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Los despliegues de Pages se ENCOLAN, no se cancelan. Con
+# `cancel-in-progress: true` un push seguido de otro aborta el workflow mientras
+# la publicación ya está en marcha, y la API de Pages se queda creyendo que sigue
+# en curso: a partir de ahí todo despliegue posterior falla con "due to in
+# progress deployment" y el sitio se queda con el bundle viejo. Pasó el
+# 2026-07-26 en FlutterApps y el 2026-07-27 en Computacion2.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: classnotesapp/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: classnotesapp
+
+      - name: Build
+        run: npm run build
+        working-directory: classnotesapp
+        env:
+          # Derivado del nombre del repo, no fijo. Este repo se publica desde dos
+          # remotos y cada uno sirve bajo su propio nombre: con un valor fijo, la
+          # copia del otro sirve un HTML que pide sus assets en una ruta que ahí
+          # no existe — 200 en la página y 404 en todo lo demás, pantalla en
+          # blanco. El sitio oficial no cambia (el repo `second` se llama
+          # FlutterApps), pero la copia de `origin`, hoy renombrada a `Apps`,
+          # pasa de rota a funcionar. Ver CLAUDE.md, eje 8.
+          VITE_APP_BASE: /${{ github.event.repository.name }}/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: classnotesapp/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

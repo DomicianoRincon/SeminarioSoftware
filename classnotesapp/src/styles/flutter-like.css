@@ -1,0 +1,115 @@
+/* flutter-like.css (Para Prism.js sin comentarios) */
+
+.flutter-code {
+  background-color: #0B121A;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Fira Code', 'Roboto Mono', monospace;
+  font-size: 0.95rem;
+  color: #abb2bf;
+  text-align: left;
+}
+
+.flutter-code pre {
+  margin: 0;
+  white-space: pre;
+  background-color: #0B121A; /* Mismo color de fondo que .flutter-code */
+}
+
+.flutter-code code {
+  display: block;
+}
+
+.flutter-code .token.comment {
+  color: #5c6370;
+  font-style: italic;
+}
+
+.flutter-code .token.string {
+  color: #e7617e;
+}
+
+.flutter-code .token.keyword,
+.flutter-code .token.important {
+  color: #7bdb96;
+}
+
+.flutter-code .token.number,
+.flutter-code .token.boolean,
+.flutter-code .token.entity {
+  color: #d19a66;
+}
+
+.flutter-code .token.class-name {
+  color: #fd8a38;
+}
+
+.flutter-code .token.function,
+.flutter-code .token.selector {
+  color: #61afef;
+}
+
+.flutter-code .token.builtin,
+.flutter-code .token.tag,
+.flutter-code .token.type-variable {
+  color: #fd8a38;
+}
+
+.flutter-code .token.property,
+.flutter-code .token.attr-name,
+.flutter-code .token.variable,
+.flutter-code .token.punctuation.attr-equals {
+  color: #c678dd;
+}
+
+.flutter-code .token.operator {
+  color: #abb2bf;
+}
+
+.flutter-code .token.punctuation {
+  color: #abb2bf;
+}
+
+.flutter-code .hljs-widget {
+  color: #61afef;
+  font-weight: bold;
+}
+
+.flutter-code .token.plain-text {
+  color: #abb2bf;
+}
+
+.flutter-code .token.meta {
+  color: #7bdb96;
+}
+
+.flutter-code .token.tag,
+.flutter-code .token.symbol,
+.flutter-code .token.selector-id,
+.flutter-code .token.selector-class {
+  color: #e06c75;
+}
+
+/* Estilos específicos para HTTP */
+.flutter-code .token.method {
+  color: #7bdb96;
+  font-weight: bold;
+}
+
+.flutter-code .token.url {
+  color: #61afef;
+}
+
+.flutter-code .token.header {
+  color: #c678dd;
+}
+
+.flutter-code .token.status-code {
+  color: #d19a66;
+}
+
+.flutter-code .token.version {
+  color: #e7617e;
+}
+

@@ -1,0 +1,255 @@
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from '@/theme/ThemeContext';
+
+// Mock assets (import.meta.glob)
+vi.mock('@/assets/index.js', () => ({ default: { 'image1.png': '/mock-image1.png' } }));
+
+// Mock BeanVisualizer to avoid canvas complexity in tests
+vi.mock('@/components/BeanVisualizer/BeanVisualizer', () => ({
+  default: ({ initialCode }) => <div data-testid="bean-visualizer">{initialCode}</div>,
+}));
+
+// Mock MermaidBlock — mermaid.render() is async and touches the DOM in ways jsdom doesn't like
+vi.mock('@/components/lesson/MermaidBlock', () => ({
+  default: ({ chart }) => <div data-testid="mermaid-block">{chart}</div>,
+}));
+
+import LessonParser from './LessonParser';
+
+// Helper: call the parser and get back the plain data (no rendering needed)
+const parse = (content) => LessonParser({ content });
+
+// Every component in the tree reads theme via ThemeContext — wrap for renders.
+const renderElements = (elements) => render(<ThemeProvider>{elements}</ThemeProvider>);
+
+describe('LessonParser — lessonTitle and subtitles', () => {
+  it('extracts lessonTitle from the first h1', () => {
+    const { lessonTitle } = parse('# Mi Título\n\n## Sección 1');
+    expect(lessonTitle).toBe('Mi Título');
+  });
+
+  it('returns null lessonTitle when there is no h1', () => {
+    const { lessonTitle } = parse('## Solo subtítulo\n\nTexto.');
+    expect(lessonTitle).toBeNull();
+  });
+
+  it('collects subtitles from h2 headings', () => {
+    const { subtitles } = parse('# Título\n\n## Sección A\n\n## Sección B');
+    expect(subtitles).toHaveLength(2);
+    expect(subtitles[0].text).toBe('Sección A');
+    expect(subtitles[1].text).toBe('Sección B');
+  });
+
+  it('each subtitle has an id and text', () => {
+    const { subtitles } = parse('## Introducción');
+    expect(subtitles[0]).toHaveProperty('id');
+    expect(subtitles[0]).toHaveProperty('text', 'Introducción');
+  });
+
+  it('returns empty subtitles array when no h2 headings exist', () => {
+    const { subtitles } = parse('# Título\n\nTexto normal.');
+    expect(subtitles).toHaveLength(0);
+  });
+
+  it('h2 ids assigned during render match the ids in subtitles', () => {
+    const { elements, subtitles } = parse('## Primera\n\n## Segunda');
+    renderElements(elements);
+    expect(document.getElementById(subtitles[0].id).textContent).toBe('Primera');
+    expect(document.getElementById(subtitles[1].id).textContent).toBe('Segunda');
+  });
+});
+
+describe('LessonParser — elements shape', () => {
+  it('returns a React element from elements', () => {
+    const { elements } = parse('# Título');
+    expect(elements).not.toBeNull();
+    expect(typeof elements).toBe('object'); // React element
+  });
+
+  it('produces elements for an empty content string', () => {
+    const { elements } = parse('');
+    expect(elements).not.toBeNull();
+  });
+});
+
+describe('LessonParser — block constructs', () => {
+  it('does not throw for all supported block constructs', () => {
+    const content = [
+      '# Título',
+      '',
+      '## Subtítulo',
+      '',
+      '```java',
+      'System.out.println("hola");',
+      '```',
+      '',
+      '```youtube',
+      'dQw4w9WgXcQ | Video de prueba',
+      '```',
+      '',
+      '![Diagrama](image1.png)',
+      '',
+      '![Ícono](image1.png "icon")',
+      '',
+      '[Enlace](https://example.com)',
+      '',
+      '- Elemento uno',
+      '- Elemento dos',
+    ].join('\n');
+    expect(() => parse(content)).not.toThrow();
+  });
+
+  it('does not throw for a beansim fenced block', () => {
+    const content = '```beansim\n@Component\npublic class A {}\n```';
+    expect(() => parse(content)).not.toThrow();
+  });
+
+  it('renders a framed image for a frameNN image title', () => {
+    const { elements } = parse('![Captura](image1.png "frame60")');
+    renderElements(elements);
+    const img = screen.getByAltText('Captura');
+    expect(img).toBeTruthy();
+    // frameNN sí pinta la tarjeta: es lo que hace visibles las capturas
+    // exportadas sobre fondo transparente.
+    expect(getComputedStyle(img.parentElement).backgroundColor).toBe(
+      'rgb(246, 247, 250)',
+    );
+  });
+
+  it('renders a GFM table with visible borders on its cells', () => {
+    const content = [
+      '| Widget | Carpeta |',
+      '|---|---|',
+      '| Screen | lib/screens/ |',
+      '| Page | lib/pages/ |',
+    ].join('\n');
+    const { elements } = parse(content);
+    const { container } = renderElements(elements);
+
+    expect(container.querySelector('table')).toBeTruthy();
+    expect(screen.getByText('Widget')).toBeTruthy();
+    expect(screen.getByText('lib/pages/')).toBeTruthy();
+
+    // Sin estos renderers la tabla sale sin bordes, que es el defecto que
+    // este test cubre.
+    const celda = container.querySelector('td');
+    expect(getComputedStyle(celda).borderStyle).toBe('solid');
+  });
+
+  it('renders task list items with a checkbox and without the bullet', () => {
+    const { elements } = parse('- [ ] Registrar las rutas\n- Elemento normal\n');
+    const { container } = renderElements(elements);
+
+    const items = container.querySelectorAll('li');
+    expect(items).toHaveLength(2);
+    expect(container.querySelectorAll('input[type=checkbox]')).toHaveLength(1);
+
+    // El item de tarea ya trae su checkbox: dibujarle además la viñeta dejaría
+    // dos marcas por línea.
+    expect(items[0].querySelector('span')).toBeNull();
+    expect(items[1].querySelector('span')).toBeTruthy();
+  });
+
+  it('renders a scaleNN image without the white card', () => {
+    const { elements } = parse('![Captura](image1.png "scale60")');
+    const { container } = renderElements(elements);
+    const img = screen.getByAltText('Captura');
+    expect(img).toBeTruthy();
+    // El contenedor del marco no debe pintar fondo cuando es scaleNN.
+    // jsdom normaliza `transparent` a rgba(0, 0, 0, 0).
+    expect(getComputedStyle(img.parentElement).backgroundColor).toBe(
+      'rgba(0, 0, 0, 0)',
+    );
+  });
+
+  it('renders a dartpad tab when a code fence has trycode= meta', () => {
+    const content = '```dart trycode=abc123\nint x = 1;\n```';
+    const { elements } = parse(content);
+    renderElements(elements);
+    expect(screen.getByText('Fire it up!')).toBeTruthy();
+  });
+
+  it('does not throw for a standalone dartpad fence', () => {
+    expect(() => parse('```dartpad\nabc123gistid\n```')).not.toThrow();
+  });
+});
+
+describe('LessonParser — lists', () => {
+  it('collects list items correctly (no extra subtitles)', () => {
+    const { subtitles } = parse('- Primer punto\n- Segundo punto');
+    expect(subtitles).toHaveLength(0);
+  });
+
+  it('renders list item text', () => {
+    const { elements } = parse('- Primer punto\n- Segundo punto');
+    renderElements(elements);
+    expect(screen.getByText('Primer punto')).toBeTruthy();
+    expect(screen.getByText('Segundo punto')).toBeTruthy();
+  });
+});
+
+describe('LessonParser — code fences', () => {
+  it('does not add code block lines to subtitles', () => {
+    const { subtitles } = parse('```java\n// Este es código\n```');
+    expect(subtitles).toHaveLength(0);
+  });
+
+  it('handles multiple code blocks', () => {
+    const content = '```java\nint a = 1;\n```\n\n```sql\nSELECT * FROM t;\n```';
+    expect(() => parse(content)).not.toThrow();
+  });
+});
+
+describe('LessonParser — inline formatting', () => {
+  it('handles backtick inline code inside a paragraph', () => {
+    const { elements } = parse('Usa `@Component` para registrar beans.');
+    renderElements(elements);
+    expect(screen.getByText('@Component')).toBeTruthy();
+  });
+
+  it('handles inline links with standard markdown syntax', () => {
+    const { elements } = parse('Ver [documentación oficial](https://example.com) para más info.');
+    renderElements(elements);
+    const link = screen.getByText('documentación oficial').closest('a');
+    expect(link.getAttribute('href')).toBe('https://example.com');
+  });
+});
+
+describe('LessonParser — comentarios HTML', () => {
+  // react-markdown no descarta el HTML crudo: lo escapa. Sin el plugin, el
+  // comentario de etiquetas salía como texto literal encima del primer párrafo.
+  it('no renderiza el comentario de tags', () => {
+    const { elements } = parse(
+      '# Título\n\n<!-- tags: ServerSocket, Socket, accept -->\n\nPárrafo de entrada.'
+    );
+    const { container } = renderElements(elements);
+    expect(container.textContent).not.toContain('tags:');
+    expect(container.textContent).not.toContain('<!--');
+    expect(screen.getByText('Párrafo de entrada.')).toBeTruthy();
+  });
+
+  it('no renderiza un comentario que ocupa varias líneas', () => {
+    const { elements } = parse(
+      '# T\n\n<!-- tags: Stream, StreamController,\n     await for -->\n\nTexto.'
+    );
+    const { container } = renderElements(elements);
+    expect(container.textContent).not.toContain('await for');
+    expect(container.textContent).toContain('Texto.');
+  });
+
+  it('quita el comentario intercalado en un párrafo', () => {
+    const { elements } = parse('Antes <!-- nota interna --> después.');
+    const { container } = renderElements(elements);
+    expect(container.textContent).not.toContain('nota interna');
+    expect(container.textContent).toContain('Antes');
+    expect(container.textContent).toContain('después.');
+  });
+
+  // El markdown crudo no se toca: es lo que reciben extractLessonTags y el modelo.
+  it('deja intacto un comentario dentro de un bloque de código', () => {
+    const { elements } = parse('```html\n<!-- esto es contenido de la lección -->\n```');
+    const { container } = renderElements(elements);
+    expect(container.textContent).toContain('esto es contenido de la lección');
+  });
+});
