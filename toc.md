@@ -1,3 +1,5 @@
+[t] Curso
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS2.md | Programa del curso | S0002
 [t] Sesión 1 · Entorno y primera aplicación
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS1.md | Instalación básica | S0001
 [t] Instalación avanzada

@@ -15,6 +15,8 @@ Contiene:
 - `content/` — las lecciones en Markdown, **en la raíz del repo**.
 - `toc.md` — la tabla de contenidos, también en la raíz.
 - `manifest.md` — qué sesiones del plan ya tienen su contenido en el visor.
+- `docs/syllabus.md` — el syllabus oficial del curso (RAA, evaluación, unidades, niveles
+  de IAG), transcrito del PDF de la universidad.
 - `docs/planeador.md` — el plan de curso: qué se hace en clase, fuera de clase y qué
   se entrega en cada sesión.
 
@@ -76,17 +78,23 @@ derivado del nombre del repo en el workflow). No renombrar el repo.
 
 ## Temario: planeador, manifest y toc
 
-Tres archivos, cada uno con una sola responsabilidad:
+Cuatro archivos, cada uno con una sola responsabilidad:
 
 | Archivo | Qué es | Quién manda |
 |---|---|---|
+| `docs/syllabus.md` | El syllabus oficial: resultados de aprendizaje, evaluación, unidades y acuerdos de uso de IAG | Es la **autoridad** sobre qué debe lograr el curso |
 | `docs/planeador.md` | El plan de curso transcrito de la hoja *PlaneadorF* del departamento | Es la **autoridad** sobre qué va en cada sesión |
 | `manifest.md` | Qué sesiones ya están en el visor, con qué lecciones y qué falta | Se actualiza **cada vez que se toca `toc.md`** |
 | `toc.md` | Lo que ve el estudiante | Se arma desde el manifest |
 
+**El bloque de este repositorio.** El profesor tiene a cargo **las últimas 8 semanas** del
+curso (semanas 9 a 16), que según el syllabus son las **unidades 3 y 4** (RA3 y RA4). Las
+unidades 1 y 2 las dicta otro docente y no tienen contenido aquí.
+
 **Numeración.** El planeador cuenta las sesiones de este bloque de la 17 a la 32 (las 16
 primeras son de las unidades 1 y 2). En el visor y en el manifest se cuentan de la 1 a la
-16: `sesión del visor = sesión del planeador − 16`.
+16: `sesión del visor = sesión del planeador − 16`. La semana del semestre es
+`8 + ⌈sesión del visor / 2⌉` (dos sesiones por semana).
 
 **Cómo se arma una sesión:**
 
@@ -95,7 +103,9 @@ primeras son de las unidades 1 y 2). En el visor y en el manifest se cuentan de 
    escribir solo lo que falta.
 3. En `toc.md`, la sesión va bajo `[t] Sesión N · <tema del planeador>`. El material de
    apoyo que no pertenece a una sola sesión va en secciones temáticas aparte
-   (*Instalación avanzada*, *Dart*).
+   (*Instalación avanzada*, *Dart*). La primera sección es siempre **Curso**, con
+   *Programa del curso* (`lessonS2.md`), igual que en Móviles: es la versión para el
+   estudiante de `docs/syllabus.md`, y si cambia el syllabus hay que actualizarla.
 4. Actualizar `manifest.md`: estado de la sesión, ids y la tabla de lo que pide el
    planeador frente a dónde quedó.
 
@@ -130,13 +140,13 @@ otra.
 
 Preferencia explícita del profesor: las lecciones tienen que estar **muy explicadas por
 medio de ilustraciones y esquemas en SVG**, no solo con texto. Como referencia de nivel,
-ver `lessonS1.md`, que trae tres:
+ver `lessonS1.md`, que trae los tres tipos:
 
 | Tipo | Para qué | Ejemplo en `lessonS1.md` |
 |---|---|---|
 | Piezas | Qué componentes hay y cómo se conectan | *Las piezas de la instalación básica* |
-| Pasos con maqueta de la interfaz | Un procedimiento en pasos numerados, dibujando la pantalla real con un recuadro donde se hace clic | *La instalación básica en seis pasos* |
-| Salida anotada | Cómo leer lo que devuelve una herramienta (terminal, consola) | *Cómo leer `flutter doctor`* |
+| Pasos con maqueta de la interfaz | Un procedimiento en pasos numerados, dibujando la pantalla real con un recuadro donde se hace clic | *Instalar Flutter con la extensión* |
+| Frame de consola | Un comando y su salida, con lo importante señalado | *Crear el proyecto con `flutter create`* y los otros tres |
 
 Cómo se hacen:
 
@@ -157,6 +167,28 @@ Cómo se hacen:
   Texto de 12 px como mínimo, porque la figura se reduce en pantallas angostas.
 - Textos de la figura en español. Nombres de botones, comandos y mensajes se dejan como
   aparecen en pantalla (en inglés).
+
+### Consola: siempre en un frame SVG
+
+Decisión del profesor (2026-09-29): **de aquí en adelante, todo lo que se hace en consola
+se muestra con un frame de consola en SVG**, no solo con un bloque de código. Se generan
+con `tools/console_frame.py`, que fija el estilo; no se dibujan a mano. Las reglas:
+
+- **Ventana oscura** con barra de título (tres puntos y `Terminal · <carpeta>`) sobre la
+  tarjeta clara de siempre.
+- **Prompt = carpeta actual + `>`**, en gris: `miapp1> flutter devices`. Nunca `$` ni
+  `PS C:\...>`: así no se ata a un sistema operativo, y enseña en qué carpeta se está
+  parado. La lección dice una vez que lo que va antes de `>` no se escribe.
+- **Comando en blanco y negrita; salida en gris claro; lo irrelevante, más tenue; el
+  éxito (`All done!`), en verde.** La salida es la real del comando, recortada a lo que
+  importa. Versiones y números que cambian se escriben con `x` (`Flutter 3.x.x`).
+- **Lo importante se señala con un recuadro amarillo numerado**, y cada número tiene su
+  tarjeta debajo de la terminal que lo explica. Máximo tres por figura.
+- **Siempre acompañado de un bloque ` ```shell `** con los comandos, justo debajo: el
+  texto de un SVG no se copia bien, y el estudiante tiene que poder pegar el comando.
+- Rutas de ejemplo de Windows (`C:\develop`). Cuando un comando cambia por sistema
+  (`cd C:\develop` / `cd ~/develop`), la figura muestra Windows y el bloque de código trae
+  las dos versiones.
 
 ## Cómo se escribe una lección
 

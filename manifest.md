@@ -1,36 +1,37 @@
 # Manifest · Seminario de Ingeniería de Software
 
-Qué sesiones del plan de curso ya tienen su contenido en el visor. El plan completo, con lo que se hace en clase, fuera de clase y los entregables, está en [`docs/planeador.md`](docs/planeador.md).
+Qué sesiones del plan de curso ya tienen su contenido en el visor. El plan completo, con lo que se hace en clase, fuera de clase y los entregables, está en [`docs/planeador.md`](docs/planeador.md). Los resultados de aprendizaje y la evaluación están en [`docs/syllabus.md`](docs/syllabus.md).
 
-El planeador numera las sesiones de este bloque de la **17 a la 32**, porque las 16 primeras son las de las unidades 1 y 2. Aquí se cuentan como **sesión 1 a 16**: `sesión del visor = sesión del planeador − 16`.
+Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, que según el syllabus son las unidades 3 y 4. El planeador numera sus sesiones de la **17 a la 32**, porque las 16 primeras son de las unidades 1 y 2, que dicta otro docente. Aquí se cuentan como **sesión 1 a 16**: `sesión del visor = sesión del planeador − 16`, con dos sesiones por semana.
 
 **Estados:** ✅ completa en el visor · 🟡 parcial · ⬜ pendiente
 
 ## Sesiones
 
-| Sesión | Planeador | Unidad | Tema | Estado | Lecciones en el visor |
-|---|---|---|---|---|---|
-| 1 | 17 | 4 | Entorno y primera aplicación | 🟡 | `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
-| 2 | 18 | 4 | Componentes | ⬜ | |
-| 3 | 19 | 4 | Pantallas con componentes | ⬜ | |
-| 4 | 20 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
-| 5 | 21 | 3 | Skills: extender el agente | ⬜ | |
-| 6 | 22 | 4 | Stateful widget y setState | ⬜ | |
-| 7 | 23 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
-| 8 | 24 | 4 | Navegación entre pantallas | ⬜ | |
-| 9 | 25 | 4 | Navegación con bottom navigation bar | ⬜ | |
-| 10 | 26 | 3 | Spec Driven Development | ⬜ | |
-| 11 | 27 | 3 y 4 | Servicio de base de datos | ⬜ | |
-| 12 | 28 | 3 y 4 | Servicio de autenticación | ⬜ | |
-| 13 | 29 | 3 y 4 | Servicio de storage | ⬜ | |
-| 14 | 30 | 3 y 4 | Funciones como servicio | ⬜ | |
-| 15 | 31 | 3 y 4 | Entrega final I (equipos 1 a 3) | ⬜ | |
-| 16 | 32 | 3 y 4 | Entrega final II (equipos 4 a 6) y cierre | ⬜ | |
+| Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
+|---|---|---|---|---|---|---|
+| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
+| 2 | 18 | 9 | 4 | Componentes | ⬜ | |
+| 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
+| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
+| 5 | 21 | 11 | 3 | Skills: extender el agente | ⬜ | |
+| 6 | 22 | 11 | 4 | Stateful widget y setState | ⬜ | |
+| 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
+| 8 | 24 | 12 | 4 | Navegación entre pantallas | ⬜ | |
+| 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | ⬜ | |
+| 10 | 26 | 13 | 3 | Spec Driven Development | ⬜ | |
+| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | ⬜ | |
+| 12 | 28 | 14 | 3 y 4 | Servicio de autenticación | ⬜ | |
+| 13 | 29 | 15 | 3 y 4 | Servicio de storage | ⬜ | |
+| 14 | 30 | 15 | 3 y 4 | Funciones como servicio | ⬜ | |
+| 15 | 31 | 16 | 3 y 4 | Entrega final I (equipos 1 a 3) | ⬜ | |
+| 16 | 32 | 16 | 3 y 4 | Entrega final II (equipos 4 a 6) y cierre | ⬜ | |
 
 ## Material de apoyo (no atado a una sesión)
 
 | Sección del visor | Lecciones | Origen |
 |---|---|---|
+| Curso | `S0002` Programa del curso | Propia, hecha a partir de `docs/syllabus.md` |
 | Dart | `0001`, `0006` a `0012` | Sección *Dart basics* de Aplicaciones Móviles |
 
 ## Detalle por sesión
@@ -70,3 +71,4 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | Archivo | Id | Título | Sesión |
 |---|---|---|---|
 | `lessonS1.md` | `S0001` | Instalación básica | 1 |
+| `lessonS2.md` | `S0002` | Programa del curso | *(apoyo, sección Curso)* |
