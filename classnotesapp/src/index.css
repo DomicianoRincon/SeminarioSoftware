@@ -24,6 +24,12 @@ body.dark, :root.dark {
   background-color: #181C23;
 }
 
+/* Dentro de un iframe, el tema claro usa blanco puro para fundirse con la página
+   anfitriona (ver src/theme/embedded.js y embeddedLight en colors.js). */
+body.embedded.light {
+  background-color: #FFFFFF;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

@@ -37,7 +37,7 @@ const AppBarGlobal = ({ onOpenMobileToc, onOpenMobileNav }) => {
       elevation={0}
       sx={{
         background: theme.appBarBg,
-        color: theme.appBarText,
+        color: theme.appBarTitle,
         zIndex: 1300,
         boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
       }}
@@ -53,7 +53,7 @@ const AppBarGlobal = ({ onOpenMobileToc, onOpenMobileNav }) => {
           <Typography
             variant="h6"
             sx={{
-              color: theme.appBarText,
+              color: theme.appBarTitle,
               fontWeight: 700,
               letterSpacing: isMobile ? '0.01em' : '0.04em',
               fontSize: isMobile ? '1rem' : '1.25rem',

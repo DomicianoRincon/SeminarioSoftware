@@ -37,6 +37,19 @@ export const light = {
 
   appBarBg: '#102840',             // Fondo AppBar claro - Azul grisáceo y sobrio
   appBarText: '#FFFFFF',              // Texto AppBar claro - Blanco para contraste
+  // Color del título de la barra. Es aparte de appBarText porque ese también se usa
+  // como texto sobre botones y avatares de color de acento, que siempre van en blanco.
+  appBarTitle: '#FFFFFF',
+};
+
+// Tema claro cuando la app está dentro de un iframe: fondo y barra superior en blanco
+// puro (#FFFFFF) para que se funda con la página anfitriona. Ver theme/embedded.js.
+export const embeddedLight = {
+  ...light,
+  background: '#FFFFFF',
+  drawerBg: '#FFFFFF',
+  appBarBg: '#FFFFFF',
+  appBarTitle: '#102840',
 };
 
 export const dark = {
@@ -76,6 +89,7 @@ export const dark = {
 
   appBarBg: '#102840',             // Fondo AppBar oscuro - Azul grisáceo y sobrio
   appBarText: '#ffffff',              // Texto AppBar oscuro - Blanco para contraste
+  appBarTitle: '#ffffff',
 };
 
 // Por defecto exportamos dark

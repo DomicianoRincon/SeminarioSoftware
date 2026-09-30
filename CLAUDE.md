@@ -395,6 +395,23 @@ al profesor*) y cargar `students/262.md` desde la propia vista la primera vez qu
 `src/theme/ThemeContext.jsx` con los tokens en `src/theme/colors.js` (azul en este
 curso). Persiste la elección en `localStorage`.
 
+**Dentro de un iframe** (por ejemplo, incrustado en la plataforma de la universidad) el
+tema cambia, desde el 2026-09-30:
+
+- Arranca en **modo claro**, no en oscuro.
+- Usa la paleta `embeddedLight`: fondo y **barra superior en blanco `#FFFFFF`**, para
+  fundirse con la página anfitriona. El título de la barra usa `appBarTitle` (azul oscuro).
+  `appBarText` sigue siendo blanco, porque también es el texto de los botones y avatares de
+  color de acento.
+- La preferencia se guarda en `themeModeEmbedded`, aparte de `themeMode`: el iframe comparte
+  `localStorage` con el sitio abierto directamente, y el modo de uno no debe cambiar el del otro.
+- Si se elige el modo oscuro dentro del iframe, se usa la paleta oscura normal.
+
+La detección está en `src/theme/embedded.js` (`window.self !== window.top`) y tiene sus
+pruebas en `ThemeContext.embedded.test.jsx`. **Solo existe en este curso**: si se quiere en
+los otros, es un cambio de plataforma que se copia literal (`embedded.js`, `ThemeContext.jsx`,
+`colors.js`, `AppBarGlobal.jsx`, `index.css` y la prueba).
+
 ## Módulos del estudio de investigación
 
 Documentación completa en `analitics/` de la carpeta contenedora. Lo que vive aquí:
