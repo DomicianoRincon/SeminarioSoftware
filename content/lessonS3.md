@@ -2,14 +2,14 @@
 
 <!-- tags: frontend y backend, estados de una pantalla, cargando vacío y error, camino feliz, interfaz de usuario, multiplataforma, diseño responsivo, cliente y servidor, experiencia de usuario, una base de código -->
 
-Hasta ahora has construido software que responde a otros programas: funciones, servicios, APIs. En este curso vas a construir la parte que responde a **personas**. Esa parte se llama **frontend**, y tiene sus propios problemas de ingeniería.
+Hasta ahora has construido software que usan otros programas: funciones, clases, servicios. En este curso vas a construir la parte que responde a **personas**. Esa parte se llama **frontend**, y tiene sus propios problemas de ingeniería.
 
 ## Dos lados de una misma app
 
 ```svg
 <svg id="feLados" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 472" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="feLados-ttl feLados-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="feLados-ttl">Dos lados de una misma app</title>
-  <desc id="feLados-dsc">A la izquierda el frontend, que corre en el dispositivo del usuario: muestra la información, reacciona a toques y gestos y recuerda qué pasa en la pantalla. A la derecha el backend, en servidores: guarda los datos, aplica las reglas del negocio y comparte la información entre usuarios. Se comunican por la red: el frontend pide datos y el backend responde con JSON.</desc>
+  <desc id="feLados-dsc">A la izquierda el frontend, que corre en el dispositivo del usuario: muestra la información, reacciona a toques y gestos y recuerda qué pasa en la pantalla. A la derecha el backend, en servidores: guarda los datos, aplica las reglas del negocio y comparte la información entre usuarios. Se comunican por internet: el frontend pide lo que necesita y el backend devuelve los datos.</desc>
   <defs>
     <style>
       #feLados .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -57,13 +57,11 @@ Hasta ahora has construido software que responde a otros programas: funciones, s
     <text class="it" x="236" y="349" data-fit="156">en la pantalla</text>
   </g>
 
-  <path d="M408,232 H552" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#feLados-arrow)"/>
-  <text class="lbl" x="480" y="218" text-anchor="middle" data-fit="140">pide datos</text>
-  <text class="lbl mono" x="480" y="252" text-anchor="middle" font-weight="400" data-fit="140">GET /cursos</text>
-  <path d="M552,312 H408" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#feLados-arrow)"/>
-  <text class="lbl" x="480" y="298" text-anchor="middle" data-fit="140">responde</text>
-  <text class="lbl mono" x="480" y="332" text-anchor="middle" font-weight="400" data-fit="140">JSON</text>
-  <text class="hs" x="480" y="376" text-anchor="middle" data-fit="140">por la red</text>
+  <path d="M408,240 H552" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#feLados-arrow)"/>
+  <text class="lbl" x="480" y="222" text-anchor="middle" data-fit="140">pide lo que necesita</text>
+  <path d="M552,304 H408" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#feLados-arrow)"/>
+  <text class="lbl" x="480" y="328" text-anchor="middle" data-fit="140">devuelve los datos</text>
+  <text class="hs" x="480" y="376" text-anchor="middle" data-fit="140">por internet</text>
 
   <rect x="560" y="112" width="352" height="296" rx="16" fill="#F2FAF8" stroke="#86D3CA" stroke-width="1.5" stroke-dasharray="6 5"/>
   <text class="h" x="580" y="142" fill="#0F8478">BACKEND</text>
@@ -92,7 +90,7 @@ Hasta ahora has construido software que responde a otros programas: funciones, s
 </svg>
 ```
 
-Toda app tiene dos lados. El **backend** vive en servidores: guarda los datos y aplica las reglas del negocio. El **frontend** vive en el dispositivo del usuario: muestra la información, reacciona a lo que la persona hace y recuerda qué está pasando en la pantalla. Se hablan por la red.
+Toda app tiene dos lados. El **backend** vive en servidores: guarda los datos y aplica las reglas del negocio. El **frontend** vive en el dispositivo del usuario: muestra la información, reacciona a lo que la persona hace y recuerda qué está pasando en la pantalla. Se hablan por internet.
 
 ## Lo difícil: una pantalla, muchos estados
 
@@ -185,7 +183,7 @@ Toda app tiene dos lados. El **backend** vive en servidores: guarda los datos y 
 </svg>
 ```
 
-Un backend recibe peticiones con un formato fijo y responde. Un frontend, en cambio, recibe **personas**: tocan dos veces, se quedan sin señal, abren la app sin datos todavía. Cada una de esas situaciones es un **estado** de la pantalla, y el usuario ve todos.
+Al backend lo usan otros programas, que siempre piden las cosas de la misma forma. Al frontend, en cambio, lo usan **personas**: tocan dos veces, se quedan sin señal, abren la app sin datos todavía. Cada una de esas situaciones es un **estado** de la pantalla, y el usuario ve todos.
 
 El error típico de quien empieza es diseñar solo el estado *Lista*, el camino feliz. Una app bien hecha decide también qué se ve mientras carga, cuando no hay nada y cuando algo falla.
 

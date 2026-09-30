@@ -10,7 +10,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 
 | Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
 |---|---|---|---|---|---|---|
-| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
+| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
 | 2 | 18 | 9 | 4 | Componentes | ⬜ | |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
@@ -44,6 +44,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Qué es el desarrollo frontend multiplataforma | `S0003` ¿Qué es el frontend? y `S0004` Panorama del frontend |
 | Instalación del SDK, el editor y el emulador | `S0001` Instalación básica (VS Code + Chrome). El emulador está en *Instalación avanzada*: `0019`, `0022` |
 | Primera aplicación y hola mundo | `S0001` (crear y ejecutar en Chrome, hot reload) y `0020` Tu primera app Flutter |
+| Introducción a los servicios de la nube *(el planeador la pone en la sesión 20; se adelantó)* | `S0005` Frontend y la nube: autenticación, base de datos y storage vía SDK |
 | Instalar entorno Supabase | ⬜ **Pendiente.** Móviles tiene `lessonH1.md` (*Instalación de supabase*, `0051`) y `lessonX5.md` (*Self-hosted Supabase*, `0054`) para reutilizar |
 | *Fuera de clase:* entorno verificado, corriendo en emulador o dispositivo propio | *Instalación avanzada*: `0021` Ejecutar las apps y `0022` Configurando dispositivos virtuales |
 
@@ -74,3 +75,4 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS2.md` | `S0002` | Programa del curso | *(apoyo, sección Curso)* |
 | `lessonS3.md` | `S0003` | ¿Qué es el frontend? | 1 |
 | `lessonS4.md` | `S0004` | Panorama del frontend | 1 |
+| `lessonS5.md` | `S0005` | Frontend y la nube | 1 |
