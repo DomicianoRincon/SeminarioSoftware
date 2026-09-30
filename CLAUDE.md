@@ -15,6 +15,8 @@ Contiene:
 - `content/` — las lecciones en Markdown, **en la raíz del repo**.
 - `toc.md` — la tabla de contenidos, también en la raíz.
 - `manifest.md` — qué sesiones del plan ya tienen su contenido en el visor.
+- `presentaciones/sesionN/` — la presentación de cada sesión, publicada en
+  `/presentaciones/N/` (ver *Presentaciones de las sesiones*).
 - `docs/syllabus.md` — el syllabus oficial del curso (RAA, evaluación, unidades, niveles
   de IAG), transcrito del PDF de la universidad.
 - `docs/planeador.md` — el plan de curso: qué se hace en clase, fuera de clase y qué
@@ -189,6 +191,37 @@ con `tools/console_frame.py`, que fija el estilo; no se dibujan a mano. Las regl
 - Rutas de ejemplo de Windows (`C:\develop`). Cuando un comando cambia por sistema
   (`cd C:\develop` / `cd ~/develop`), la figura muestra Windows y el bloque de código trae
   las dos versiones.
+
+## Presentaciones de las sesiones
+
+Cada sesión puede tener su presentación, hecha con la skill **`presentaciones-icesi`** (ver
+el workflow global `~/.claude/workflows/presentaciones.md`). En este curso, a diferencia
+de los otros, **las presentaciones viven en el repo y se publican con el sitio**:
+
+| | |
+|---|---|
+| Carpeta | `presentaciones/sesionN/` (N = sesión del visor, no la del planeador) |
+| Entregable | `presentaciones/sesionN/presentacion.html`, **commiteado** |
+| URL | `https://domicianorincon.github.io/SeminarioSoftware/presentaciones/N/` |
+| Enlace | Al inicio de la **primera lección de la sesión** en el `toc.md`, justo bajo los tags: `**Presentación de la sesión:** [<título>](<URL>)` |
+
+**Cómo se publica.** `.github/workflows/deploy-pages.yml` tiene un paso *Add session
+presentations* que copia cada `presentaciones/sesion*/presentacion.html` a
+`dist/presentaciones/N/index.html` antes de subir el sitio. El workflow **no construye** la
+presentación: el HTML se arma en local con el `build.py` de la skill y se commitea. Un push
+que solo toque un `presentacion.html` también dispara el despliegue.
+
+**Qué se commitea y qué no.** Sí: `plan.md`, `deck.json`, `helpers.js`, `slides/*.js`,
+`figuras.py` y `presentacion.html`. No: `build/`, con las capturas de la revisión visual (ya
+lo ignora el `.gitignore`). El repo es público: nada de datos de estudiantes en un deck.
+
+**Figuras reutilizadas.** `figuras.py` copia a `slides/00-figuras.js` las figuras SVG de las
+lecciones (les quita el título y las escala al lienzo). Si una lección cambia su figura:
+`python3 figuras.py`, luego el build, y se commitea el `presentacion.html` nuevo.
+
+| Sesión | Presentación | Primera lección |
+|---|---|---|
+| 1 | `presentaciones/sesion1/` · *Frontend Sesión 1* · 28 slides | `S0003` ¿Qué es el frontend? |
 
 ## Cómo se escribe una lección
 

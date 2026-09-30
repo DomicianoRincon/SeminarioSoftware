@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'classnotesapp/**'
+      - 'presentaciones/*/presentacion.html'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
@@ -51,6 +52,23 @@ jobs:
           # FlutterApps), pero la copia de `origin`, hoy renombrada a `Apps`,
           # pasa de rota a funcionar. Ver CLAUDE.md, eje 8.
           VITE_APP_BASE: /${{ github.event.repository.name }}/
+
+      # Presentaciones de las sesiones (solo en este curso). Cada
+      # presentaciones/sesionN/presentacion.html se publica como
+      # <sitio>/presentaciones/N/, al lado de la app. El HTML ya viene construido y
+      # commiteado (lo arma la skill presentaciones-icesi en local): aquí solo se
+      # copia. Pages sirve el archivo estático antes que el 404.html del visor,
+      # así que la ruta no choca con el router de la app.
+      - name: Add session presentations
+        run: |
+          shopt -s nullglob
+          for f in presentaciones/sesion*/presentacion.html; do
+            n=$(basename "$(dirname "$f")")
+            n=${n#sesion}
+            mkdir -p "classnotesapp/dist/presentaciones/$n"
+            cp "$f" "classnotesapp/dist/presentaciones/$n/index.html"
+            echo "presentaciones/$n/ <- $f"
+          done
 
       - uses: actions/upload-pages-artifact@v3
         with:
