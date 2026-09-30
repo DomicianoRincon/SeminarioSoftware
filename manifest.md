@@ -10,7 +10,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 
 | Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
 |---|---|---|---|---|---|---|
-| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
+| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
 | 2 | 18 | 9 | 4 | Componentes | ⬜ | |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
@@ -76,3 +76,4 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS3.md` | `S0003` | ¿Qué es el frontend? | 1 |
 | `lessonS4.md` | `S0004` | Panorama del frontend | 1 |
 | `lessonS5.md` | `S0005` | Frontend y la nube | 1 |
+| `lessonS6.md` | `S0006` | Desarrollar con IA | 1 |
