@@ -6,12 +6,17 @@ Guía para Claude Code al trabajar en este repositorio.
 
 Repositorio del curso **Seminario de Ingeniería de Software**. Nació el 2026-09-29
 como copia de `FlutterLearning` (Aplicaciones Móviles): misma app, mismo tema azul y,
-de arranque, las mismas lecciones, que se irán reemplazando. Contiene:
+de arranque, las mismas lecciones. Ese mismo día se vació `toc.md` y el temario se
+empezó a armar **sesión por sesión** a partir del plan de curso (ver *Temario* abajo).
+Contiene:
 
 - `classnotesapp/` — SPA en React + Vite que muestra las notas de clase como un visor
   de lecciones navegable.
 - `content/` — las lecciones en Markdown, **en la raíz del repo**.
 - `toc.md` — la tabla de contenidos, también en la raíz.
+- `manifest.md` — qué sesiones del plan ya tienen su contenido en el visor.
+- `docs/planeador.md` — el plan de curso: qué se hace en clase, fuera de clase y qué
+  se entrega en cada sesión.
 
 El contenido **no está dentro de `classnotesapp/`**: la app lo descarga en tiempo de
 ejecución desde `raw.githubusercontent.com`, así que editar una lección y pushear la
@@ -68,6 +73,90 @@ Nunca escribir el valor literal del token en un archivo ni en un commit.
 
 **Sitio publicado: https://domicianorincon.github.io/SeminarioSoftware/** (base path
 derivado del nombre del repo en el workflow). No renombrar el repo.
+
+## Temario: planeador, manifest y toc
+
+Tres archivos, cada uno con una sola responsabilidad:
+
+| Archivo | Qué es | Quién manda |
+|---|---|---|
+| `docs/planeador.md` | El plan de curso transcrito de la hoja *PlaneadorF* del departamento | Es la **autoridad** sobre qué va en cada sesión |
+| `manifest.md` | Qué sesiones ya están en el visor, con qué lecciones y qué falta | Se actualiza **cada vez que se toca `toc.md`** |
+| `toc.md` | Lo que ve el estudiante | Se arma desde el manifest |
+
+**Numeración.** El planeador cuenta las sesiones de este bloque de la 17 a la 32 (las 16
+primeras son de las unidades 1 y 2). En el visor y en el manifest se cuentan de la 1 a la
+16: `sesión del visor = sesión del planeador − 16`.
+
+**Cómo se arma una sesión:**
+
+1. Leer la sesión en `docs/planeador.md`, en clase y fuera de clase.
+2. Buscar primero qué se puede **reutilizar de Aplicaciones Móviles** (ver abajo) y
+   escribir solo lo que falta.
+3. En `toc.md`, la sesión va bajo `[t] Sesión N · <tema del planeador>`. El material de
+   apoyo que no pertenece a una sola sesión va en secciones temáticas aparte
+   (*Instalación avanzada*, *Dart*).
+4. Actualizar `manifest.md`: estado de la sesión, ids y la tabla de lo que pide el
+   planeador frente a dónde quedó.
+
+**`toc.md` se vació el 2026-09-29.** Las ~80 lecciones heredadas de Móviles siguen en
+`content/` aunque ya no estén en el temario. No borrarlas: son la cantera de donde se
+reutiliza.
+
+**Mientras no haya proyecto Firebase no hay traza**, así que reorganizar el temario todavía
+no hay que anotarlo en `analitics/schedule.md`. Cuando el login se active, sí. El `toc.md`
+nuevo tampoco nombra `SEMANA`, y `courseStartDate` en `content/config.js` sigue siendo el de
+Móviles: hay que fijar las fechas del Seminario antes de que la analítica sirva para H3.
+
+### Reutilizar lecciones de Aplicaciones Móviles
+
+- La lección se copia de `FlutterLearning/content/` con el **mismo nombre de archivo y el
+  mismo id**. Así una misma lección tiene el mismo id en los dos cursos, y comparar su uso
+  entre cursos es unir por id.
+- Lo que cambia es la **sección** del `toc.md`, no el archivo. Ejemplos: la sección
+  *Dart basics* de Móviles aquí se llama **Dart**. *Flutter · SEMANA 1* (`lessonC1` a
+  `lessonC4`) aquí es **Instalación avanzada**.
+- Son copias, no enlaces: si se corrige la lección en Móviles, hay que copiarla otra vez.
+  La tabla de reutilizadas está en `manifest.md`.
+
+### Ids de las lecciones propias
+
+Las lecciones que nacen en el Seminario usan **`S` + cuatro dígitos** (`S0001`,
+`S0002`…), en archivos `lessonS<n>.md`. Los números de Móviles (`0001`–`0088`) siguen
+creciendo en ese curso; con el prefijo, una lección que viaje entre cursos nunca choca con
+otra.
+
+### Estilo de las lecciones: todo explicado con ilustraciones SVG
+
+Preferencia explícita del profesor: las lecciones tienen que estar **muy explicadas por
+medio de ilustraciones y esquemas en SVG**, no solo con texto. Como referencia de nivel,
+ver `lessonS1.md`, que trae tres:
+
+| Tipo | Para qué | Ejemplo en `lessonS1.md` |
+|---|---|---|
+| Piezas | Qué componentes hay y cómo se conectan | *Las piezas de la instalación básica* |
+| Pasos con maqueta de la interfaz | Un procedimiento en pasos numerados, dibujando la pantalla real con un recuadro donde se hace clic | *La instalación básica en seis pasos* |
+| Salida anotada | Cómo leer lo que devuelve una herramienta (terminal, consola) | *Cómo leer `flutter doctor`* |
+
+Cómo se hacen:
+
+- Con la skill **`svg-diagrams`** (paleta, tipografía, rejilla de 8 px), validadas con su
+  `check.py` y **renderizadas y miradas** con `render.sh` antes de darlas por buenas.
+- Van dentro de la lección como bloque ` ```svg `. El visor las inyecta **en el mismo DOM
+  que la app**, así que:
+  - la raíz lleva un `id` único (`<svg id="fiPasos" …>`) y **todo** selector del
+    `<style>` va prefijado con él (`#fiPasos .card`). Un `.card` suelto cambia el
+    estilo de la app entera;
+  - los `id` de `<marker>`, `<filter>`, `<title>` y `<desc>` llevan el mismo prefijo
+    (`fiPasos-arrow`). Dos SVG con `id="arrow"` en la misma página se pisan.
+- **Fondo claro fijo** (`<rect … fill="#FBFBFD" rx="16">`) y **sin**
+  `@media (prefers-color-scheme: dark)`: el tema del visor lo cambia su propio botón, no el
+  del sistema, así que esa media query mostraría la figura oscura sobre un visor claro o al
+  revés. En modo oscuro se ve como una tarjeta clara.
+- `viewBox="0 0 960 …"`, `width="100%"` y `style="max-width:960px;display:block;margin:0 auto"`.
+  Texto de 12 px como mínimo, porque la figura se reduce en pantallas angostas.
+- Textos de la figura en español. Nombres de botones, comandos y mensajes se dejan como
+  aparecen en pantalla (en inglés).
 
 ## Cómo se escribe una lección
 
@@ -177,16 +266,18 @@ Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a seca
   (`tocSection`, que ancla cada pregunta al bloque) y, si el título nombra una semana
   (`SEMANA 3`, en cualquier posición del título), la **fecha planeada** de la lección
   (SPEC-13/14).
-- ⚠️ **Hoy solo 19 de 80 lecciones nombran semana** en este curso. Sin ella no hay fecha
-  planeada y la lección queda fuera de H3 (la alerta temprana del estudio). Al tocar un
-  `[t]`, aprovecha para ponerle su `· SEMANA N`.
+- ⚠️ El `toc.md` del Seminario **todavía no nombra `SEMANA`** en ningún título. Sin ella
+  no hay fecha planeada y la lección queda fuera de H3 (la alerta temprana del estudio).
+  Cuando estén las fechas del curso, añadir `· SEMANA N` a los `[t]` de cada sesión.
 
 ### Antes de dar por hecha la lección
 
 1. Imágenes locales: tienen que existir en `classnotesapp/src/assets/` y se referencian
    **solo por nombre de archivo**, sin ruta. No se descargan, van en el bundle.
-2. Push a **los dos remotos**. `raw.githubusercontent.com` sirve desde `second`.
-3. Si cambiaste algo a mitad de semestre —moviste la lección de semana, la reescribiste,
+2. Push a `origin`, el único remoto (con el PAT, ver *Remotos git*).
+   `raw.githubusercontent.com` sirve desde ahí.
+3. Actualizar `manifest.md` si la lección entra o sale del temario.
+4. Si cambiaste algo a mitad de semestre —moviste la lección de semana, la reescribiste,
    añadiste una nueva—, anótalo en `analitics/schedule.md` § 4.3 de la carpeta
    contenedora. Sin eso, el análisis ve el temario final y supone que siempre fue así.
 

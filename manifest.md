@@ -1,0 +1,72 @@
+# Manifest · Seminario de Ingeniería de Software
+
+Qué sesiones del plan de curso ya tienen su contenido en el visor. El plan completo, con lo que se hace en clase, fuera de clase y los entregables, está en [`docs/planeador.md`](docs/planeador.md).
+
+El planeador numera las sesiones de este bloque de la **17 a la 32**, porque las 16 primeras son las de las unidades 1 y 2. Aquí se cuentan como **sesión 1 a 16**: `sesión del visor = sesión del planeador − 16`.
+
+**Estados:** ✅ completa en el visor · 🟡 parcial · ⬜ pendiente
+
+## Sesiones
+
+| Sesión | Planeador | Unidad | Tema | Estado | Lecciones en el visor |
+|---|---|---|---|---|---|
+| 1 | 17 | 4 | Entorno y primera aplicación | 🟡 | `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
+| 2 | 18 | 4 | Componentes | ⬜ | |
+| 3 | 19 | 4 | Pantallas con componentes | ⬜ | |
+| 4 | 20 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
+| 5 | 21 | 3 | Skills: extender el agente | ⬜ | |
+| 6 | 22 | 4 | Stateful widget y setState | ⬜ | |
+| 7 | 23 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
+| 8 | 24 | 4 | Navegación entre pantallas | ⬜ | |
+| 9 | 25 | 4 | Navegación con bottom navigation bar | ⬜ | |
+| 10 | 26 | 3 | Spec Driven Development | ⬜ | |
+| 11 | 27 | 3 y 4 | Servicio de base de datos | ⬜ | |
+| 12 | 28 | 3 y 4 | Servicio de autenticación | ⬜ | |
+| 13 | 29 | 3 y 4 | Servicio de storage | ⬜ | |
+| 14 | 30 | 3 y 4 | Funciones como servicio | ⬜ | |
+| 15 | 31 | 3 y 4 | Entrega final I (equipos 1 a 3) | ⬜ | |
+| 16 | 32 | 3 y 4 | Entrega final II (equipos 4 a 6) y cierre | ⬜ | |
+
+## Material de apoyo (no atado a una sesión)
+
+| Sección del visor | Lecciones | Origen |
+|---|---|---|
+| Dart | `0001`, `0006` a `0012` | Sección *Dart basics* de Aplicaciones Móviles |
+
+## Detalle por sesión
+
+### Sesión 1 · Entorno y primera aplicación
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Presentación de los profesores y de las unidades 3 y 4 | En vivo, sin lección |
+| Qué es el desarrollo frontend multiplataforma | En vivo, sin lección |
+| Instalación del SDK, el editor y el emulador | `S0001` Instalación básica (VS Code + Chrome). El emulador está en *Instalación avanzada*: `0019`, `0022` |
+| Primera aplicación y hola mundo | `S0001` (crear y ejecutar en Chrome, hot reload) y `0020` Tu primera app Flutter |
+| Instalar entorno Supabase | ⬜ **Pendiente.** Móviles tiene `lessonH1.md` (*Instalación de supabase*, `0051`) y `lessonX5.md` (*Self-hosted Supabase*, `0054`) para reutilizar |
+| *Fuera de clase:* entorno verificado, corriendo en emulador o dispositivo propio | *Instalación avanzada*: `0021` Ejecutar las apps y `0022` Configurando dispositivos virtuales |
+
+## Lecciones reutilizadas de Aplicaciones Móviles
+
+Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archivo y el mismo id**. El 2026-09-29 eran idénticas byte a byte al original. Si se corrige una en Móviles, la copia de aquí no cambia sola.
+
+| Archivo | Id | Título | Sección aquí | Sección en Móviles |
+|---|---|---|---|---|
+| `lessonC1.md` | `0019` | Instalación de Flutter | Instalación avanzada | Flutter · SEMANA 1 |
+| `lessonC2.md` | `0020` | Tu primera app Flutter | Instalación avanzada | Flutter · SEMANA 1 |
+| `lessonC3.md` | `0021` | Ejecutar las apps | Instalación avanzada | Flutter · SEMANA 1 |
+| `lessonC4.md` | `0022` | Configurando dispositivos virtuales | Instalación avanzada | Flutter · SEMANA 1 |
+| `lessonA1.md` | `0001` | Primeros pasos con Dart | Dart | Dart basics |
+| `lessonA2.md` | `0006` | Operadores numéricos | Dart | Dart basics |
+| `lessonA3.md` | `0007` | Trabajando con Strings | Dart | Dart basics |
+| `lessonA4.md` | `0008` | Condicionales | Dart | Dart basics |
+| `lessonA5.md` | `0009` | Tipos opcionales y null safety | Dart | Dart basics |
+| `lessonA6.md` | `0010` | Listas y mapas | Dart | Dart basics |
+| `lessonA7.md` | `0011` | Métodos en Dart | Dart | Dart basics |
+| `lessonA8.md` | `0012` | Clases y objetos en Dart | Dart | Dart basics |
+
+## Lecciones propias del Seminario
+
+| Archivo | Id | Título | Sesión |
+|---|---|---|---|
+| `lessonS1.md` | `S0001` | Instalación básica | 1 |
