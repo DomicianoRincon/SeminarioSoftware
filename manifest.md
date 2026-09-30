@@ -10,7 +10,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 
 | Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
 |---|---|---|---|---|---|---|
-| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
+| 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
 | 2 | 18 | 9 | 4 | Componentes | ⬜ | |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
@@ -41,7 +41,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|
 | Presentación de los profesores y de las unidades 3 y 4 | En vivo, sin lección |
-| Qué es el desarrollo frontend multiplataforma | En vivo, sin lección |
+| Qué es el desarrollo frontend multiplataforma | `S0003` ¿Qué es el frontend? y `S0004` Panorama del frontend |
 | Instalación del SDK, el editor y el emulador | `S0001` Instalación básica (VS Code + Chrome). El emulador está en *Instalación avanzada*: `0019`, `0022` |
 | Primera aplicación y hola mundo | `S0001` (crear y ejecutar en Chrome, hot reload) y `0020` Tu primera app Flutter |
 | Instalar entorno Supabase | ⬜ **Pendiente.** Móviles tiene `lessonH1.md` (*Instalación de supabase*, `0051`) y `lessonX5.md` (*Self-hosted Supabase*, `0054`) para reutilizar |
@@ -72,3 +72,5 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 |---|---|---|---|
 | `lessonS1.md` | `S0001` | Instalación básica | 1 |
 | `lessonS2.md` | `S0002` | Programa del curso | *(apoyo, sección Curso)* |
+| `lessonS3.md` | `S0003` | ¿Qué es el frontend? | 1 |
+| `lessonS4.md` | `S0004` | Panorama del frontend | 1 |
