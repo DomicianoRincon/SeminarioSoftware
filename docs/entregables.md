@@ -185,7 +185,7 @@ El nivel sube a lo largo de la entrega:
 
 El peso en la nota lo define el profesor; el planeador no lo fija.
 
-## Entrega 3 · Specs completas de la aplicación
+## Entrega 3 · Aplicación final y exhibición
 
 ```svg
 <svg id="entE3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 264" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="entE3-ttl entE3-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">

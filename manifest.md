@@ -83,4 +83,4 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS6.md` | `S0006` | Desarrollar con IA | 1 |
 | `lessonS7.md` | `S0007` | Entrega 1 · Prototipo en Stitch/Figma y base de datos | *(apoyo, sección Entregables)* |
 | `lessonS8.md` | `S0008` | Entrega 2 · Prototipo no funcional en Flutter | *(apoyo, sección Entregables)* |
-| `lessonS9.md` | `S0009` | Entrega 3 · Specs completas de la aplicación | *(apoyo, sección Entregables)* |
+| `lessonS9.md` | `S0009` | Entrega 3 · Aplicación final y exhibición | *(apoyo, sección Entregables)* |
