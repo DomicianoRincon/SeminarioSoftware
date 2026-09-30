@@ -32,6 +32,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Sección del visor | Lecciones | Origen |
 |---|---|---|
 | Curso | `S0002` Programa del curso | Propia, hecha a partir de `docs/syllabus.md` |
+| Entregables | `S0007`, `S0008`, `S0009`: las tres entregas del proyecto | Propias, hechas a partir de la tabla *Entregas* de `docs/planeador.md` |
 | Dart | `0001`, `0006` a `0012` | Sección *Dart basics* de Aplicaciones Móviles |
 
 ## Detalle por sesión
@@ -80,3 +81,6 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS4.md` | `S0004` | Panorama del frontend | 1 |
 | `lessonS5.md` | `S0005` | Frontend y la nube | 1 |
 | `lessonS6.md` | `S0006` | Desarrollar con IA | 1 |
+| `lessonS7.md` | `S0007` | Entrega 1 · Prototipo en Stitch/Figma y base de datos | *(apoyo, sección Entregables)* |
+| `lessonS8.md` | `S0008` | Entrega 2 · Prototipo no funcional en Flutter | *(apoyo, sección Entregables)* |
+| `lessonS9.md` | `S0009` | Entrega 3 · Specs completas de la aplicación | *(apoyo, sección Entregables)* |

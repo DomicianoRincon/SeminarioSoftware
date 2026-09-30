@@ -1,5 +1,9 @@
 [t] Curso
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS2.md | Programa del curso | S0002
+[t] Entregables
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS7.md | Entrega 1 · Prototipo en Stitch/Figma y base de datos | S0007
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS8.md | Entrega 2 · Prototipo no funcional en Flutter | S0008
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS9.md | Entrega 3 · Specs completas de la aplicación | S0009
 [t] Sesión 1 · Entorno y primera aplicación
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS3.md | ¿Qué es el frontend? | S0003
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS4.md | Panorama del frontend | S0004
