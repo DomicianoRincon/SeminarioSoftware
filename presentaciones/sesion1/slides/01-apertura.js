@@ -5,7 +5,7 @@
 
   // 1 · Portada
   window.SLIDES.push(icesi.titleSlideA(
-    'Frontend Sesión 1',
+    'Frontend developing',
     'Entorno y primera aplicación<br>' +
     '<span class="slide-footer-tag">Seminario de Ingeniería de Software &middot; Universidad Icesi</span>'
   ));

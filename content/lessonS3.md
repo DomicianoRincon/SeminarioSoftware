@@ -2,7 +2,7 @@
 
 <!-- tags: frontend y backend, estados de una pantalla, cargando vacío y error, camino feliz, interfaz de usuario, multiplataforma, diseño responsivo, cliente y servidor, experiencia de usuario, una base de código -->
 
-**Presentación de la sesión:** [Frontend Sesión 1](https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/)
+**Presentación de la sesión:** [Frontend developing](https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/)
 
 Hasta ahora has construido software que usan otros programas: funciones, clases, servicios. En este curso vas a construir la parte que responde a **personas**. Esa parte se llama **frontend**, y tiene sus propios problemas de ingeniería.
 

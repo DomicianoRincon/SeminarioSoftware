@@ -38,7 +38,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 
 ### Sesión 1 · Entorno y primera aplicación
 
-**Presentación:** `presentaciones/sesion1/` · *Frontend Sesión 1*, publicada en
+**Presentación:** `presentaciones/sesion1/` · *Frontend developing*, publicada en
 https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada al inicio de `S0003`.
 
 | Lo que pide el planeador | Dónde está en el visor |

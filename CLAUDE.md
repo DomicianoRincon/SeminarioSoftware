@@ -221,7 +221,7 @@ lecciones (les quita el título y las escala al lienzo). Si una lección cambia 
 
 | Sesión | Presentación | Primera lección |
 |---|---|---|
-| 1 | `presentaciones/sesion1/` · *Frontend Sesión 1* · 28 slides | `S0003` ¿Qué es el frontend? |
+| 1 | `presentaciones/sesion1/` · *Frontend developing* · 28 slides | `S0003` ¿Qué es el frontend? |
 
 ## Cómo se escribe una lección
 

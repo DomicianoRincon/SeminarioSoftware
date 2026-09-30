@@ -1,4 +1,4 @@
-// Íconos propios del deck "Frontend Sesión 1". Estilo de la plantilla: 36x36, círculo de
+// Íconos propios del deck "Frontend developing". Estilo de la plantilla: 36x36, círculo de
 // color institucional y trazo blanco. Los de sufijo "W" son blancos y sin círculo, para los
 // paneles laterales de color. Nunca emoji.
 Object.assign(window.H.ICONS, {

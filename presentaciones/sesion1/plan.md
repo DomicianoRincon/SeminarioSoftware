@@ -1,4 +1,4 @@
-# Plan · Frontend Sesión 1
+# Plan · Frontend developing
 
 **Curso:** Seminario de Ingeniería de Software · Universidad Icesi
 **Sesión:** 1 del bloque de Domiciano (sesión 17 del planeador), semana 9 · *Entorno y primera aplicación*
@@ -36,7 +36,7 @@ mejor proyectado.
 
 | # | Título | Layout | Contenido | Gráfico |
 |---|---|---|---|---|
-| 1 | Frontend Sesión 1 | `titleSlideA` | Subtítulo: *Entorno y primera aplicación*. Etiqueta: *Seminario de Ingeniería de Software · Universidad Icesi* | · |
+| 1 | Frontend developing | `titleSlideA` | Subtítulo: *Entorno y primera aplicación*. Etiqueta: *Seminario de Ingeniería de Software · Universidad Icesi* | · |
 | 2 | El recorrido de hoy | `slideStandard` | Cinco pasos: frontend → panorama → la nube → IA → instalar | `H.pipeline` con íconos |
 | 3 | ¿Qué es el frontend? | `sectionSlideEBlue` | Divisor de bloque | · |
 | 4 | Dos lados de una misma app | `slideStandard` | Frontend en el dispositivo, backend en servidores, se hablan por internet | SVG `feLados` |
@@ -71,7 +71,7 @@ lección en texto corrido, para no tener que leerlo de la pantalla.
 ## Decisiones
 
 - **Sin "Qué te llevas hoy"**: se quitó a pedido del profesor.
-- **Título de la portada**: exactamente "Frontend Sesión 1", como se pidió.
+- **Título de la portada**: "Frontend developing" (antes "Frontend developing"; cambiado a pedido del profesor el 2026-09-30).
 - **Sin agenda con horas**: no hay horario definido para la sesión; si se necesita, se agrega
   una tabla en la slide 2.
 - **"Instalar entorno Supabase"** está en el planeador de esta sesión pero no tiene lección
