@@ -20,7 +20,7 @@ Este visor acompaña **las últimas 8 semanas del curso (semanas 9 a 16)**, que 
 ```svg
 <svg id="pcSemestre" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 448" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="pcSemestre-ttl pcSemestre-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="pcSemestre-ttl">El semestre de un vistazo</title>
-  <desc id="pcSemestre-dsc">Dieciséis semanas en cuatro unidades: búsqueda de información (semanas 1 a 4), computación en la nube (5 a 8), asistentes de IA (9 y 10) y frontend asistido por IA (11 a 16). Las evaluaciones son el póster (25 por ciento), el taller de nube (25) y el proyecto multiplataforma (50). Los cortes son en la semana 8, la 12 y al final. Este visor cubre las semanas 9 a 16.</desc>
+  <desc id="pcSemestre-dsc">Dieciséis semanas en cuatro unidades: búsqueda de información (semanas 1 a 4), computación en la nube (5 a 8), asistentes de IA (9 y 10) y frontend asistido por IA (11 a 16). Las evaluaciones son el póster (25 por ciento) en las semanas 1 a 4, el taller de nube (25) en las semanas 5 a 8 y el proyecto multiplataforma (50) en las semanas 9 a 16. Al corte de la semana 8 ya está evaluado el 50 por ciento; los otros cortes son en la semana 12 y al final. Este visor cubre las semanas 9 a 16.</desc>
   <defs>
     <style>
       #pcSemestre .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -67,14 +67,17 @@ Este visor acompaña **las últimas 8 semanas del curso (semanas 9 a 16)**, que 
 
   <text class="h" x="48" y="256">EVALUACIÓN</text>
   <rect x="50" y="268" width="212" height="48" rx="10" fill="#0F8478"/>
-  <text x="156" y="292" dy="0.35em" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700" data-fit="196">Póster SLR · 25 %</text>
-  <rect x="266" y="268" width="320" height="48" rx="10" fill="#A96C05"/>
-  <text x="426" y="292" dy="0.35em" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700" data-fit="300">Taller de solución en nube · RA2 y RA3 · 25 %</text>
-  <rect x="590" y="268" width="320" height="48" rx="10" fill="#4453C9"/>
-  <text x="750" y="292" dy="0.35em" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700" data-fit="300">App multiplataforma · RA4 · 50 %</text>
+  <text x="156" y="286" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700" data-fit="196">Póster SLR</text>
+  <text x="156" y="304" text-anchor="middle" fill="#FFFFFF" font-size="12" data-fit="196">RA1 · 25 %</text>
+  <rect x="266" y="268" width="212" height="48" rx="10" fill="#A96C05"/>
+  <text x="372" y="286" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700" data-fit="196">Taller de solución en nube</text>
+  <text x="372" y="304" text-anchor="middle" fill="#FFFFFF" font-size="12" data-fit="196">RA2 y RA3 · 25 %</text>
+  <rect x="482" y="268" width="428" height="48" rx="10" fill="#4453C9"/>
+  <text x="696" y="286" text-anchor="middle" fill="#FFFFFF" font-size="13" font-weight="700" data-fit="400">App multiplataforma</text>
+  <text x="696" y="304" text-anchor="middle" fill="#FFFFFF" font-size="12" data-fit="400">RA4 · 50 %</text>
 
   <text class="ct" x="480" y="352" text-anchor="middle" data-fit="200">Corte 1 · fin semana 8</text>
-  <text class="cb" x="480" y="370" text-anchor="middle" data-fit="200">mínimo 30 % acumulado</text>
+  <text class="cb" x="480" y="370" text-anchor="middle" data-fit="200">50 % ya evaluado</text>
   <text class="ct" x="696" y="352" text-anchor="middle" data-fit="200">Corte 2 · fin semana 12</text>
   <text class="cb" x="696" y="370" text-anchor="middle" data-fit="200">mínimo 60 % reportado</text>
   <text class="ct" x="910" y="352" text-anchor="end" data-fit="120">Corte final</text>
@@ -82,7 +85,7 @@ Este visor acompaña **las últimas 8 semanas del curso (semanas 9 a 16)**, que 
 
   <path d="M484,392 V400 H906 V392" fill="none" stroke="#4453C9" stroke-width="2"/>
   <text x="695" y="420" dy="0.1em" text-anchor="middle" fill="#4453C9" font-size="13" font-weight="700" data-fit="420">Este visor: semanas 9 a 16 · 16 sesiones</text>
-  <text class="cb" x="48" y="420" dy="0.1em" data-fit="400">Cada evaluación va bajo las unidades de sus RA.</text>
+  <text class="cb" x="48" y="420" dy="0.1em" data-fit="400">50 % en las semanas 1 a 8 · 50 % en las 9 a 16.</text>
 </svg>
 ```
 
@@ -169,9 +172,11 @@ App multiplataforma
 `50 %`
 Diseño e implementación de una solución con aplicaciones multiplataforma. Evalúa `RA4`. Nivel máximo de IA: **Exploración con IAG**. Es el proyecto integrador de las unidades 3 y 4.
 
+La nota se reparte en dos mitades: el **50 % de las semanas 1 a 8** (póster y taller de nube) y el **50 % de las semanas 9 a 16** (la app multiplataforma).
+
 Las notas se reportan en tres cortes:
 
-- **Corte 1**, al final de la semana 8: al menos el 30 % de la nota acumulado.
+- **Corte 1**, al final de la semana 8: el 50 % ya evaluado (la universidad exige al menos el 30 %).
 - **Corte 2**, al final de la semana 12: al menos el 60 % reportado en el sistema.
 - **Corte final**: el 40 % restante.
 

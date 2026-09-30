@@ -247,4 +247,4 @@ Esta unidad integra los conocimientos desarrollados durante el curso mediante la
 
 Esta es la división que marca el syllabus. `docs/planeador.md` no la sigue al pie de la letra: intercala sesiones de las dos unidades (empieza con sesiones de la unidad 4, y las sesiones 20, 21 y 26 son de la unidad 3). Lo que se construye en el visor sigue el planeador; ver `manifest.md`.
 
-De la evaluación, al bloque le corresponde el 50 % del **Diseño e implementación de una solución con aplicaciones multiplataforma** (RA4). El **Taller de desarrollo de la solución en nube** (25 %) cubre RA2, de la unidad 2, y RA3, de la unidad 3: el syllabus no dice cómo se reparte entre los dos bloques.
+La nota se divide en dos mitades (decisión del profesor, 2026-09-29): el **50 % de las semanas 1 a 8** es el póster (25 %, semanas 1 a 4) y el taller de solución en nube (25 %, semanas 5 a 8), y el **50 % de las semanas 9 a 16** es el **Diseño e implementación de una solución con aplicaciones multiplataforma** (RA4), que corresponde a este bloque. El taller de nube se califica completo antes de la semana 8, aunque el syllabus lo relaciona también con RA3.
