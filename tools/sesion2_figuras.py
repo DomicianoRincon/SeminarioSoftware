@@ -1,4 +1,4 @@
-"""Figuras SVG de las lecciones de la sesión 2 (S0010 a S0017).
+"""Figuras SVG de las lecciones de la sesión 2 (S0010 a S0018).
 
     python3 tools/sesion2_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
     python3 tools/sesion2_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS1x.md
@@ -864,10 +864,60 @@ def rw_alineacion():
 FIGS['rwAlineacion'] = rw_alineacion
 
 
+# ───────────────────────────── S0018 · Taller
+
+LOCK = ('<rect x="-8" y="-2" width="16" height="12" rx="2" fill="none" stroke="#161A26" stroke-width="1.75"/>'
+        '<path d="M-5,-2 V-6 a5,5 0 0 1 10,0 V-2" fill="none" stroke="#161A26" stroke-width="1.75"/>')
+MAIL_DARK = MAIL.replace('#556074', '#161A26')
+
+
+def tl_campo():
+    fid = 'tlCampo'
+    h = 300
+    s = head(fid, h, 'Campo de formulario', 'Campo de formulario',
+             'El mismo componente, usado dos veces. Cambian la etiqueta, el icono y si oculta lo que se escribe.',
+             'El componente campo de formulario usado dos veces: uno con la etiqueta Correo electrónico y un icono de sobre, y otro con la etiqueta Contraseña y un icono de candado. Cada uno es una etiqueta a la izquierda, un icono a la derecha y una línea debajo.')
+    for i, (label, icon, note) in enumerate([('Correo electrónico', MAIL_DARK, ["label: 'Correo electrónico'", 'icon: Icons.mail_outline']),
+                                              ('Contraseña', LOCK, ["label: 'Contraseña'", 'icon: Icons.lock_outline · obscure: true'])]):
+        x = 48 + i * 456
+        s += f'  <g transform="translate({x},112)">\n'
+        s += '    <rect width="408" height="100" rx="12" fill="#F4E1E6"/>\n'
+        s += f'    <text x="24" y="50" dy="0.35em" font-size="16" fill="#161A26" data-fit="300">{label}</text>\n'
+        s += f'    <g transform="translate(368,50)">{icon}</g>\n'
+        s += '    <path d="M24,76 H384" stroke="#454C61" stroke-width="1.5"/>\n'
+        for j, ln in enumerate(note):
+            s += f'    <text class="mono" x="0" y="{128 + j*20}" font-size="12" fill="#556074" data-fit="408">{ln}</text>\n'
+        s += '  </g>\n'
+    s += '</svg>\n'
+    return s
+
+
+def tl_boton():
+    fid = 'tlBoton'
+    h = 268
+    s = head(fid, h, 'Botón principal', 'Botón principal',
+             'Ocupa todo el ancho disponible. Lo único que cambia entre usos es el texto.',
+             'El componente botón principal usado dos veces: uno dice Iniciar sesión y el otro Crear cuenta. Es un rectángulo oscuro de esquinas redondeadas, a todo el ancho, con el texto blanco centrado.')
+    for i, (label, bg) in enumerate([('Iniciar sesión', '#F4E1E6'), ('Crear cuenta', '#E1EFE6')]):
+        x = 48 + i * 456
+        s += f'  <g transform="translate({x},112)">\n'
+        s += f'    <rect width="408" height="92" rx="12" fill="{bg}"/>\n'
+        s += '    <rect x="24" y="20" width="360" height="52" rx="6" fill="#1C1F26"/>\n'
+        s += f'    <text x="204" y="46" dy="0.35em" text-anchor="middle" font-size="16" font-weight="600" fill="#FFFFFF" data-fit="320">{label}</text>\n'
+        s += f'    <text class="mono" x="0" y="120" font-size="12" fill="#556074" data-fit="408">label: \'{label}\'</text>\n'
+        s += '  </g>\n'
+    s += '</svg>\n'
+    return s
+
+
+FIGS['tlCampo'] = tl_campo
+FIGS['tlBoton'] = tl_boton
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--inject':
         done = set()
-        for path in sorted((ROOT / 'content').glob('lessonS1[0-7].md')):
+        for path in sorted((ROOT / 'content').glob('lessonS1[0-8].md')):
             text = path.read_text(encoding='utf-8')
 
             def swap(m):
