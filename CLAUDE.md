@@ -192,6 +192,33 @@ con `tools/console_frame.py`, que fija el estilo; no se dibujan a mano. Las regl
   (`cd C:\develop` / `cd ~/develop`), la figura muestra Windows y el bloque de código trae
   las dos versiones.
 
+### Código: frame de editor SVG
+
+Desde la sesión 2 (2026-10-01), **cada widget se explica con una figura de código anotado**:
+editor oscuro a la izquierda, el resultado dibujado a la derecha y una flecha de cada
+propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`, hermano de
+`console_frame.py`; no se dibujan a mano. Las reglas:
+
+- **Una flecha por propiedad, cada una con su color**: el recuadro sobre el código, la
+  flecha y lo que señala comparten color. Máximo cuatro por figura.
+- **Las flechas no se cruzan.** `lane` elige el carril entre el editor y el panel, y `via`
+  rodea el dibujo para llegar desde abajo. Se comprueba mirando el render.
+- Cuando no hay nada que dibujar (anatomía de una clase, `main.dart`), el panel derecho
+  lleva **tarjetas de explicación** y las flechas apuntan a ellas.
+- **Siempre acompañado de un bloque ` ```dart `** con el mismo código, justo debajo.
+- El código de la figura sigue el estilo del curso: identificadores en inglés, textos de
+  interfaz en español, sin comentarios.
+- Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
+  monoespaciada del visitante tenga otro ancho.
+
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py`): con una
+carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
+bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
+del Markdown**: se cambia el script y se vuelve a inyectar.
+
+`check.py` marca como error la URL de ejemplo de `imNetwork` (`Image.network('https://…')`).
+Es un falso positivo: es texto del código mostrado, no un recurso que el SVG cargue.
+
 ## Presentaciones de las sesiones
 
 Cada sesión puede tener su presentación, hecha con la skill **`presentaciones-icesi`** (ver

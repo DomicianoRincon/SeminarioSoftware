@@ -11,7 +11,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
 |---|---|---|---|---|---|---|
 | 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
-| 2 | 18 | 9 | 4 | Componentes | ⬜ | |
+| 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0015` StatelessWidget: tu primer componente · `0033` Taller · UI Basics con Flutter |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
 | 5 | 21 | 11 | 3 | Skills: extender el agente | ⬜ | |
@@ -52,6 +52,26 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | Instalar entorno Supabase | ⬜ **Pendiente.** Móviles tiene `lessonH1.md` (*Instalación de supabase*, `0051`) y `lessonX5.md` (*Self-hosted Supabase*, `0054`) para reutilizar |
 | *Fuera de clase:* entorno verificado, corriendo en emulador o dispositivo propio | *Instalación avanzada*: `0021` Ejecutar las apps y `0022` Configurando dispositivos virtuales |
 
+### Sesión 2 · Componentes
+
+**Presentación:** pendiente.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Recorrido por main.dart y por la estructura de carpetas | `S0010` El proyecto por dentro. Usa la convención del curso (`theme/`, `models/`, `components/`, `screens/`, `pages/`) y arranca con `routes:` + `initialRoute`, con una sola ruta |
+| Paradigma declarativo frente a imperativo | `S0010`, apartado *Describir, no ordenar*. Retoma `interfaz = f(estado)` de `S0003` |
+| Widgets básicos: Text, Image (asset y network) y botones | `S0011` Text · `S0012` Image · `S0013` Button |
+| *(añadido por el profesor)* TextField | `S0014` TextField, **solo apariencia**: `InputDecoration`, `obscureText`, `keyboardType`. Leer el texto (controller y estado) queda para la sesión 6 |
+| Concepto de componente como pieza reutilizable | `S0015` StatelessWidget: tu primer componente |
+| Taller: componentes Stateless montados en una pantalla | `0033` UI Basics con Flutter (Lab 1 de Móviles), **punto 1** |
+| *Fuera de clase:* terminar los componentes del taller | `0033`, punto 1. Los puntos 2 y 3 (armar las pantallas) son el taller de la sesión 3 |
+
+Notas:
+
+- Las lecciones heredadas `lessonD4A` a `lessonD4D` (`0027` a `0030`) y `lessonD1` (`0023`) **no** se usaron: se escribieron propias, con figuras de código anotado. Siguen en `content/` como cantera.
+- El Lab 1 pide `Row` y `Column`, que el planeador pone en la sesión 3. `S0015` los presenta en una frase; el layout formal va en la sesión 3.
+- Las 15 figuras salen de `tools/sesion2_figuras.py` (ver `CLAUDE.md` → *Código: frame de editor SVG*).
+
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
 Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archivo y el mismo id**. El 2026-09-29 eran idénticas byte a byte al original. Si se corrige una en Móviles, la copia de aquí no cambia sola.
@@ -70,6 +90,7 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonA6.md` | `0010` | Listas y mapas | Dart | Dart basics |
 | `lessonA7.md` | `0011` | Métodos en Dart | Dart | Dart basics |
 | `lessonA8.md` | `0012` | Clases y objetos en Dart | Dart | Dart basics |
+| `lab1.md` | `0033` | UI Basics con Flutter *(aquí «Taller · UI Basics con Flutter»)* | Sesión 2 · Componentes | Laboratorio 1 |
 
 ## Lecciones propias del Seminario
 
@@ -84,3 +105,9 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS7.md` | `S0007` | Entrega 1 · Prototipo en Stitch/Figma y base de datos | *(apoyo, sección Entregables)* |
 | `lessonS8.md` | `S0008` | Entrega 2 · Prototipo no funcional en Flutter | *(apoyo, sección Entregables)* |
 | `lessonS9.md` | `S0009` | Entrega 3 · Aplicación final y exhibición | *(apoyo, sección Entregables)* |
+| `lessonS10.md` | `S0010` | El proyecto por dentro | 2 |
+| `lessonS11.md` | `S0011` | Text | 2 |
+| `lessonS12.md` | `S0012` | Image | 2 |
+| `lessonS13.md` | `S0013` | Button | 2 |
+| `lessonS14.md` | `S0014` | TextField | 2 |
+| `lessonS15.md` | `S0015` | StatelessWidget: tu primer componente | 2 |
