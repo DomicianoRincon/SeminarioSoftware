@@ -64,7 +64,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | *(añadido por el profesor)* TextField | `S0014` TextField, **solo apariencia**: `InputDecoration`, `obscureText`, `keyboardType`. Leer el texto (controller y estado) queda para la sesión 6 |
 | *(añadido por el profesor; el planeador lo pone en la sesión 19)* Column y Row | `S0016` Column · `S0017` Row: `children`, los dos ejes, `mainAxisAlignment`, `crossAxisAlignment` y `SizedBox`. `Expanded`, `Container`, `Padding` y `SingleChildScrollView` quedan para la sesión 3 |
 | Concepto de componente como pieza reutilizable | `S0015` StatelessWidget: tu primer componente |
-| Taller: componentes Stateless montados en una pantalla | `S0018` Taller · Componentes: **solo componentes**, cinco. Tres vienen del Lab 1 de Móviles (indicador numérico, elemento de conversación, bloque de información de perfil) y dos son nuevos, para el login (campo de formulario, botón principal) |
+| Taller: componentes Stateless montados en una pantalla | `S0018` Taller · Componentes: **solo componentes**, seis. Empieza por dos nuevos, `PrimaryButton` (azul) y `SecondaryButton` (con borde), los dos con un icono y un texto en una `Row`. Siguen tres del Lab 1 de Móviles (indicador numérico, elemento de conversación, bloque de información de perfil) y cierra con el campo de formulario del login |
 | *Fuera de clase:* terminar los componentes del taller | `S0018`. Armar las pantallas de perfil y de login con ellos es el taller de la sesión 3 |
 
 Notas:

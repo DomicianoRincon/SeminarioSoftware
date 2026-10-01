@@ -335,4 +335,4 @@ Dos ideas para llevarte al taller:
 - **Un componente puede usar otros componentes.** Una fila de estadísticas es un componente hecho con tres `StatCard`, y una tarjeta de perfil puede contener esa fila. Las pantallas se arman así, de lo pequeño a lo grande.
 - **Todavía no hay interacción.** Un `StatelessWidget` solo muestra. Si tu componente lleva un botón, déjale un `onPressed` con un `print`. Cómo avisarle a la pantalla que lo tocaron es la sesión 7.
 
-En el *Taller · Componentes* construyes cinco. Los necesitas terminados para la sesión 3, donde se arman las pantallas con ellos.
+En el *Taller · Componentes* construyes seis. Los necesitas terminados para la sesión 3, donde se arman las pantallas con ellos.

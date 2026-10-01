@@ -894,17 +894,27 @@ def tl_campo():
 
 def tl_boton():
     fid = 'tlBoton'
-    h = 268
-    s = head(fid, h, 'Botón principal', 'Botón principal',
-             'Ocupa todo el ancho disponible. Lo único que cambia entre usos es el texto.',
-             'El componente botón principal usado dos veces: uno dice Iniciar sesión y el otro Crear cuenta. Es un rectángulo oscuro de esquinas redondeadas, a todo el ancho, con el texto blanco centrado.')
-    for i, (label, bg) in enumerate([('Iniciar sesión', '#F4E1E6'), ('Crear cuenta', '#E1EFE6')]):
+    h = 292
+    s = head(fid, h, 'Botón principal y botón secundario', 'Botón principal y botón secundario',
+             'La misma estructura en los dos: un icono y un texto en fila. Cambia el tipo de botón.',
+             'Dos botones a todo el ancho con un icono y un texto centrados. El principal, PrimaryButton, es azul con el contenido blanco y dice Iniciar sesión. El secundario, SecondaryButton, es blanco con borde y contenido azules y dice Crear cuenta.')
+    login = ('<path d="M-9,0 H3 M-1,-4 L3,0 L-1,4" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+             '<path d="M2,-8 H8 V8 H2" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>')
+    person = ('<circle cx="-2" cy="-4" r="3.5" fill="none" stroke="{c}" stroke-width="2"/>'
+              '<path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round"/>'
+              '<path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round"/>')
+    items = [('PrimaryButton', 'Iniciar sesión', login, '#2196F3', 'none', '#FFFFFF', ["label: 'Iniciar sesión'", 'icon: Icons.login'], 146),
+             ('SecondaryButton', 'Crear cuenta', person, '#FFFFFF', '#2196F3', '#1976D2', ["label: 'Crear cuenta'", 'icon: Icons.person_add_outlined'], 150)]
+    for i, (cls, label, icon, fill, stroke, ink, note, ix) in enumerate(items):
         x = 48 + i * 456
         s += f'  <g transform="translate({x},112)">\n'
-        s += f'    <rect width="408" height="92" rx="12" fill="{bg}"/>\n'
-        s += '    <rect x="24" y="20" width="360" height="52" rx="6" fill="#1C1F26"/>\n'
-        s += f'    <text x="204" y="46" dy="0.35em" text-anchor="middle" font-size="16" font-weight="600" fill="#FFFFFF" data-fit="320">{label}</text>\n'
-        s += f'    <text class="mono" x="0" y="120" font-size="12" fill="#556074" data-fit="408">label: \'{label}\'</text>\n'
+        s += f'    <text class="mono" x="0" y="12" font-size="14" font-weight="700" fill="#161A26" data-fit="408">{cls}</text>\n'
+        s += '    <rect y="28" width="408" height="84" rx="12" fill="#EFF1F5"/>\n'
+        s += f'    <rect x="24" y="48" width="360" height="44" rx="22" fill="{fill}" stroke="{stroke}" stroke-width="1.75"/>\n'
+        s += f'    <g transform="translate({ix},70)">{icon.format(c=ink)}</g>\n'
+        s += f'    <text x="{ix + 20}" y="70" dy="0.35em" font-size="15" font-weight="600" fill="{ink}" data-fit="200">{label}</text>\n'
+        for k, ln in enumerate(note):
+            s += f'    <text class="mono" x="0" y="{136 + k*20}" font-size="12" fill="#556074" data-fit="408">{ln}</text>\n'
         s += '  </g>\n'
     s += '</svg>\n'
     return s
