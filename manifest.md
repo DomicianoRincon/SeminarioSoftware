@@ -11,7 +11,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
 |---|---|---|---|---|---|---|
 | 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
-| 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0015` StatelessWidget: tu primer componente · `0033` Taller · UI Basics con Flutter |
+| 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `0033` Taller · UI Basics con Flutter |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
 | 5 | 21 | 11 | 3 | Skills: extender el agente | ⬜ | |
@@ -62,6 +62,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | Paradigma declarativo frente a imperativo | `S0010`, apartado *Describir, no ordenar*. Retoma `interfaz = f(estado)` de `S0003` |
 | Widgets básicos: Text, Image (asset y network) y botones | `S0011` Text · `S0012` Image · `S0013` Button |
 | *(añadido por el profesor)* TextField | `S0014` TextField, **solo apariencia**: `InputDecoration`, `obscureText`, `keyboardType`. Leer el texto (controller y estado) queda para la sesión 6 |
+| *(añadido por el profesor; el planeador lo pone en la sesión 19)* Column y Row | `S0016` Column · `S0017` Row: `children`, los dos ejes, `mainAxisAlignment`, `crossAxisAlignment` y `SizedBox`. `Expanded`, `Container`, `Padding` y `SingleChildScrollView` quedan para la sesión 3 |
 | Concepto de componente como pieza reutilizable | `S0015` StatelessWidget: tu primer componente |
 | Taller: componentes Stateless montados en una pantalla | `0033` UI Basics con Flutter (Lab 1 de Móviles), **punto 1** |
 | *Fuera de clase:* terminar los componentes del taller | `0033`, punto 1. Los puntos 2 y 3 (armar las pantallas) son el taller de la sesión 3 |
@@ -69,8 +70,8 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 Notas:
 
 - Las lecciones heredadas `lessonD4A` a `lessonD4D` (`0027` a `0030`) y `lessonD1` (`0023`) **no** se usaron: se escribieron propias, con figuras de código anotado. Siguen en `content/` como cantera.
-- El Lab 1 pide `Row` y `Column`, que el planeador pone en la sesión 3. `S0015` los presenta en una frase; el layout formal va en la sesión 3.
-- Las 15 figuras salen de `tools/sesion2_figuras.py` (ver `CLAUDE.md` → *Código: frame de editor SVG*).
+- El Lab 1 pide `Row` y `Column`, que el planeador pone en la sesión 3. Se adelantaron a esta sesión (`S0016`, `S0017`), antes de `S0015`, para que el taller se pueda hacer. La sesión 3 retoma el layout desde `Expanded`.
+- Las 19 figuras salen de `tools/sesion2_figuras.py` (ver `CLAUDE.md` → *Código: frame de editor SVG*).
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
@@ -111,3 +112,5 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS13.md` | `S0013` | Button | 2 |
 | `lessonS14.md` | `S0014` | TextField | 2 |
 | `lessonS15.md` | `S0015` | StatelessWidget: tu primer componente | 2 |
+| `lessonS16.md` | `S0016` | Column | 2 |
+| `lessonS17.md` | `S0017` | Row | 2 |

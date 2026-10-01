@@ -298,4 +298,4 @@ class HomeScreen extends StatelessWidget {
 }
 ```
 
-`Column` pone un widget debajo de otro y `SizedBox` deja un espacio entre ellos. Los dos se ven a fondo en la sesión 3.
+`Column` pone un widget debajo de otro y `SizedBox` deja un espacio entre ellos. Los dos tienen su propia lección más adelante en esta sesión: *Column*.

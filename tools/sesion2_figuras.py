@@ -1,4 +1,4 @@
-"""Figuras SVG de las lecciones de la sesión 2 (S0010 a S0015).
+"""Figuras SVG de las lecciones de la sesión 2 (S0010 a S0017).
 
     python3 tools/sesion2_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
     python3 tools/sesion2_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS1x.md
@@ -691,10 +691,183 @@ FIGS['swUso'] = lambda: frame(dict(
 ))
 
 
+# ───────────────────────────── S0016 · Column y S0017 · Row
+
+
+def chip(x, y, w, text, color='indigo', h=24):
+    soft, border, strong = FAM[color]
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{soft}" stroke="{border}" stroke-width="1.5"/>'
+            f'<text x="{x + w/2}" y="{y + h/2}" dy="0.35em" text-anchor="middle" font-size="12.5" font-weight="600" fill="{strong}">{text}</text>')
+
+
+FIGS['clAnatomia'] = lambda: frame(dict(
+    id='clAnatomia',
+    title='Las partes de una <tspan class="mono">Column</tspan>',
+    title_plain='Las partes de una Column',
+    desc='Una Column con mainAxisAlignment center, crossAxisAlignment start y tres Text como children. A la derecha, los tres textos apilados dentro del espacio de la columna, con el eje principal vertical y el eje cruzado horizontal señalados.',
+    sub='children es la lista de widgets que apila. Las otras dos propiedades dicen dónde quedan dentro de su espacio.',
+    file='lib/main.dart',
+    min_h=312,
+    code=[
+        "Column(",
+        "  mainAxisAlignment: MainAxisAlignment.center,",
+        "  crossAxisAlignment: CrossAxisAlignment.start,",
+        "  children: [",
+        "    Text('Ana Torres'),",
+        "    Text('Estudiante'),",
+        "    Text('Cali'),",
+        "  ],",
+        ")",
+    ],
+    result=('<rect x="130" y="88" width="160" height="176" rx="8" fill="#FBFBFD" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="5 4"/>'
+            + chip(138, 132, 96, 'Ana Torres') + chip(138, 164, 92, 'Estudiante') + chip(138, 196, 48, 'Cali')
+            + '<path d="M130,71 H288" stroke="#3A8235" stroke-width="1.75" marker-end="url(#clAnatomia-ar-green)"/>'
+            '<text x="210" y="63" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3A8235">eje cruzado</text>'
+            '<path d="M312,92 V262" stroke="#A96C05" stroke-width="1.75" marker-end="url(#clAnatomia-ar-amber)"/>'
+            '<text x="330" y="176" text-anchor="middle" font-size="11.5" font-weight="700" fill="#A96C05" transform="rotate(90 330 176)">eje principal</text>'),
+    arrows=[
+        dict(line=1, find='mainAxisAlignment: MainAxisAlignment.center', to=(312, 88), end='v', color='amber'),
+        dict(line=2, find='crossAxisAlignment: CrossAxisAlignment.start', to=(126, 71), color='green'),
+        dict(line=3, find='children', to=(134, 176), color='indigo', lane=0),
+    ],
+))
+
+FIGS['rwAnatomia'] = lambda: frame(dict(
+    id='rwAnatomia',
+    title='Las partes de una <tspan class="mono">Row</tspan>',
+    title_plain='Las partes de una Row',
+    desc='Una Row con mainAxisAlignment center, crossAxisAlignment center y tres widgets como children: un icono y dos textos. A la derecha, los tres en fila dentro del espacio de la fila, con el eje principal horizontal y el eje cruzado vertical señalados.',
+    sub='Es una Column acostada: las mismas propiedades, con los ejes cambiados.',
+    file='lib/main.dart',
+    min_h=300,
+    code=[
+        "Row(",
+        "  mainAxisAlignment: MainAxisAlignment.center,",
+        "  crossAxisAlignment: CrossAxisAlignment.center,",
+        "  children: [",
+        "    Icon(Icons.star),",
+        "    Text('4.8'),",
+        "    Text('(120 reseñas)'),",
+        "  ],",
+        ")",
+    ],
+    result=('<path d="M52,47 H326" stroke="#A96C05" stroke-width="1.75" marker-end="url(#rwAnatomia-ar-amber)"/>'
+            '<text x="190" y="66" text-anchor="middle" font-size="11.5" font-weight="700" fill="#A96C05">eje principal</text>'
+            '<rect x="52" y="96" width="276" height="80" rx="8" fill="#FBFBFD" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="5 4"/>'
+            '<path d="M32,98 V174" stroke="#3A8235" stroke-width="1.75" marker-end="url(#rwAnatomia-ar-green)"/>'
+            '<text x="18" y="136" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3A8235" transform="rotate(-90 18 136)">eje cruzado</text>'
+            '<path d="M106,125 l3.5,7.5 l8,1 l-6,5.5 l1.5,8 l-7,-4 l-7,4 l1.5,-8 l-6,-5.5 l8,-1 Z" fill="#F7C948" stroke="#A96C05" stroke-width="1.25"/>'
+            + chip(126, 124, 44, '4.8') + chip(178, 124, 108, '(120 reseñas)')),
+    arrows=[
+        dict(line=1, find='mainAxisAlignment: MainAxisAlignment.center', to=(48, 47), color='amber'),
+        dict(line=2, find='crossAxisAlignment: CrossAxisAlignment.center', to=(32, 94), end='v', color='green'),
+        dict(line=3, find='children', via=[(190, 204)], to=(190, 180), color='indigo', lane=0),
+    ],
+))
+
+
+def spread(extent, sizes, mode, gap=6):
+    total = sum(sizes)
+    n = len(sizes)
+    free = extent - total
+    if mode == 'start':
+        pos, step = 0, gap
+    elif mode == 'end':
+        pos, step = free - gap * (n - 1), gap
+    elif mode == 'center':
+        pos, step = (free - gap * (n - 1)) / 2, gap
+    elif mode == 'spaceBetween':
+        pos, step = 0, free / (n - 1)
+    else:
+        pos, step = free / (n + 1), free / (n + 1)
+    out = []
+    for sz in sizes:
+        out.append(pos)
+        pos += sz + step
+    return out
+
+
+def across(extent, size, mode):
+    return {'start': (0, size), 'center': ((extent - size) / 2, size), 'end': (extent - size, size), 'stretch': (0, extent)}[mode]
+
+
+MAIN = ['start', 'center', 'end', 'spaceBetween', 'spaceEvenly']
+CROSS = ['start', 'center', 'end', 'stretch']
+BLOCKS = ['indigo', 'violet', 'teal']
+
+
+def cl_alineacion():
+    fid = 'clAlineacion'
+    h = 644
+    s = head(fid, h, 'Dónde quedan los hijos de una <tspan class="mono">Column</tspan>', 'Dónde quedan los hijos de una Column',
+             'Cada caja punteada es el espacio de la misma columna. Solo cambia la propiedad.',
+             'Los valores de MainAxisAlignment en una Column: start, center, end, spaceBetween y spaceEvenly reparten los hijos a lo alto. Los valores de CrossAxisAlignment: start, center, end y stretch los ubican a lo ancho.')
+    widths = [56, 88, 40]
+
+    def box(x, y, name, main, cross):
+        soft_w, bw, bh = 136, 136, 168
+        o = f'  <g transform="translate({x},{y})">\n'
+        o += f'    <rect width="{bw}" height="{bh}" rx="8" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="5 4"/>\n'
+        ys = spread(bh - 16, [22] * 3, main)
+        for (w, c, yy) in zip(widths, BLOCKS, ys):
+            xx, ww = across(bw - 16, w, cross)
+            soft, border, _ = FAM[c]
+            o += f'    <rect x="{8 + xx:.0f}" y="{8 + yy:.0f}" width="{ww:.0f}" height="22" rx="5" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        o += f'    <text class="mono" x="{bw/2}" y="{bh + 22}" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="{bw + 30}">{name}</text>\n'
+        o += '  </g>\n'
+        return o
+
+    s += '  <text class="h" x="48" y="124" fill="#A96C05">mainAxisAlignment · A LO ALTO</text>\n'
+    for i, m in enumerate(MAIN):
+        s += box(48 + i * 182, 140, m, m, 'center')
+    s += '  <text class="h" x="48" y="372" fill="#3A8235">crossAxisAlignment · A LO ANCHO</text>\n'
+    for i, c in enumerate(CROSS):
+        s += box(48 + i * 182, 388, c, 'start', c)
+    s += f'  <text class="foot" x="48" y="{h-28}" data-fit="860">Los valores por defecto son start a lo alto y center a lo ancho.</text>\n</svg>\n'
+    return s
+
+
+FIGS['clAlineacion'] = cl_alineacion
+
+
+def rw_alineacion():
+    fid = 'rwAlineacion'
+    h = 560
+    s = head(fid, h, 'Dónde quedan los hijos de una <tspan class="mono">Row</tspan>', 'Dónde quedan los hijos de una Row',
+             'Cada caja punteada es el espacio de la misma fila. Solo cambia la propiedad.',
+             'Los valores de MainAxisAlignment en una Row: start, center, end, spaceBetween y spaceEvenly reparten los hijos a lo ancho. Los valores de CrossAxisAlignment: start, center, end y stretch los ubican a lo alto.')
+    heights = [20, 40, 28]
+
+    def strip(x, y, name, main, cross, sh):
+        sw = 408
+        o = f'  <g transform="translate({x},{y})">\n'
+        o += f'    <rect width="{sw - 150}" height="{sh}" rx="8" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="5 4"/>\n'
+        xs = spread(sw - 150 - 16, [44] * 3, main)
+        for (bh, c, xx) in zip(heights, BLOCKS, xs):
+            yy, hh = across(sh - 16, bh, cross)
+            soft, border, _ = FAM[c]
+            o += f'    <rect x="{8 + xx:.0f}" y="{8 + yy:.0f}" width="44" height="{hh:.0f}" rx="5" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        o += f'    <text class="mono" x="{sw-134}" y="{sh/2}" dy="0.35em" font-size="13" font-weight="700" fill="#161A26" data-fit="130">{name}</text>\n'
+        o += '  </g>\n'
+        return o
+
+    s += '  <text class="h" x="48" y="124" fill="#A96C05">mainAxisAlignment · A LO ANCHO</text>\n'
+    for i, m in enumerate(MAIN):
+        s += strip(48, 140 + i * 72, m, m, 'center', 56)
+    s += '  <text class="h" x="504" y="124" fill="#3A8235">crossAxisAlignment · A LO ALTO</text>\n'
+    for i, c in enumerate(CROSS):
+        s += strip(504, 140 + i * 90, c, 'start', c, 72)
+    s += f'  <text class="foot" x="48" y="{h-28}" data-fit="860">Los valores por defecto son start a lo ancho y center a lo alto.</text>\n</svg>\n'
+    return s
+
+
+FIGS['rwAlineacion'] = rw_alineacion
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--inject':
         done = set()
-        for path in sorted((ROOT / 'content').glob('lessonS1[0-5].md')):
+        for path in sorted((ROOT / 'content').glob('lessonS1[0-7].md')):
             text = path.read_text(encoding='utf-8')
 
             def swap(m):

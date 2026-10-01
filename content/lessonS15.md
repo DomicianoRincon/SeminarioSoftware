@@ -2,7 +2,7 @@
 
 <!-- tags: StatelessWidget, crear un componente, parámetros con nombre, required, widget reutilizable, método build, campos final, lib/components, const en el constructor, The named parameter is required -->
 
-Ya conoces cuatro widgets de Flutter. Con ellos se puede armar una pantalla entera, pero el código se vuelve largo y repetido muy rápido. La salida es hacer tus propios widgets: **componentes**.
+Ya conoces los widgets básicos de Flutter y sabes acomodarlos con `Column` y `Row`. Con ellos se puede armar una pantalla entera, pero el código se vuelve largo y repetido muy rápido. La salida es hacer tus propios widgets: **componentes**.
 
 ## De copiar y pegar a un componente
 
@@ -288,7 +288,7 @@ Row(
 )
 ```
 
-`Row` pone un widget al lado del otro, igual que `Column` los pone uno debajo del otro. Cómo repartir el espacio entre ellos es tema de la sesión 3.
+Dentro de una `Row`, tus tres tarjetas se comportan como cualquier otro hijo: puedes repartirlas con `mainAxisAlignment`, como viste en la lección anterior.
 
 Para verlo, impórtalo en `lib/screens/home_screen.dart`:
 
