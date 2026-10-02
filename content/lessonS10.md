@@ -2,6 +2,8 @@
 
 <!-- tags: main.dart, runApp, MaterialApp, estructura de carpetas, declarativo frente a imperativo, rutas nombradas, lib/components, initialRoute, interfaz como función del estado, Could not find a generator for route, Scaffold, texto rojo con subrayado amarillo -->
 
+**Presentación de la sesión:** [Componentes](https://domicianorincon.github.io/SeminarioSoftware/presentaciones/2/)
+
 En la sesión anterior creaste `miapp1` y la viste correr. Antes de escribir tu primer widget conviene saber dónde está cada cosa: qué carpetas hay, qué hace `main.dart` y por qué en Flutter la interfaz se **describe** en lugar de irse modificando.
 
 ## Las carpetas

@@ -8,7 +8,7 @@
 (`S0010`, `S0011`, `S0012`, `S0013`, `S0014`, `S0016`, `S0017`, `S0015`, `S0018`). El plan sigue su
 orden y su contenido; no agrega temas nuevos.
 
-**Estado:** plan aprobado por el profesor el 2026-10-02. Deck construido; falta su revisión.
+**Estado:** plan aprobado por el profesor el 2026-10-02. Deck construido y enlazado en `S0010`.
 
 ## Qué tiene que lograr
 
