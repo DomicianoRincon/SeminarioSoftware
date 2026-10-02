@@ -388,8 +388,6 @@ Ejecuta la app. Debes ver una barra con el título *Inicio* y el texto *Hola, Ic
 
 **Este es tu banco de pruebas para toda la sesión.** En las lecciones que siguen, cada widget nuevo lo pruebas reemplazando el `Text('Hola, Icesi')` que está dentro de `Center`. `Scaffold` y `Center` se ven a fondo en la sesión 3; hoy basta con saber que uno arma la pantalla y el otro centra lo que tenga adentro.
 
-## Describir, no ordenar
-
 Fíjate en algo de `main.dart`: en ninguna parte dice *crea una ventana*, *ahora ponle un título*, *ahora agrégale una pantalla*. Dice **qué hay**: una `MaterialApp` con este título, este tema y estas rutas. Esa es la diferencia entre programar de forma imperativa y de forma declarativa.
 
 ```svg

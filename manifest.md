@@ -59,7 +59,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|
 | Recorrido por main.dart y por la estructura de carpetas | `S0010` El proyecto por dentro. Usa la convención del curso (`theme/`, `models/`, `components/`, `screens/`, `pages/`) y arranca con `routes:` + `initialRoute`, con una sola ruta |
-| Paradigma declarativo frente a imperativo | `S0010`, apartado *Describir, no ordenar*. Retoma `interfaz = f(estado)` de `S0003` |
+| Paradigma declarativo frente a imperativo | `S0010`, al final de *La primera pantalla*, con la figura *Dar órdenes o describir*. Retoma `interfaz = f(estado)` de `S0003` |
 | Widgets básicos: Text, Image (asset y network) y botones | `S0011` Text · `S0012` Image · `S0013` Button |
 | *(añadido por el profesor)* TextField | `S0014` TextField, **solo apariencia**: `InputDecoration`, `obscureText`, `keyboardType`. Leer el texto (controller y estado) queda para la sesión 6 |
 | *(añadido por el profesor; el planeador lo pone en la sesión 19)* Column y Row | `S0016` Column · `S0017` Row: `children`, los dos ejes, `mainAxisAlignment`, `crossAxisAlignment` y `SizedBox`. `Expanded`, `Container`, `Padding` y `SingleChildScrollView` quedan para la sesión 3 |
