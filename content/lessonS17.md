@@ -251,3 +251,80 @@ Antes de escribir código, dibuja las cajas sobre el diseño. Si una caja tiene 
 Una `Row` no parte sus hijos en dos renglones. Si no caben a lo ancho, aparece la franja amarilla y negra en el borde derecho, y la consola dice `A RenderFlex overflowed by 48 pixels on the right`.
 
 Pasa sobre todo con textos largos dentro de una fila. La solución es `Expanded`, que le dice a un hijo que ocupe solo el espacio que sobra, y se ve en la sesión 3. Por ahora, si te ocurre en el taller, acorta el texto de prueba.
+
+## Ejemplo completo
+
+Las dos filas de la lección, una debajo de la otra: la de la calificación, centrada, y la del chat, que lleva una `Column` adentro.
+
+```dart trycode=0a47cdf04c1ad701366753a6e89105f7
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+/// Root widget of the app.
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Mi app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: '/home',
+      routes: {'/home': (context) => const HomeScreen()},
+    );
+  }
+}
+
+/// First screen of the app.
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Row')),
+      body: const Padding(
+        padding: EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.star),
+                SizedBox(width: 4),
+                Text('4.8'),
+                SizedBox(width: 8),
+                Text('(120 reseñas)'),
+              ],
+            ),
+            SizedBox(height: 24),
+            Row(
+              children: [
+                Icon(Icons.account_circle, size: 48),
+                SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Ana Torres',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('Nos vemos mañana en clase'),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+Aquí `App` y `HomeScreen` van en un solo archivo porque el editor en línea solo tiene uno; en tu proyecto siguen separados.

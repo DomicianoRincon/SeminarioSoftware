@@ -220,3 +220,79 @@ TextField(
 Con lo de esta lección puedes dejar un formulario con el aspecto exacto del diseño, y eso es lo que pide la sesión de hoy. Todavía no puedes **usar** lo que la persona escribe.
 
 Para leer el texto hace falta un `TextEditingController`, y ese controlador tiene que vivir en un widget **con estado**. Los dos temas son de la sesión 6. Hasta entonces, tus campos se ven y se dejan escribir, pero la app no hace nada con el contenido.
+
+## Ejemplo completo
+
+Un formulario con los tres campos de la lección: correo, contraseña y edad. Se ve y se deja escribir, pero todavía no hace nada con el contenido.
+
+```dart trycode=6345d42fcb71475a4ada85c94c8ddd07
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+/// Root widget of the app.
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Mi app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: '/home',
+      routes: {'/home': (context) => const HomeScreen()},
+    );
+  }
+}
+
+/// First screen of the app.
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Formulario')),
+      body: const Padding(
+        padding: EdgeInsets.all(24),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Correo',
+                hintText: 'nombre@icesi.edu.co',
+                prefixIcon: Icon(Icons.mail),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Contraseña',
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 16),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: 'Edad',
+                helperText: 'En años cumplidos',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+Aquí `App` y `HomeScreen` van en un solo archivo porque el editor en línea solo tiene uno; en tu proyecto siguen separados.

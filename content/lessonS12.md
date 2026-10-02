@@ -262,8 +262,29 @@ Una foto rara vez tiene la misma proporción que el espacio donde va. `fit` dice
 
 Una imagen de internet y una local, con su texto:
 
-```dart
+```dart trycode=ed4927e5a9a466f6d925e1af3a174320
 import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+/// Root widget of the app.
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Mi app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: '/home',
+      routes: {'/home': (context) => const HomeScreen()},
+    );
+  }
+}
 
 /// First screen of the app.
 class HomeScreen extends StatelessWidget {
@@ -286,10 +307,10 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const Text('Desde assets'),
-            Image.asset(
-              'assets/logo.png',
-              width: 120,
-            ),
+            // Image.asset(
+            //   'assets/logo.png',
+            //   width: 120,
+            // ),
           ],
         ),
       ),
@@ -297,5 +318,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 ```
+
+El editor en línea no tiene carpeta `assets`, así que el `Image.asset` va comentado: ahí solo corre la imagen de internet. En tu proyecto, con el archivo guardado y la carpeta declarada en `pubspec.yaml`, quítale las `//` para verla.
 
 `Column` pone un widget debajo de otro y `SizedBox` deja un espacio entre ellos. Los dos tienen su propia lección más adelante en esta sesión: *Column*.

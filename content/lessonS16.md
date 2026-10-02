@@ -257,3 +257,68 @@ Usa pocos valores y repítelos: `8` entre cosas que van juntas, `16` o `24` entr
 ## Cuando no cabe
 
 Si los hijos necesitan más alto del que hay, la pantalla muestra una franja amarilla y negra, y la consola dice `A RenderFlex overflowed by 120 pixels on the bottom`. No es un error tuyo de sintaxis: la columna no sabe hacer scroll. La solución, `SingleChildScrollView`, es parte de la sesión 3.
+
+## Ejemplo completo
+
+Una `Column` con textos, separaciones y un botón, centrada a lo alto y con los hijos alineados a la izquierda. Cambia `mainAxisAlignment` y `crossAxisAlignment` para ver cómo se mueven.
+
+```dart trycode=ed1eab67616a0fda8b2ce06f4821cd62
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+/// Root widget of the app.
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Mi app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: '/home',
+      routes: {'/home': (context) => const HomeScreen()},
+    );
+  }
+}
+
+/// First screen of the app.
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Column')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Ana Torres',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text('Estudiante'),
+            const Text('Cali'),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                print('Editar');
+              },
+              child: const Text('Editar perfil'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+Aquí `App` y `HomeScreen` van en un solo archivo porque el editor en línea solo tiene uno; en tu proyecto siguen separados.

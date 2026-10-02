@@ -344,6 +344,23 @@ Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a seca
 > puede leer el código que escribe el estudiante, ni si compila, ni el error. Solo se
 > registra que lo abrió y cuánto tiempo tuvo el foco.
 
+### Ejemplo completo con *Fire it up!* en toda lección con código
+
+Regla del profesor (2026-10-02): **toda lección que tenga código termina con un apartado
+`## Ejemplo completo`**, con un bloque ` ```dart trycode=<gistId> ` que corre en DartPad.
+
+- El ejemplo es **un programa entero en un solo archivo**: `main`, `App` con la tabla de rutas
+  y `HomeScreen`, igual que el de `S0010`. La lección aclara que en el proyecto van separados.
+- El gist se crea **público en la cuenta `Domiciano`** (`gh gist create --public`), con el
+  archivo `lessonS<n>code1.dart` y la descripción
+  `Snippet Dart extraído de content/lessonS<n>.md (lessonS<n>code1.dart)`. El bloque de la
+  lección y el gist llevan exactamente el mismo código.
+- Lo que no puede correr en DartPad (un `Image.asset`, un paquete propio) **va comentado** en
+  el ejemplo, y la lección dice por qué.
+- Antes de crear el gist, el código se pasa por el analizador de DartPad
+  (`POST https://stable.api.dartpad.dev/api/v3/analyze` con `{"source": ...}`).
+- El *Taller · Componentes* (`S0018`) no lleva ejemplo completo: sería entregar la solución.
+
 ### Imágenes por URL en el código: siempre `https://picsum.photos/400`
 
 Regla del profesor (2026-10-02): cuando el código de una lección muestra una imagen desde

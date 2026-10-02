@@ -559,3 +559,84 @@ Dos ideas para llevarte al taller:
 - **Todavía no hay interacción.** Un `StatelessWidget` solo muestra. Si tu componente lleva un botón, déjale un `onPressed` con un `print`. Cómo avisarle a la pantalla que lo tocaron es la sesión 7.
 
 En el *Taller · Componentes* construyes seis. Los necesitas terminados para la sesión 3, donde se arman las pantallas con ellos.
+
+## Ejemplo completo
+
+`StatCard` y la pantalla que lo usa tres veces. Cambia el diseño dentro de `build` y mira cómo cambian las tres tarjetas a la vez.
+
+```dart trycode=07821fc61f162124e3d4060bd48c0be9
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+/// Root widget of the app.
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Mi app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: '/home',
+      routes: {'/home': (context) => const HomeScreen()},
+    );
+  }
+}
+
+/// First screen of the app.
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Inicio')),
+      body: const Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            StatCard(number: '128', label: 'Publicaciones'),
+            StatCard(number: '2.4k', label: 'Seguidores'),
+            StatCard(number: '310', label: 'Seguidos'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Shows a number with its label.
+class StatCard extends StatelessWidget {
+  final String number;
+  final String label;
+
+  const StatCard({
+    super.key,
+    required this.number,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          number,
+          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+}
+```
+
+Aquí todo va en un solo archivo porque el editor en línea solo tiene uno. En tu proyecto `StatCard` va en `lib/components/stat_card.dart` y la pantalla lo importa.
