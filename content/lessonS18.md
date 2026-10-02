@@ -251,7 +251,7 @@ La fila de un chat: la foto del contacto, su nombre, la hora del último mensaje
 
 | Parámetro | Tipo | Ejemplo |
 |---|---|---|
-| `imageUrl` | `String` | `'https://i.pravatar.cc/150?img=12'` |
+| `imageUrl` | `String` | `'https://picsum.photos/400'` |
 | `name` | `String` | `'Javier Montes'` |
 | `time` | `String` | `'10:24 a.m.'` |
 | `message` | `String` | `'¿Te parece si revisamos los avances?'` |
@@ -263,7 +263,7 @@ Antes de escribir, parte el diseño en cajas: es una `Row` con tres hijos, la fo
 ```dart
 CircleAvatar(
   radius: 28,
-  backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=12'),
+  backgroundImage: NetworkImage('https://picsum.photos/400'),
 )
 ```
 
@@ -297,7 +297,7 @@ La cabecera de un perfil: foto, nombre, usuario y rol, una descripción corta, e
 
 | Parámetro | Tipo | Ejemplo |
 |---|---|---|
-| `imageUrl` | `String` | `'https://i.pravatar.cc/300?img=47'` |
+| `imageUrl` | `String` | `'https://picsum.photos/400'` |
 | `name` | `String` | `'Mariana Valenzuela'` |
 | `username` | `String` | `'@marianav'` |
 | `role` | `String` | `'Diseñadora de Producto'` |
@@ -403,7 +403,7 @@ Una versión mínima del perfil: la foto, el nombre y el usuario. Es la tarjeta 
 
 | Parámetro | Tipo | Ejemplo |
 |---|---|---|
-| `imageUrl` | `String` | `'https://i.pravatar.cc/150?img=47'` |
+| `imageUrl` | `String` | `'https://picsum.photos/400'` |
 | `name` | `String` | `'Mariana Valenzuela'` |
 | `username` | `String` | `'@marianav'` |
 
@@ -420,7 +420,7 @@ SizedBox(
     children: [
       CircleAvatar(
         radius: 30,
-        backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=47'),
+        backgroundImage: NetworkImage('https://picsum.photos/400'),
       ),
       SizedBox(height: 8),
       Text('Mariana Valenzuela'),

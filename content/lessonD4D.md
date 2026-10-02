@@ -38,7 +38,7 @@ Para mostrar imágenes alojadas en una URL, utiliza `Image.network`. Flutter las
 
 ```dart
 Image.network(
-  'https://flutter.dev/images/flutter-logo-sharing.png', // URL de la imagen
+  'https://picsum.photos/400', // URL de la imagen
   width: 300,
   fit: BoxFit.cover, // Cubre el área disponible, recortando si es necesario
 )
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
               const Text('Imagen desde Internet:'),
               const SizedBox(height: 10),
               Image.network(
-                'https://yt3.googleusercontent.com/2__G-ckA66-4JgXPlHTGZvg8CoUIgDU6qYFnJqW-AsVeJvBRT4hCjXz4XMOjIqm4m7v431lT=s900-c-k-c0x00ffffff-no-rj',
+                'https://picsum.photos/400',
                 width: 250,
                 height: 250,
                 fit: BoxFit.cover,
