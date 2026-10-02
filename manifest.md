@@ -54,7 +54,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 
 ### Sesión 2 · Componentes
 
-**Presentación:** pendiente.
+**Presentación:** `presentaciones/sesion2/` · *Componentes* · 37 slides. Construida el 2026-10-02; falta la revisión del profesor y enlazarla al inicio de `S0010`.
 
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|

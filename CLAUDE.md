@@ -249,6 +249,7 @@ lecciones (les quita el título y las escala al lienzo). Si una lección cambia 
 | Sesión | Presentación | Primera lección |
 |---|---|---|
 | 1 | `presentaciones/sesion1/` · *Frontend developing* · 28 slides | `S0003` ¿Qué es el frontend? |
+| 2 | `presentaciones/sesion2/` · *Componentes* · 37 slides · **sin enlazar todavía** en la lección, pendiente de la revisión del profesor | `S0010` El proyecto por dentro |
 
 ## Cómo se escribe una lección
 
@@ -342,6 +343,16 @@ Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a seca
 > DartPad corre en un iframe de `dartpad.dev`. Por la política de mismo origen no se
 > puede leer el código que escribe el estudiante, ni si compila, ni el error. Solo se
 > registra que lo abrió y cuánto tiempo tuvo el foco.
+
+### Imágenes por URL en el código: siempre `https://picsum.photos/400`
+
+Regla del profesor (2026-10-02): cuando el código de una lección muestra una imagen desde
+internet (`Image.network`, `NetworkImage`, un parámetro `imageUrl` de ejemplo), la dirección
+es **`https://picsum.photos/400`**, siempre la misma. Varias de las direcciones que se usaban
+antes no son compatibles con DartPad (se reemplazaron las de `i.pravatar.cc`,
+`yt3.googleusercontent.com` y `flutter.dev`).
+Aplica también al gist de un bloque `trycode` o `dartpad`: el gist y el bloque de la lección
+llevan la misma dirección.
 
 ### Darla de alta en `toc.md`
 

@@ -1,0 +1,102 @@
+# Plan · Componentes
+
+**Curso:** Seminario de Ingeniería de Software · Universidad Icesi
+**Sesión:** 2 del bloque de Domiciano (sesión 18 del planeador), semana 9 · *Componentes*
+**Duración:** 2 horas en clase
+**Público:** estudiantes de Ingeniería de Sistemas, con Flutter instalado y `miapp1` corriendo en Chrome.
+**Fuente:** las nueve lecciones de la sección *Sesión 2 · Componentes* del visor
+(`S0010`, `S0011`, `S0012`, `S0013`, `S0014`, `S0016`, `S0017`, `S0015`, `S0018`). El plan sigue su
+orden y su contenido; no agrega temas nuevos.
+
+**Estado:** plan aprobado por el profesor el 2026-10-02. Deck construido; falta su revisión.
+
+## Qué tiene que lograr
+
+1. Que sepan dónde está cada cosa en el proyecto y qué hace `main.dart`.
+2. Que reconozcan los widgets básicos (`Text`, `Image`, botones, `TextField`) y sus propiedades más usadas.
+3. Que acomoden widgets con `Column` y `Row` y entiendan los dos ejes.
+4. Que vean una pantalla como un conjunto de piezas y escriban su primer componente.
+5. Que salgan con el taller empezado: seis componentes en `lib/components/`.
+
+## Cómo se reutilizan las ilustraciones
+
+Mismo criterio de la sesión 1: poco texto, la figura de la lección ocupa la slide y lo que
+dice la lección va en las notas de orador.
+
+- **Se recorta el título propio de cada figura**: lo pone la slide.
+- **Figuras de código anotado**: se recortan al editor y al panel de resultado. Las tarjetas de
+  abajo se quitan y su texto pasa a las notas, para que el código no quede chico al escalar.
+- **Figuras altas se parten o se recortan**: `ppMain` va en dos slides (arranque y
+  `MaterialApp`); `ppCarpetas`, `ppScaffold`, `clAlineacion`, `rwAlineacion` y `swAnatomia` se
+  recortan a lo esencial. Si en la revisión visual el código queda ilegible, se parte en dos.
+- **La pantalla de perfil y sus piezas** (`swPantalla`, `swPiezas`, 866 px de alto): se usa solo
+  el celular de la figura, y los nombres de los componentes van como tarjetas nativas de la
+  slide a los lados, con los mismos colores de las marcas.
+
+## Slides
+
+| # | Título | Layout | Contenido | Gráfico |
+|---|---|---|---|---|
+| 1 | Componentes | `titleSlideA` | Subtítulo: *Widgets básicos y tu primer componente*. Etiqueta: *Seminario de Ingeniería de Software · Universidad Icesi* | · |
+| 2 | El recorrido de hoy | `slideStandard` | Cinco pasos: el proyecto → widgets básicos → Column y Row → componentes → taller | `H.bigPipeline` con íconos |
+| 3 | El proyecto por dentro | `sectionSlideEBlue` | Divisor de bloque | · |
+| 4 | Las carpetas del proyecto | `slideStandard` | Casi todo ocurre en `lib/`; hoy se trabaja en `components/` | SVG `ppCarpetas` |
+| 5 | main.dart: el arranque | `slideStandard` | `import`, `main()`, `runApp`, `App` | SVG `ppMain`, mitad de arriba |
+| 6 | main.dart: MaterialApp | `slideStandard` | Título, tema, `initialRoute` y `routes` | SVG `ppMain`, mitad de abajo |
+| 7 | Las partes de un Scaffold | `slideStandard` | `Scaffold`, `appBar`, `body` y el `Text` del centro | SVG `ppScaffold` |
+| 8 | Dar órdenes o describir | `slideStandard` | Imperativo frente a declarativo; interfaz = f(estado) | SVG `ppDeclarativo` |
+| 9 | Widgets básicos | `sectionSlideEBlue` | Divisor de bloque | · |
+| 10 | Text y su estilo | `slideStandard` | `fontSize`, `fontWeight`, `color` | SVG `txAnatomia` |
+| 11 | Cuando el texto no cabe | `slideStandard` | `maxLines` y `overflow` | SVG `txLargo` |
+| 12 | Una imagen desde internet | `slideStandard` | `Image.network` | SVG `imNetwork` |
+| 13 | Una imagen que viaja con la app | `slideStandard` | `assets/`, `pubspec.yaml`, `Image.asset` | SVG `imAsset` |
+| 14 | fit: cuando la forma no coincide | `slideStandard` | `cover`, `contain`, `fill` | SVG `imFit` |
+| 15 | Button: onPressed y child | `slideStandard` | Qué hace y qué muestra | SVG `btAnatomia` |
+| 16 | Los cuatro botones | `slideStandard` | Elevated, Filled, Outlined, Text | SVG `btTipos` |
+| 17 | TextField e InputDecoration | `slideStandard` | `labelText`, `hintText`, icono, borde | SVG `tfAnatomia` |
+| 18 | Contraseña y teclado | `slideStandard` | `obscureText` y `keyboardType` | SVG `tfTipos` |
+| 19 | Column y Row | `sectionSlideEBlue` | Divisor de bloque | · |
+| 20 | Column: los dos ejes | `slideStandard` | `children`, eje principal vertical, eje cruzado horizontal | SVG `clAnatomia` |
+| 21 | Alinear los hijos de una Column | `slideStandard` | `mainAxisAlignment` y `crossAxisAlignment` | SVG `clAlineacion` |
+| 22 | Row: los mismos ejes, girados | `slideStandard` | Eje principal horizontal | SVG `rwAnatomia` |
+| 23 | Alinear los hijos de una Row | `slideStandard` | Las mismas dos propiedades | SVG `rwAlineacion` |
+| 24 | Tu primer componente | `sectionSlideEBlue` | Divisor de bloque | · |
+| 25 | Una pantalla de perfil | `slideGraphicRight` | Una pregunta: ¿cuántos bloques se parecen entre sí? | Celular de `swPantalla` |
+| 26 | La pantalla, como la ve quien la programa | `slideStandard` | Siete piezas, usadas trece veces: nombre de cada componente con su color y cuántas veces aparece | Celular de `swPiezas` al centro, tarjetas a los lados |
+| 27 | De copiar y pegar a un componente | `slideStandard` | Lo que se repite se escribe una vez | SVG `swRepetido` |
+| 28 | Anatomía de un componente | `slideStandard` | Campos `final`, constructor con nombre, `build` | SVG `swAnatomia` |
+| 29 | Usarlo en una pantalla | `slideStandard` | Se importa y se le pasan datos | SVG `swUso` |
+| 30 | Dónde vive y cómo se llama | `slideStandard` | Carpeta `lib/components/` · archivo `stat_card.dart` · clase `StatCard` | Tres tarjetas con ícono |
+| 31 | Manos a la obra | `titleSlideF` | Separador de la parte práctica: *Taller · Componentes* | · |
+| 32 | Seis componentes, ninguna pantalla | `slideStandard` | `PrimaryButton`, `SecondaryButton`, `StatsRow`, `ChatItem`, `ProfileInfo`, `ContactCard` | Grilla de seis tarjetas con ícono |
+| 33 | PrimaryButton y SecondaryButton | `slideStandard` | Un icono y un texto en una `Row` | SVG `tlBoton` |
+| 34 | StatsRow | `slideStandard` | Un componente hecho de tres `StatCard` | SVG `tlStats` |
+| 35 | ContactCard | `slideStandard` | Avatar, nombre y usuario | SVG `tlContacto` |
+| 36 | La prueba de un buen componente | `sectionSlideEGreen` | *Todo lo que cambia entre un uso y otro llega por el constructor* | · |
+| 37 | Para la próxima sesión | `slideSidebarLeftOrange` | Los seis componentes terminados y probados con dos juegos de datos · la sesión 3 arma pantallas con ellos · el Playground del visor para probar sin abrir el proyecto | Panel lateral: íconos |
+
+**37 slides.** Son más que las 28 de la sesión 1 porque la sesión tiene nueve lecciones y 25
+figuras; casi todas las slides son una sola figura. Cada slide de contenido lleva **notas de
+orador** (tecla `S`) con lo que dice la lección.
+
+## Decisiones
+
+- **Título de la portada**: "Componentes", el tema del planeador para la sesión.
+- **`ppMain` en dos slides**: entera, el código quedaría a la mitad de su tamaño.
+- **Sin slide propia para "interfaz = f(estado)"**: ya fue una slide de la sesión 1; aquí va
+  dentro de *Dar órdenes o describir* y en sus notas.
+- **Sin slides de "Ejemplo completo"** de cada lección: es código para ejecutar en el visor, no
+  para proyectar. Se menciona en las notas.
+- **Del taller se muestran tres figuras**, las que tiene la lección. `ChatItem` y `ProfileInfo`
+  no tienen figura y quedan nombrados en la slide 32.
+- **Slide 37** toma la actividad *fuera de clase* del planeador para la sesión 18.
+
+## Dónde queda
+
+`SeminarioSoftware/presentaciones/sesion2/` → `presentacion.html`, publicado en
+https://domicianorincon.github.io/SeminarioSoftware/presentaciones/2/ y enlazado al inicio de
+la lección `S0010`, la primera de la sesión.
+
+Las figuras se copian al deck con `figuras.py` (en esta carpeta), que las lee de
+`SeminarioSoftware/content/` y escribe `slides/00-figuras.js`. Si una lección cambia su
+figura, se vuelve a correr `python3 figuras.py` y después el build.
