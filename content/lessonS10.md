@@ -469,3 +469,49 @@ En el estilo **declarativo**, que es el de Flutter, escribes una sola cosa: cóm
 Es la idea con la que cerró la lección *¿Qué es el frontend?*, y ahora tiene nombre en el código: esa función `f` es el método `build`.
 
 Por eso los widgets de las próximas lecciones no tienen métodos como `setText` o `setColor`. Un `Text` no se modifica: se describe otra vez con el dato nuevo. En esta sesión el estado todavía no cambia, así que la descripción es fija. Qué pasa cuando cambia es el tema de la sesión 6.
+
+## Ejemplo completo
+
+Este es el programa entero, listo para ejecutar. Aquí `App` y `HomeScreen` están en un solo archivo porque el editor en línea solo tiene uno. En tu proyecto van separados, como los dejaste: `App` en `lib/main.dart` y `HomeScreen` en `lib/screens/home_screen.dart`.
+
+Pasa a la pestaña *Fire it up!* para verlo correr, y cambia el título de la barra o el texto del centro para ver qué pasa.
+
+```dart trycode=c7ed2d4963223915971ae8ebda848400
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+/// Root widget of the app.
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Mi app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: '/home',
+      routes: {'/home': (context) => const HomeScreen()},
+    );
+  }
+}
+
+/// First screen of the app.
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Inicio')),
+      body: const Center(
+        child: Text('Hola, Icesi'),
+      ),
+    );
+  }
+}
+```
