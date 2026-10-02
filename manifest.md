@@ -31,7 +31,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 
 | Sección del visor | Lecciones | Origen |
 |---|---|---|
-| Curso | `S0002` Programa del curso | Propia, hecha a partir de `docs/syllabus.md` |
+| Curso | `S0002` Programa del curso · `S0019` Playground | Propias. El programa, hecho a partir de `docs/syllabus.md`. El Playground es un DartPad con la app mínima de `S0010` (el mismo gist de su *Ejemplo completo*) |
 | Entregables | `S0007`, `S0008`, `S0009`: las tres entregas del proyecto, **solo qué se entrega** | Propias, hechas a partir de la tabla *Entregas* de `docs/planeador.md`. Fechas, sesiones, uso de IA y pesos están ocultos en `docs/entregables.md` hasta que se confirmen |
 | Dart | `0001`, `0006` a `0012` | Sección *Dart basics* de Aplicaciones Móviles |
 
@@ -116,3 +116,4 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS16.md` | `S0016` | Column | 2 |
 | `lessonS17.md` | `S0017` | Row | 2 |
 | `lessonS18.md` | `S0018` | Taller · Componentes | 2 |
+| `lessonS19.md` | `S0019` | Playground | *(apoyo, sección Curso)* |

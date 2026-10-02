@@ -1,5 +1,6 @@
 [t] Curso
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS2.md | Programa del curso | S0002
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS19.md | Playground | S0019
 [t] Entregables
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS7.md | Entrega 1 · Prototipo en Stitch/Figma y base de datos | S0007
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS8.md | Entrega 2 · Prototipo no funcional en Flutter | S0008
