@@ -1086,6 +1086,80 @@ FIGS['swPantalla'] = sw_pantalla
 FIGS['swPiezas'] = sw_piezas
 
 
+# ───────────────────────────── S0018 · lo que se va a construir
+
+def tl_todos():
+    fid = 'tlTodos'
+    cw, ch, pw, ph = 420, 168, 396, 100
+    h = 112 + 3 * ch + 2 * 16 + 60
+    s = head(fid, h, 'Lo que vas a construir', 'Lo que vas a construir',
+             'Seis componentes, cada uno en su archivo dentro de lib/components/. El número es el apartado del taller donde se arma.',
+             'Los seis componentes del taller, cada uno con una vista previa: PrimaryButton, un botón azul que dice Iniciar sesión; SecondaryButton, un botón con borde que dice Crear cuenta; StatsRow, una fila de tres tarjetas con números; ChatItem, una fila de chat con foto, nombre, mensaje y hora; ProfileInfo, la cabecera de un perfil con foto, nombre, usuario, correo y ciudad; y ContactCard, una tarjeta pequeña con foto, nombre y usuario.')
+
+    def t(x, y, txt, size=12, weight=400, fill='#161A26', anchor='start', fit=None):
+        f = f' data-fit="{fit}"' if fit else ''
+        return f'<text x="{x}" y="{y}" font-size="{size}" font-weight="{weight}" fill="{fill}" text-anchor="{anchor}"{f}>{txt}</text>'
+
+    login = ('<path d="M-9,0 H3 M-1,-4 L3,0 L-1,4" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+             '<path d="M2,-8 H8 V8 H2" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>')
+    person = ('<circle cx="-2" cy="-4" r="3.5" fill="none" stroke="{c}" stroke-width="2"/>'
+              '<path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round"/>'
+              '<path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round"/>')
+
+    def button(label, icon, fill, stroke, ink, ix):
+        return (f'<rect x="48" y="28" width="300" height="44" rx="22" fill="{fill}" stroke="{stroke}" stroke-width="1.75"/>'
+                f'<g transform="translate({ix},50)">{icon.format(c=ink)}</g>'
+                f'<text x="{ix + 20}" y="50" dy="0.35em" font-size="15" font-weight="600" fill="{ink}" data-fit="170">{label}</text>')
+
+    stats = ''
+    for i, (n, l) in enumerate([('128', 'Publicaciones'), ('2.4k', 'Seguidores'), ('310', 'Seguidos')]):
+        x = 30 + i * 116
+        stats += (f'<rect x="{x}" y="16" width="104" height="68" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>'
+                  + t(x + 52, 46, n, 20, 700, anchor='middle') + t(x + 52, 68, l, 12, 400, '#556074', 'middle', 96))
+
+    chat = (avatar(44, 50, 24, 'amber') + t(80, 45, 'Javier Montes', 14, 700, fit=180)
+            + t(80, 66, '¿Te parece si revisamos los…', 12.5, 400, '#556074', fit=220)
+            + t(376, 45, '10:24 a.m.', 12, 400, '#79809A', 'end', 80)
+            + '<path d="M354,62 l3,3 l6,-7 M360,65 l1,0 l6,-7" fill="none" stroke="#4453C9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>')
+
+    profile = (avatar(198, 22, 17, 'violet') + t(198, 58, 'Mariana Valenzuela', 14, 700, anchor='middle', fit=240)
+               + t(198, 75, '@marianav • Diseñadora de Producto', 12, 400, '#556074', 'middle', 300)
+               + '<g transform="translate(28,-106)"><g transform="translate(62,195) scale(.72)">' + MAIL + '</g>'
+               + t(74, 199, 'm.val@estudio.com', 12, 400, '#556074')
+               + '<path d="M212,189 a5,5 0 0 1 10,0 c0,4 -5,9 -5,9 c0,0 -5,-5 -5,-9 Z" fill="none" stroke="#556074" stroke-width="1.4"/><circle cx="217" cy="189" r="1.6" fill="#556074"/>'
+               + t(227, 199, 'Madrid, ES', 12, 400, '#556074') + '</g>')
+
+    contact = ('<rect x="146" y="4" width="104" height="92" rx="10" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>'
+               + avatar(198, 32, 20, 'indigo') + t(198, 70, 'Ana Torres', 13, 700, anchor='middle', fit=96)
+               + t(198, 87, '@anatorres', 12, 400, '#79809A', 'middle', 96))
+
+    cards = [
+        (1, 'PrimaryButton', 'primary_button.dart', button('Iniciar sesión', login, '#2196F3', 'none', '#FFFFFF', 146)),
+        (1, 'SecondaryButton', 'secondary_button.dart', button('Crear cuenta', person, '#FFFFFF', '#2196F3', '#1976D2', 150)),
+        (2, 'StatsRow', 'stats_row.dart', stats),
+        (3, 'ChatItem', 'chat_item.dart', chat),
+        (4, 'ProfileInfo', 'profile_info.dart', profile),
+        (5, 'ContactCard', 'contact_card.dart', contact),
+    ]
+    for i, (num, cls, file, preview) in enumerate(cards):
+        x = 48 + (i % 2) * (cw + 24)
+        y = 112 + (i // 2) * (ch + 16)
+        s += f'  <g transform="translate({x},{y})">\n'
+        s += f'    <rect width="{cw}" height="{ch}" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+        s += f'    <rect x="12" y="12" width="{pw}" height="{ph}" rx="10" fill="#F5F6FA"/>\n'
+        s += f'    <g transform="translate(12,12)">{preview}</g>\n'
+        s += '    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>\n'
+        s += f'    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">{num}</text>\n'
+        s += f'    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">{cls}</text>\n'
+        s += f'    <text class="mono" x="{cw - 14}" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">{file}</text>\n'
+        s += '  </g>\n'
+    s += f'  <text class="foot" x="48" y="{h-28}" data-fit="860">En la sesión 3 estas seis piezas se encajan para armar una pantalla de perfil y una de inicio de sesión.</text>\n</svg>\n'
+    return s
+
+
+FIGS['tlTodos'] = tl_todos
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--inject':
         done = set()

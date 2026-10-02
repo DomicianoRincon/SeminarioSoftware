@@ -2,6 +2,87 @@
 
 <!-- tags: taller de componentes, botón con icono y texto, CircleAvatar, tarjeta de contacto, Expanded, RenderFlex overflowed on the right, ElevatedButton.styleFrom, OutlinedButton.styleFrom, IconData como parámetro, ancho fijo con SizedBox -->
 
+```svg
+<svg id="tlTodos" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 708" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tlTodos-ttl tlTodos-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tlTodos-ttl">Lo que vas a construir</title>
+  <desc id="tlTodos-dsc">Los seis componentes del taller, cada uno con una vista previa: PrimaryButton, un botón azul que dice Iniciar sesión; SecondaryButton, un botón con borde que dice Crear cuenta; StatsRow, una fila de tres tarjetas con números; ChatItem, una fila de chat con foto, nombre, mensaje y hora; ProfileInfo, la cabecera de un perfil con foto, nombre, usuario, correo y ciudad; y ContactCard, una tarjeta pequeña con foto, nombre y usuario.</desc>
+  <defs>
+    <style>
+      #tlTodos .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tlTodos .sub{fill:#79809A;font-size:13.5px}
+      #tlTodos .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tlTodos .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tlTodos .nb{fill:#454C61;font-size:13px}
+      #tlTodos .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tlTodos .foot{fill:#79809A;font-size:12px}
+      #tlTodos .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tlTodos .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tlTodos-arrow)}
+    </style>
+    <marker id="tlTodos-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="708" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Lo que vas a construir</text>
+  <text class="sub" x="48" y="80" data-fit="860">Seis componentes, cada uno en su archivo dentro de lib/components/. El número es el apartado del taller donde se arma.</text>
+  <g transform="translate(48,112)">
+    <rect width="420" height="168" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <rect x="12" y="12" width="396" height="100" rx="10" fill="#F5F6FA"/>
+    <g transform="translate(12,12)"><rect x="48" y="28" width="300" height="44" rx="22" fill="#2196F3" stroke="none" stroke-width="1.75"/><g transform="translate(146,50)"><path d="M-9,0 H3 M-1,-4 L3,0 L-1,4" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2,-8 H8 V8 H2" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><text x="166" y="50" dy="0.35em" font-size="15" font-weight="600" fill="#FFFFFF" data-fit="170">Iniciar sesión</text></g>
+    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">1</text>
+    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">PrimaryButton</text>
+    <text class="mono" x="406" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">primary_button.dart</text>
+  </g>
+  <g transform="translate(492,112)">
+    <rect width="420" height="168" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <rect x="12" y="12" width="396" height="100" rx="10" fill="#F5F6FA"/>
+    <g transform="translate(12,12)"><rect x="48" y="28" width="300" height="44" rx="22" fill="#FFFFFF" stroke="#2196F3" stroke-width="1.75"/><g transform="translate(150,50)"><circle cx="-2" cy="-4" r="3.5" fill="none" stroke="#1976D2" stroke-width="2"/><path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="#1976D2" stroke-width="2" stroke-linecap="round"/><path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="#1976D2" stroke-width="2" stroke-linecap="round"/></g><text x="170" y="50" dy="0.35em" font-size="15" font-weight="600" fill="#1976D2" data-fit="170">Crear cuenta</text></g>
+    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">1</text>
+    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">SecondaryButton</text>
+    <text class="mono" x="406" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">secondary_button.dart</text>
+  </g>
+  <g transform="translate(48,296)">
+    <rect width="420" height="168" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <rect x="12" y="12" width="396" height="100" rx="10" fill="#F5F6FA"/>
+    <g transform="translate(12,12)"><rect x="30" y="16" width="104" height="68" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="82" y="46" font-size="20" font-weight="700" fill="#161A26" text-anchor="middle">128</text><text x="82" y="68" font-size="12" font-weight="400" fill="#556074" text-anchor="middle" data-fit="96">Publicaciones</text><rect x="146" y="16" width="104" height="68" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="198" y="46" font-size="20" font-weight="700" fill="#161A26" text-anchor="middle">2.4k</text><text x="198" y="68" font-size="12" font-weight="400" fill="#556074" text-anchor="middle" data-fit="96">Seguidores</text><rect x="262" y="16" width="104" height="68" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="314" y="46" font-size="20" font-weight="700" fill="#161A26" text-anchor="middle">310</text><text x="314" y="68" font-size="12" font-weight="400" fill="#556074" text-anchor="middle" data-fit="96">Seguidos</text></g>
+    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">2</text>
+    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">StatsRow</text>
+    <text class="mono" x="406" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">stats_row.dart</text>
+  </g>
+  <g transform="translate(492,296)">
+    <rect width="420" height="168" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <rect x="12" y="12" width="396" height="100" rx="10" fill="#F5F6FA"/>
+    <g transform="translate(12,12)"><circle cx="44" cy="50" r="24" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/><circle cx="44" cy="45.2" r="7.9" fill="#F0C572"/><path d="M29.1,67.8 a14.9,13.4 0 0 1 29.8,0 Z" fill="#F0C572"/><text x="80" y="45" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="180">Javier Montes</text><text x="80" y="66" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="220">¿Te parece si revisamos los…</text><text x="376" y="45" font-size="12" font-weight="400" fill="#79809A" text-anchor="end" data-fit="80">10:24 a.m.</text><path d="M354,62 l3,3 l6,-7 M360,65 l1,0 l6,-7" fill="none" stroke="#4453C9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">3</text>
+    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">ChatItem</text>
+    <text class="mono" x="406" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">chat_item.dart</text>
+  </g>
+  <g transform="translate(48,480)">
+    <rect width="420" height="168" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <rect x="12" y="12" width="396" height="100" rx="10" fill="#F5F6FA"/>
+    <g transform="translate(12,12)"><circle cx="198" cy="22" r="17" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/><circle cx="198" cy="18.6" r="5.6" fill="#C9A6EE"/><path d="M187.5,34.6 a10.5,9.5 0 0 1 21.1,0 Z" fill="#C9A6EE"/><text x="198" y="58" font-size="14" font-weight="700" fill="#161A26" text-anchor="middle" data-fit="240">Mariana Valenzuela</text><text x="198" y="75" font-size="12" font-weight="400" fill="#556074" text-anchor="middle" data-fit="300">@marianav • Diseñadora de Producto</text><g transform="translate(28,-106)"><g transform="translate(62,195) scale(.72)"><rect x="-9" y="-7" width="18" height="14" rx="2" fill="none" stroke="#556074" stroke-width="1.75"/><path d="M-9,-6 L0,1 L9,-6" fill="none" stroke="#556074" stroke-width="1.75"/></g><text x="74" y="199" font-size="12" font-weight="400" fill="#556074" text-anchor="start">m.val@estudio.com</text><path d="M212,189 a5,5 0 0 1 10,0 c0,4 -5,9 -5,9 c0,0 -5,-5 -5,-9 Z" fill="none" stroke="#556074" stroke-width="1.4"/><circle cx="217" cy="189" r="1.6" fill="#556074"/><text x="227" y="199" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Madrid, ES</text></g></g>
+    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">4</text>
+    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">ProfileInfo</text>
+    <text class="mono" x="406" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">profile_info.dart</text>
+  </g>
+  <g transform="translate(492,480)">
+    <rect width="420" height="168" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <rect x="12" y="12" width="396" height="100" rx="10" fill="#F5F6FA"/>
+    <g transform="translate(12,12)"><rect x="146" y="4" width="104" height="92" rx="10" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/><circle cx="198" cy="32" r="20" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><circle cx="198" cy="28.0" r="6.6" fill="#A9B4F2"/><path d="M185.6,46.8 a12.4,11.2 0 0 1 24.8,0 Z" fill="#A9B4F2"/><text x="198" y="70" font-size="13" font-weight="700" fill="#161A26" text-anchor="middle" data-fit="96">Ana Torres</text><text x="198" y="87" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle" data-fit="96">@anatorres</text></g>
+    <circle cx="27" cy="140" r="11" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+    <text x="27" y="140" dy="0.35em" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05">5</text>
+    <text class="mono" x="48" y="140" dy="0.35em" font-size="15" font-weight="700" fill="#161A26" data-fit="170">ContactCard</text>
+    <text class="mono" x="406" y="140" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="180">contact_card.dart</text>
+  </g>
+  <text class="foot" x="48" y="680" data-fit="860">En la sesión 3 estas seis piezas se encajan para armar una pantalla de perfil y una de inicio de sesión.</text>
+</svg>
+```
+
 En este taller construyes **seis componentes**. Solo componentes: ninguna pantalla. En la próxima sesión los vas a usar para armar una pantalla de perfil y una de inicio de sesión, así que tenerlos terminados es la preparación para esa clase.
 
 Los diseños de los componentes de perfil están en el [proyecto de Figma](https://www.figma.com/design/cn5cLhBPnuJC4tvewTtVmq/Aplicaciones-M%C3%B3viles?node-id=2014-421&t=oULdr2bxOVE437ux-1). Ahí puedes medir tamaños, colores y separaciones.
