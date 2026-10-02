@@ -1,8 +1,231 @@
 # StatelessWidget: tu primer componente
 
-<!-- tags: StatelessWidget, crear un componente, parámetros con nombre, required, widget reutilizable, método build, campos final, lib/components, const en el constructor, The named parameter is required -->
+<!-- tags: StatelessWidget, crear un componente, pantalla hecha de piezas, parámetros con nombre, required, widget reutilizable, método build, campos final, lib/components, const en el constructor, The named parameter is required -->
 
 Ya conoces los widgets básicos de Flutter y sabes acomodarlos con `Column` y `Row`. Con ellos se puede armar una pantalla entera, pero el código se vuelve largo y repetido muy rápido. La salida es hacer tus propios widgets: **componentes**.
+
+## Una pantalla está hecha de piezas
+
+Mira esta pantalla de perfil como la ve quien usa la app:
+
+```svg
+<svg id="swPantalla" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 866" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="swPantalla-ttl swPantalla-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="swPantalla-ttl">Una pantalla, como la ve quien usa la app</title>
+  <desc id="swPantalla-dsc">Maqueta de una pantalla de perfil en un celular: la foto y los datos de la persona, tres indicadores con números, un botón azul Seguir y un botón con borde Enviar mensaje, una fila de cuatro contactos sugeridos y dos conversaciones recientes.</desc>
+  <defs>
+    <style>
+      #swPantalla .title{fill:#161A26;font-size:22px;font-weight:700}
+      #swPantalla .sub{fill:#79809A;font-size:13.5px}
+      #swPantalla .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #swPantalla .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #swPantalla .nb{fill:#454C61;font-size:13px}
+      #swPantalla .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #swPantalla .foot{fill:#79809A;font-size:12px}
+      #swPantalla .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #swPantalla .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#swPantalla-arrow)}
+    </style>
+    <marker id="swPantalla-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="866" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Una pantalla, como la ve quien usa la app</text>
+  <text class="sub" x="48" y="80" data-fit="860">Un perfil con sus datos, sus botones, contactos sugeridos y conversaciones. Parece una sola cosa.</text>
+  <clipPath id="swPantalla-scr"><rect width="340" height="676" rx="28"/></clipPath>
+  <rect x="300" y="114" width="360" height="696" rx="38" fill="#1F2430"/>
+  <g transform="translate(310,124)"><g clip-path="url(#swPantalla-scr)">
+    <rect width="340" height="676" fill="#FFFFFF"/>
+    <path d="M30,24 H18 M23,19 L18,24 L23,29" fill="none" stroke="#161A26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="170" y="29" font-size="16" font-weight="700" fill="#161A26" text-anchor="middle">Perfil</text>
+    <circle cx="318" cy="17" r="1.9" fill="#161A26"/><circle cx="318" cy="24" r="1.9" fill="#161A26"/><circle cx="318" cy="31" r="1.9" fill="#161A26"/>
+    <path d="M0,48 H340" stroke="#EFF1F5" stroke-width="1.5"/>
+    <circle cx="170" cy="98" r="34" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/><circle cx="170" cy="91.2" r="11.2" fill="#C9A6EE"/><path d="M148.9,123.2 a21.1,19.0 0 0 1 42.2,0 Z" fill="#C9A6EE"/>
+    <text x="170" y="156" font-size="17" font-weight="700" fill="#161A26" text-anchor="middle">Mariana Valenzuela</text>
+    <text x="170" y="176" font-size="12.5" font-weight="400" fill="#556074" text-anchor="middle">@marianav • Diseñadora de Producto</text>
+    <g transform="translate(62,195) scale(.72)"><rect x="-9" y="-7" width="18" height="14" rx="2" fill="none" stroke="#556074" stroke-width="1.75"/><path d="M-9,-6 L0,1 L9,-6" fill="none" stroke="#556074" stroke-width="1.75"/></g><text x="74" y="199" font-size="12" font-weight="400" fill="#556074" text-anchor="start">m.val@estudio.com</text>
+    <path d="M212,189 a5,5 0 0 1 10,0 c0,4 -5,9 -5,9 c0,0 -5,-5 -5,-9 Z" fill="none" stroke="#556074" stroke-width="1.4"/><circle cx="217" cy="189" r="1.6" fill="#556074"/><text x="227" y="199" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Madrid, ES</text>
+    <rect x="22" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="66" y="250" font-size="18" font-weight="700" fill="#161A26" text-anchor="middle">128</text><text x="66" y="270" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">Publicaciones</text>
+    <rect x="126" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="170" y="250" font-size="18" font-weight="700" fill="#161A26" text-anchor="middle">2.4k</text><text x="170" y="270" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">Seguidores</text>
+    <rect x="230" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="274" y="250" font-size="18" font-weight="700" fill="#161A26" text-anchor="middle">310</text><text x="274" y="270" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">Seguidos</text>
+    <rect x="16" y="302" width="308" height="40" rx="20" fill="#2196F3"/>
+    <g transform="translate(136,322)"><circle cx="-2" cy="-4" r="3.5" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/><path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></g>
+    <text x="154" y="327" font-size="14.5" font-weight="600" fill="#FFFFFF" text-anchor="start">Seguir</text>
+    <rect x="16" y="352" width="308" height="40" rx="20" fill="#FFFFFF" stroke="#2196F3" stroke-width="1.75"/>
+    <path d="M103,364 h18 a3,3 0 0 1 3,3 v9 a3,3 0 0 1 -3,3 h-9 l-5,4 v-4 h-4 a3,3 0 0 1 -3,-3 v-9 a3,3 0 0 1 3,-3 Z" fill="none" stroke="#1976D2" stroke-width="1.8" stroke-linejoin="round"/>
+    <text x="134" y="377" font-size="14.5" font-weight="600" fill="#1976D2" text-anchor="start">Enviar mensaje</text>
+    <text x="16" y="424" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Contactos sugeridos</text>
+    <circle cx="52" cy="458" r="22" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><circle cx="52" cy="453.6" r="7.3" fill="#A9B4F2"/><path d="M38.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#A9B4F2"/><text x="52" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Ana Torres</text><text x="52" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@anatorres</text>
+    <circle cx="132" cy="458" r="22" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/><circle cx="132" cy="453.6" r="7.3" fill="#86D3CA"/><path d="M118.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#86D3CA"/><text x="132" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Luis Peña</text><text x="132" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@luisp</text>
+    <circle cx="212" cy="458" r="22" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/><circle cx="212" cy="453.6" r="7.3" fill="#F3A3B2"/><path d="M198.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#F3A3B2"/><text x="212" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Sofía Ruiz</text><text x="212" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@sofiaruiz</text>
+    <circle cx="292" cy="458" r="22" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/><circle cx="292" cy="453.6" r="7.3" fill="#F0C572"/><path d="M278.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#F0C572"/><text x="292" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Javier M…</text><text x="292" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@javim</text>
+    <text x="16" y="548" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Últimas conversaciones</text>
+    <circle cx="36" cy="584" r="20" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/><circle cx="36" cy="580.0" r="6.6" fill="#F0C572"/><path d="M23.6,598.8 a12.4,11.2 0 0 1 24.8,0 Z" fill="#F0C572"/><text x="66" y="581" font-size="13" font-weight="700" fill="#161A26" text-anchor="start">Javier Montes</text><text x="66" y="598" font-size="12" font-weight="400" fill="#556074" text-anchor="start">¿Te parece si revisamos los…</text><text x="324" y="581" font-size="12" font-weight="400" fill="#79809A" text-anchor="end">10:24 a.m.</text><path d="M306,594 l3,3 l6,-7 M312,597 l1,0 l6,-7" fill="none" stroke="#4453C9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="36" cy="638" r="20" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/><circle cx="36" cy="634.0" r="6.6" fill="#F3A3B2"/><path d="M23.6,652.8 a12.4,11.2 0 0 1 24.8,0 Z" fill="#F3A3B2"/><text x="66" y="635" font-size="13" font-weight="700" fill="#161A26" text-anchor="start">Sofía Ruiz</text><text x="66" y="652" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Listo, ya subí los cambios</text><text x="324" y="635" font-size="12" font-weight="400" fill="#79809A" text-anchor="end">9:02 a.m.</text><path d="M306,648 l3,3 l6,-7 M312,651 l1,0 l6,-7" fill="none" stroke="#A0A8B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g></g>
+  <text class="foot" x="480" y="842" text-anchor="middle" data-fit="860">Antes de seguir, cuenta: ¿cuántos bloques de esta pantalla se parecen entre sí?</text>
+</svg>
+```
+
+Parece una sola cosa. Para quien la programa no lo es. Esta es la misma pantalla, con cada pieza marcada:
+
+```svg
+<svg id="swPiezas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 866" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="swPiezas-ttl swPiezas-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="swPiezas-ttl">La misma pantalla, como la ve quien la programa</title>
+  <desc id="swPiezas-dsc">La misma pantalla de perfil con cada componente marcado con un color y su nombre: ProfileInfo, StatsRow que contiene tres StatCard, PrimaryButton, SecondaryButton, cuatro ContactCard y dos ChatItem. Los nombres aparecen como piezas de Lego a los lados.</desc>
+  <defs>
+    <style>
+      #swPiezas .title{fill:#161A26;font-size:22px;font-weight:700}
+      #swPiezas .sub{fill:#79809A;font-size:13.5px}
+      #swPiezas .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #swPiezas .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #swPiezas .nb{fill:#454C61;font-size:13px}
+      #swPiezas .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #swPiezas .foot{fill:#79809A;font-size:12px}
+      #swPiezas .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #swPiezas .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#swPiezas-arrow)}
+    </style>
+    <marker id="swPiezas-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="866" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">La misma pantalla, como la ve quien la programa</text>
+  <text class="sub" x="48" y="80" data-fit="860">Siete piezas distintas, usadas trece veces. Cada color es una pieza; el número dice cuántas veces aparece.</text>
+  <clipPath id="swPiezas-scr"><rect width="340" height="676" rx="28"/></clipPath>
+  <rect x="300" y="114" width="360" height="696" rx="38" fill="#1F2430"/>
+  <g transform="translate(310,124)"><g clip-path="url(#swPiezas-scr)">
+    <rect width="340" height="676" fill="#FFFFFF"/>
+    <path d="M30,24 H18 M23,19 L18,24 L23,29" fill="none" stroke="#161A26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="170" y="29" font-size="16" font-weight="700" fill="#161A26" text-anchor="middle">Perfil</text>
+    <circle cx="318" cy="17" r="1.9" fill="#161A26"/><circle cx="318" cy="24" r="1.9" fill="#161A26"/><circle cx="318" cy="31" r="1.9" fill="#161A26"/>
+    <path d="M0,48 H340" stroke="#EFF1F5" stroke-width="1.5"/>
+    <circle cx="170" cy="98" r="34" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/><circle cx="170" cy="91.2" r="11.2" fill="#C9A6EE"/><path d="M148.9,123.2 a21.1,19.0 0 0 1 42.2,0 Z" fill="#C9A6EE"/>
+    <text x="170" y="156" font-size="17" font-weight="700" fill="#161A26" text-anchor="middle">Mariana Valenzuela</text>
+    <text x="170" y="176" font-size="12.5" font-weight="400" fill="#556074" text-anchor="middle">@marianav • Diseñadora de Producto</text>
+    <g transform="translate(62,195) scale(.72)"><rect x="-9" y="-7" width="18" height="14" rx="2" fill="none" stroke="#556074" stroke-width="1.75"/><path d="M-9,-6 L0,1 L9,-6" fill="none" stroke="#556074" stroke-width="1.75"/></g><text x="74" y="199" font-size="12" font-weight="400" fill="#556074" text-anchor="start">m.val@estudio.com</text>
+    <path d="M212,189 a5,5 0 0 1 10,0 c0,4 -5,9 -5,9 c0,0 -5,-5 -5,-9 Z" fill="none" stroke="#556074" stroke-width="1.4"/><circle cx="217" cy="189" r="1.6" fill="#556074"/><text x="227" y="199" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Madrid, ES</text>
+    <rect x="22" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="66" y="250" font-size="18" font-weight="700" fill="#161A26" text-anchor="middle">128</text><text x="66" y="270" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">Publicaciones</text>
+    <rect x="126" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="170" y="250" font-size="18" font-weight="700" fill="#161A26" text-anchor="middle">2.4k</text><text x="170" y="270" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">Seguidores</text>
+    <rect x="230" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><text x="274" y="250" font-size="18" font-weight="700" fill="#161A26" text-anchor="middle">310</text><text x="274" y="270" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">Seguidos</text>
+    <rect x="16" y="302" width="308" height="40" rx="20" fill="#2196F3"/>
+    <g transform="translate(136,322)"><circle cx="-2" cy="-4" r="3.5" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/><path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></g>
+    <text x="154" y="327" font-size="14.5" font-weight="600" fill="#FFFFFF" text-anchor="start">Seguir</text>
+    <rect x="16" y="352" width="308" height="40" rx="20" fill="#FFFFFF" stroke="#2196F3" stroke-width="1.75"/>
+    <path d="M103,364 h18 a3,3 0 0 1 3,3 v9 a3,3 0 0 1 -3,3 h-9 l-5,4 v-4 h-4 a3,3 0 0 1 -3,-3 v-9 a3,3 0 0 1 3,-3 Z" fill="none" stroke="#1976D2" stroke-width="1.8" stroke-linejoin="round"/>
+    <text x="134" y="377" font-size="14.5" font-weight="600" fill="#1976D2" text-anchor="start">Enviar mensaje</text>
+    <text x="16" y="424" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Contactos sugeridos</text>
+    <circle cx="52" cy="458" r="22" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/><circle cx="52" cy="453.6" r="7.3" fill="#A9B4F2"/><path d="M38.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#A9B4F2"/><text x="52" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Ana Torres</text><text x="52" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@anatorres</text>
+    <circle cx="132" cy="458" r="22" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/><circle cx="132" cy="453.6" r="7.3" fill="#86D3CA"/><path d="M118.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#86D3CA"/><text x="132" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Luis Peña</text><text x="132" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@luisp</text>
+    <circle cx="212" cy="458" r="22" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/><circle cx="212" cy="453.6" r="7.3" fill="#F3A3B2"/><path d="M198.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#F3A3B2"/><text x="212" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Sofía Ruiz</text><text x="212" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@sofiaruiz</text>
+    <circle cx="292" cy="458" r="22" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/><circle cx="292" cy="453.6" r="7.3" fill="#F0C572"/><path d="M278.4,474.3 a13.6,12.3 0 0 1 27.3,0 Z" fill="#F0C572"/><text x="292" y="497" font-size="12" font-weight="700" fill="#161A26" text-anchor="middle">Javier M…</text><text x="292" y="512" font-size="12" font-weight="400" fill="#79809A" text-anchor="middle">@javim</text>
+    <text x="16" y="548" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Últimas conversaciones</text>
+    <circle cx="36" cy="584" r="20" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/><circle cx="36" cy="580.0" r="6.6" fill="#F0C572"/><path d="M23.6,598.8 a12.4,11.2 0 0 1 24.8,0 Z" fill="#F0C572"/><text x="66" y="581" font-size="13" font-weight="700" fill="#161A26" text-anchor="start">Javier Montes</text><text x="66" y="598" font-size="12" font-weight="400" fill="#556074" text-anchor="start">¿Te parece si revisamos los…</text><text x="324" y="581" font-size="12" font-weight="400" fill="#79809A" text-anchor="end">10:24 a.m.</text><path d="M306,594 l3,3 l6,-7 M312,597 l1,0 l6,-7" fill="none" stroke="#4453C9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="36" cy="638" r="20" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/><circle cx="36" cy="634.0" r="6.6" fill="#F3A3B2"/><path d="M23.6,652.8 a12.4,11.2 0 0 1 24.8,0 Z" fill="#F3A3B2"/><text x="66" y="635" font-size="13" font-weight="700" fill="#161A26" text-anchor="start">Sofía Ruiz</text><text x="66" y="652" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Listo, ya subí los cambios</text><text x="324" y="635" font-size="12" font-weight="400" fill="#79809A" text-anchor="end">9:02 a.m.</text><path d="M306,648 l3,3 l6,-7 M312,651 l1,0 l6,-7" fill="none" stroke="#A0A8B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g></g>
+  <rect x="322" y="178" width="316" height="156" rx="10" fill="#4453C9" fill-opacity=".09" stroke="#4453C9" stroke-width="2.25"/>
+  <rect x="320" y="340" width="320" height="76" rx="14" fill="#7439B8" fill-opacity=".09" stroke="#7439B8" stroke-width="2.25"/>
+  <rect x="329" y="345" width="94" height="66" rx="12" fill="#A96C05" fill-opacity=".09" stroke="#A96C05" stroke-width="2.25"/>
+  <rect x="433" y="345" width="94" height="66" rx="12" fill="#A96C05" fill-opacity=".09" stroke="#A96C05" stroke-width="2.25"/>
+  <rect x="537" y="345" width="94" height="66" rx="12" fill="#A96C05" fill-opacity=".09" stroke="#A96C05" stroke-width="2.25"/>
+  <rect x="322" y="422" width="316" height="48" rx="24" fill="#0F8478" fill-opacity=".09" stroke="#0F8478" stroke-width="2.25"/>
+  <rect x="322" y="472" width="316" height="48" rx="24" fill="#3A8235" fill-opacity=".09" stroke="#3A8235" stroke-width="2.25"/>
+  <rect x="326" y="556" width="72" height="88" rx="10" fill="#C2354F" fill-opacity=".09" stroke="#C2354F" stroke-width="2.25"/>
+  <rect x="406" y="556" width="72" height="88" rx="10" fill="#C2354F" fill-opacity=".09" stroke="#C2354F" stroke-width="2.25"/>
+  <rect x="486" y="556" width="72" height="88" rx="10" fill="#C2354F" fill-opacity=".09" stroke="#C2354F" stroke-width="2.25"/>
+  <rect x="566" y="556" width="72" height="88" rx="10" fill="#C2354F" fill-opacity=".09" stroke="#C2354F" stroke-width="2.25"/>
+  <rect x="320" y="683" width="320" height="50" rx="10" fill="#556074" fill-opacity=".09" stroke="#556074" stroke-width="2.25"/>
+  <rect x="320" y="737" width="320" height="50" rx="10" fill="#556074" fill-opacity=".09" stroke="#556074" stroke-width="2.25"/>
+  <path d="M638,256 H700" fill="none" stroke="#4453C9" stroke-width="2"/>
+  <circle cx="638" cy="256" r="3.5" fill="#4453C9"/>
+  <g transform="translate(700,236)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#4453C9" data-fit="140">ProfileInfo</text>
+  </g>
+  <path d="M640,378 H700" fill="none" stroke="#7439B8" stroke-width="2"/>
+  <circle cx="640" cy="378" r="3.5" fill="#7439B8"/>
+  <g transform="translate(700,358)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#7439B8" data-fit="140">StatsRow</text>
+  </g>
+  <path d="M260,378 H329" fill="none" stroke="#A96C05" stroke-width="2"/>
+  <circle cx="329" cy="378" r="3.5" fill="#A96C05"/>
+  <g transform="translate(56,358)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#A96C05" data-fit="140">StatCard</text>
+    <circle cx="180" cy="20" r="13" fill="#A96C05"/>
+    <text x="180" y="20" dy="0.35em" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">×3</text>
+  </g>
+  <path d="M638,446 H700" fill="none" stroke="#0F8478" stroke-width="2"/>
+  <circle cx="638" cy="446" r="3.5" fill="#0F8478"/>
+  <g transform="translate(700,426)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#0F8478" data-fit="140">PrimaryButton</text>
+  </g>
+  <path d="M260,496 H322" fill="none" stroke="#3A8235" stroke-width="2"/>
+  <circle cx="322" cy="496" r="3.5" fill="#3A8235"/>
+  <g transform="translate(56,476)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#3A8235" data-fit="140">SecondaryButton</text>
+  </g>
+  <path d="M638,600 H700" fill="none" stroke="#C2354F" stroke-width="2"/>
+  <circle cx="638" cy="600" r="3.5" fill="#C2354F"/>
+  <g transform="translate(700,580)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#C2354F" data-fit="140">ContactCard</text>
+    <circle cx="180" cy="20" r="13" fill="#C2354F"/>
+    <text x="180" y="20" dy="0.35em" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">×4</text>
+  </g>
+  <path d="M260,735 H284 M320,708 H284 V762 H320" fill="none" stroke="#556074" stroke-width="2"/>
+  <circle cx="320" cy="708" r="3.5" fill="#556074"/>
+  <circle cx="320" cy="762" r="3.5" fill="#556074"/>
+  <g transform="translate(56,715)">
+    <rect x="20" y="-7" width="24" height="10" rx="3" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.75"/>
+    <rect x="56" y="-7" width="24" height="10" rx="3" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.75"/>
+    <rect x="92" y="-7" width="24" height="10" rx="3" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.75"/>
+    <rect width="204" height="40" rx="7" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.75"/>
+    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="#556074" data-fit="140">ChatItem</text>
+    <circle cx="180" cy="20" r="13" fill="#556074"/>
+    <text x="180" y="20" dy="0.35em" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">×2</text>
+  </g>
+  <text class="foot" x="480" y="842" text-anchor="middle" data-fit="860">Lo que no está marcado, como la barra y los títulos, son widgets de Flutter usados directamente.</text>
+</svg>
+```
+
+Tres cosas que se ven en la segunda imagen y no en la primera:
+
+- **Son pocas piezas distintas.** Siete, aunque la pantalla tenga más de treinta textos, iconos y fotos.
+- **Las piezas se repiten.** Hay cuatro `ContactCard`, tres `StatCard` y dos `ChatItem`. Cada grupo es la misma pieza con datos distintos: otro nombre, otra foto, otro número.
+- **Las piezas encajan unas en otras.** `StatsRow` no es una pieza suelta: está armada con tres `StatCard`.
+
+Funciona como un juego de **Lego**. Nadie fabrica un castillo de un solo bloque: hay unas pocas piezas pequeñas, se usan muchas veces y se encajan para formar cosas más grandes. Con las mismas piezas se arma otro castillo.
+
+En Flutter cada pieza se llama **componente**, y trabajar así tiene tres ventajas muy concretas:
+
+| | Qué ganas |
+|---|---|
+| Se construye por separado | Te concentras en una pieza pequeña, no en la pantalla entera |
+| Se prueba sola | La montas en una pantalla vacía y ves si quedó bien, sin depender del resto |
+| Se cambia en un solo lugar | Si el diseño de `ContactCard` cambia, lo editas una vez y cambian las cuatro |
+
+En esta lección construyes la primera pieza, `StatCard`. En el taller haces las demás, y en la sesión 3 las encajas para armar esta pantalla.
 
 ## De copiar y pegar a un componente
 

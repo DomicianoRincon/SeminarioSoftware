@@ -42,7 +42,7 @@ De arriba hacia abajo:
 
 Para ver un componente, móntalo en `HomeScreen`, dentro del `Center`, y pásale datos. Cambia esos datos y comprueba que el diseño aguanta.
 
-La prueba de que un componente está bien hecho: **ningún texto, icono ni imagen del diseño está escrito dentro de él**. Todo lo que cambia entre un uso y otro llega por el constructor.
+La prueba de que un componente está bien hecho: **todo lo que cambia entre un uso y otro llega por el constructor**. Si para reutilizarlo tendrías que abrir el archivo y editar un texto, un icono o una imagen, ese dato debería ser un parámetro.
 
 ## 1. Botón principal y botón secundario
 
@@ -155,20 +155,91 @@ OutlinedButton(
 
 Cuando termines el principal, el secundario es casi una copia. Fíjate en cuánto se repite entre los dos archivos: es la misma señal que viste en la lección anterior.
 
-## 2. Indicador numérico
+## 2. Fila de estadísticas
 
-Un número grande con su etiqueta debajo, como el contador de publicaciones o de seguidores de un perfil.
+Tu primer **componente compuesto**: uno que está hecho con otro componente tuyo. Es la fila de indicadores de un perfil, armada con tres `StatCard`, el componente de la lección anterior.
 
-![Indicador numérico](Lab1Item3.png "frame60")
+```svg
+<svg id="tlStats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tlStats-ttl tlStats-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tlStats-ttl">Fila de estadísticas</title>
+  <desc id="tlStats-dsc">El componente StatsRow: una fila con tres tarjetas StatCard, que muestran 128 publicaciones, 2.4k seguidores y 310 seguidos. Cada tarjeta tiene fondo suave, borde y esquinas redondeadas.</desc>
+  <defs>
+    <style>
+      #tlStats .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tlStats .sub{fill:#79809A;font-size:13.5px}
+      #tlStats .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tlStats .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tlStats .nb{fill:#454C61;font-size:13px}
+      #tlStats .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tlStats .foot{fill:#79809A;font-size:12px}
+      #tlStats .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tlStats .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tlStats-arrow)}
+    </style>
+    <marker id="tlStats-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="340" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Fila de estadísticas</text>
+  <text class="sub" x="48" y="80" data-fit="860">Un componente hecho con otro componente: tres StatCard dentro de una Row.</text>
+  <rect x="240" y="124" width="480" height="128" rx="14" fill="none" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="mono" x="240" y="114" font-size="13" font-weight="700" fill="#161A26" data-fit="200">StatsRow</text>
+  <g transform="translate(272,148)">
+    <rect width="112" height="80" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="2"/>
+    <text x="56" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#161A26">128</text>
+    <text x="56" y="60" text-anchor="middle" font-size="12.5" fill="#556074" data-fit="100">Publicaciones</text>
+  </g>
+  <text class="mono" x="328" y="276" text-anchor="middle" font-size="12" fill="#556074" data-fit="120">StatCard</text>
+  <g transform="translate(424,148)">
+    <rect width="112" height="80" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="2"/>
+    <text x="56" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#161A26">2.4k</text>
+    <text x="56" y="60" text-anchor="middle" font-size="12.5" fill="#556074" data-fit="100">Seguidores</text>
+  </g>
+  <text class="mono" x="480" y="276" text-anchor="middle" font-size="12" fill="#556074" data-fit="120">StatCard</text>
+  <g transform="translate(576,148)">
+    <rect width="112" height="80" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="2"/>
+    <text x="56" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#161A26">310</text>
+    <text x="56" y="60" text-anchor="middle" font-size="12.5" fill="#556074" data-fit="100">Seguidos</text>
+  </g>
+  <text class="mono" x="632" y="276" text-anchor="middle" font-size="12" fill="#556074" data-fit="120">StatCard</text>
+  <text class="foot" x="48" y="312" data-fit="860">El diseño de la tarjeta vive en StatCard. StatsRow solo decide cuántas hay, en qué orden y cómo se reparten.</text>
+</svg>
+```
 
-**Archivo:** `lib/components/stat_card.dart` · **Clase:** `StatCard`
+**Archivo:** `lib/components/stats_row.dart` · **Clase:** `StatsRow`
 
 | Parámetro | Tipo | Ejemplo |
 |---|---|---|
-| `number` | `String` | `'248'` |
-| `label` | `String` | `'Posts'` |
+| `posts` | `String` | `'128'` |
+| `followers` | `String` | `'2.4k'` |
+| `following` | `String` | `'310'` |
 
-Es el `StatCard` de la lección anterior. Si ya lo tienes, ajusta tamaños y colores hasta que se vea como el diseño.
+Aquí las etiquetas *Publicaciones*, *Seguidores* y *Seguidos* sí van escritas dentro del componente: son parte de lo que `StatsRow` es. Lo que cambia de un perfil a otro son los tres números, y por eso solo ellos llegan por el constructor.
+
+**Pista 1 · usar tu propio componente.** `StatCard` está en otro archivo de la misma carpeta, así que hay que importarlo. Después se usa como cualquier widget de Flutter:
+
+```dart
+import 'package:flutter/material.dart';
+import 'stat_card.dart';
+```
+
+**Pista 2 · repartir las tres tarjetas.** Es una `Row` con `mainAxisAlignment: MainAxisAlignment.spaceEvenly`.
+
+**Pista 3 · la caja de cada tarjeta.** El fondo, el borde y las esquinas redondeadas se hacen con un `Container`, un widget que envuelve a otro y lo decora. Se ve a fondo en la sesión 3; por ahora basta con este uso:
+
+```dart
+Container(
+  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  decoration: BoxDecoration(
+    color: Colors.indigo.shade50,
+    border: Border.all(color: Colors.indigo.shade200, width: 2),
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Text('128'),
+)
+```
+
+Fíjate en **dónde** va ese `Container`: en `stat_card.dart`, envolviendo la `Column` que ya tenías. No en `stats_row.dart`. Lo escribes una vez y las tres tarjetas cambian, que es justo para lo que sirve un componente.
 
 ## 3. Elemento de conversación
 
@@ -365,7 +436,7 @@ Para verla, pon tres o cuatro en una `Row` dentro de `HomeScreen`, con un `Sized
 
 ## Qué debes tener al terminar
 
-- Seis archivos en `lib/components/`, cada uno con un componente y con la forma del apartado *Cómo trabajar*.
+- Siete archivos en `lib/components/`: los seis del taller y `stat_card.dart`, cada uno con un componente y con la forma del apartado *Cómo trabajar*.
 - Cada componente probado en `HomeScreen` con **al menos dos juegos de datos distintos**: otro nombre, un mensaje más largo, otro icono.
 - El proyecto sin errores en el editor.
 

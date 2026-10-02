@@ -897,6 +897,26 @@ def tl_contacto():
     return s
 
 
+def tl_stats():
+    fid = 'tlStats'
+    h = 340
+    s = head(fid, h, 'Fila de estadísticas', 'Fila de estadísticas',
+             'Un componente hecho con otro componente: tres StatCard dentro de una Row.',
+             'El componente StatsRow: una fila con tres tarjetas StatCard, que muestran 128 publicaciones, 2.4k seguidores y 310 seguidos. Cada tarjeta tiene fondo suave, borde y esquinas redondeadas.')
+    s += '  <rect x="240" y="124" width="480" height="128" rx="14" fill="none" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="5 4"/>\n'
+    s += '  <text class="mono" x="240" y="114" font-size="13" font-weight="700" fill="#161A26" data-fit="200">StatsRow</text>\n'
+    for i, (n, l) in enumerate([('128', 'Publicaciones'), ('2.4k', 'Seguidores'), ('310', 'Seguidos')]):
+        x = 272 + i * 152
+        s += f'  <g transform="translate({x},148)">\n'
+        s += '    <rect width="112" height="80" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="2"/>\n'
+        s += f'    <text x="56" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#161A26">{n}</text>\n'
+        s += f'    <text x="56" y="60" text-anchor="middle" font-size="12.5" fill="#556074" data-fit="100">{l}</text>\n'
+        s += '  </g>\n'
+        s += f'  <text class="mono" x="{x + 56}" y="276" text-anchor="middle" font-size="12" fill="#556074" data-fit="120">StatCard</text>\n'
+    s += f'  <text class="foot" x="48" y="{h-28}" data-fit="860">El diseño de la tarjeta vive en StatCard. StatsRow solo decide cuántas hay, en qué orden y cómo se reparten.</text>\n</svg>\n'
+    return s
+
+
 def tl_boton():
     fid = 'tlBoton'
     h = 292
@@ -926,7 +946,141 @@ def tl_boton():
 
 
 FIGS['tlContacto'] = tl_contacto
+FIGS['tlStats'] = tl_stats
 FIGS['tlBoton'] = tl_boton
+
+
+# ───────────────────────────── S0015 · la pantalla y sus piezas
+
+PX0, PY0, PW_, PH_ = 310, 124, 340, 676
+
+
+def avatar(cx, cy, r, color):
+    soft, border, _ = FAM[color]
+    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{soft}" stroke="{border}" stroke-width="1.5"/>'
+            f'<circle cx="{cx}" cy="{cy - r*0.2:.1f}" r="{r*0.33:.1f}" fill="{border}"/>'
+            f'<path d="M{cx - r*0.62:.1f},{cy + r*0.74:.1f} a{r*0.62:.1f},{r*0.56:.1f} 0 0 1 {r*1.24:.1f},0 Z" fill="{border}"/>')
+
+
+def phone(fid):
+    t = lambda x, y, txt, size=12, weight=400, fill='#161A26', anchor='start': (
+        f'<text x="{x}" y="{y}" font-size="{size}" font-weight="{weight}" fill="{fill}" text-anchor="{anchor}">{txt}</text>')
+    o = f'  <clipPath id="{fid}-scr"><rect width="{PW_}" height="{PH_}" rx="28"/></clipPath>\n'
+    o += f'  <rect x="{PX0-10}" y="{PY0-10}" width="{PW_+20}" height="{PH_+20}" rx="38" fill="#1F2430"/>\n'
+    o += f'  <g transform="translate({PX0},{PY0})"><g clip-path="url(#{fid}-scr)">\n'
+    o += f'    <rect width="{PW_}" height="{PH_}" fill="#FFFFFF"/>\n'
+    o += '    <path d="M30,24 H18 M23,19 L18,24 L23,29" fill="none" stroke="#161A26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n'
+    o += '    ' + t(170, 29, 'Perfil', 16, 700, anchor='middle') + '\n'
+    o += '    <circle cx="318" cy="17" r="1.9" fill="#161A26"/><circle cx="318" cy="24" r="1.9" fill="#161A26"/><circle cx="318" cy="31" r="1.9" fill="#161A26"/>\n'
+    o += '    <path d="M0,48 H340" stroke="#EFF1F5" stroke-width="1.5"/>\n'
+    o += '    ' + avatar(170, 98, 34, 'violet') + '\n'
+    o += '    ' + t(170, 156, 'Mariana Valenzuela', 17, 700, anchor='middle') + '\n'
+    o += '    ' + t(170, 176, '@marianav • Diseñadora de Producto', 12.5, 400, '#556074', 'middle') + '\n'
+    o += '    <g transform="translate(62,195) scale(.72)">' + MAIL + '</g>' + t(74, 199, 'm.val@estudio.com', 12, 400, '#556074') + '\n'
+    o += '    <path d="M212,189 a5,5 0 0 1 10,0 c0,4 -5,9 -5,9 c0,0 -5,-5 -5,-9 Z" fill="none" stroke="#556074" stroke-width="1.4"/><circle cx="217" cy="189" r="1.6" fill="#556074"/>' + t(227, 199, 'Madrid, ES', 12, 400, '#556074') + '\n'
+    for i, (n, l) in enumerate([('128', 'Publicaciones'), ('2.4k', 'Seguidores'), ('310', 'Seguidos')]):
+        x = 22 + i * 104
+        o += f'    <rect x="{x}" y="224" width="88" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>'
+        o += t(x + 44, 250, n, 18, 700, anchor='middle') + t(x + 44, 270, l, 12, 400, '#556074', 'middle') + '\n'
+    o += '    <rect x="16" y="302" width="308" height="40" rx="20" fill="#2196F3"/>\n'
+    o += '    <g transform="translate(136,322)"><circle cx="-2" cy="-4" r="3.5" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/><path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/></g>\n'
+    o += '    ' + t(154, 327, 'Seguir', 14.5, 600, '#FFFFFF') + '\n'
+    o += '    <rect x="16" y="352" width="308" height="40" rx="20" fill="#FFFFFF" stroke="#2196F3" stroke-width="1.75"/>\n'
+    o += '    <path d="M103,364 h18 a3,3 0 0 1 3,3 v9 a3,3 0 0 1 -3,3 h-9 l-5,4 v-4 h-4 a3,3 0 0 1 -3,-3 v-9 a3,3 0 0 1 3,-3 Z" fill="none" stroke="#1976D2" stroke-width="1.8" stroke-linejoin="round"/>\n'
+    o += '    ' + t(134, 377, 'Enviar mensaje', 14.5, 600, '#1976D2') + '\n'
+    o += '    ' + t(16, 424, 'Contactos sugeridos', 14, 700) + '\n'
+    for i, (n, u, c) in enumerate([('Ana Torres', '@anatorres', 'indigo'), ('Luis Peña', '@luisp', 'teal'), ('Sofía Ruiz', '@sofiaruiz', 'rose'), ('Javier M…', '@javim', 'amber')]):
+        cx = 52 + i * 80
+        o += '    ' + avatar(cx, 458, 22, c) + t(cx, 497, n, 12, 700, anchor='middle') + t(cx, 512, u, 12, 400, '#79809A', 'middle') + '\n'
+    o += '    ' + t(16, 548, 'Últimas conversaciones', 14, 700) + '\n'
+    chats = [('Javier Montes', '¿Te parece si revisamos los…', '10:24 a.m.', 'amber', '#4453C9'),
+             ('Sofía Ruiz', 'Listo, ya subí los cambios', '9:02 a.m.', 'rose', '#A0A8B8')]
+    for i, (n, m, h, c, chk) in enumerate(chats):
+        cy = 584 + i * 54
+        o += '    ' + avatar(36, cy, 20, c) + t(66, cy - 3, n, 13, 700) + t(66, cy + 14, m, 12, 400, '#556074') + t(324, cy - 3, h, 12, 400, '#79809A', 'end')
+        o += f'<path d="M306,{cy+10} l3,3 l6,-7 M312,{cy+13} l1,0 l6,-7" fill="none" stroke="{chk}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>\n'
+    o += '  </g></g>\n'
+    return o
+
+
+def sw_pantalla():
+    fid = 'swPantalla'
+    h = PY0 + PH_ + 10 + 56
+    s = head(fid, h, 'Una pantalla, como la ve quien usa la app', 'Una pantalla, como la ve quien usa la app',
+             'Un perfil con sus datos, sus botones, contactos sugeridos y conversaciones. Parece una sola cosa.',
+             'Maqueta de una pantalla de perfil en un celular: la foto y los datos de la persona, tres indicadores con números, un botón azul Seguir y un botón con borde Enviar mensaje, una fila de cuatro contactos sugeridos y dos conversaciones recientes.')
+    s += phone(fid)
+    s += f'  <text class="foot" x="480" y="{h-24}" text-anchor="middle" data-fit="860">Antes de seguir, cuenta: ¿cuántos bloques de esta pantalla se parecen entre sí?</text>\n</svg>\n'
+    return s
+
+
+def brick(x, cy, name, color, count=None, w=204):
+    soft, border, strong = FAM[color]
+    o = f'  <g transform="translate({x},{cy - 20})">\n'
+    for sx in (20, 56, 92):
+        o += f'    <rect x="{sx}" y="-7" width="24" height="10" rx="3" fill="{soft}" stroke="{border}" stroke-width="1.75"/>\n'
+    o += f'    <rect width="{w}" height="40" rx="7" fill="{soft}" stroke="{border}" stroke-width="1.75"/>\n'
+    o += f'    <text class="mono" x="16" y="20" dy="0.35em" font-size="14" font-weight="700" fill="{strong}" data-fit="{w - 64}">{name}</text>\n'
+    if count:
+        o += f'    <circle cx="{w - 24}" cy="20" r="13" fill="{strong}"/>\n'
+        o += f'    <text x="{w - 24}" y="20" dy="0.35em" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">×{count}</text>\n'
+    o += '  </g>\n'
+    return o
+
+
+def sw_piezas():
+    fid = 'swPiezas'
+    h = PY0 + PH_ + 10 + 56
+    s = head(fid, h, 'La misma pantalla, como la ve quien la programa', 'La misma pantalla, como la ve quien la programa',
+             'Siete piezas distintas, usadas trece veces. Cada color es una pieza; el número dice cuántas veces aparece.',
+             'La misma pantalla de perfil con cada componente marcado con un color y su nombre: ProfileInfo, StatsRow que contiene tres StatCard, PrimaryButton, SecondaryButton, cuatro ContactCard y dos ChatItem. Los nombres aparecen como piezas de Lego a los lados.')
+    s += phone(fid)
+
+    def mark(x, y, w, hh, color, rx=10):
+        _, _, strong = FAM[color]
+        return (f'  <rect x="{PX0 + x}" y="{PY0 + y}" width="{w}" height="{hh}" rx="{rx}" fill="{strong}" fill-opacity=".09" '
+                f'stroke="{strong}" stroke-width="2.25"/>\n')
+
+    def lead(color, d, dots):
+        _, _, strong = FAM[color]
+        o = f'  <path d="{d}" fill="none" stroke="{strong}" stroke-width="2"/>\n'
+        for (dx, dy) in dots:
+            o += f'  <circle cx="{dx}" cy="{dy}" r="3.5" fill="{strong}"/>\n'
+        return o
+
+    s += mark(12, 54, 316, 156, 'indigo')
+    s += mark(10, 216, 320, 76, 'violet', 14)
+    for i in range(3):
+        s += mark(19 + i * 104, 221, 94, 66, 'amber', 12)
+    s += mark(12, 298, 316, 48, 'teal', 24)
+    s += mark(12, 348, 316, 48, 'green', 24)
+    for i in range(4):
+        s += mark(16 + i * 80, 432, 72, 88, 'rose')
+    for i in range(2):
+        s += mark(10, 559 + i * 54, 320, 50, 'slate')
+
+    R, L = 700, 56
+    s += lead('indigo', f'M{PX0 + 328},{PY0 + 132} H{R}', [(PX0 + 328, PY0 + 132)])
+    s += brick(R, PY0 + 132, 'ProfileInfo', 'indigo')
+    s += lead('violet', f'M{PX0 + 330},{PY0 + 254} H{R}', [(PX0 + 330, PY0 + 254)])
+    s += brick(R, PY0 + 254, 'StatsRow', 'violet')
+    s += lead('amber', f'M{L + 204},{PY0 + 254} H{PX0 + 19}', [(PX0 + 19, PY0 + 254)])
+    s += brick(L, PY0 + 254, 'StatCard', 'amber', 3)
+    s += lead('teal', f'M{PX0 + 328},{PY0 + 322} H{R}', [(PX0 + 328, PY0 + 322)])
+    s += brick(R, PY0 + 322, 'PrimaryButton', 'teal')
+    s += lead('green', f'M{L + 204},{PY0 + 372} H{PX0 + 12}', [(PX0 + 12, PY0 + 372)])
+    s += brick(L, PY0 + 372, 'SecondaryButton', 'green')
+    s += lead('rose', f'M{PX0 + 328},{PY0 + 476} H{R}', [(PX0 + 328, PY0 + 476)])
+    s += brick(R, PY0 + 476, 'ContactCard', 'rose', 4)
+    y1, y2 = PY0 + 584, PY0 + 638
+    s += lead('slate', f'M{L + 204},{(y1 + y2)//2} H284 M{PX0 + 10},{y1} H284 V{y2} H{PX0 + 10}', [(PX0 + 10, y1), (PX0 + 10, y2)])
+    s += brick(L, (y1 + y2) // 2, 'ChatItem', 'slate', 2)
+    s += f'  <text class="foot" x="480" y="{h-24}" text-anchor="middle" data-fit="860">Lo que no está marcado, como la barra y los títulos, son widgets de Flutter usados directamente.</text>\n</svg>\n'
+    return s
+
+
+FIGS['swPantalla'] = sw_pantalla
+FIGS['swPiezas'] = sw_piezas
 
 
 def main():
