@@ -216,62 +216,6 @@ FIGS['ppScaffold'] = lambda: frame(dict(
 ))
 
 
-def pp_declarativo():
-    fid = 'ppDeclarativo'
-    h = 500
-    css = (f'      #{fid} .code{{font-size:13px;fill:#C9CFDA}}\n'
-           f'      #{fid} .k{{fill:#F08FB0}} #{fid} .s{{fill:#A8D8A0}} #{fid} .c{{fill:#7FD1E8}}\n')
-    s = head(fid, h, 'Dar órdenes o describir', 'Dar órdenes o describir',
-             'Las dos formas de programar una interfaz. Flutter usa la segunda.',
-             'Comparación entre el paradigma imperativo, donde el código modifica cada elemento de la pantalla paso a paso, y el declarativo, donde el código describe la interfaz a partir del estado y el framework la redibuja.', css)
-    s += '''  <text class="h" x="48" y="124">IMPERATIVO · DAR ÓRDENES</text>
-  <rect x="48" y="140" width="408" height="176" rx="12" fill="#1F2430"/>
-  <text class="code mono" x="68" y="174" data-fit="372">counter = counter + 1;</text>
-  <text class="code mono" x="68" y="202" data-fit="372">label.<tspan class="c">setText</tspan>(<tspan class="s">'3'</tspan>);</text>
-  <text class="code mono" x="68" y="230" data-fit="372">label.<tspan class="c">setColor</tspan>(red);</text>
-  <text class="code mono" x="68" y="258" data-fit="372">button.<tspan class="c">setEnabled</tspan>(<tspan class="k">false</tspan>);</text>
-  <text class="code mono" x="68" y="286" data-fit="372">warning.<tspan class="c">show</tspan>();</text>
-  <g transform="translate(48,332)">
-    <rect width="408" height="100" rx="12" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/>
-    <text class="nt" x="16" y="30" fill="#C2354F" data-fit="376">Tú cambias cada pieza, una por una</text>
-    <text class="nb" x="16" y="56" data-fit="376">Si olvidas una línea, la pantalla queda mostrando</text>
-    <text class="nb" x="16" y="76" data-fit="376">algo que ya no es cierto.</text>
-  </g>
-
-  <text class="h" x="504" y="124">DECLARATIVO · DESCRIBIR</text>
-  <g transform="translate(504,140)">
-    <rect width="112" height="72" rx="12" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
-    <text x="56" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05" data-fit="96">ESTADO</text>
-    <text class="mono" x="56" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="#161A26" data-fit="96">counter = 3</text>
-  </g>
-  <path class="link" d="M616,176 H648"/>
-  <g transform="translate(656,140)">
-    <rect width="96" height="72" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="2.5"/>
-    <text x="48" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#4453C9" data-fit="80">TU CÓDIGO</text>
-    <text class="mono" x="48" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="#161A26" data-fit="80">build()</text>
-  </g>
-  <path class="link" d="M752,176 H784"/>
-  <g transform="translate(792,140)">
-    <rect width="120" height="72" rx="12" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/>
-    <text x="60" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#3A8235" data-fit="104">INTERFAZ</text>
-    <text x="60" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="#161A26" data-fit="104">lo que se ve</text>
-  </g>
-  <rect x="504" y="228" width="408" height="88" rx="12" fill="#1F2430"/>
-  <text class="code mono" x="524" y="262" data-fit="372"><tspan class="c">Text</tspan>(<tspan class="s">'$counter'</tspan>),</text>
-  <text class="code mono" x="524" y="290" data-fit="372"><tspan class="k">if</tspan> (counter &gt;= 3) <tspan class="c">Text</tspan>(<tspan class="s">'Límite'</tspan>),</text>
-  <g transform="translate(504,332)">
-    <rect width="408" height="100" rx="12" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/>
-    <text class="nt" x="16" y="30" fill="#3A8235" data-fit="376">Tú describes cómo se ve para cada estado</text>
-    <text class="nb" x="16" y="56" data-fit="376">Cuando el estado cambia, Flutter vuelve a llamar a</text>
-    <text class="nb" x="16" y="76" data-fit="376">build() y redibuja. No hay pieza que se te olvide.</text>
-  </g>
-'''
-    s += f'  <text class="foot" x="48" y="{h-28}" data-fit="860">interfaz = f(estado): la pantalla es el resultado de una función, no una lista de cambios.</text>\n</svg>\n'
-    return s
-
-
-FIGS['ppDeclarativo'] = pp_declarativo
-
 # ───────────────────────────── S0011 · Text
 
 

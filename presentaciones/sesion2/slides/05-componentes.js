@@ -1,4 +1,4 @@
-// Bloque 4 · Tu primer componente (slides 24 a 30). Fuente: lección S0015.
+// Bloque 4 · Tu primer componente (slides 23 a 29). Fuente: lección S0015.
 (function () {
   'use strict';
   var H = window.H, icesi = window.icesi, I = H.ICONS, FIG = window.FIG;
@@ -16,12 +16,12 @@
     return '<div style="display:flex;flex-direction:column;gap:18px;">' + items.join('') + '</div>';
   }
 
-  // 24 · Divisor
+  // 23 · Divisor
   window.SLIDES.push(icesi.sectionSlideEBlue(
     'Tu primer componente<br><small style="font-size:0.5em;">Una pantalla está hecha de piezas.</small>'
   ));
 
-  // 25 · La pantalla, como la ve quien la usa
+  // 24 · La pantalla, como la ve quien la usa
   window.SLIDES.push(H.withNotes(icesi.slideGraphicRight(
     'Una pantalla de perfil',
     '<p style="font-size:26px;line-height:36px;">Así la ve quien usa la app: parece una sola cosa.</p>' +
@@ -30,7 +30,7 @@
   ), 'Con los widgets básicos y Column y Row se puede armar una pantalla entera, pero el código se vuelve largo y repetido muy rápido. ' +
     'Dejar que cuenten antes de pasar a la siguiente slide.'));
 
-  // 26 · La pantalla, como la ve quien la programa
+  // 25 · La pantalla, como la ve quien la programa
   window.SLIDES.push(H.withNotes(icesi.slideStandard(
     'La pantalla, como la ve quien la programa',
     '<div style="display:flex;align-items:center;justify-content:center;gap:44px;">' +
@@ -53,24 +53,24 @@
     'Tres ventajas: se construye por separado, se prueba sola y se cambia en un solo lugar. ' +
     'Lo que no está marcado, como la barra y los títulos, son widgets de Flutter usados directamente.'));
 
-  // 27 · De copiar y pegar a un componente
+  // 26 · De copiar y pegar a un componente
   window.SLIDES.push(H.withNotes(icesi.slideStandard('De copiar y pegar a un componente', FIG.swRepetido),
     'La fila de indicadores de un perfil: tres bloques idénticos en los que solo cambian dos datos. Copiar el bloque tres veces funciona hoy. ' +
     'El problema llega cuando cambia el diseño: hay que editar tres lugares, y con uno que se olvide la pantalla queda inconsistente. ' +
     'La señal para crear un componente: estás copiando un bloque y solo le cambias los datos.'));
 
-  // 28 · Anatomía de un componente
+  // 27 · Anatomía de un componente
   window.SLIDES.push(H.withNotes(icesi.slideStandard('Anatomía de un componente', FIG.swAnatomia),
     'Un componente es una clase que extiende StatelessWidget. Stateless es sin estado: recibe datos y los muestra. ' +
     'Los campos final son los datos, lo que cambia en cada uso. El constructor los recibe por nombre, y required obliga a entregarlos; super.key se copia siempre igual. ' +
     'build describe cómo se ve a partir de sus campos: aquí devuelve una Column con un Text debajo del otro. El editor escribe casi todo: teclear stless y aceptar la sugerencia.'));
 
-  // 29 · Usarlo en una pantalla
+  // 28 · Usarlo en una pantalla
   window.SLIDES.push(H.withNotes(icesi.slideStandard('Usarlo en una pantalla', FIG.swUso),
     'Se usa igual que un Text o un ElevatedButton: se escribe su nombre y se le entregan sus datos. Hay que importarlo en el archivo de la pantalla. ' +
     'Dentro de una Row las tres tarjetas se comportan como cualquier otro hijo.'));
 
-  // 30 · Dónde vive y cómo se llama
+  // 29 · Dónde vive y cómo se llama
   window.SLIDES.push(H.withNotes(icesi.slideStandard(
     'Dónde vive y cómo se llama',
     '<div style="margin-top:44px;">' + H.bigCards([

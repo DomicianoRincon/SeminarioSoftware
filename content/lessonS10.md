@@ -1,10 +1,10 @@
 # El proyecto por dentro
 
-<!-- tags: main.dart, runApp, MaterialApp, estructura de carpetas, declarativo frente a imperativo, rutas nombradas, lib/components, initialRoute, interfaz como función del estado, Could not find a generator for route, Scaffold, texto rojo con subrayado amarillo -->
+<!-- tags: main.dart, runApp, MaterialApp, estructura de carpetas, rutas nombradas, lib/components, initialRoute, Could not find a generator for route, Scaffold, texto rojo con subrayado amarillo -->
 
 **Presentación de la sesión:** [Componentes](https://domicianorincon.github.io/SeminarioSoftware/presentaciones/2/)
 
-En la sesión anterior creaste `miapp1` y la viste correr. Antes de escribir tu primer widget conviene saber dónde está cada cosa: qué carpetas hay, qué hace `main.dart` y por qué en Flutter la interfaz se **describe** en lugar de irse modificando.
+En la sesión anterior creaste `miapp1` y la viste correr. Antes de escribir tu primer widget conviene saber dónde está cada cosa: qué carpetas hay, qué hace `main.dart` y cómo se arma la primera pantalla.
 
 ## Las carpetas
 
@@ -389,88 +389,6 @@ routes: {'/home': (context) => const HomeScreen()},
 Ejecuta la app. Debes ver una barra con el título *Inicio* y el texto *Hola, Icesi* en el centro.
 
 **Este es tu banco de pruebas para toda la sesión.** En las lecciones que siguen, cada widget nuevo lo pruebas reemplazando el `Text('Hola, Icesi')` que está dentro de `Center`. `Scaffold` y `Center` se ven a fondo en la sesión 3; hoy basta con saber que uno arma la pantalla y el otro centra lo que tenga adentro.
-
-Fíjate en algo de `main.dart`: en ninguna parte dice *crea una ventana*, *ahora ponle un título*, *ahora agrégale una pantalla*. Dice **qué hay**: una `MaterialApp` con este título, este tema y estas rutas. Esa es la diferencia entre programar de forma imperativa y de forma declarativa.
-
-```svg
-<svg id="ppDeclarativo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="ppDeclarativo-ttl ppDeclarativo-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="ppDeclarativo-ttl">Dar órdenes o describir</title>
-  <desc id="ppDeclarativo-dsc">Comparación entre el paradigma imperativo, donde el código modifica cada elemento de la pantalla paso a paso, y el declarativo, donde el código describe la interfaz a partir del estado y el framework la redibuja.</desc>
-  <defs>
-    <style>
-      #ppDeclarativo .title{fill:#161A26;font-size:22px;font-weight:700}
-      #ppDeclarativo .sub{fill:#79809A;font-size:13.5px}
-      #ppDeclarativo .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
-      #ppDeclarativo .nt{font-size:15px;font-weight:700;fill:#161A26}
-      #ppDeclarativo .nb{fill:#454C61;font-size:13px}
-      #ppDeclarativo .lbl{fill:#556074;font-size:12px;font-weight:600}
-      #ppDeclarativo .foot{fill:#79809A;font-size:12px}
-      #ppDeclarativo .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
-      #ppDeclarativo .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#ppDeclarativo-arrow)}
-      #ppDeclarativo .code{font-size:13px;fill:#C9CFDA}
-      #ppDeclarativo .k{fill:#F08FB0} #ppDeclarativo .s{fill:#A8D8A0} #ppDeclarativo .c{fill:#7FD1E8}
-    </style>
-    <marker id="ppDeclarativo-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
-    </marker>
-  </defs>
-  <rect width="960" height="500" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">Dar órdenes o describir</text>
-  <text class="sub" x="48" y="80" data-fit="860">Las dos formas de programar una interfaz. Flutter usa la segunda.</text>
-  <text class="h" x="48" y="124">IMPERATIVO · DAR ÓRDENES</text>
-  <rect x="48" y="140" width="408" height="176" rx="12" fill="#1F2430"/>
-  <text class="code mono" x="68" y="174" data-fit="372">counter = counter + 1;</text>
-  <text class="code mono" x="68" y="202" data-fit="372">label.<tspan class="c">setText</tspan>(<tspan class="s">'3'</tspan>);</text>
-  <text class="code mono" x="68" y="230" data-fit="372">label.<tspan class="c">setColor</tspan>(red);</text>
-  <text class="code mono" x="68" y="258" data-fit="372">button.<tspan class="c">setEnabled</tspan>(<tspan class="k">false</tspan>);</text>
-  <text class="code mono" x="68" y="286" data-fit="372">warning.<tspan class="c">show</tspan>();</text>
-  <g transform="translate(48,332)">
-    <rect width="408" height="100" rx="12" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/>
-    <text class="nt" x="16" y="30" fill="#C2354F" data-fit="376">Tú cambias cada pieza, una por una</text>
-    <text class="nb" x="16" y="56" data-fit="376">Si olvidas una línea, la pantalla queda mostrando</text>
-    <text class="nb" x="16" y="76" data-fit="376">algo que ya no es cierto.</text>
-  </g>
-
-  <text class="h" x="504" y="124">DECLARATIVO · DESCRIBIR</text>
-  <g transform="translate(504,140)">
-    <rect width="112" height="72" rx="12" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
-    <text x="56" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#A96C05" data-fit="96">ESTADO</text>
-    <text class="mono" x="56" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="#161A26" data-fit="96">counter = 3</text>
-  </g>
-  <path class="link" d="M616,176 H648"/>
-  <g transform="translate(656,140)">
-    <rect width="96" height="72" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="2.5"/>
-    <text x="48" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#4453C9" data-fit="80">TU CÓDIGO</text>
-    <text class="mono" x="48" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="#161A26" data-fit="80">build()</text>
-  </g>
-  <path class="link" d="M752,176 H784"/>
-  <g transform="translate(792,140)">
-    <rect width="120" height="72" rx="12" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/>
-    <text x="60" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#3A8235" data-fit="104">INTERFAZ</text>
-    <text x="60" y="52" text-anchor="middle" font-size="14" font-weight="600" fill="#161A26" data-fit="104">lo que se ve</text>
-  </g>
-  <rect x="504" y="228" width="408" height="88" rx="12" fill="#1F2430"/>
-  <text class="code mono" x="524" y="262" data-fit="372"><tspan class="c">Text</tspan>(<tspan class="s">'$counter'</tspan>),</text>
-  <text class="code mono" x="524" y="290" data-fit="372"><tspan class="k">if</tspan> (counter &gt;= 3) <tspan class="c">Text</tspan>(<tspan class="s">'Límite'</tspan>),</text>
-  <g transform="translate(504,332)">
-    <rect width="408" height="100" rx="12" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/>
-    <text class="nt" x="16" y="30" fill="#3A8235" data-fit="376">Tú describes cómo se ve para cada estado</text>
-    <text class="nb" x="16" y="56" data-fit="376">Cuando el estado cambia, Flutter vuelve a llamar a</text>
-    <text class="nb" x="16" y="76" data-fit="376">build() y redibuja. No hay pieza que se te olvide.</text>
-  </g>
-  <text class="foot" x="48" y="472" data-fit="860">interfaz = f(estado): la pantalla es el resultado de una función, no una lista de cambios.</text>
-</svg>
-```
-
-En el estilo **imperativo** el código es una lista de órdenes sobre lo que ya está en pantalla: cambia este texto, pinta aquel de rojo, apaga ese botón. Funciona, pero cada cambio de datos obliga a recordar todas las piezas que dependen de él. La que se olvida queda mostrando un valor viejo, y ese es uno de los errores más comunes en una interfaz.
-
-En el estilo **declarativo**, que es el de Flutter, escribes una sola cosa: cómo se ve la pantalla **para un estado dado**. Cuando el estado cambia, Flutter vuelve a ejecutar `build` y redibuja lo que haga falta.
-
-> **interfaz = f(estado)**
-
-Es la idea con la que cerró la lección *¿Qué es el frontend?*, y ahora tiene nombre en el código: esa función `f` es el método `build`.
-
-Por eso los widgets de las próximas lecciones no tienen métodos como `setText` o `setColor`. Un `Text` no se modifica: se describe otra vez con el dato nuevo. En esta sesión el estado todavía no cambia, así que la descripción es fija. Qué pasa cuando cambia es el tema de la sesión 6.
 
 ## Ejemplo completo
 

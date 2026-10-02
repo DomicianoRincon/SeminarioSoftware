@@ -1,4 +1,4 @@
-// Bloque 1 · El proyecto por dentro (slides 3 a 8). Fuente: lección S0010.
+// Bloque 1 · El proyecto por dentro (slides 3 a 7). Fuente: lección S0010.
 (function () {
   'use strict';
   var H = window.H, icesi = window.icesi, FIG = window.FIG;
@@ -34,10 +34,4 @@
     'Este es el banco de pruebas de toda la sesión: cada widget nuevo se prueba reemplazando el Text que está dentro de Center. ' +
     'El programa entero está en el visor, en el apartado Ejemplo completo y en la lección Playground.'));
 
-  // 8 · Dar órdenes o describir
-  window.SLIDES.push(H.withNotes(icesi.slideStandard('Dar órdenes o describir', FIG.ppDeclarativo),
-    'En main.dart no dice crea una ventana, ahora ponle un título. Dice qué hay. ' +
-    'Imperativo: una lista de órdenes sobre lo que ya está en pantalla; la pieza que se olvida queda mostrando un valor viejo. ' +
-    'Declarativo, el de Flutter: se escribe cómo se ve la pantalla para un estado dado, y cuando el estado cambia Flutter vuelve a ejecutar build. ' +
-    'interfaz = f(estado), la idea de la sesión anterior: esa función f es el método build. Por eso un Text no tiene setText: se describe otra vez con el dato nuevo.'));
 })();

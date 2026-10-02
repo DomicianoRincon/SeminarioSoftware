@@ -1,4 +1,4 @@
-// Cierre (slide 37). Fuente: actividad fuera de clase de la sesión 18 del planeador.
+// Cierre (slide 36). Fuente: actividad fuera de clase de la sesión 18 del planeador.
 (function () {
   'use strict';
   var H = window.H, icesi = window.icesi, I = H.ICONS;

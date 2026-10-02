@@ -31,7 +31,7 @@ LESSONS = [f'lessonS{n}.md' for n in (10, 11, 12, 13, 14, 16, 17, 15, 18)]
 
 FRAMES = ['ppScaffold', 'txAnatomia', 'txLargo', 'imNetwork', 'btAnatomia', 'tfAnatomia', 'tfTipos',
           'clAnatomia', 'rwAnatomia', 'swAnatomia', 'swUso']
-PLAIN = ['ppCarpetas', 'ppDeclarativo', 'imAsset', 'imFit', 'btTipos', 'clAlineacion', 'rwAlineacion',
+PLAIN = ['ppCarpetas', 'imAsset', 'imFit', 'btTipos', 'clAlineacion', 'rwAlineacion',
          'swRepetido', 'tlBoton', 'tlStats', 'tlContacto']
 PHONES = ['swPantalla', 'swPiezas']
 
@@ -41,7 +41,6 @@ CROP_TOP = 96                 # quita el título y la bajada: la slide ya dice d
 # Recortes propios: (x, y, ancho, alto) del viewBox.
 CROPS = {
     'ppCarpetas': (32, 96, 896, 480),      # sin la nota del pie, que va en las notas de orador
-    'ppDeclarativo': (32, 100, 896, 344),
     'clAlineacion': (40, 100, 880, 496),   # las dos filas de cajas, sin la nota del pie
     'rwAlineacion': (40, 100, 880, 396),
     # Hasta la firma de build: el cuerpo, que solo devuelve una Column, va en las notas.

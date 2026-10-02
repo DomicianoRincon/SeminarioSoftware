@@ -44,38 +44,37 @@ dice la lección va en las notas de orador.
 | 5 | main.dart: el arranque | `slideStandard` | `import`, `main()`, `runApp`, `App` | SVG `ppMain`, mitad de arriba |
 | 6 | main.dart: MaterialApp | `slideStandard` | Título, tema, `initialRoute` y `routes` | SVG `ppMain`, mitad de abajo |
 | 7 | Las partes de un Scaffold | `slideStandard` | `Scaffold`, `appBar`, `body` y el `Text` del centro | SVG `ppScaffold` |
-| 8 | Dar órdenes o describir | `slideStandard` | Imperativo frente a declarativo; interfaz = f(estado) | SVG `ppDeclarativo` |
-| 9 | Widgets básicos | `sectionSlideEBlue` | Divisor de bloque | · |
-| 10 | Text y su estilo | `slideStandard` | `fontSize`, `fontWeight`, `color` | SVG `txAnatomia` |
-| 11 | Cuando el texto no cabe | `slideStandard` | `maxLines` y `overflow` | SVG `txLargo` |
-| 12 | Una imagen desde internet | `slideStandard` | `Image.network` | SVG `imNetwork` |
-| 13 | Una imagen que viaja con la app | `slideStandard` | `assets/`, `pubspec.yaml`, `Image.asset` | SVG `imAsset` |
-| 14 | fit: cuando la forma no coincide | `slideStandard` | `cover`, `contain`, `fill` | SVG `imFit` |
-| 15 | Button: onPressed y child | `slideStandard` | Qué hace y qué muestra | SVG `btAnatomia` |
-| 16 | Los cuatro botones | `slideStandard` | Elevated, Filled, Outlined, Text | SVG `btTipos` |
-| 17 | TextField e InputDecoration | `slideStandard` | `labelText`, `hintText`, icono, borde | SVG `tfAnatomia` |
-| 18 | Contraseña y teclado | `slideStandard` | `obscureText` y `keyboardType` | SVG `tfTipos` |
-| 19 | Column y Row | `sectionSlideEBlue` | Divisor de bloque | · |
-| 20 | Column: los dos ejes | `slideStandard` | `children`, eje principal vertical, eje cruzado horizontal | SVG `clAnatomia` |
-| 21 | Alinear los hijos de una Column | `slideStandard` | `mainAxisAlignment` y `crossAxisAlignment` | SVG `clAlineacion` |
-| 22 | Row: los mismos ejes, girados | `slideStandard` | Eje principal horizontal | SVG `rwAnatomia` |
-| 23 | Alinear los hijos de una Row | `slideStandard` | Las mismas dos propiedades | SVG `rwAlineacion` |
-| 24 | Tu primer componente | `sectionSlideEBlue` | Divisor de bloque | · |
-| 25 | Una pantalla de perfil | `slideGraphicRight` | Una pregunta: ¿cuántos bloques se parecen entre sí? | Celular de `swPantalla` |
-| 26 | La pantalla, como la ve quien la programa | `slideStandard` | Siete piezas, usadas trece veces: nombre de cada componente con su color y cuántas veces aparece | Celular de `swPiezas` al centro, tarjetas a los lados |
-| 27 | De copiar y pegar a un componente | `slideStandard` | Lo que se repite se escribe una vez | SVG `swRepetido` |
-| 28 | Anatomía de un componente | `slideStandard` | Campos `final`, constructor con nombre, `build` | SVG `swAnatomia` |
-| 29 | Usarlo en una pantalla | `slideStandard` | Se importa y se le pasan datos | SVG `swUso` |
-| 30 | Dónde vive y cómo se llama | `slideStandard` | Carpeta `lib/components/` · archivo `stat_card.dart` · clase `StatCard` | Tres tarjetas con ícono |
-| 31 | Manos a la obra | `titleSlideF` | Separador de la parte práctica: *Taller · Componentes* | · |
-| 32 | Seis componentes, ninguna pantalla | `slideStandard` | `PrimaryButton`, `SecondaryButton`, `StatsRow`, `ChatItem`, `ProfileInfo`, `ContactCard` | Grilla de seis tarjetas con ícono |
-| 33 | PrimaryButton y SecondaryButton | `slideStandard` | Un icono y un texto en una `Row` | SVG `tlBoton` |
-| 34 | StatsRow | `slideStandard` | Un componente hecho de tres `StatCard` | SVG `tlStats` |
-| 35 | ContactCard | `slideStandard` | Avatar, nombre y usuario | SVG `tlContacto` |
-| 36 | La prueba de un buen componente | `sectionSlideEGreen` | *Todo lo que cambia entre un uso y otro llega por el constructor* | · |
-| 37 | Para la próxima sesión | `slideSidebarLeftOrange` | Los seis componentes terminados y probados con dos juegos de datos · la sesión 3 arma pantallas con ellos · el Playground del visor para probar sin abrir el proyecto | Panel lateral: íconos |
+| 8 | Widgets básicos | `sectionSlideEBlue` | Divisor de bloque | · |
+| 9 | Text y su estilo | `slideStandard` | `fontSize`, `fontWeight`, `color` | SVG `txAnatomia` |
+| 10 | Cuando el texto no cabe | `slideStandard` | `maxLines` y `overflow` | SVG `txLargo` |
+| 11 | Una imagen desde internet | `slideStandard` | `Image.network` | SVG `imNetwork` |
+| 12 | Una imagen que viaja con la app | `slideStandard` | `assets/`, `pubspec.yaml`, `Image.asset` | SVG `imAsset` |
+| 13 | fit: cuando la forma no coincide | `slideStandard` | `cover`, `contain`, `fill` | SVG `imFit` |
+| 14 | Button: onPressed y child | `slideStandard` | Qué hace y qué muestra | SVG `btAnatomia` |
+| 15 | Los cuatro botones | `slideStandard` | Elevated, Filled, Outlined, Text | SVG `btTipos` |
+| 16 | TextField e InputDecoration | `slideStandard` | `labelText`, `hintText`, icono, borde | SVG `tfAnatomia` |
+| 17 | Contraseña y teclado | `slideStandard` | `obscureText` y `keyboardType` | SVG `tfTipos` |
+| 18 | Column y Row | `sectionSlideEBlue` | Divisor de bloque | · |
+| 19 | Column: los dos ejes | `slideStandard` | `children`, eje principal vertical, eje cruzado horizontal | SVG `clAnatomia` |
+| 20 | Alinear los hijos de una Column | `slideStandard` | `mainAxisAlignment` y `crossAxisAlignment` | SVG `clAlineacion` |
+| 21 | Row: los mismos ejes, girados | `slideStandard` | Eje principal horizontal | SVG `rwAnatomia` |
+| 22 | Alinear los hijos de una Row | `slideStandard` | Las mismas dos propiedades | SVG `rwAlineacion` |
+| 23 | Tu primer componente | `sectionSlideEBlue` | Divisor de bloque | · |
+| 24 | Una pantalla de perfil | `slideGraphicRight` | Una pregunta: ¿cuántos bloques se parecen entre sí? | Celular de `swPantalla` |
+| 25 | La pantalla, como la ve quien la programa | `slideStandard` | Siete piezas, usadas trece veces: nombre de cada componente con su color y cuántas veces aparece | Celular de `swPiezas` al centro, tarjetas a los lados |
+| 26 | De copiar y pegar a un componente | `slideStandard` | Lo que se repite se escribe una vez | SVG `swRepetido` |
+| 27 | Anatomía de un componente | `slideStandard` | Campos `final`, constructor con nombre, `build` | SVG `swAnatomia` |
+| 28 | Usarlo en una pantalla | `slideStandard` | Se importa y se le pasan datos | SVG `swUso` |
+| 29 | Dónde vive y cómo se llama | `slideStandard` | Carpeta `lib/components/` · archivo `stat_card.dart` · clase `StatCard` | Tres tarjetas con ícono |
+| 30 | Manos a la obra | `titleSlideF` | Separador de la parte práctica: *Taller · Componentes* | · |
+| 31 | Seis componentes, ninguna pantalla | `slideStandard` | `PrimaryButton`, `SecondaryButton`, `StatsRow`, `ChatItem`, `ProfileInfo`, `ContactCard` | Grilla de seis tarjetas con ícono |
+| 32 | PrimaryButton y SecondaryButton | `slideStandard` | Un icono y un texto en una `Row` | SVG `tlBoton` |
+| 33 | StatsRow | `slideStandard` | Un componente hecho de tres `StatCard` | SVG `tlStats` |
+| 34 | ContactCard | `slideStandard` | Avatar, nombre y usuario | SVG `tlContacto` |
+| 35 | La prueba de un buen componente | `sectionSlideEGreen` | *Todo lo que cambia entre un uso y otro llega por el constructor* | · |
+| 36 | Para la próxima sesión | `slideSidebarLeftOrange` | Los seis componentes terminados y probados con dos juegos de datos · la sesión 3 arma pantallas con ellos · el Playground del visor para probar sin abrir el proyecto | Panel lateral: íconos |
 
-**37 slides.** Son más que las 28 de la sesión 1 porque la sesión tiene nueve lecciones y 25
+**36 slides.** Son más que las 28 de la sesión 1 porque la sesión tiene nueve lecciones y 25
 figuras; casi todas las slides son una sola figura. Cada slide de contenido lleva **notas de
 orador** (tecla `S`) con lo que dice la lección.
 
@@ -83,13 +82,13 @@ orador** (tecla `S`) con lo que dice la lección.
 
 - **Título de la portada**: "Componentes", el tema del planeador para la sesión.
 - **`ppMain` en dos slides**: entera, el código quedaría a la mitad de su tamaño.
-- **Sin slide propia para "interfaz = f(estado)"**: ya fue una slide de la sesión 1; aquí va
-  dentro de *Dar órdenes o describir* y en sus notas.
+- **Sin el paradigma declarativo**: el profesor quitó ese apartado de `S0010` y su slide
+  (*Dar órdenes o describir*) el 2026-10-02. `interfaz = f(estado)` quedó en la sesión 1.
 - **Sin slides de "Ejemplo completo"** de cada lección: es código para ejecutar en el visor, no
   para proyectar. Se menciona en las notas.
 - **Del taller se muestran tres figuras**, las que tiene la lección. `ChatItem` y `ProfileInfo`
-  no tienen figura y quedan nombrados en la slide 32.
-- **Slide 37** toma la actividad *fuera de clase* del planeador para la sesión 18.
+  no tienen figura y quedan nombrados en la slide 31.
+- **Slide 36** toma la actividad *fuera de clase* del planeador para la sesión 18.
 
 ## Dónde queda
 
