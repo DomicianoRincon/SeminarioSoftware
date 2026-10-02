@@ -111,14 +111,12 @@ FIGS['ppMain'] = lambda: frame(dict(
     id='ppMain',
     title='<tspan class="mono">main.dart</tspan>, parte por parte',
     title_plain='main.dart, parte por parte',
-    desc='El archivo main.dart anotado: los import, la función main que llama a runApp, la clase App que es un StatelessWidget, y MaterialApp con su tabla de rutas y su ruta inicial.',
+    desc='El archivo main.dart anotado: el import, la función main que llama a runApp, la clase App que es un StatelessWidget, y MaterialApp con su tema, su tabla de rutas y su ruta inicial.',
     sub='Todo proyecto Flutter arranca aquí. Es corto, y cada bloque tiene un solo trabajo.',
     file='lib/main.dart',
     panel='QUÉ HACE CADA PARTE',
     code=[
         "import 'package:flutter/material.dart';",
-        "import 'screens/home_screen.dart';",
-        "import 'theme/app_theme.dart';",
         "",
         "void main() {",
         "  runApp(const App());",
@@ -131,28 +129,89 @@ FIGS['ppMain'] = lambda: frame(dict(
         "  Widget build(BuildContext context) {",
         "    return MaterialApp(",
         "      title: 'Mi app',",
-        "      theme: buildTheme(),",
+        "      theme: ThemeData(",
+        "        colorScheme: ColorScheme.fromSeed(",
+        "          seedColor: Colors.deepPurple,",
+        "        ),",
+        "      ),",
         "      initialRoute: '/home',",
         "      routes: {",
-        "        '/home': (context) => const HomeScreen(),",
+        "        '/home': (context) => const Text(\"Pantalla\"),",
         "      },",
         "    );",
         "  }",
         "}",
     ],
-    result=(note(16, 'slate', 'import', ['Trae código de otros archivos: los widgets', 'de Flutter y tus propias pantallas.'], 68)
+    result=(note(16, 'slate', 'import', ['Trae código de otros archivos. Este trae', 'los widgets de Flutter.'], 68)
             + note(96, 'amber', 'main()', ['La primera función que se ejecuta.', 'Es la puerta de entrada de la app.'], 68)
             + note(176, 'green', 'runApp(...)', ['Recibe el widget raíz y lo pone en pantalla.', 'Todo lo demás cuelga de él.'], 68)
             + note(256, 'indigo', 'App', ['El widget raíz. Lo escribes tú, como', 'cualquier otro componente.'], 68)
             + note(336, 'violet', 'MaterialApp', ['Configura toda la app: título, tema', 'y pantallas.'], 68)
-            + note(416, 'rose', 'routes e initialRoute', ['La tabla de pantallas, cada una con su', 'nombre, y por cuál se empieza.'], 68)),
+            + note(445, 'rose', 'routes e initialRoute', ['La tabla de pantallas, cada una con su', 'nombre, y por cuál se empieza.'], 68)),
     arrows=[
         dict(line=0, find='import', to=(16, 50), color='teal'),
-        dict(line=4, find='main()', to=(16, 130), color='amber'),
-        dict(line=5, find='runApp(const App())', to=(16, 210), color='green'),
-        dict(line=8, find='App', to=(16, 290), color='indigo'),
-        dict(line=13, find='MaterialApp', to=(16, 370), color='violet'),
-        dict(line=17, find='routes', to=(16, 450), color='rose'),
+        dict(line=2, find='main()', to=(16, 130), color='amber', lane=3),
+        dict(line=3, find='runApp(const App())', to=(16, 210), color='green', lane=2),
+        dict(line=6, find='App', to=(16, 276), color='indigo', lane=1),
+        dict(line=11, find='MaterialApp', to=(16, 370), color='violet'),
+        dict(line=19, find='routes', to=(16, 479), color='rose'),
+    ],
+))
+
+
+def pp_scaffold_result():
+    def mark(x, y, w, h, color, rx):
+        _, _, strong = FAM[color]
+        return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="{strong}" fill-opacity=".08" '
+                f'stroke="{strong}" stroke-width="2"/>')
+    o = '<rect x="78" y="30" width="204" height="402" rx="26" fill="#FFFFFF" stroke="#2A3040" stroke-width="3"/>'
+    o += mark(84, 36, 192, 390, 'indigo', 20)
+    o += mark(92, 44, 176, 56, 'amber', 12)
+    o += '<text x="108" y="72" dy="0.35em" font-size="17" font-weight="500" fill="#161A26">Inicio</text>'
+    o += mark(92, 108, 176, 310, 'green', 12)
+    o += mark(134, 249, 92, 28, 'rose', 8)
+    o += '<text x="180" y="263" dy="0.35em" text-anchor="middle" font-size="13.5" fill="#161A26">Hola, Icesi</text>'
+    return o
+
+
+FIGS['ppScaffold'] = lambda: frame(dict(
+    id='ppScaffold',
+    title='Las partes de un <tspan class="mono">Scaffold</tspan>',
+    title_plain='Las partes de un Scaffold',
+    desc='El archivo home_screen.dart anotado junto a la pantalla que produce: Scaffold abarca toda la pantalla, appBar es la barra de arriba con el título Inicio, body es el resto de la pantalla y dentro de él un Center deja el texto Hola, Icesi en el medio.',
+    sub='Scaffold arma la pantalla: tiene un lugar para la barra de arriba y otro para el contenido.',
+    file='lib/screens/home_screen.dart',
+    panel='RESULTADO',
+    min_h=480,
+    code=[
+        "import 'package:flutter/material.dart';",
+        "",
+        "class HomeScreen extends StatelessWidget {",
+        "  const HomeScreen({super.key});",
+        "",
+        "  @override",
+        "  Widget build(BuildContext context) {",
+        "    return Scaffold(",
+        "      appBar: AppBar(title: const Text('Inicio')),",
+        "      body: const Center(",
+        "        child: Text('Hola, Icesi'),",
+        "      ),",
+        "    );",
+        "  }",
+        "}",
+    ],
+    result=pp_scaffold_result(),
+    arrows=[
+        dict(line=7, find='Scaffold', to=(276, 104), color='indigo', lane=0, via=[(316, 12)]),
+        dict(line=8, find='appBar', to=(92, 72), color='amber', lane=1),
+        dict(line=9, find='body', to=(92, 168), color='green', lane=2),
+        dict(line=10, find="Text('Hola, Icesi')", to=(134, 263), color='rose'),
+    ],
+    cards=[
+        ('indigo', 'Scaffold', ['La pantalla completa.', 'Le da un lugar a', 'cada parte.']),
+        ('amber', 'appBar', ['La barra de arriba.', 'Aquí es un AppBar', 'con un título.']),
+        ('green', 'body', ['El contenido. Ocupa', 'lo que deja libre', 'la barra.']),
+        ('rose', 'Text', ['Center lo deja en el', 'medio. Es lo que vas', 'a cambiar hoy.']),
     ],
 ))
 

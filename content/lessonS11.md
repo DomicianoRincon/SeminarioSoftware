@@ -106,7 +106,7 @@ Las propiedades de `TextStyle` que más se usan:
 |---|---|---|
 | `fontSize` | El tamaño de la letra | `12` para una nota, `16` para texto normal, `24` o más para un título |
 | `fontWeight` | El grosor | `FontWeight.normal`, `FontWeight.w500`, `FontWeight.bold` |
-| `color` | El color | `Colors.indigo`, `Colors.grey`, o uno propio como `AppColors.primary` |
+| `color` | El color | `Colors.indigo`, `Colors.grey`, o uno propio como `Color(0xFF3F51B5)` |
 | `fontStyle` | Cursiva | `FontStyle.italic` |
 | `letterSpacing` | El espacio entre letras | `1.5` |
 

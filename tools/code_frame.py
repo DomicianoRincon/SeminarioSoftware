@@ -52,7 +52,7 @@ TONES = {
 
 KEYWORDS = {'const', 'return', 'class', 'extends', 'final', 'void', 'import', 'super',
             'required', 'this', 'null', 'true', 'false', 'flutter', 'assets'}
-TOKEN = re.compile(r"""('(?:[^'\\]|\\.)*')|(@?[A-Za-z_][A-Za-z0-9_]*)|(\d+(?:\.\d+)?)|(\s+)|(.)""")
+TOKEN = re.compile(r"""('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|(@?[A-Za-z_][A-Za-z0-9_]*)|(\d+(?:\.\d+)?)|(\s+)|(.)""")
 
 
 def highlight(line):
