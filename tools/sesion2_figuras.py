@@ -866,29 +866,34 @@ FIGS['rwAlineacion'] = rw_alineacion
 
 # ───────────────────────────── S0018 · Taller
 
-LOCK = ('<rect x="-8" y="-2" width="16" height="12" rx="2" fill="none" stroke="#161A26" stroke-width="1.75"/>'
-        '<path d="M-5,-2 V-6 a5,5 0 0 1 10,0 V-2" fill="none" stroke="#161A26" stroke-width="1.75"/>')
-MAIL_DARK = MAIL.replace('#556074', '#161A26')
-
-
-def tl_campo():
-    fid = 'tlCampo'
-    h = 300
-    s = head(fid, h, 'Campo de formulario', 'Campo de formulario',
-             'El mismo componente, usado dos veces. Cambian la etiqueta, el icono y si oculta lo que se escribe.',
-             'El componente campo de formulario usado dos veces: uno con la etiqueta Correo electrónico y un icono de sobre, y otro con la etiqueta Contraseña y un icono de candado. Cada uno es una etiqueta a la izquierda, un icono a la derecha y una línea debajo.')
-    for i, (label, icon, note) in enumerate([('Correo electrónico', MAIL_DARK, ["label: 'Correo electrónico'", 'icon: Icons.mail_outline']),
-                                              ('Contraseña', LOCK, ["label: 'Contraseña'", 'icon: Icons.lock_outline · obscure: true'])]):
-        x = 48 + i * 456
-        s += f'  <g transform="translate({x},112)">\n'
-        s += '    <rect width="408" height="100" rx="12" fill="#F4E1E6"/>\n'
-        s += f'    <text x="24" y="50" dy="0.35em" font-size="16" fill="#161A26" data-fit="300">{label}</text>\n'
-        s += f'    <g transform="translate(368,50)">{icon}</g>\n'
-        s += '    <path d="M24,76 H384" stroke="#454C61" stroke-width="1.5"/>\n'
-        for j, ln in enumerate(note):
-            s += f'    <text class="mono" x="0" y="{128 + j*20}" font-size="12" fill="#556074" data-fit="408">{ln}</text>\n'
-        s += '  </g>\n'
-    s += '</svg>\n'
+def tl_contacto():
+    fid = 'tlContacto'
+    h = 372
+    s = head(fid, h, 'Contacto sugerido', 'Contacto sugerido',
+             'Tu componente es una sola de estas tarjetas. La fila que se desliza hacia los lados se arma en la sesión 3.',
+             'Una sección de contactos sugeridos con una fila de tarjetas pequeñas, cada una con una foto circular, un nombre y un usuario. La fila continúa más allá del borde derecho. La primera tarjeta está resaltada: es el componente que se construye.')
+    people = [('Ana Torres', '@anatorres', 'indigo'), ('Luis Peña', '@luisp', 'teal'), ('Sofía Ruiz', '@sofiaruiz', 'rose'),
+              ('Javier Montes', '@javimontes', 'amber'), ('Mariana Vale…', '@marianav', 'violet'), ('Camilo Díaz', '@camilod', 'green'),
+              ('Laura Gómez', '@laurag', 'indigo'), ('Pedro Cano', '@pedroc', 'teal')]
+    s += f'  <clipPath id="{fid}-clip"><rect x="48" y="112" width="864" height="196" rx="12"/></clipPath>\n'
+    s += '  <rect x="48" y="112" width="864" height="196" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    s += '  <text x="72" y="146" font-size="16" font-weight="700" fill="#161A26" data-fit="300">Contactos sugeridos</text>\n'
+    s += f'  <g clip-path="url(#{fid}-clip)">\n'
+    for i, (name, user, color) in enumerate(people):
+        soft, border, strong = FAM[color]
+        x = 72 + i * 116
+        s += f'    <g transform="translate({x},168)">\n'
+        if i == 0:
+            s += '      <rect x="-6" y="-8" width="108" height="132" rx="10" fill="none" stroke="#F2C069" stroke-width="2.5"/>\n'
+        s += f'      <circle cx="48" cy="32" r="30" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += f'      <circle cx="48" cy="24" r="10" fill="{border}"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="{border}"/>\n'
+        s += f'      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">{name}</text>\n'
+        s += f'      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">{user}</text>\n'
+        s += '    </g>\n'
+    s += '  </g>\n'
+    s += '  <path d="M844,146 H884 M876,140 L884,146 L876,152" fill="none" stroke="#79809A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>\n'
+    s += '  <text x="832" y="146" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="140">se desliza</text>\n'
+    s += f'  <text class="foot" x="48" y="{h-28}" data-fit="860">Todas las tarjetas miden lo mismo de ancho, y un nombre que no cabe termina en puntos suspensivos.</text>\n</svg>\n'
     return s
 
 
@@ -920,7 +925,7 @@ def tl_boton():
     return s
 
 
-FIGS['tlCampo'] = tl_campo
+FIGS['tlContacto'] = tl_contacto
 FIGS['tlBoton'] = tl_boton
 
 

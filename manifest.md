@@ -64,7 +64,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | *(añadido por el profesor)* TextField | `S0014` TextField, **solo apariencia**: `InputDecoration`, `obscureText`, `keyboardType`. Leer el texto (controller y estado) queda para la sesión 6 |
 | *(añadido por el profesor; el planeador lo pone en la sesión 19)* Column y Row | `S0016` Column · `S0017` Row: `children`, los dos ejes, `mainAxisAlignment`, `crossAxisAlignment` y `SizedBox`. `Expanded`, `Container`, `Padding` y `SingleChildScrollView` quedan para la sesión 3 |
 | Concepto de componente como pieza reutilizable | `S0015` StatelessWidget: tu primer componente |
-| Taller: componentes Stateless montados en una pantalla | `S0018` Taller · Componentes: **solo componentes**, seis. Empieza por dos nuevos, `PrimaryButton` (azul) y `SecondaryButton` (con borde), los dos con un icono y un texto en una `Row`. Siguen tres del Lab 1 de Móviles (indicador numérico, elemento de conversación, bloque de información de perfil) y cierra con el campo de formulario del login |
+| Taller: componentes Stateless montados en una pantalla | `S0018` Taller · Componentes: **solo componentes**, seis. Empieza por dos nuevos, `PrimaryButton` (azul) y `SecondaryButton` (con borde), los dos con un icono y un texto en una `Row`. Siguen tres del Lab 1 de Móviles (indicador numérico, elemento de conversación, bloque de información de perfil) y cierra con `ContactCard`, una versión mínima del perfil (foto, nombre y usuario) pensada para una fila horizontal de contactos sugeridos |
 | *Fuera de clase:* terminar los componentes del taller | `S0018`. Armar las pantallas de perfil y de login con ellos es el taller de la sesión 3 |
 
 Notas:
@@ -72,7 +72,7 @@ Notas:
 - Las lecciones heredadas `lessonD4A` a `lessonD4D` (`0027` a `0030`) y `lessonD1` (`0023`) **no** se usaron: se escribieron propias, con figuras de código anotado. Siguen en `content/` como cantera.
 - El Lab 1 pide `Row` y `Column`, que el planeador pone en la sesión 3. Se adelantaron a esta sesión (`S0016`, `S0017`), antes de `S0015`, para que el taller se pueda hacer. La sesión 3 retoma el layout desde `Expanded`.
 - El taller **no** es `lab1.md` (`0033`): ese mezcla componentes y pantallas. `S0018` reutiliza sus imágenes `Lab1Item1.png` a `Lab1Item3.png` y el mismo Figma, y deja el armado para la sesión 3. `lab1.md` sigue en `content/` como cantera.
-- El campo de formulario del taller (`LoginField`) es un `StatelessWidget` sin controller, solo apariencia. La convención del curso pide que un componente con input sea `StatefulWidget`: se convierte en la sesión 6.
+- El scroll horizontal de los contactos sugeridos **no** está en el taller: `ContactCard` se prueba en una `Row`. La fila deslizable es para la sesión 3.
 - Las 21 figuras salen de `tools/sesion2_figuras.py` (ver `CLAUDE.md` → *Código: frame de editor SVG*).
 
 ## Lecciones reutilizadas de Aplicaciones Móviles

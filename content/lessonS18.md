@@ -1,6 +1,6 @@
 # Taller · Componentes
 
-<!-- tags: taller de componentes, botón con icono y texto, OutlinedButton.styleFrom, CircleAvatar, Expanded, RenderFlex overflowed on the right, ElevatedButton.styleFrom, IconData como parámetro, foto circular, lib/components -->
+<!-- tags: taller de componentes, botón con icono y texto, CircleAvatar, tarjeta de contacto, Expanded, RenderFlex overflowed on the right, ElevatedButton.styleFrom, OutlinedButton.styleFrom, IconData como parámetro, ancho fijo con SizedBox -->
 
 En este taller construyes **seis componentes**. Solo componentes: ninguna pantalla. En la próxima sesión los vas a usar para armar una pantalla de perfil y una de inicio de sesión, así que tenerlos terminados es la preparación para esa clase.
 
@@ -241,70 +241,132 @@ Es una `Column` centrada. La última línea es una `Row` con dos parejas de icon
 - Los iconos son `Icons.mail_outline` e `Icons.location_on_outlined`.
 - `mainAxisSize: MainAxisSize.min` evita que la columna ocupe toda la pantalla.
 
-## 5. Campo de formulario
+## 5. Contacto sugerido
 
-El campo de las pantallas de inicio de sesión y de registro: una etiqueta, un icono a la derecha y una línea debajo.
+Una versión mínima del perfil: la foto, el nombre y el usuario. Es la tarjeta de una sección de *contactos sugeridos*, donde varias se ponen en fila y la persona las desliza hacia los lados.
 
 ```svg
-<svg id="tlCampo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tlCampo-ttl tlCampo-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="tlCampo-ttl">Campo de formulario</title>
-  <desc id="tlCampo-dsc">El componente campo de formulario usado dos veces: uno con la etiqueta Correo electrónico y un icono de sobre, y otro con la etiqueta Contraseña y un icono de candado. Cada uno es una etiqueta a la izquierda, un icono a la derecha y una línea debajo.</desc>
+<svg id="tlContacto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 372" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tlContacto-ttl tlContacto-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tlContacto-ttl">Contacto sugerido</title>
+  <desc id="tlContacto-dsc">Una sección de contactos sugeridos con una fila de tarjetas pequeñas, cada una con una foto circular, un nombre y un usuario. La fila continúa más allá del borde derecho. La primera tarjeta está resaltada: es el componente que se construye.</desc>
   <defs>
     <style>
-      #tlCampo .title{fill:#161A26;font-size:22px;font-weight:700}
-      #tlCampo .sub{fill:#79809A;font-size:13.5px}
-      #tlCampo .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
-      #tlCampo .nt{font-size:15px;font-weight:700;fill:#161A26}
-      #tlCampo .nb{fill:#454C61;font-size:13px}
-      #tlCampo .lbl{fill:#556074;font-size:12px;font-weight:600}
-      #tlCampo .foot{fill:#79809A;font-size:12px}
-      #tlCampo .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
-      #tlCampo .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tlCampo-arrow)}
+      #tlContacto .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tlContacto .sub{fill:#79809A;font-size:13.5px}
+      #tlContacto .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tlContacto .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tlContacto .nb{fill:#454C61;font-size:13px}
+      #tlContacto .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tlContacto .foot{fill:#79809A;font-size:12px}
+      #tlContacto .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tlContacto .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tlContacto-arrow)}
     </style>
-    <marker id="tlCampo-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+    <marker id="tlContacto-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
     </marker>
   </defs>
-  <rect width="960" height="300" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">Campo de formulario</text>
-  <text class="sub" x="48" y="80" data-fit="860">El mismo componente, usado dos veces. Cambian la etiqueta, el icono y si oculta lo que se escribe.</text>
-  <g transform="translate(48,112)">
-    <rect width="408" height="100" rx="12" fill="#F4E1E6"/>
-    <text x="24" y="50" dy="0.35em" font-size="16" fill="#161A26" data-fit="300">Correo electrónico</text>
-    <g transform="translate(368,50)"><rect x="-9" y="-7" width="18" height="14" rx="2" fill="none" stroke="#161A26" stroke-width="1.75"/><path d="M-9,-6 L0,1 L9,-6" fill="none" stroke="#161A26" stroke-width="1.75"/></g>
-    <path d="M24,76 H384" stroke="#454C61" stroke-width="1.5"/>
-    <text class="mono" x="0" y="128" font-size="12" fill="#556074" data-fit="408">label: 'Correo electrónico'</text>
-    <text class="mono" x="0" y="148" font-size="12" fill="#556074" data-fit="408">icon: Icons.mail_outline</text>
+  <rect width="960" height="372" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Contacto sugerido</text>
+  <text class="sub" x="48" y="80" data-fit="860">Tu componente es una sola de estas tarjetas. La fila que se desliza hacia los lados se arma en la sesión 3.</text>
+  <clipPath id="tlContacto-clip"><rect x="48" y="112" width="864" height="196" rx="12"/></clipPath>
+  <rect x="48" y="112" width="864" height="196" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+  <text x="72" y="146" font-size="16" font-weight="700" fill="#161A26" data-fit="300">Contactos sugeridos</text>
+  <g clip-path="url(#tlContacto-clip)">
+    <g transform="translate(72,168)">
+      <rect x="-6" y="-8" width="108" height="132" rx="10" fill="none" stroke="#F2C069" stroke-width="2.5"/>
+      <circle cx="48" cy="32" r="30" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#A9B4F2"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#A9B4F2"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Ana Torres</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@anatorres</text>
+    </g>
+    <g transform="translate(188,168)">
+      <circle cx="48" cy="32" r="30" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#86D3CA"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#86D3CA"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Luis Peña</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@luisp</text>
+    </g>
+    <g transform="translate(304,168)">
+      <circle cx="48" cy="32" r="30" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#F3A3B2"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#F3A3B2"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Sofía Ruiz</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@sofiaruiz</text>
+    </g>
+    <g transform="translate(420,168)">
+      <circle cx="48" cy="32" r="30" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#F0C572"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#F0C572"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Javier Montes</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@javimontes</text>
+    </g>
+    <g transform="translate(536,168)">
+      <circle cx="48" cy="32" r="30" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#C9A6EE"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#C9A6EE"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Mariana Vale…</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@marianav</text>
+    </g>
+    <g transform="translate(652,168)">
+      <circle cx="48" cy="32" r="30" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#9FD68D"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#9FD68D"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Camilo Díaz</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@camilod</text>
+    </g>
+    <g transform="translate(768,168)">
+      <circle cx="48" cy="32" r="30" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#A9B4F2"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#A9B4F2"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Laura Gómez</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@laurag</text>
+    </g>
+    <g transform="translate(884,168)">
+      <circle cx="48" cy="32" r="30" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+      <circle cx="48" cy="24" r="10" fill="#86D3CA"/><path d="M28,54 a20,17 0 0 1 40,0 Z" fill="#86D3CA"/>
+      <text x="48" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#161A26" data-fit="110">Pedro Cano</text>
+      <text x="48" y="108" text-anchor="middle" font-size="12" fill="#79809A" data-fit="110">@pedroc</text>
+    </g>
   </g>
-  <g transform="translate(504,112)">
-    <rect width="408" height="100" rx="12" fill="#F4E1E6"/>
-    <text x="24" y="50" dy="0.35em" font-size="16" fill="#161A26" data-fit="300">Contraseña</text>
-    <g transform="translate(368,50)"><rect x="-8" y="-2" width="16" height="12" rx="2" fill="none" stroke="#161A26" stroke-width="1.75"/><path d="M-5,-2 V-6 a5,5 0 0 1 10,0 V-2" fill="none" stroke="#161A26" stroke-width="1.75"/></g>
-    <path d="M24,76 H384" stroke="#454C61" stroke-width="1.5"/>
-    <text class="mono" x="0" y="128" font-size="12" fill="#556074" data-fit="408">label: 'Contraseña'</text>
-    <text class="mono" x="0" y="148" font-size="12" fill="#556074" data-fit="408">icon: Icons.lock_outline · obscure: true</text>
-  </g>
+  <path d="M844,146 H884 M876,140 L884,146 L876,152" fill="none" stroke="#79809A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="832" y="146" dy="0.35em" text-anchor="end" font-size="12" fill="#79809A" data-fit="140">se desliza</text>
+  <text class="foot" x="48" y="344" data-fit="860">Todas las tarjetas miden lo mismo de ancho, y un nombre que no cabe termina en puntos suspensivos.</text>
 </svg>
 ```
 
-**Archivo:** `lib/components/login_field.dart` · **Clase:** `LoginField`
+**Archivo:** `lib/components/contact_card.dart` · **Clase:** `ContactCard`
 
 | Parámetro | Tipo | Ejemplo |
 |---|---|---|
-| `label` | `String` | `'Correo electrónico'` |
-| `icon` | `IconData` | `Icons.mail_outline` |
-| `obscure` | `bool` | `true` para la contraseña |
+| `imageUrl` | `String` | `'https://i.pravatar.cc/150?img=47'` |
+| `name` | `String` | `'Mariana Valenzuela'` |
+| `username` | `String` | `'@marianav'` |
 
-Es un `TextField` con su `InputDecoration`: la etiqueta va en `labelText` y el icono en `suffixIcon`. La línea de abajo es el borde que el campo trae por defecto, así que no hay que pedirla.
+Compárala con el bloque de información de perfil: es la misma persona, contada con menos datos. Es normal que una app tenga dos componentes para lo mismo, uno de detalle y uno de resumen.
 
-Una cosa nueva en el constructor: **un parámetro con valor por defecto**. La mayoría de los campos no ocultan el texto, así que `obscure` no es `required`. En el constructor se escribe `this.obscure = false`, y solo el campo de contraseña lo pasa.
+Por dentro es una `Column` con un `CircleAvatar` y dos `Text`. Lo nuevo es que tiene que funcionar **al lado de otras iguales**, y eso pide dos cuidados.
 
-Este componente todavía no puede entregar lo que la persona escribe. Lo completas en la sesión 6, cuando veas estado.
+**Pista 1 · el ancho fijo.** Una `Column` mide lo que mide su hijo más ancho, así que cada tarjeta saldría de un ancho distinto según el nombre. Envuélvela en un `SizedBox` con `width` para que todas midan igual:
+
+```dart
+SizedBox(
+  width: 96,
+  child: Column(
+    children: [
+      CircleAvatar(
+        radius: 30,
+        backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=47'),
+      ),
+      SizedBox(height: 8),
+      Text('Mariana Valenzuela'),
+      Text('@marianav'),
+    ],
+  ),
+)
+```
+
+**Pista 2 · el nombre largo.** Con el ancho fijo, un nombre largo ya no cabe en un renglón. Usa `maxLines: 1` y `overflow: TextOverflow.ellipsis` en los dos textos. Pruébala con *Mariana Valenzuela* y con *Ana*.
+
+Para verla, pon tres o cuatro en una `Row` dentro de `HomeScreen`, con un `SizedBox(width: 12)` entre ellas. Si agregas tantas que no caben, aparece la franja amarilla y negra: es lo esperado. El deslizamiento horizontal es de la sesión 3, y tu componente no cambia cuando llegue.
 
 ## Qué debes tener al terminar
 
 - Seis archivos en `lib/components/`, cada uno con un componente y con la forma del apartado *Cómo trabajar*.
-- Cada componente probado en `HomeScreen` con **al menos dos juegos de datos distintos**: otro nombre, un mensaje más largo, otra etiqueta, otro icono.
+- Cada componente probado en `HomeScreen` con **al menos dos juegos de datos distintos**: otro nombre, un mensaje más largo, otro icono.
 - El proyecto sin errores en el editor.
 
 Si te alcanza el tiempo, prueba qué pasa con datos incómodos: un nombre muy largo, una descripción de cinco renglones, un número de seis cifras. Un componente que solo se ve bien con los datos del diseño todavía no está terminado.
