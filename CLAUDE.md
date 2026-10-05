@@ -169,6 +169,11 @@ Cómo se hacen:
   Texto de 12 px como mínimo, porque la figura se reduce en pantallas angostas.
 - Textos de la figura en español. Nombres de botones, comandos y mensajes se dejan como
   aparecen en pantalla (en inglés).
+- **Animadas, si el tema lo pide**: con CSS dentro del propio SVG (`@keyframes` prefijados
+  con el `id`), por pasos de duración fija. Si la raíz declara `data-steps` y
+  `data-step-seconds`, el visor (`SvgBlock.jsx`) añade debajo los botones de anterior,
+  reproducir/pausar y siguiente; toda animación que siga los pasos debe durar exactamente
+  `pasos × segundos`. Ejemplo y generador: `FlutterLearning/tools/bloc_figuras.py`.
 
 ### Consola: siempre en un frame SVG
 
