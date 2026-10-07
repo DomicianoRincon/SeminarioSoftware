@@ -1,6 +1,6 @@
 # Armar una pantalla
 
-<!-- tags: armar una pantalla con componentes, import package, Target of URI doesn't exist, The method 'ProfileInfo' isn't defined, orden de los widgets de una pantalla, usar un componente en una Screen, The named parameter is required, datos de prueba en la pantalla, composición, qué va primero Scaffold o SafeArea -->
+<!-- tags: armar una pantalla con componentes, import package, Target of URI doesn't exist, The method 'ProfileInfo' isn't defined, orden de los widgets de una pantalla, usar un componente en una Screen, The named parameter is required, composición, qué va primero Scaffold o SafeArea -->
 
 Ya tienes las dos mitades: los componentes de la sesión anterior y los widgets que arman una pantalla. Falta juntarlas. Una pantalla bien hecha casi no dibuja nada por su cuenta: ordena componentes y les entrega sus datos.
 
@@ -184,14 +184,6 @@ class ProfileScreen extends StatelessWidget {
 ```
 
 Compara este archivo con lo que sería la misma pantalla sin componentes: más de cien líneas de `Row`, `Column` y `Text` mezcladas. Aquí se lee de un vistazo qué hay en la pantalla y en qué orden.
-
-Si algo se ve mal, pregúntate primero de quién es el problema. El tamaño de la foto o el color de un número se corrigen en el componente. La separación entre dos bloques o el orden en que aparecen se corrigen en la pantalla.
-
-## De dónde salen los datos
-
-Por ahora los datos están escritos en la pantalla: el nombre, el correo, los números. Es lo correcto para esta etapa, porque te deja terminar toda la interfaz sin depender de nada más.
-
-Más adelante esos mismos datos van a llegar de otro lado: de un modelo en la sesión 7 y de una base de datos en la sesión 11. Los componentes no van a cambiar, porque ya reciben todo por el constructor. Solo cambia quién se los entrega.
 
 ## Ejemplo completo
 
