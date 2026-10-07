@@ -85,7 +85,7 @@ Necesitas tus siete componentes terminados en `lib/components/`. Si te falta alg
 
 **Archivo:** `lib/screens/profile_screen.dart` · **Clase:** `ProfileScreen` · **Ruta:** `'/profile'`
 
-La pantalla ya existe y ya abre la app, desde la lección *Scaffold*:
+La pantalla ya existe y ya está anotada en `main.dart`:
 
 ```dart
 initialRoute: '/profile',
@@ -94,7 +94,54 @@ routes: {
 },
 ```
 
-Tiene el esqueleto de la lección anterior: `Scaffold`, `SafeArea`, `SingleChildScrollView` y una `Column`. Los cuatro bloques son hijos de esa `Column`, de arriba hacia abajo. Ejecuta después de cada uno.
+Antes del primer bloque, arma el esqueleto del `body`, de afuera hacia adentro:
+
+```svg
+<svg id="apCapas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 464" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="apCapas-ttl apCapas-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="apCapas-ttl">Una pantalla, de afuera hacia adentro</title>
+  <desc id="apCapas-dsc">Cajas anidadas. La de afuera es Scaffold, la pantalla. Adentro, SafeArea, que aleja el contenido de los bordes. Adentro, SingleChildScrollView, que lo deja deslizar. Adentro, Column, que apila. En el centro, tres componentes: ProfileInfo, StatsRow y ChatItem.</desc>
+  <defs>
+    <style>
+      #apCapas .title{fill:#161A26;font-size:22px;font-weight:700}
+      #apCapas .sub{fill:#79809A;font-size:13.5px}
+      #apCapas .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #apCapas .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #apCapas .nb{fill:#454C61;font-size:13px}
+      #apCapas .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #apCapas .foot{fill:#79809A;font-size:12px}
+      #apCapas .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #apCapas .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#apCapas-arrow)}
+    </style>
+    <marker id="apCapas-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="464" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Una pantalla, de afuera hacia adentro</text>
+  <text class="sub" x="48" y="80" data-fit="860">Cada widget envuelve al siguiente y resuelve una sola cosa. Tus componentes van en el centro.</text>
+  <rect x="48" y="112" width="864" height="304" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+  <text x="64" y="139" font-size="14.5" font-weight="700" fill="#4453C9" text-anchor="start" class="mono">Scaffold</text>
+  <text x="896" y="139" font-size="13" font-weight="400" fill="#556074" text-anchor="end" data-fit="360">La pantalla: fondo y barra</text>
+  <rect x="72" y="156" width="816" height="244" rx="12" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/>
+  <text x="88" y="183" font-size="14.5" font-weight="700" fill="#3A8235" text-anchor="start" class="mono">SafeArea</text>
+  <text x="872" y="183" font-size="13" font-weight="400" fill="#556074" text-anchor="end" data-fit="360">Lejos de la cámara y de los gestos</text>
+  <rect x="96" y="200" width="768" height="184" rx="12" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <text x="112" y="227" font-size="14.5" font-weight="700" fill="#A96C05" text-anchor="start" class="mono">SingleChildScrollView</text>
+  <text x="848" y="227" font-size="13" font-weight="400" fill="#556074" text-anchor="end" data-fit="360">Se desliza si no cabe</text>
+  <rect x="120" y="244" width="720" height="124" rx="12" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="136" y="271" font-size="14.5" font-weight="700" fill="#0F8478" text-anchor="start" class="mono">Column</text>
+  <text x="824" y="271" font-size="13" font-weight="400" fill="#556074" text-anchor="end" data-fit="360">Apila uno debajo de otro</text>
+  <rect x="136" y="288" width="224" height="64" rx="8" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>
+  <text dy="0.35em" x="248" y="320" font-size="14" font-weight="700" fill="#161A26" text-anchor="middle" class="mono">ProfileInfo</text>
+  <rect x="368" y="288" width="224" height="64" rx="8" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>
+  <text dy="0.35em" x="480" y="320" font-size="14" font-weight="700" fill="#161A26" text-anchor="middle" class="mono">StatsRow</text>
+  <rect x="600" y="288" width="224" height="64" rx="8" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>
+  <text dy="0.35em" x="712" y="320" font-size="14" font-weight="700" fill="#161A26" text-anchor="middle" class="mono">ChatItem</text>
+  <text x="480" y="440" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="middle" data-fit="860">Se escribe en este orden y se lee igual: de afuera hacia adentro.</text>
+</svg>
+```
+
+El `SingleChildScrollView` lleva `padding: EdgeInsets.all(16)`. Los cuatro bloques son hijos de la `Column`, de arriba hacia abajo. Ejecuta después de cada uno.
 
 Entre un bloque y el siguiente va un `SizedBox(height: 24)`. Entre las cosas de un mismo bloque, `8` o `12`. El borde de la pantalla lo pone el `padding` del scroll.
 
@@ -213,9 +260,18 @@ Léelo antes de usarlo. Lo único que necesitas saber de un componente que no es
 </svg>
 ```
 
-Este bloque ya lo tienes de la lección anterior: `ProfileInfo` y, debajo, `StatsRow`.
+`ProfileInfo` y, debajo, `StatsRow`, con un `SizedBox(height: 24)` entre los dos.
 
-Falta probarlo en una pantalla angosta. Reduce la ventana de Chrome hasta que mida lo que un teléfono pequeño. Si aparece la franja amarilla y negra en `StatsRow`, las tres tarjetas ya no caben. El arreglo va en el componente, no en la pantalla: en `stats_row.dart`, envuelve cada `StatCard` en un `Expanded` y sepáralas con `SizedBox(width: 8)`.
+Cada componente vive en su archivo, así que la pantalla tiene que importarlo, igual que `main.dart` importa la pantalla:
+
+```dart
+import 'package:miapp1/components/profile_info.dart';
+import 'package:miapp1/components/stats_row.dart';
+```
+
+Si usas un componente sin importarlo, el editor lo subraya y dice `The method 'ProfileInfo' isn't defined`.
+
+Pruébalo en una pantalla angosta. Reduce la ventana de Chrome hasta que mida lo que un teléfono pequeño. Si aparece la franja amarilla y negra en `StatsRow`, las tres tarjetas ya no caben. El arreglo va en el componente, no en la pantalla: en `stats_row.dart`, envuelve cada `StatCard` en un `Expanded` y sepáralas con `SizedBox(width: 8)`.
 
 En el diseño del [proyecto de Figma](https://www.figma.com/design/cn5cLhBPnuJC4tvewTtVmq/Aplicaciones-M%C3%B3viles?node-id=2014-421&t=oULdr2bxOVE437ux-1) este bloque va dentro de una tarjeta blanca con esquinas redondeadas. Si te alcanza el tiempo, hazla: es un `Container` con `padding` y `decoration` que envuelve los dos componentes, sobre un `Scaffold` con `backgroundColor` gris claro.
 

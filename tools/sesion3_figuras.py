@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from code_frame import frame  # noqa: E402
-from sesion2_figuras import FAM, MAIL, MONO, PH_, PW_, PX0, PY0, avatar, head, phone  # noqa: E402
+from sesion2_figuras import FAM, MAIL, MONO, PH_, PW_, PX0, PY0, avatar, head, note, phone  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INK, MUTED, FAINT = '#161A26', '#556074', '#79809A'
@@ -828,57 +828,81 @@ def ap_capas():
 FIGS['apCapas'] = ap_capas
 
 
-def ap_perfil_result():
-    o = '<rect x="40" y="20" width="280" height="420" rx="26" fill="#FFFFFF" stroke="#2A3040" stroke-width="3"/>'
-    o += '<rect x="42" y="22" width="276" height="44" rx="24" fill="#F1ECF8"/><rect x="42" y="44" width="276" height="22" fill="#F1ECF8"/>'
-    o += txt(60, 50, 'Perfil', 15, 500)
-    o += avatar(180, 116, 30, 'violet')
-    o += txt(180, 170, 'Mariana Valenzuela', 15.5, 700, INK, 'middle')
-    o += txt(180, 190, '@marianav • Diseñadora de Producto', 12, 400, MUTED, 'middle', fit=250)
-    o += txt(180, 210, 'm.val@estudio.com · Madrid, ES', 12, 400, FAINT, 'middle', fit=250)
-    for i, (n, l) in enumerate([('128', 'Publicaciones'), ('2.4k', 'Seguidores'), ('310', 'Seguidos')]):
-        x = 52 + i * 87
-        o += f'<rect x="{x}" y="252" width="82" height="60" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>'
-        o += txt(x + 41, 278, n, 17, 700, INK, 'middle') + txt(x + 41, 298, l, 12, 400, MUTED, 'middle', fit=80)
-    o += mark(46, 76, 268, 148, 'violet', 12)
-    o += mark(46, 244, 268, 76, 'indigo', 12)
+def ap_estructura_result():
+    o = '<rect x="78" y="22" width="204" height="396" rx="26" fill="#F0F1F4" stroke="#2A3040" stroke-width="3"/>'
+    o += mark(84, 28, 192, 384, 'indigo', 20)
+    o += mark(92, 60, 176, 54, 'amber', 12)
+    o += txt(108, 87, 'Perfil', 17, 500).replace('<text ', '<text dy="0.35em" ')
+    o += mark(92, 122, 176, 282, 'green', 12)
+    o += txt(180, 268, 'Contenido', 13.5, 400, INK, 'middle')
     return o
 
 
-FIGS['apPerfil'] = lambda: frame(dict(
-    id='apPerfil',
-    title='Tus componentes, dentro de la pantalla',
-    title_plain='Tus componentes, dentro de la pantalla',
-    desc='El body de ProfileScreen: SafeArea, SingleChildScrollView y una Column con ProfileInfo, un SizedBox y StatsRow. En el resultado, el bloque de información del perfil arriba y la fila de estadísticas debajo.',
-    sub='La pantalla no dibuja nada por su cuenta: ordena componentes y les entrega sus datos.',
+FIGS['apEstructura'] = lambda: frame(dict(
+    id='apEstructura',
+    title='La estructura de una pantalla',
+    title_plain='La estructura de una pantalla',
+    desc='El archivo profile_screen.dart: una clase ProfileScreen que extiende StatelessWidget y cuyo build devuelve un Scaffold con appBar y body. A la derecha, la pantalla que produce: el Scaffold ocupa todo, la barra queda arriba y el contenido debajo.',
+    sub='Una clase cuyo build devuelve un Scaffold. Todas las pantallas del curso empiezan así.',
     file='lib/screens/profile_screen.dart',
     panel='RESULTADO',
     code=[
-        "body: SafeArea(",
-        "  child: SingleChildScrollView(",
-        "    padding: EdgeInsets.all(16),",
-        "    child: Column(",
-        "      children: [",
-        "        ProfileInfo(",
-        "          name: 'Mariana Valenzuela',",
-        "          username: '@marianav',",
-        "          ...",
+        "import 'package:flutter/material.dart';",
+        "",
+        "/// Profile of a person.",
+        "class ProfileScreen extends StatelessWidget {",
+        "  const ProfileScreen({super.key});",
+        "",
+        "  @override",
+        "  Widget build(BuildContext context) {",
+        "    return Scaffold(",
+        "      appBar: AppBar(title: const Text('Perfil')),",
+        "      body: const SafeArea(",
+        "        child: Center(",
+        "          child: Text('Contenido'),",
         "        ),",
-        "        SizedBox(height: 24),",
-        "        StatsRow(",
-        "          posts: '128',",
-        "          followers: '2.4k',",
-        "          following: '310',",
-        "        ),",
-        "      ],",
-        "    ),",
-        "  ),",
-        "),",
+        "      ),",
+        "    );",
+        "  }",
+        "}",
     ],
-    result=ap_perfil_result(),
+    result=ap_estructura_result(),
     arrows=[
-        dict(line=5, find='ProfileInfo', to=(46, 143), color='violet'),
-        dict(line=11, find='StatsRow', to=(46, 287), color='indigo'),
+        dict(line=8, find='Scaffold', to=(84, 44), color='indigo', lane=0),
+        dict(line=9, find='appBar', to=(92, 87), color='amber', lane=1),
+        dict(line=10, find='body', to=(92, 290), color='green', lane=2),
+    ],
+))
+
+
+FIGS['apRutas'] = lambda: frame(dict(
+    id='apRutas',
+    title='Anotar la pantalla en <tspan class="mono">main.dart</tspan>',
+    title_plain='Anotar la pantalla en main.dart',
+    desc='El archivo main.dart con tres líneas señaladas. El import trae el archivo de la pantalla. La entrada de routes le da un nombre, /profile, y dice qué pantalla se construye. initialRoute dice con cuál abre la app.',
+    sub='Tres líneas. Sin ellas la pantalla existe, pero la app no sabe llegar a ella.',
+    file='lib/main.dart',
+    panel='QUÉ HACE CADA LÍNEA',
+    min_h=372,
+    code=[
+        "import 'package:flutter/material.dart';",
+        "import 'package:miapp1/screens/profile_screen.dart';",
+        "",
+        "return MaterialApp(",
+        "  title: 'Mi app',",
+        "  initialRoute: '/profile',",
+        "  routes: {",
+        "    '/profile': (context) => const ProfileScreen(),",
+        "  },",
+        ");",
+    ],
+    result=(note(16, 'indigo', 'El import', ['Trae el archivo de la pantalla.', 'Sin él, main.dart no la conoce.'], 76)
+            + note(124, 'green', 'initialRoute', ['La pantalla con la que abre la app.', 'Tiene que ser un nombre de routes.'], 76)
+            + note(232, 'amber', 'La entrada de routes', ['Un nombre que empieza con /', 'y la pantalla que se construye.'], 76)),
+    arrows=[
+        dict(line=1, find='profile_screen.dart', to=(16, 54), color='indigo', lane=0),
+        dict(line=5, find='initialRoute', to=(16, 162), color='green', lane=1),
+        dict(line=7, find="'/profile'", to=(16, 270), color='amber', lane=2),
     ],
 ))
 
