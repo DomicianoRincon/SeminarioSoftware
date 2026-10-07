@@ -258,6 +258,7 @@ lecciones (les quita el título y las escala al lienzo). Si una lección cambia 
 |---|---|---|
 | 1 | `presentaciones/sesion1/` · *Frontend developing* · 28 slides | `S0003` ¿Qué es el frontend? |
 | 2 | `presentaciones/sesion2/` · *Componentes* · 36 slides | `S0010` El proyecto por dentro |
+| 3 | `presentaciones/sesion3/` · *Pantallas con componentes* · 42 slides | Enlazada en `S0026` Taller · Pantallas, no en la primera lección (pedido del profesor) |
 
 ## Cómo se escribe una lección
 

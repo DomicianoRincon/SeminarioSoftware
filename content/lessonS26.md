@@ -2,6 +2,8 @@
 
 <!-- tags: taller de pantallas, pantalla de perfil, separar la pantalla en secciones, SectionHeader, fila deslizable de contactos, RenderFlex overflowed, extraer un widget a su archivo, StatsRow se desborda en pantalla angosta, crossAxisAlignment stretch, registrar una ruta -->
 
+**Presentación de la sesión:** [Pantallas con componentes](https://domicianorincon.github.io/SeminarioSoftware/presentaciones/3/)
+
 ```svg
 <svg id="tpPantallas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 882" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tpPantallas-ttl tpPantallas-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="tpPantallas-ttl">La pantalla del taller</title>

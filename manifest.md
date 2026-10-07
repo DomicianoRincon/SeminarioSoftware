@@ -77,7 +77,7 @@ Notas:
 
 ### Sesión 3 · Pantallas con componentes
 
-**Presentación:** ⬜ pendiente (`presentaciones/sesion3/`). Cuando exista se enlaza al inicio de `S0020`.
+**Presentación:** `presentaciones/sesion3/` · *Pantallas con componentes* · 42 slides · https://domicianorincon.github.io/SeminarioSoftware/presentaciones/3/. Enlazada al inicio de `S0026`, el taller, por pedido del profesor (en las sesiones 1 y 2 va en la primera lección). Pendiente la revisión del profesor.
 
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|

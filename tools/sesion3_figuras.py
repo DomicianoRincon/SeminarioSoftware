@@ -372,8 +372,8 @@ def bn_item(cx, y, icon, label, color):
             + txt(cx, y + 24, label, 12, 600, color, 'middle'))
 
 
-def bn_codigo_result():
-    x, y, w, ph, bar = 78, 40, 204, 440, 60
+def bn_codigo_result(y=40, ph=440):
+    x, w, bar = 78, 204, 60
     selected = '#6750A4'
     inner = ('<rect width="204" height="52" fill="#F1ECF8"/>'
              + txt(18, 31, 'Inicio', 17, 500)
