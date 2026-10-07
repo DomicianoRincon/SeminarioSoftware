@@ -1,7 +1,7 @@
-"""Figuras SVG de las lecciones de la sesión 3 (S0020 a S0026).
+"""Figuras SVG de las lecciones de la sesión 3 (S0020 a S0027).
 
     python3 tools/sesion3_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
-    python3 tools/sesion3_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS2[0-6].md
+    python3 tools/sesion3_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS2[0-7].md
                                                    por la figura con el mismo id
 """
 
@@ -274,6 +274,81 @@ FIGS['saCodigo'] = lambda: frame(dict(
     result=sa_codigo_result(),
     arrows=[
         dict(line=1, find='SafeArea', to=(84, 240), color='green', lane=1),
+    ],
+))
+
+
+# ───────────────────────────── S0027 · BottomNavigationBar
+
+
+def bn_item(cx, y, icon, label, color):
+    paths = {
+        'home': 'M-8,1 L0,-7 L8,1 M-6,-0.5 V7 H6 V-0.5',
+        'chat': 'M-7,-7 h14 a2,2 0 0 1 2,2 v7 a2,2 0 0 1 -2,2 h-8 l-4,3 v-3 h-2 a2,2 0 0 1 -2,-2 v-7 a2,2 0 0 1 2,-2 Z',
+        'person': 'M-3.5,-4 a3.5,3.5 0 1 0 7,0 a3.5,3.5 0 1 0 -7,0 M-7,7 a7,6 0 0 1 14,0',
+    }
+    return (f'<path transform="translate({cx},{y})" d="{paths[icon]}" fill="none" stroke="{color}" stroke-width="2" '
+            f'stroke-linecap="round" stroke-linejoin="round"/>'
+            + txt(cx, y + 24, label, 12, 600, color, 'middle'))
+
+
+def bn_codigo_result():
+    x, y, w, ph, bar = 78, 40, 204, 440, 60
+    selected = '#6750A4'
+    inner = ('<rect width="204" height="52" fill="#F1ECF8"/>'
+             + txt(18, 31, 'Inicio', 17, 500)
+             + txt(w / 2, 216, 'Contenido', 13.5, 400, INK, 'middle')
+             + f'<rect y="{ph - bar}" width="{w}" height="{bar}" fill="#F3EDF7"/>'
+             + bn_item(34, ph - 38, 'home', 'Inicio', selected)
+             + bn_item(102, ph - 38, 'chat', 'Chats', MUTED)
+             + bn_item(170, ph - 38, 'person', 'Perfil', MUTED))
+    o = (f'<clipPath id="bnCodigo-scr"><rect width="{w}" height="{ph}" rx="26"/></clipPath>'
+         f'<g transform="translate({x},{y})"><rect width="{w}" height="{ph}" rx="26" fill="#FFFFFF"/>'
+         f'<g clip-path="url(#bnCodigo-scr)">{inner}</g></g>'
+         f'<rect x="{x}" y="{y}" width="{w}" height="{ph}" rx="26" fill="none" stroke="#2A3040" stroke-width="3"/>')
+    o += mark(x + 6, y + ph - bar + 4, w - 12, bar - 8, 'amber', 14)
+    return o
+
+
+FIGS['bnCodigo'] = lambda: frame(dict(
+    id='bnCodigo',
+    title='Tres botones en <tspan class="mono">bottomNavigationBar</tspan>',
+    title_plain='Tres botones en bottomNavigationBar',
+    desc='Un Scaffold con appBar, body y bottomNavigationBar. La barra de abajo es un BottomNavigationBar con tres BottomNavigationBarItem: Inicio, Chats y Perfil. En el resultado, la barra queda pegada al borde de abajo con los tres botones repartidos a lo ancho, y el primero, Inicio, aparece resaltado.',
+    sub='La barra queda fija abajo. El body ocupa lo que queda entre ella y la barra de arriba.',
+    file='lib/screens/home_screen.dart',
+    panel='RESULTADO',
+    code=[
+        "return Scaffold(",
+        "  appBar: AppBar(title: const Text('Inicio')),",
+        "  body: const Center(child: Text('Contenido')),",
+        "  bottomNavigationBar: BottomNavigationBar(",
+        "    currentIndex: 0,",
+        "    items: const [",
+        "      BottomNavigationBarItem(",
+        "        icon: Icon(Icons.home),",
+        "        label: 'Inicio',",
+        "      ),",
+        "      BottomNavigationBarItem(",
+        "        icon: Icon(Icons.chat),",
+        "        label: 'Chats',",
+        "      ),",
+        "      BottomNavigationBarItem(",
+        "        icon: Icon(Icons.person),",
+        "        label: 'Perfil',",
+        "      ),",
+        "    ],",
+        "  ),",
+        ");",
+    ],
+    result=bn_codigo_result(),
+    arrows=[
+        dict(line=3, find='bottomNavigationBar', to=(84, 450), color='amber', lane=1),
+    ],
+    cards=[
+        ('amber', 'items', ['Los botones, de izquierda', 'a derecha. Mínimo dos.']),
+        ('indigo', 'icon y label', ['Cada botón lleva un icono', 'y un texto debajo.']),
+        ('green', 'currentIndex', ['El botón resaltado. Se cuenta', 'desde 0: aquí es Inicio.']),
     ],
 ))
 
@@ -788,7 +863,7 @@ FIGS['tpCarpetas'] = tp_carpetas
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--inject':
         done = set()
-        for path in sorted((ROOT / 'content').glob('lessonS2[0-6].md')):
+        for path in sorted((ROOT / 'content').glob('lessonS2[0-7].md')):
             text = path.read_text(encoding='utf-8')
 
             def swap(m):

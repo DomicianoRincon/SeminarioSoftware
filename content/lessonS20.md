@@ -140,7 +140,7 @@ return Scaffold(
 
 Todos los lugares son opcionales. El único que usas siempre es `body`, que ocupa lo que dejan libre los demás. Si quitas `appBar`, el contenido sube hasta el borde de arriba; si quitas `floatingActionButton`, simplemente no hay botón.
 
-Hay un lugar más, `bottomNavigationBar`, para la barra de secciones de abajo. Lo usas en la sesión 9.
+Hay un lugar más, `bottomNavigationBar`, para la barra de secciones de abajo. Cómo se ve está en la lección *BottomNavigationBar*; hacerla funcionar es la sesión 9.
 
 ## La barra de arriba
 

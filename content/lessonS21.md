@@ -160,7 +160,7 @@ return const Scaffold(
 );
 ```
 
-Así empieza la pantalla de inicio de sesión que armas en el taller. En `ProfileScreen` haz lo mismo ahora: envuelve el `Center` del `body`.
+Así empieza una pantalla de inicio de sesión. En `ProfileScreen` haz lo mismo ahora: envuelve el `Center` del `body`.
 
 ```dart
 body: const SafeArea(
