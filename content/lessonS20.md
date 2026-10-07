@@ -160,6 +160,8 @@ AppBar(
 )
 ```
 
+Lo demás que cabe en la barra está en la lección *AppBar*.
+
 No toda pantalla lleva barra. Una de inicio de sesión, por ejemplo, no la tiene, y eso trae un problema que resuelve la lección siguiente.
 
 ## Una pantalla es una Screen

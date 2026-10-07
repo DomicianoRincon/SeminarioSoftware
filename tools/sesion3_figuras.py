@@ -1,7 +1,7 @@
-"""Figuras SVG de las lecciones de la sesión 3 (S0020 a S0027).
+"""Figuras SVG de las lecciones de la sesión 3 (S0020 a S0028).
 
     python3 tools/sesion3_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
-    python3 tools/sesion3_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS2[0-7].md
+    python3 tools/sesion3_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS2[0-8].md
                                                    por la figura con el mismo id
 """
 
@@ -276,6 +276,86 @@ FIGS['saCodigo'] = lambda: frame(dict(
         dict(line=1, find='SafeArea', to=(84, 240), color='green', lane=1),
     ],
 ))
+
+
+# ───────────────────────────── S0028 · AppBar
+
+
+def ab_icon(name, cx, cy, color=INK, k=1):
+    paths = {
+        'menu': 'M-9,-6 H9 M-9,0 H9 M-9,6 H9',
+        'search': 'M-8,-2 a6,6 0 1 0 12,0 a6,6 0 1 0 -12,0 M2.5,2.5 L8,8',
+        'settings': ('M-3.5,0 a3.5,3.5 0 1 0 7,0 a3.5,3.5 0 1 0 -7,0 M0,-9 V-6.5 M0,6.5 V9 M-9,0 H-6.5 M6.5,0 H9 '
+                     'M-6.4,-6.4 L-4.6,-4.6 M4.6,4.6 L6.4,6.4 M-6.4,6.4 L-4.6,4.6 M4.6,-4.6 L6.4,-6.4'),
+    }
+    return (f'<path transform="translate({cx},{cy}) scale({k})" d="{paths[name]}" fill="none" stroke="{color}" '
+            f'stroke-width="{2 / k:.2f}" stroke-linecap="round" stroke-linejoin="round"/>')
+
+
+def ab_bar(w, bar, title, size, fill='#F1ECF8', ink=INK, center=False, k=1):
+    """Barra de arriba con menú, título y dos acciones, en coordenadas de la pantalla."""
+    o = f'<rect width="{w}" height="{bar}" fill="{fill}"/>'
+    o += ab_icon('menu', 36 * k, bar / 2, ink, k)
+    if center:
+        o += txt(w / 2, bar / 2, title, size, 500, ink, 'middle').replace('<text ', '<text dy="0.35em" ')
+    else:
+        o += txt(76 * k, bar / 2, title, size, 500, ink).replace('<text ', '<text dy="0.35em" ')
+    o += ab_icon('search', w - 92 * k, bar / 2, ink, k) + ab_icon('settings', w - 36 * k, bar / 2, ink, k)
+    return o
+
+
+def ab_crop(fid, key, x, y, w, h, inner):
+    """La parte de arriba de un celular: se recorta a `h` y se desvanece hacia el fondo."""
+    return (f'<clipPath id="{fid}-{key}c"><rect x="{x - 10}" y="{y - 10}" width="{w + 20}" height="{h + 10}"/></clipPath>'
+            f'<linearGradient id="{fid}-{key}f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBFBFD" stop-opacity="0"/>'
+            f'<stop offset="1" stop-color="#FBFBFD"/></linearGradient>'
+            f'<g clip-path="url(#{fid}-{key}c)">' + device(x, y, w, h + 80, inner, '#FFFFFF', f'{fid}-{key}s') + '</g>'
+            f'<rect x="{x - 10}" y="{y + h - 44}" width="{w + 20}" height="46" fill="url(#{fid}-{key}f)"/>')
+
+
+def ab_partes():
+    fid = 'abPartes'
+    h = 412
+    s = head(fid, h, 'Las partes de un <tspan class="mono">AppBar</tspan>', 'Las partes de un AppBar',
+             'Tres lugares, de izquierda a derecha. Solo title es de uso diario; los otros dos son opcionales.',
+             'La parte de arriba de un celular con una barra. A la izquierda, un botón de menú: es leading. Después, el título Perfil: es title. A la derecha, dos botones, buscar y ajustes: son actions.')
+    x, y, w, bar = 260, 228, 440, 72
+    s += '  ' + ab_crop(fid, 'a', x, y, w, 150, ab_bar(w, bar, 'Perfil', 22)) + '\n'
+    parts = [('indigo', x + 12, 48, 180, 'leading', 'Un widget a la izquierda.', 'Casi siempre un IconButton.'),
+             ('amber', x + 66, 84, 480, 'title', 'El nombre de la pantalla.', 'Casi siempre un Text.'),
+             ('green', x + w - 122, 112, 770, 'actions', 'Una lista de widgets a la derecha.', 'Los botones de la pantalla.')]
+    for color, mx, mw, lx, name, a, b in parts:
+        strong = FAM[color][2]
+        cx = mx + mw / 2
+        s += '  ' + mark(mx, y + 12, mw, 48, color, 12) + '\n'
+        s += f'  <path d="M{lx},184 V204 H{cx:g} V{y + 12}" fill="none" stroke="{strong}" stroke-width="1.75"/>\n'
+        s += '  ' + txt(lx, 132, name, 15, 700, strong, 'middle', cls='mono') + '\n'
+        s += '  ' + txt(lx, 154, a, 13, 400, MUTED, 'middle', fit=280) + '\n'
+        s += '  ' + txt(lx, 172, b, 13, 400, MUTED, 'middle', fit=280) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['abPartes'] = ab_partes
+
+
+def ab_variantes():
+    fid = 'abVariantes'
+    h = 372
+    s = head(fid, h, 'La misma barra, con tres ajustes', 'La misma barra, con tres ajustes',
+             'El contenido no cambia. Cambian dónde queda el título y de qué color es la barra.',
+             'Tres barras con el mismo título y los mismos botones. La primera, sin ajustes: el título queda a la izquierda. La segunda, con centerTitle en true: el título queda centrado. La tercera, con backgroundColor morado y foregroundColor blanco: fondo oscuro con el título y los iconos en blanco.')
+    w, bar, k = 256, 52, .72
+    cases = [(64, 'a', {}, 'Sin ajustes', 'El título queda a la izquierda.', None),
+             (352, 'b', dict(center=True), 'centerTitle: true', 'El título queda en el centro.', 'mono'),
+             (640, 'c', dict(fill='#673AB7', ink='#FFFFFF'), 'backgroundColor', 'Con foregroundColor: Colors.white.', 'mono')]
+    for x, key, opts, a, b, cls in cases:
+        s += '  ' + ab_crop(fid, key, x, 132, w, 120, ab_bar(w, bar, 'Perfil', 16, k=k, **opts)) + '\n'
+        s += '  ' + txt(x + w / 2, 292, a, 14, 700, INK, 'middle', cls=cls or '', fit=272) + '\n'
+        s += '  ' + txt(x + w / 2, 314, b, 13, 400, MUTED, 'middle', fit=272) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['abVariantes'] = ab_variantes
 
 
 # ───────────────────────────── S0027 · BottomNavigationBar
@@ -863,7 +943,7 @@ FIGS['tpCarpetas'] = tp_carpetas
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--inject':
         done = set()
-        for path in sorted((ROOT / 'content').glob('lessonS2[0-7].md')):
+        for path in sorted((ROOT / 'content').glob('lessonS2[0-8].md')):
             text = path.read_text(encoding='utf-8')
 
             def swap(m):

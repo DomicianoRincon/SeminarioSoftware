@@ -81,7 +81,7 @@ Notas:
 
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|
-| Scaffold y SafeArea como andamiaje de una pantalla | `S0020` Scaffold (`appBar`, `body`, `backgroundColor`, `floatingActionButton`) · `S0021` SafeArea, con la regla del curso: el `body` de toda Screen empieza con un `SafeArea` · `S0027` BottomNavigationBar *(añadido por el profesor, 2026-10-07)*: **solo cómo se ve**, con tres botones y `currentIndex` fijo. Que responda al toque queda para la sesión 9 |
+| Scaffold y SafeArea como andamiaje de una pantalla | `S0020` Scaffold (`appBar`, `body`, `backgroundColor`, `floatingActionButton`) · `S0021` SafeArea, con la regla del curso: el `body` de toda Screen empieza con un `SafeArea` · `S0028` AppBar *(añadido por el profesor, 2026-10-07)*: `title`, `actions`, `leading`, `centerTitle`, `backgroundColor` y `foregroundColor` · `S0027` BottomNavigationBar *(añadido por el profesor, 2026-10-07)*: **solo cómo se ve**, con tres botones y `currentIndex` fijo. Que responda al toque queda para la sesión 9 |
 | Composición: armar una pantalla a partir de componentes propios | `S0025` Armar una pantalla: el orden `Scaffold` → `SafeArea` → `SingleChildScrollView` → `Column` → componentes, con la mitad de arriba del perfil (`ProfileInfo` + `StatsRow`) |
 | Layout con Column, Row, Expanded, Container, Padding y SingleChildScrollView | `Column` y `Row` se adelantaron a la sesión 2 (`S0016`, `S0017`). Aquí: `S0022` Container y Padding · `S0023` Expanded (con `flex` y `Spacer`) · `S0024` SingleChildScrollView (vertical y horizontal) |
 | Convención Screen frente a Page | Apartado *Una pantalla es una Screen* de `S0020`. **Solo Screen**: Page se nombra con una figura y se remite a la sesión 9 (decisión del profesor, 2026-10-07) |
@@ -96,8 +96,8 @@ Notas:
 - Se cambia de pantalla editando `initialRoute`: la navegación es de la sesión 8. Los botones siguen con `print`.
 - El taller se comprobó armando las dos pantallas en un proyecto de prueba con los siete componentes de `S0018`: `flutter analyze` solo reporta `avoid_print`.
 - `StatsRow` con `spaceEvenly` se desborda en pantallas de 360 px de ancho. El taller lo convierte en una pista: envolver cada `StatCard` en un `Expanded`.
-- Las 21 figuras salen de `tools/sesion3_figuras.py`, que reutiliza `code_frame.py` y varios dibujos de `sesion2_figuras.py`.
-- El *Ejemplo completo* de `S0020` a `S0025` y el de `S0027` necesita su gist público en la cuenta `Domiciano`. Mientras el bloque diga `trycode=PENDIENTE_S2x`, la lección no se debe publicar.
+- Las 23 figuras salen de `tools/sesion3_figuras.py`, que reutiliza `code_frame.py` y varios dibujos de `sesion2_figuras.py`.
+- El *Ejemplo completo* de `S0020` a `S0025` y los de `S0027` y `S0028` necesita su gist público en la cuenta `Domiciano`. Mientras el bloque diga `trycode=PENDIENTE_S2x`, la lección no se debe publicar.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
