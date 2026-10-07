@@ -67,12 +67,11 @@ Necesitas tus siete componentes terminados en `lib/components/`. Si te falta alg
 
 ## Cómo trabajar
 
-Cada pantalla va en su archivo dentro de `lib/screens/` y se registra en `routes`, en `lib/main.dart`. Para que la app abra en la nueva, cambia `initialRoute` y reiníciala:
+Cada pantalla va en su archivo dentro de `lib/screens/` y se registra en `routes`, en `lib/main.dart`. Para que la app abra en ella, ponla en `initialRoute` y reinicia:
 
 ```dart
 initialRoute: '/profile',
 routes: {
-  '/home': (context) => const HomeScreen(),
   '/profile': (context) => const ProfileScreen(),
 },
 ```
