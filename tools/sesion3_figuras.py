@@ -731,45 +731,16 @@ FIGS['apPerfil'] = lambda: frame(dict(
 # ───────────────────────────── S0026 · Taller · Pantallas
 
 
-def login_phone(fid, x):
-    w, ph = PW_, PH_
-    t = lambda tx, ty, s, size=12, weight=400, fill=INK, anchor='start': txt(tx, ty, s, size, weight, fill, anchor)
-    o = f'  <clipPath id="{fid}-lg"><rect width="{w}" height="{ph}" rx="28"/></clipPath>\n'
-    o += f'  <rect x="{x-10}" y="{PY0-10}" width="{w+20}" height="{ph+20}" rx="38" fill="#1F2430"/>\n'
-    o += f'  <g transform="translate({x},{PY0})"><g clip-path="url(#{fid}-lg)">\n'
-    o += f'    <rect width="{w}" height="{ph}" fill="#FFFFFF"/>\n'
-    o += '    <circle cx="170" cy="150" r="40" fill="#E3F2FD" stroke="#2196F3" stroke-width="2"/>\n'
-    o += '    <path d="M154,150 l11,11 l22,-24" fill="none" stroke="#1976D2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>\n'
-    o += '    ' + t(170, 232, 'Bienvenido', 24, 700, anchor='middle') + '\n'
-    o += '    ' + t(170, 258, 'Inicia sesión para continuar', 13.5, 400, MUTED, 'middle') + '\n'
-    for y, label, value in ((300, 'Correo', 'nombre@icesi.edu.co'), (372, 'Contraseña', '••••••••')):
-        o += f'    <rect x="24" y="{y}" width="292" height="52" rx="6" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5"/>\n'
-        o += f'    <rect x="36" y="{y-8}" width="{len(label)*7+12}" height="16" fill="#FFFFFF"/>\n'
-        o += '    ' + t(42, y + 4, label, 12, 600, MUTED) + t(42, y + 32, value, 14, 400, '#A0A8B8') + '\n'
-    o += '    <rect x="24" y="456" width="292" height="44" rx="22" fill="#2196F3"/>\n'
-    o += '    <path d="M108,478 h14 M117,473 l5,5 l-5,5 M124,468 h6 v20 h-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>\n'
-    o += '    ' + t(138, 483, 'Iniciar sesión', 14.5, 600, '#FFFFFF') + '\n'
-    o += '    <rect x="24" y="512" width="292" height="44" rx="22" fill="#FFFFFF" stroke="#2196F3" stroke-width="1.75"/>\n'
-    o += '    <g transform="translate(124,534)"><circle cx="-2" cy="-4" r="3.5" fill="none" stroke="#1976D2" stroke-width="2"/><path d="M-9,8 a7,6 0 0 1 14,0" fill="none" stroke="#1976D2" stroke-width="2" stroke-linecap="round"/><path d="M7,-5 V1 M4,-2 H10" fill="none" stroke="#1976D2" stroke-width="2" stroke-linecap="round"/></g>\n'
-    o += '    ' + t(142, 539, 'Crear cuenta', 14.5, 600, '#1976D2') + '\n'
-    o += '    ' + t(170, 600, '¿Olvidaste tu contraseña?', 13, 400, MUTED, 'middle') + '\n'
-    o += '    ' + system(w, ph) + '\n'
-    o += '  </g></g>\n'
-    return o
-
-
 def tp_pantallas():
     fid = 'tpPantallas'
     h = PY0 + PH_ + 10 + 72
-    s = head(fid, h, 'Las dos pantallas del taller', 'Las dos pantallas del taller',
-             'Las dos se arman con los componentes de la sesión 2. Una lleva barra y se desliza; la otra no tiene barra.',
-             'Dos celulares. El de la izquierda es la pantalla de perfil: barra con el título Perfil, la información de la persona, tres indicadores, dos botones, una fila de contactos sugeridos y las últimas conversaciones. El de la derecha es la pantalla de inicio de sesión, sin barra: un logo, el título Bienvenido, los campos de correo y contraseña, un botón azul Iniciar sesión, un botón con borde Crear cuenta y un enlace.')
-    s += f'  <g transform="translate({100 - PX0},0)">\n{phone(fid)}  </g>\n'
-    s += login_phone(fid, 520)
-    y = PY0 + PH_ + 44
-    for cx, name, route in ((270, 'ProfileScreen', "'/profile'"), (690, 'LoginScreen', "'/login'")):
-        s += '  ' + txt(cx, y, name, 15, 700, FAM['indigo'][2], 'middle', cls='mono') + '\n'
-        s += '  ' + txt(cx, y + 20, route, 13, 400, MUTED, 'middle', cls='mono') + '\n'
+    s = head(fid, h, 'La pantalla del taller', 'La pantalla del taller',
+             'Se arma con los componentes de la sesión 2. Lleva barra arriba y el contenido se desliza.',
+             'Un celular con la pantalla de perfil: barra con el título Perfil, la información de la persona, tres indicadores, dos botones, una fila de contactos sugeridos y las últimas conversaciones. Debajo, el nombre de la clase, ProfileScreen, y su ruta, /profile.')
+    s += phone(fid)
+    cx, y = PX0 + PW_ / 2, PY0 + PH_ + 44
+    s += '  ' + txt(f'{cx:g}', y, 'ProfileScreen', 15, 700, FAM['indigo'][2], 'middle', cls='mono') + '\n'
+    s += '  ' + txt(f'{cx:g}', y + 20, "'/profile'", 13, 400, MUTED, 'middle', cls='mono') + '\n'
     return s + '</svg>\n'
 
 
@@ -780,8 +751,8 @@ def tp_carpetas():
     fid = 'tpCarpetas'
     h = 492
     s = head(fid, h, 'Tu proyecto al terminar el taller', 'Tu proyecto al terminar el taller',
-             'Los componentes ya los tienes. Hoy agregas uno que te entregamos y dos pantallas.',
-             'La carpeta lib con main.dart y dos subcarpetas. En components están los siete componentes de la sesión 2 y uno nuevo, section_header.dart. En screens están home_screen.dart y las dos pantallas nuevas, profile_screen.dart y login_screen.dart.')
+             'Los componentes ya los tienes. Hoy agregas uno que te entregamos y una pantalla.',
+             'La carpeta lib con main.dart y dos subcarpetas. En components están los siete componentes de la sesión 2 y uno nuevo, section_header.dart. En screens están home_screen.dart y la pantalla nueva, profile_screen.dart.')
 
     def folder(x, y, name):
         return (f'<path d="M{x},{y-8} h9 l3,3 h12 v13 h-24 Z" fill="{FAM["amber"][0]}" stroke="{FAM["amber"][2]}" stroke-width="1.5" stroke-linejoin="round"/>'
@@ -803,10 +774,10 @@ def tp_carpetas():
     for i, n in enumerate(comps):
         s += '  ' + item(144, 252 + i * 28, n, n == 'section_header.dart') + '\n'
     s += '  ' + folder(536, 218, 'screens/') + '\n'
-    for i, (n, new) in enumerate((('home_screen.dart', False), ('login_screen.dart', True), ('profile_screen.dart', True))):
+    for i, (n, new) in enumerate((('home_screen.dart', False), ('profile_screen.dart', True))):
         s += '  ' + item(576, 252 + i * 28, n, new) + '\n'
     s += '  <path d="M76,156 V218 H96 M76,176 H96" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
-    s += '  <path d="M116,234 V448 M548,234 V308" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
+    s += '  <path d="M116,234 V448 M548,234 V280" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
     s += '  <path d="M76,198 H508 V218 H528" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
     return s + '</svg>\n'
 

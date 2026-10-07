@@ -15,7 +15,7 @@
 2. Que entiendan por qué el `body` empieza con un `SafeArea`, aunque en Chrome no se note.
 3. Que den aire con `Padding` y dibujen cajas con `Container`, sin confundir `padding` y `margin`.
 4. Que resuelvan las dos franjas amarillas: `Expanded` para la de la derecha y `SingleChildScrollView` para la de abajo.
-5. Que armen una pantalla de afuera hacia adentro y salgan con el taller empezado: perfil e inicio de sesión.
+5. Que armen una pantalla de afuera hacia adentro y salgan con el taller empezado: la pantalla de perfil.
 
 ## Cómo se reutilizan las ilustraciones
 
@@ -29,7 +29,7 @@ que dice la lección va en las notas de orador.
 - **`exCodigo` y `apPerfil` tienen 20 líneas de código**: si en la revisión visual quedan
   ilegibles, se parten en dos slides.
 - **`scVentana` y `tpPantallas` son altas** (664 y 882 px): se escalan a la altura del lienzo.
-  De `tpPantallas` se usa un celular por slide, con el contenido de la pantalla listado al lado.
+  De `tpPantallas` se usa el celular, con el contenido de la pantalla listado al lado.
 
 ## Slides
 
@@ -66,12 +66,11 @@ que dice la lección va en las notas de orador.
 | 29 | ¿De quién es el problema? | `slideStandard` | Dos tarjetas: lo que se corrige en el componente (tamaño, color, contenido) · lo que se corrige en la pantalla (orden, separación, scroll) | Dos tarjetas con ícono |
 | 30 | Manos a la obra | `titleSlideF` | Separador de la parte práctica: *Taller · Pantallas* | · |
 | 31 | Pantalla de perfil | `slideGraphicRight` | `ProfileScreen` · `'/profile'` · con barra y scroll · botones, contactos que se deslizan, conversaciones | Celular de perfil de `tpPantallas` |
-| 32 | Pantalla de inicio de sesión | `slideGraphicRight` | `LoginScreen` · `'/login'` · sin barra · logo, dos campos, dos botones y un enlace | Celular de inicio de sesión de `tpPantallas` |
-| 33 | Un componente que te entregamos | `slideStandard` | `SectionHeader`: recibe `title` y `actionLabel`. Se lee antes de usarlo | Código de `SectionHeader` en un frame de editor |
-| 34 | Tu proyecto al terminar | `slideStandard` | Un componente y dos pantallas nuevas | SVG `tpCarpetas` |
-| 35 | Para la próxima sesión | `slideSidebarLeftOrange` | Las dos pantallas terminadas y probadas en una ventana angosta · la lectura sobre archivos de contexto para agentes | Panel lateral: íconos |
+| 32 | Un componente que te entregamos | `slideStandard` | `SectionHeader`: recibe `title` y `actionLabel`. Se lee antes de usarlo | Código de `SectionHeader` en un frame de editor |
+| 33 | Tu proyecto al terminar | `slideStandard` | Un componente y una pantalla nuevos | SVG `tpCarpetas` |
+| 34 | Para la próxima sesión | `slideSidebarLeftOrange` | La pantalla de perfil terminada y probada en una ventana angosta · la lectura sobre archivos de contexto para agentes | Panel lateral: íconos |
 
-**35 slides**, una menos que la sesión 2. Cada slide de contenido lleva **notas de orador**
+**34 slides**, dos menos que la sesión 2. Cada slide de contenido lleva **notas de orador**
 (tecla `S`) con lo que dice la lección.
 
 ## Decisiones
@@ -81,9 +80,9 @@ que dice la lección va en las notas de orador.
   a lo ancho y otra a lo alto.
 - **Sin slides de "Ejemplo completo"**: es código para ejecutar en el visor. Se menciona en las notas.
 - **Sin slide de imports con `package:`**: se dice en las notas de la slide 28.
-- **Slide 33**: el código de `SectionHeader` se dibuja con `tools/code_frame.py`, sin flechas,
+- **Slide 32**: el código de `SectionHeader` se dibuja con `tools/code_frame.py`, sin flechas,
   con el `Expanded` resaltado. Es la única figura que no viene de una lección.
-- **Slide 35** toma la actividad *fuera de clase* del planeador. **Falta que el profesor diga cuál
+- **Slide 34** toma la actividad *fuera de clase* del planeador. **Falta que el profesor diga cuál
   es la lectura**; si no la hay todavía, la slide deja solo el primer punto.
 
 ## Dónde queda

@@ -65,7 +65,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | *(añadido por el profesor; el planeador lo pone en la sesión 19)* Column y Row | `S0016` Column · `S0017` Row: `children`, los dos ejes, `mainAxisAlignment`, `crossAxisAlignment` y `SizedBox`. `Expanded`, `Container`, `Padding` y `SingleChildScrollView` quedan para la sesión 3 |
 | Concepto de componente como pieza reutilizable | `S0015` StatelessWidget: tu primer componente |
 | Taller: componentes Stateless montados en una pantalla | `S0018` Taller · Componentes: **solo componentes**, seis. Empieza por dos nuevos, `PrimaryButton` (azul) y `SecondaryButton` (con borde), los dos con un icono y un texto en una `Row`. Sigue `StatsRow`, un componente compuesto con tres `StatCard` (el de `S0015`), y dos del Lab 1 de Móviles (elemento de conversación, bloque de información de perfil) y cierra con `ContactCard`, una versión mínima del perfil (foto, nombre y usuario) pensada para una fila horizontal de contactos sugeridos |
-| *Fuera de clase:* terminar los componentes del taller | `S0018`. Armar las pantallas de perfil y de login con ellos es el taller de la sesión 3 (`S0026`) |
+| *Fuera de clase:* terminar los componentes del taller | `S0018`. Armar la pantalla de perfil con ellos es el taller de la sesión 3 (`S0026`) |
 
 Notas:
 
@@ -85,7 +85,7 @@ Notas:
 | Composición: armar una pantalla a partir de componentes propios | `S0025` Armar una pantalla: el orden `Scaffold` → `SafeArea` → `SingleChildScrollView` → `Column` → componentes, con la mitad de arriba del perfil (`ProfileInfo` + `StatsRow`) |
 | Layout con Column, Row, Expanded, Container, Padding y SingleChildScrollView | `Column` y `Row` se adelantaron a la sesión 2 (`S0016`, `S0017`). Aquí: `S0022` Container y Padding · `S0023` Expanded (con `flex` y `Spacer`) · `S0024` SingleChildScrollView (vertical y horizontal) |
 | Convención Screen frente a Page | Apartado *Una pantalla es una Screen* de `S0020`. **Solo Screen**: Page se nombra con una figura y se remite a la sesión 9 (decisión del profesor, 2026-10-07) |
-| Taller: armar dos pantallas del reto con componentes propios y suministrados | `S0026` Taller · Pantallas: `ProfileScreen` (`/profile`, con barra y scroll, la pantalla de la figura `swPantalla` de `S0015`) y `LoginScreen` (`/login`, sin barra). El componente suministrado es `SectionHeader`, con su código completo |
+| Taller: armar dos pantallas del reto con componentes propios y suministrados | `S0026` Taller · Pantallas: **una sola pantalla**, `ProfileScreen` (`/profile`, con barra y scroll, la pantalla de la figura `swPantalla` de `S0015`). La de inicio de sesión se quitó del taller (decisión del profesor, 2026-10-07). El componente suministrado es `SectionHeader`, con su código completo |
 | *Fuera de clase:* lectura sobre archivos de contexto para agentes (CLAUDE.md / AGENTS.md) | ⬜ **Pendiente.** El profesor no ha definido la lectura; `S0026` no la menciona |
 
 Notas:
