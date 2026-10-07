@@ -297,11 +297,11 @@ Tu primer **componente compuesto**: uno que está hecho con otro componente tuyo
 
 Aquí las etiquetas *Publicaciones*, *Seguidores* y *Seguidos* sí van escritas dentro del componente: son parte de lo que `StatsRow` es. Lo que cambia de un perfil a otro son los tres números, y por eso solo ellos llegan por el constructor.
 
-**Pista 1 · usar tu propio componente.** `StatCard` está en otro archivo de la misma carpeta, así que hay que importarlo. Después se usa como cualquier widget de Flutter:
+**Pista 1 · usar tu propio componente.** `StatCard` está en otro archivo, así que hay que importarlo. Después se usa como cualquier widget de Flutter:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'stat_card.dart';
+import 'package:miapp1/components/stat_card.dart';
 ```
 
 **Pista 2 · repartir las tres tarjetas.** Es una `Row` con `mainAxisAlignment: MainAxisAlignment.spaceEvenly`.

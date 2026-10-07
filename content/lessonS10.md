@@ -377,8 +377,10 @@ class HomeScreen extends StatelessWidget {
 Falta conectarla. En `lib/main.dart` importa el archivo nuevo, debajo del `import` que ya está:
 
 ```dart
-import 'screens/home_screen.dart';
+import 'package:miapp1/screens/home_screen.dart';
 ```
+
+`miapp1` es el nombre de tu proyecto, y lo que sigue es la ruta del archivo dentro de `lib/`. Todos los archivos propios se importan así.
 
 Y en `routes` cambia el `Text` por la pantalla:
 

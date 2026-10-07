@@ -10,6 +10,8 @@ window.FIG = { <id>: '<svg ...>' }. Ajustes por tipo de figura:
   sean de un tipo o del otro.
 - Celular de perfil (PHONES): solo el celular; a swPiezas se le quitan las guías y los
   nombres, que la slide pone como tarjetas a los lados.
+- tlTodos se vuelve a generar en tres columnas (en la lección va en dos), con el generador
+  de las lecciones, tools/sesion2_figuras.py.
 - ppMain no se copia: entera queda ilegible, así que se arma en dos mitades (ppMainA y
   ppMainB) con el mismo generador de las lecciones, tools/code_frame.py.
 
@@ -25,7 +27,7 @@ REPO = HERE.parents[1]                   # SeminarioSoftware
 CONTENT = REPO / 'content'
 sys.path.insert(0, str(REPO / 'tools'))
 from code_frame import frame             # noqa: E402
-from sesion2_figuras import note         # noqa: E402
+from sesion2_figuras import note, tl_todos   # noqa: E402
 
 LESSONS = [f'lessonS{n}.md' for n in (10, 11, 12, 13, 14, 16, 17, 15, 18)]
 
@@ -166,6 +168,8 @@ def main():
         fig[k] = resize(svgs[k], plain_box(k, svgs[k]))
     for k in PHONES:
         fig[k] = phone(k, svgs[k])
+    # Los seis componentes del taller, en tres columnas para que quepan a lo ancho de la slide.
+    fig['tlTodos'] = resize(tl_todos(cols=3), (40, 104, 1324, 368))
     out = HERE / 'slides' / '00-figuras.js'
     body = ',\n'.join(f'  {k}: {json.dumps(v, ensure_ascii=False)}' for k, v in fig.items())
     out.write_text('// Generado por figuras.py a partir de las lecciones. No editar a mano.\n'

@@ -517,7 +517,7 @@ Para verlo, impórtalo en `lib/screens/home_screen.dart`:
 
 ```dart
 import 'package:flutter/material.dart';
-import '../components/stat_card.dart';
+import 'package:miapp1/components/stat_card.dart';
 
 /// First screen of the app.
 class HomeScreen extends StatelessWidget {

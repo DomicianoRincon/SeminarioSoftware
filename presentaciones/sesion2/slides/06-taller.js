@@ -12,14 +12,7 @@
   // 31 · Los seis componentes
   window.SLIDES.push(H.withNotes(icesi.slideStandard(
     'Seis componentes, ninguna pantalla',
-    '<div style="margin-top:44px;">' + H.bigCards([
-      H.bigCard(I.btnFill, 'PrimaryButton', 'La acción principal', true),
-      H.bigCard(I.btnLine, 'SecondaryButton', 'La alternativa, con borde', true),
-      H.bigCard(I.stats, 'StatsRow', 'Tres StatCard en una fila', true),
-      H.bigCard(I.chat, 'ChatItem', 'Una conversación de la lista', true),
-      H.bigCard(I.person, 'ProfileInfo', 'La foto y los datos del perfil', true),
-      H.bigCard(I.person, 'ContactCard', 'Un contacto sugerido', true)
-    ]) + '</div>'
+    '<div style="margin-top:30px;">' + FIG.tlTodos + '</div>'
   ), 'Solo componentes. En la próxima sesión se usan para armar una pantalla de perfil y una de inicio de sesión. ' +
     'Cada componente va en su propio archivo dentro de lib/components, todos con la misma forma: el import, una línea de descripción, la clase, los campos final, el constructor y build. ' +
     'Para verlo se monta en HomeScreen, dentro del Center, y se le pasan datos. Los diseños están en el proyecto de Figma enlazado en el visor.'));

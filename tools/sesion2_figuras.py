@@ -1088,10 +1088,12 @@ FIGS['swPiezas'] = sw_piezas
 
 # ───────────────────────────── S0018 · lo que se va a construir
 
-def tl_todos():
+def tl_todos(cols=2):
+    """cols=2 es la figura de la lección; la presentación la pide con cols=3, apaisada."""
     fid = 'tlTodos'
     cw, ch, pw, ph = 420, 168, 396, 100
-    h = 112 + 3 * ch + 2 * 16 + 60
+    rows = -(-6 // cols)
+    h = 112 + rows * ch + (rows - 1) * 16 + 60
     s = head(fid, h, 'Lo que vas a construir', 'Lo que vas a construir',
              'Seis componentes, cada uno en su archivo dentro de lib/components/. El número es el apartado del taller donde se arma.',
              'Los seis componentes del taller, cada uno con una vista previa: PrimaryButton, un botón azul que dice Iniciar sesión; SecondaryButton, un botón con borde que dice Crear cuenta; StatsRow, una fila de tres tarjetas con números; ChatItem, una fila de chat con foto, nombre, mensaje y hora; ProfileInfo, la cabecera de un perfil con foto, nombre, usuario, correo y ciudad; y ContactCard, una tarjeta pequeña con foto, nombre y usuario.')
@@ -1142,8 +1144,8 @@ def tl_todos():
         (5, 'ContactCard', 'contact_card.dart', contact),
     ]
     for i, (num, cls, file, preview) in enumerate(cards):
-        x = 48 + (i % 2) * (cw + 24)
-        y = 112 + (i // 2) * (ch + 16)
+        x = 48 + (i % cols) * (cw + 24)
+        y = 112 + (i // cols) * (ch + 16)
         s += f'  <g transform="translate({x},{y})">\n'
         s += f'    <rect width="{cw}" height="{ch}" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
         s += f'    <rect x="12" y="12" width="{pw}" height="{ph}" rx="10" fill="#F5F6FA"/>\n'

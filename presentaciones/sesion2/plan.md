@@ -67,7 +67,7 @@ dice la lección va en las notas de orador.
 | 28 | Usarlo en una pantalla | `slideStandard` | Se importa y se le pasan datos | SVG `swUso` |
 | 29 | Dónde vive y cómo se llama | `slideStandard` | Carpeta `lib/components/` · archivo `stat_card.dart` · clase `StatCard` | Tres tarjetas con ícono |
 | 30 | Manos a la obra | `titleSlideF` | Separador de la parte práctica: *Taller · Componentes* | · |
-| 31 | Seis componentes, ninguna pantalla | `slideStandard` | `PrimaryButton`, `SecondaryButton`, `StatsRow`, `ChatItem`, `ProfileInfo`, `ContactCard` | Grilla de seis tarjetas con ícono |
+| 31 | Seis componentes, ninguna pantalla | `slideStandard` | `PrimaryButton`, `SecondaryButton`, `StatsRow`, `ChatItem`, `ProfileInfo`, `ContactCard`, cada uno con su vista previa | SVG `tlTodos`, la figura que abre el taller, en tres columnas |
 | 32 | PrimaryButton y SecondaryButton | `slideStandard` | Un icono y un texto en una `Row` | SVG `tlBoton` |
 | 33 | StatsRow | `slideStandard` | Un componente hecho de tres `StatCard` | SVG `tlStats` |
 | 34 | ContactCard | `slideStandard` | Avatar, nombre y usuario | SVG `tlContacto` |

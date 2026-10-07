@@ -21,6 +21,14 @@
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS17.md | Row | S0017
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS15.md | StatelessWidget: tu primer componente | S0015
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS18.md | Taller · Componentes | S0018
+[t] Sesión 3 · Pantallas con componentes
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS20.md | Scaffold | S0020
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS21.md | SafeArea | S0021
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS22.md | Container y Padding | S0022
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS23.md | Expanded | S0023
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS24.md | SingleChildScrollView | S0024
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS25.md | Armar una pantalla | S0025
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS26.md | Taller · Pantallas | S0026
 [t] Instalación avanzada
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC1.md | Instalación de Flutter | 0019
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC2.md | Tu primera app Flutter | 0020

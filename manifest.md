@@ -12,7 +12,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 |---|---|---|---|---|---|---|
 | 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
 | 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `S0018` Taller · Componentes |
-| 3 | 19 | 10 | 4 | Pantallas con componentes | ⬜ | |
+| 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
 | 5 | 21 | 11 | 3 | Skills: extender el agente | ⬜ | |
 | 6 | 22 | 11 | 4 | Stateful widget y setState | ⬜ | |
@@ -65,7 +65,7 @@ https://domicianorincon.github.io/SeminarioSoftware/presentaciones/1/ y enlazada
 | *(añadido por el profesor; el planeador lo pone en la sesión 19)* Column y Row | `S0016` Column · `S0017` Row: `children`, los dos ejes, `mainAxisAlignment`, `crossAxisAlignment` y `SizedBox`. `Expanded`, `Container`, `Padding` y `SingleChildScrollView` quedan para la sesión 3 |
 | Concepto de componente como pieza reutilizable | `S0015` StatelessWidget: tu primer componente |
 | Taller: componentes Stateless montados en una pantalla | `S0018` Taller · Componentes: **solo componentes**, seis. Empieza por dos nuevos, `PrimaryButton` (azul) y `SecondaryButton` (con borde), los dos con un icono y un texto en una `Row`. Sigue `StatsRow`, un componente compuesto con tres `StatCard` (el de `S0015`), y dos del Lab 1 de Móviles (elemento de conversación, bloque de información de perfil) y cierra con `ContactCard`, una versión mínima del perfil (foto, nombre y usuario) pensada para una fila horizontal de contactos sugeridos |
-| *Fuera de clase:* terminar los componentes del taller | `S0018`. Armar las pantallas de perfil y de login con ellos es el taller de la sesión 3 |
+| *Fuera de clase:* terminar los componentes del taller | `S0018`. Armar las pantallas de perfil y de login con ellos es el taller de la sesión 3 (`S0026`) |
 
 Notas:
 
@@ -74,6 +74,30 @@ Notas:
 - El taller **no** es `lab1.md` (`0033`): ese mezcla componentes y pantallas. `S0018` reutiliza sus imágenes `Lab1Item1.png` a `Lab1Item3.png` y el mismo Figma, y deja el armado para la sesión 3. `lab1.md` sigue en `content/` como cantera.
 - El scroll horizontal de los contactos sugeridos **no** está en el taller: `ContactCard` se prueba en una `Row`. La fila deslizable es para la sesión 3.
 - Las 24 figuras salen de `tools/sesion2_figuras.py` (ver `CLAUDE.md` → *Código: frame de editor SVG*).
+
+### Sesión 3 · Pantallas con componentes
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion3/`). Cuando exista se enlaza al inicio de `S0020`.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Scaffold y SafeArea como andamiaje de una pantalla | `S0020` Scaffold (`appBar`, `body`, `backgroundColor`, `floatingActionButton`; `bottomNavigationBar` solo nombrado) · `S0021` SafeArea, con la regla del curso: el `body` de toda Screen empieza con un `SafeArea` |
+| Composición: armar una pantalla a partir de componentes propios | `S0025` Armar una pantalla: el orden `Scaffold` → `SafeArea` → `SingleChildScrollView` → `Column` → componentes, con la mitad de arriba del perfil (`ProfileInfo` + `StatsRow`) |
+| Layout con Column, Row, Expanded, Container, Padding y SingleChildScrollView | `Column` y `Row` se adelantaron a la sesión 2 (`S0016`, `S0017`). Aquí: `S0022` Container y Padding · `S0023` Expanded (con `flex` y `Spacer`) · `S0024` SingleChildScrollView (vertical y horizontal) |
+| Convención Screen frente a Page | Apartado *Una pantalla es una Screen* de `S0020`. **Solo Screen**: Page se nombra con una figura y se remite a la sesión 9 (decisión del profesor, 2026-10-07) |
+| Taller: armar dos pantallas del reto con componentes propios y suministrados | `S0026` Taller · Pantallas: `ProfileScreen` (`/profile`, con barra y scroll, la pantalla de la figura `swPantalla` de `S0015`) y `LoginScreen` (`/login`, sin barra). El componente suministrado es `SectionHeader`, con su código completo |
+| *Fuera de clase:* lectura sobre archivos de contexto para agentes (CLAUDE.md / AGENTS.md) | ⬜ **Pendiente.** El profesor no ha definido la lectura; `S0026` no la menciona |
+
+Notas:
+
+- **Sin tablas** en las siete lecciones (regla del profesor del 2026-10-04): una figura y uno o dos párrafos por apartado. Las de la sesión 2 sí tienen tablas.
+- **Imports con `package:miapp1/`** desde esta sesión. Se corrigieron los tres imports relativos que quedaban en `S0010`, `S0015` y `S0018`.
+- **SafeArea no se nota en Chrome.** `S0021` lo dice, y su *Ejemplo completo* finge las zonas del sistema con un `MediaQuery` en el `builder` de `MaterialApp`.
+- Se cambia de pantalla editando `initialRoute`: la navegación es de la sesión 8. Los botones siguen con `print`.
+- El taller se comprobó armando las dos pantallas en un proyecto de prueba con los siete componentes de `S0018`: `flutter analyze` solo reporta `avoid_print`.
+- `StatsRow` con `spaceEvenly` se desborda en pantallas de 360 px de ancho. El taller lo convierte en una pista: envolver cada `StatCard` en un `Expanded`.
+- Las 20 figuras salen de `tools/sesion3_figuras.py`, que reutiliza `code_frame.py` y varios dibujos de `sesion2_figuras.py`.
+- El *Ejemplo completo* de `S0020` a `S0025` necesita su gist público en la cuenta `Domiciano`. Mientras el bloque diga `trycode=PENDIENTE_S2x`, la lección no se debe publicar.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
@@ -117,3 +141,10 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS17.md` | `S0017` | Row | 2 |
 | `lessonS18.md` | `S0018` | Taller · Componentes | 2 |
 | `lessonS19.md` | `S0019` | Playground | *(apoyo, sección Curso)* |
+| `lessonS20.md` | `S0020` | Scaffold | 3 |
+| `lessonS21.md` | `S0021` | SafeArea | 3 |
+| `lessonS22.md` | `S0022` | Container y Padding | 3 |
+| `lessonS23.md` | `S0023` | Expanded | 3 |
+| `lessonS24.md` | `S0024` | SingleChildScrollView | 3 |
+| `lessonS25.md` | `S0025` | Armar una pantalla | 3 |
+| `lessonS26.md` | `S0026` | Taller · Pantallas | 3 |

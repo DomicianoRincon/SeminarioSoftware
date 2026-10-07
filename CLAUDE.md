@@ -216,10 +216,13 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py`, `tools/sesion3_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
+
+El script de una sesión puede importar dibujos del de otra (`sesion3_figuras.py` toma `phone`, `avatar` y `head` de
+`sesion2_figuras.py`): si se cambia uno de esos, hay que volver a inyectar las dos sesiones.
 
 `check.py` marca como error la URL de ejemplo de `imNetwork` (`Image.network('https://…')`).
 Es un falso positivo: es texto del código mostrado, no un recurso que el SVG cargue.
