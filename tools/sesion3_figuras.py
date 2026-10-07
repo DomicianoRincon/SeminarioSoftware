@@ -890,9 +890,17 @@ def tp_pantallas():
     fid = 'tpPantallas'
     h = PY0 + PH_ + 10 + 72
     s = head(fid, h, 'La pantalla del taller', 'La pantalla del taller',
-             'Se arma con los componentes de la sesión 2. Lleva barra arriba y el contenido se desliza.',
-             'Un celular con la pantalla de perfil: barra con el título Perfil, la información de la persona, tres indicadores, dos botones, una fila de contactos sugeridos y las últimas conversaciones. Debajo, el nombre de la clase, ProfileScreen, y su ruta, /profile.')
+             'Se arma en cuatro bloques, de arriba hacia abajo, con los componentes de la sesión 2.',
+             'Un celular con la pantalla de perfil, dividida en cuatro bloques numerados de arriba hacia abajo. Uno, la información del perfil y sus tres indicadores. Dos, los botones Seguir y Enviar mensaje. Tres, los contactos sugeridos. Cuatro, las últimas conversaciones. Debajo, el nombre de la clase, ProfileScreen, y su ruta, /profile.')
     s += phone(fid)
+    strong = FAM['indigo'][2]
+    for n, (name, _sub, _desc, y0, y1, _parts) in enumerate(TP_BLOQUES, 1):
+        a, b = PY0 + y0 + 6, PY0 + y1 - 6
+        mid = (a + b) / 2
+        s += f'  <path d="M672,{a} H682 V{b} H672" fill="none" stroke="{strong}" stroke-width="1.75"/>\n'
+        s += f'  <circle cx="712" cy="{mid:g}" r="14" fill="{strong}"/>\n'
+        s += '  ' + txt(712, f'{mid:g}', n, 14, 700, '#FFFFFF', 'middle').replace('<text ', '<text dy="0.35em" ') + '\n'
+        s += '  ' + txt(736, f'{mid:g}', name, 14, 700, INK, fit=200).replace('<text ', '<text dy="0.35em" ') + '\n'
     cx, y = PX0 + PW_ / 2, PY0 + PH_ + 44
     s += '  ' + txt(f'{cx:g}', y, 'ProfileScreen', 15, 700, FAM['indigo'][2], 'middle', cls='mono') + '\n'
     s += '  ' + txt(f'{cx:g}', y + 20, "'/profile'", 13, 400, MUTED, 'middle', cls='mono') + '\n'
@@ -902,37 +910,84 @@ def tp_pantallas():
 FIGS['tpPantallas'] = tp_pantallas
 
 
+def tp_bloque(n):
+    """Un bloque de la pantalla del taller, ampliado, con el componente que hace cada parte."""
+    name, sub, desc, y0, y1, parts = TP_BLOQUES[n - 1]
+    fid = f'tpBloque{n}'
+    k, x, y = 1.5, 48, 112
+    w, bh = PW_ * k, (y1 - y0) * k
+    s = head(fid, y + bh + 40, f'Bloque {n} · {name}', f'Bloque {n} · {name}', sub, desc)
+    s += f'  <clipPath id="{fid}-crop"><rect x="{x}" y="{y}" width="{w:g}" height="{bh:g}" rx="12"/></clipPath>\n'
+    s += (f'  <g clip-path="url(#{fid}-crop)"><svg x="{x}" y="{y}" width="{w:g}" height="{bh:g}" '
+          f'viewBox="{PX0} {PY0 + y0} {PW_} {y1 - y0}">\n' + phone(fid).replace('rx="28"', 'rx="0"') + '  </svg></g>\n')
+    s += f'  <rect x="{x}" y="{y}" width="{w:g}" height="{bh:g}" rx="12" fill="none" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    for a, b, color, comp, note in parts:
+        strong = FAM[color][2]
+        my, mh = y + (a - y0) * k, (b - a) * k
+        mid = my + mh / 2
+        s += '  ' + mark(x + 6, f'{my:g}', f'{w - 12:g}', f'{mh:g}', color, 12) + '\n'
+        s += f'  <path d="M{x + w - 6:g},{mid:g} H596" stroke="{strong}" stroke-width="1.75"/><circle cx="596" cy="{mid:g}" r="3.5" fill="{strong}"/>\n'
+        s += '  ' + txt(612, f'{mid - 3:g}', comp, 15, 700, strong, cls='mono', fit=300) + '\n'
+        s += '  ' + txt(612, f'{mid + 17:g}', note, 13, 400, MUTED, fit=300) + '\n'
+    return s + '</svg>\n'
+
+
+TP_BLOQUES = [
+    ('La información del perfil', 'Dos componentes, uno debajo del otro. Los dos quedan centrados.',
+     'La parte de arriba de la pantalla de perfil. Primero ProfileInfo, con la foto, el nombre, el usuario, el correo y la ciudad. Debajo StatsRow, con tres indicadores: publicaciones, seguidores y seguidos.',
+     56, 292, [(60, 210, 'violet', 'ProfileInfo', 'Foto, nombre, usuario, correo y ciudad.'),
+               (218, 290, 'indigo', 'StatsRow', 'Tres StatCard en una fila.')]),
+    ('Los botones', 'Dos botones a todo el ancho, uno debajo del otro.',
+     'Dos botones. Arriba PrimaryButton, azul, con el texto Seguir. Debajo SecondaryButton, con borde, con el texto Enviar mensaje.',
+     292, 402, [(296, 346, 'indigo', 'PrimaryButton', 'Seguir.'),
+                (348, 398, 'teal', 'SecondaryButton', 'Enviar mensaje.')]),
+    ('Contactos sugeridos', 'Un título y, debajo, una fila de tarjetas que se desliza de lado.',
+     'El título Contactos sugeridos, hecho con SectionHeader. Debajo, una fila de ContactCard con la foto, el nombre y el usuario de cada contacto. La última tarjeta queda cortada: la fila sigue hacia la derecha.',
+     402, 526, [(406, 432, 'amber', 'SectionHeader', 'El título de la sección.'),
+                (434, 522, 'teal', 'ContactCard', 'Seis o más, en una fila que se desliza.')]),
+    ('Últimas conversaciones', 'Un título y, debajo, una conversación por renglón.',
+     'El título Últimas conversaciones, hecho con SectionHeader. Debajo, dos ChatItem con la foto, el nombre, el último mensaje y la hora.',
+     526, 670, [(530, 556, 'amber', 'SectionHeader', 'El título de la sección.'),
+                (558, 666, 'rose', 'ChatItem', 'Cuatro o más, uno debajo del otro.')]),
+]
+
+for _n in range(1, 5):
+    FIGS[f'tpBloque{_n}'] = lambda _n=_n: tp_bloque(_n)
+
+
 def tp_carpetas():
     fid = 'tpCarpetas'
-    h = 492
+    h = 604
     s = head(fid, h, 'Tu proyecto al terminar el taller', 'Tu proyecto al terminar el taller',
-             'Los componentes ya los tienes. Hoy agregas uno que te entregamos y una pantalla.',
-             'La carpeta lib con main.dart y dos subcarpetas. En components están los siete componentes de la sesión 2 y uno nuevo, section_header.dart. En screens están home_screen.dart y la pantalla nueva, profile_screen.dart.')
+             'Los componentes ya los tienes. Hoy agregas uno que te entregamos, cuatro secciones y una pantalla.',
+             'La carpeta lib con main.dart y dos subcarpetas. En components están los siete componentes de la sesión 2 y cinco archivos nuevos: section_header.dart y las cuatro secciones, profile_summary_section.dart, profile_actions_section.dart, suggested_contacts_section.dart y recent_chats_section.dart. En screens están home_screen.dart y la pantalla nueva, profile_screen.dart.')
 
     def folder(x, y, name):
         return (f'<path d="M{x},{y-8} h9 l3,3 h12 v13 h-24 Z" fill="{FAM["amber"][0]}" stroke="{FAM["amber"][2]}" stroke-width="1.5" stroke-linejoin="round"/>'
                 + txt(x + 34, y + 5, name, 14.5, 700, INK, cls='mono'))
 
-    def item(x, y, name, new=False):
+    def item(x, y, name, new=False, bx=232):
         strong = FAM['green'][2]
         o = f'<path d="M{x},{y-9} h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="{strong if new else "#79809A"}" stroke-width="1.5" stroke-linejoin="round"/>'
         o += txt(x + 26, y + 5, name, 13.5, 700 if new else 400, strong if new else MUTED, cls='mono')
         if new:
-            o += (f'<rect x="{x + 232}" y="{y-10}" width="56" height="22" rx="11" fill="{FAM["green"][0]}" stroke="{FAM["green"][1]}" stroke-width="1.5"/>'
-                  + txt(x + 260, y + 5, 'nuevo', 12, 700, strong, 'middle'))
+            o += (f'<rect x="{x + bx}" y="{y-10}" width="56" height="22" rx="11" fill="{FAM["green"][0]}" stroke="{FAM["green"][1]}" stroke-width="1.5"/>'
+                  + txt(x + bx + 28, y + 5, 'nuevo', 12, 700, strong, 'middle'))
         return o
     s += '  ' + folder(64, 140, 'lib/') + '\n'
     s += '  ' + item(104, 176, 'main.dart') + '\n'
     s += '  ' + folder(104, 218, 'components/') + '\n'
-    comps = ['chat_item.dart', 'contact_card.dart', 'primary_button.dart', 'profile_info.dart',
-             'secondary_button.dart', 'section_header.dart', 'stat_card.dart', 'stats_row.dart']
+    comps = ['chat_item.dart', 'contact_card.dart', 'primary_button.dart', 'profile_actions_section.dart',
+             'profile_info.dart', 'profile_summary_section.dart', 'recent_chats_section.dart',
+             'secondary_button.dart', 'section_header.dart', 'stat_card.dart', 'stats_row.dart',
+             'suggested_contacts_section.dart']
     for i, n in enumerate(comps):
-        s += '  ' + item(144, 252 + i * 28, n, n == 'section_header.dart') + '\n'
+        s += '  ' + item(144, 252 + i * 28, n, n == 'section_header.dart' or n.endswith('_section.dart'), 300) + '\n'
     s += '  ' + folder(536, 218, 'screens/') + '\n'
     for i, (n, new) in enumerate((('home_screen.dart', False), ('profile_screen.dart', True))):
         s += '  ' + item(576, 252 + i * 28, n, new) + '\n'
     s += '  <path d="M76,156 V218 H96 M76,176 H96" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
-    s += '  <path d="M116,234 V448 M548,234 V280" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
+    s += '  <path d="M116,234 V560 M548,234 V280" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
     s += '  <path d="M76,198 H508 V218 H528" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>\n'
     return s + '</svg>\n'
 

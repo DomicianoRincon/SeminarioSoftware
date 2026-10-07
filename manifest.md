@@ -85,7 +85,7 @@ Notas:
 | Composición: armar una pantalla a partir de componentes propios | `S0025` Armar una pantalla: el orden `Scaffold` → `SafeArea` → `SingleChildScrollView` → `Column` → componentes, con la mitad de arriba del perfil (`ProfileInfo` + `StatsRow`) |
 | Layout con Column, Row, Expanded, Container, Padding y SingleChildScrollView | `Column` y `Row` se adelantaron a la sesión 2 (`S0016`, `S0017`). Aquí: `S0022` Container y Padding · `S0023` Expanded (con `flex` y `Spacer`) · `S0024` SingleChildScrollView (vertical y horizontal) |
 | Convención Screen frente a Page | Apartado *Una pantalla es una Screen* de `S0020`. **Solo Screen**: Page se nombra con una figura y se remite a la sesión 9 (decisión del profesor, 2026-10-07) |
-| Taller: armar dos pantallas del reto con componentes propios y suministrados | `S0026` Taller · Pantallas: **una sola pantalla**, `ProfileScreen` (`/profile`, con barra y scroll, la pantalla de la figura `swPantalla` de `S0015`). La de inicio de sesión se quitó del taller (decisión del profesor, 2026-10-07). El componente suministrado es `SectionHeader`, con su código completo |
+| Taller: armar dos pantallas del reto con componentes propios y suministrados | `S0026` Taller · Pantallas: **una sola pantalla**, `ProfileScreen` (`/profile`, con barra y scroll, la pantalla de la figura `swPantalla` de `S0015`). La de inicio de sesión se quitó del taller (decisión del profesor, 2026-10-07). Va en **cuatro bloques numerados**, cada uno con su figura (`tpBloque1` a `tpBloque4`): información del perfil, botones, contactos sugeridos y últimas conversaciones. Primero se arman en la pantalla y después cada uno se saca a una **sección** en `lib/components/` (`ProfileSummarySection`, `ProfileActionsSection`, `SuggestedContactsSection`, `RecentChatsSection`); la primera va resuelta como ejemplo (reescritura pedida por el profesor, 2026-10-07). El componente suministrado es `SectionHeader`, con su código completo |
 | *Fuera de clase:* lectura sobre archivos de contexto para agentes (CLAUDE.md / AGENTS.md) | ⬜ **Pendiente.** El profesor no ha definido la lectura; `S0026` no la menciona |
 
 Notas:
@@ -96,7 +96,8 @@ Notas:
 - Se cambia de pantalla editando `initialRoute`: la navegación es de la sesión 8. Los botones siguen con `print`.
 - El taller se comprobó armando las dos pantallas en un proyecto de prueba con los siete componentes de `S0018`: `flutter analyze` solo reporta `avoid_print`.
 - `StatsRow` con `spaceEvenly` se desborda en pantallas de 360 px de ancho. El taller lo convierte en una pista: envolver cada `StatCard` en un `Expanded`.
-- Las 23 figuras salen de `tools/sesion3_figuras.py`, que reutiliza `code_frame.py` y varios dibujos de `sesion2_figuras.py`.
+- El paso de separar en secciones del taller **no se ha comprobado en un proyecto real**: la comprobación de arriba es anterior a la reescritura.
+- Las 27 figuras salen de `tools/sesion3_figuras.py`, que reutiliza `code_frame.py` y varios dibujos de `sesion2_figuras.py`.
 - El *Ejemplo completo* de `S0020` a `S0025` y los de `S0027` y `S0028` necesita su gist público en la cuenta `Domiciano`. Mientras el bloque diga `trycode=PENDIENTE_S2x`, la lección no se debe publicar.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
