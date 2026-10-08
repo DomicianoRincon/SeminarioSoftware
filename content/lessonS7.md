@@ -2,16 +2,15 @@
 
 <!-- tags: entrega 1, contexto del proyecto, modelo entidad relación, diagrama MER, llave primaria, llave foránea, cardinalidad, prototipo no funcional, Figma, Lovable, Stitch, galería de componentes, componentes reutilizables -->
 
-Primera entrega del proyecto del equipo: el plano de la app antes de escribir código. Son **cuatro cosas**, en este orden, y cada una alimenta a la siguiente.
+Primera entrega del proyecto del equipo: el plano de la app antes de escribir código. Se entrega, en este orden:
 
-## Qué se entrega
+1. Un **contexto breve del proyecto**: un párrafo de máximo 150 palabras con el problema que resuelve la app, para quién es y qué puede hacer el usuario en ella.
+2. El **diseño de base de datos** (diagrama MER).
+3. La **propuesta de diseño visual**: el prototipo y su galería de componentes.
 
-1. **Contexto del proyecto.** Un párrafo corto (máximo 150 palabras): qué problema resuelve la app, para quién y qué puede hacer el usuario en ella.
-2. **Modelo de base de datos.** El diagrama entidad-relación (MER) de la app.
-3. **Prototipo no funcional.** Las pantallas de la app en **Figma**, **Lovable** o **Stitch** (la herramienta que el equipo prefiera). No tiene que funcionar: tiene que verse y mostrar el recorrido principal.
-4. **Galería de componentes reutilizables.** Sale del prototipo del punto 3: los bloques de interfaz que se repiten en varias pantallas, mostrados juntos.
+Todo en un solo envío por equipo: el texto, la imagen del diagrama y el enlace al prototipo y a la galería, con permiso de lectura para el profesor.
 
-## El modelo de base de datos (MER)
+## Diseño de base de datos
 
 Un diagrama MER muestra **qué datos guarda la app y cómo se relacionan**. Cada caja es una **entidad** (una futura tabla) y cada línea, una **relación**. Así se ve uno típico:
 
@@ -104,13 +103,13 @@ Lo que tiene que traer el diagrama del equipo:
 - Las **llaves foráneas (FK)** que las enlazan.
 - La **cardinalidad** de cada relación (1 a N, N a N…).
 
-Basta con que el diagrama sea legible: puede hacerse en draw.io, dbdiagram.io, Figma o a mano y fotografiado.
+Basta con que sea legible: puede hacerse en draw.io, dbdiagram.io, Figma o a mano y fotografiado.
 
-## El prototipo y su galería de componentes
+## Propuesta de diseño visual
 
-El prototipo cubre las pantallas del **recorrido principal** de la app (por ejemplo: entrar, ver la lista, abrir un detalle, crear algo). Los datos que se muestran en ellas deben tener sentido con el modelo de base de datos.
+Un **prototipo no funcional** en **Figma**, **Lovable** o **Stitch** (la herramienta que el equipo prefiera). No tiene que funcionar: tiene que verse y mostrar el recorrido principal de la app (por ejemplo: entrar, ver la lista, abrir un detalle, crear algo). Los datos que muestra deben tener sentido con el modelo de base de datos.
 
-Con el prototipo terminado, identifiquen lo que se repite y armen una **galería de componentes**: una sola vista (una página de Figma, una pantalla aparte) con cada componente **una sola vez**, con nombre. Por ejemplo:
+Con el prototipo terminado, identifiquen lo que se repite y armen una **galería de componentes reutilizables**: una sola vista (una página de Figma, una pantalla aparte) con cada componente **una sola vez**, con nombre. Por ejemplo:
 
 - Botones (principal y secundario).
 - Campos de texto.
@@ -119,11 +118,3 @@ Con el prototipo terminado, identifiquen lo que se repite y armen una **galería
 - Cualquier componente propio de su app.
 
 Si un componente cambia de aspecto (deshabilitado, con error, seleccionado), muestren **cada variante** junto a él. Esta galería es la lista de piezas que después van a programar como widgets.
-
-## Cómo se entrega
-
-Un solo envío por equipo con:
-
-- El texto del contexto.
-- La imagen del diagrama MER.
-- El enlace al prototipo y a la galería de componentes, con permiso de lectura para el profesor.
