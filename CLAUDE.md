@@ -216,7 +216,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py`, `tools/sesion3_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py`, `tools/sesion3_figuras.py`, `tools/sesion4_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.

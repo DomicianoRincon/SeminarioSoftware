@@ -13,7 +13,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
 | 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `S0018` Taller · Componentes |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
-| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | ⬜ | |
+| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill |
 | 5 | 21 | 11 | 3 | Skills: extender el agente | ⬜ | |
 | 6 | 22 | 11 | 4 | Stateful widget y setState | ⬜ | |
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
@@ -99,6 +99,33 @@ Notas:
 - El paso de separar en secciones del taller **no se ha comprobado en un proyecto real**: la comprobación de arriba es anterior a la reescritura.
 - Las 28 figuras salen de `tools/sesion3_figuras.py`, que reutiliza `code_frame.py` y varios dibujos de `sesion2_figuras.py`.
 - El *Ejemplo completo* de `S0020` a `S0025` y los de `S0027` y `S0028` necesita su gist público en la cuenta `Domiciano`. Mientras el bloque diga `trycode=PENDIENTE_S2x`, la lección no se debe publicar.
+
+### Sesión 4 · El agente en consola y el archivo de contexto
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion4/`).
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Asistentes de IA en consola: qué son y cómo se opera con ellos | `S0029` El agente en consola: instalar OpenCode, abrirlo dentro del proyecto, elegir un modelo gratuito y la primera pregunta de solo lectura. `S0006`, de la sesión 1, ya había presentado la idea |
+| Modos de operación y niveles de autonomía | `S0029`: `plan` y `build` (tecla Tab), `opencode.json` para que pida permiso antes de editar o ejecutar, y `/undo` |
+| Gestión del contexto: qué ve el agente | `S0030` El archivo de contexto, apartados *Lo que el agente ve* y *El mismo pedido, dos veces* |
+| Construcción del primer CLAUDE.md/AGENTS.md con /init | `S0030`: `/init` y los seis apartados, con un `AGENTS.md` completo de ejemplo (app de biblioteca, la misma del MER de `S0007`) y su `docs/modelo.md` |
+| El archivo de contexto es un documento vivo | `S0030`, apartado *Un documento vivo* |
+| Introducción a los 3 servicios básicos: data, storage y auth | Se adelantó a la sesión 1: `S0005` Frontend y la nube |
+| *(adelantado de la sesión 5, decisión del profesor del 2026-10-09)* Skills: qué son y cómo se crean | `S0031` Skills (la carpeta, `SKILL.md`, cuándo se carga) y `S0032` Taller · Tu primera skill: arman `mer-svg`, que dibuja el MER de la Entrega 1 en SVG a partir de `docs/modelo.md` |
+| *Fuera de clase:* completar el CLAUDE.md del repositorio del equipo | Cierre de `S0030` y de `S0032`: llevar `AGENTS.md`, `opencode.json`, `docs/modelo.md` y la skill al repo del equipo |
+
+Notas:
+
+- **Herramienta: OpenCode**, con Antigravity CLI (`agy`) como alternativa (decisión del profesor, 2026-10-09). Las lecciones enseñan el estándar que leen las dos: `AGENTS.md` y `.agents/skills/<nombre>/SKILL.md`. Se dice una vez que en Claude Code el archivo se llama `CLAUDE.md`.
+- **Se trabaja sobre `miapp1` individual.** Llevarlo al repo del equipo es la tarea.
+- **El experimento de `S0030` se corrió de verdad** el 2026-10-09 con OpenCode 2.0.25 y el modelo gratuito `opencode/big-pickle`, sobre una réplica reducida de `miapp1`. Sin contexto el agente **sí** copió las convenciones visibles en el código (Scaffold, SafeArea, imports `package:`, reutilizó componentes) e inventó el dominio: calificación con reseñas, género, páginas, ISBN y botones *Leer* y *Favorito*. Con el `AGENTS.md` y el `docs/modelo.md` de la lección mostró solo título, autor y categoría, con *Pedir prestado*, y separó las secciones en `lib/components/`. Por eso la lección dice "el agente copia lo que ve e inventa lo que no ve", y no "sin contexto rompe las convenciones".
+- **La skill `mer-svg` se probó** el mismo día con el mismo modelo y un modelo de seis tablas distinto al del ejemplo: el SVG salió válido y bien compuesto al primer intento. Es la figura `tsResultado` de `S0032`, sin retoques. Tarda entre tres y cinco minutos por diagrama.
+- Los modelos gratuitos de OpenCode Zen funcionaron **sin cuenta ni tarjeta**. La lista rota: si `big-pickle` desaparece, se elige otro.
+- **Sin comprobar**: la instalación en Windows (`npm install -g opencode-ai`), el aviso de permiso en la interfaz con el `opencode.json` de la lección (sale de la documentación), y que Antigravity CLI reconozca la misma carpeta de skills (faltó iniciar sesión en `agy`).
+- Los archivos probados están en `recursos/sesion4/` (`AGENTS.md`, `opencode.json`, `docs/modelo.md` y la skill). El texto de `S0032` se generó desde ahí: si se cambia la skill, hay que cambiar los dos.
+- Las 15 figuras salen de `tools/sesion4_figuras.py`. Las lecciones no llevan *Ejemplo completo*: no tienen código Dart.
+- La sesión 5 queda para instalar la skill de Flutter, generar una pantalla y auditarla contra el `AGENTS.md`.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
