@@ -462,6 +462,68 @@ def ts_resultado():
 FIGS['tsResultado'] = ts_resultado
 
 
+TS_FILES = [('SKILL.md', 4, None), ('estilo.md', 5, 'references/'), ('ejemplo.svg', 5, 'assets/')]
+
+
+def ts_nodes(step):
+    """Árbol de la skill tras el paso `step` (1 = carpetas, 2 a 4 = un archivo más). El último elemento va como nuevo."""
+    fresh = step == 1
+    nodes = [(0, 'miapp1/', 'd', False), (1, '.agents/', 'd', fresh), (2, 'skills/', 'd', fresh), (3, 'mer-svg/', 'd', fresh)]
+    for i, (name, depth, folder) in enumerate(TS_FILES):
+        if i == 0:
+            if step >= 2:
+                nodes.append((depth, name, 'f', step == 2))
+            continue
+        nodes.append((4, folder, 'd', fresh))
+        if step >= i + 2:
+            nodes.append((depth, name, 'f', step == i + 2))
+    return nodes
+
+
+def ts_estructura():
+    fid = 'tsEstructura'
+    nodes = [(d, n, k, False) for d, n, k, _ in ts_nodes(4)]
+    h = 140 + (len(nodes) - 1) * 36 + 56
+    s = head(fid, h, 'La skill completa', 'La skill completa',
+             'Esto es lo que vas a tener al final. Se arma en cuatro pasos, uno por elemento.',
+             'El árbol de la skill dentro de miapp1: las carpetas .agents, skills y mer-svg, que se crean en el paso 1 junto con references y assets; el archivo SKILL.md, del paso 2; references/estilo.md, del paso 3; y assets/ejemplo.svg, del paso 4.')
+    t, pos = tree(nodes)
+    s += '  ' + t + '\n'
+    marks = [('mer-svg/', 1, 'Las carpetas', 'indigo'), ('SKILL.md', 2, 'Las instrucciones', 'violet'),
+             ('estilo.md', 3, 'Las medidas y los colores', 'teal'), ('ejemplo.svg', 4, 'Un diagrama terminado', 'amber')]
+    for name, n, label, c in marks:
+        x, y = pos[name]
+        s += '  ' + chip(540, y, n, c) + '\n'
+        s += '  ' + txt(562, y + 4.5, f'<tspan font-weight="700" fill="{FAM[c][2]}">Paso {n}.</tspan> {label}', 13.5, 400, '#454C61', fit=340) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['tsEstructura'] = ts_estructura
+
+
+def ts_paso(step):
+    fid = f'tsPaso{step}'
+    title = {1: 'Paso 1 · Las carpetas', 2: 'Paso 2 · SKILL.md', 3: 'Paso 3 · references/estilo.md',
+             4: 'Paso 4 · assets/ejemplo.svg'}[step]
+    sub = {1: 'Cinco carpetas vacías. El punto de .agents es parte del nombre.',
+           2: 'El único archivo obligatorio. Va directamente dentro de mer-svg.',
+           3: 'Lo que el agente consulta. Va dentro de references.',
+           4: 'Lo que el agente imita. Va dentro de assets.'}[step]
+    desc = {1: 'El árbol de miapp1 con cinco carpetas nuevas: .agents, dentro skills, dentro mer-svg, y dentro de mer-svg las carpetas references y assets.',
+            2: 'El mismo árbol, con un archivo nuevo dentro de mer-svg: SKILL.md.',
+            3: 'El mismo árbol, con un archivo nuevo dentro de references: estilo.md.',
+            4: 'El mismo árbol, con un archivo nuevo dentro de assets: ejemplo.svg. La skill está completa.'}[step]
+    nodes = ts_nodes(step)
+    h = 140 + (len(nodes) - 1) * 36 + 56
+    s = head(fid, h, title, title, sub, desc)
+    t, _ = tree(nodes, badge_x=480)
+    return s + '  ' + t + '\n</svg>\n'
+
+
+for _n in (1, 2, 3, 4):
+    FIGS[f'tsPaso{_n}'] = (lambda n: lambda: ts_paso(n))(_n)
+
+
 def ts_ejemplo():
     src = (ROOT / 'recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg').read_text(encoding='utf-8')
     src = src.replace('erEjemplo', 'tsEjemplo')

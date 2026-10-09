@@ -124,7 +124,7 @@ Notas:
 - Los modelos gratuitos de OpenCode Zen funcionaron **sin cuenta ni tarjeta**. La lista rota: si `big-pickle` desaparece, se elige otro.
 - **Sin comprobar**: la instalación en Windows (`npm install -g opencode-ai`), el aviso de permiso en la interfaz con el `opencode.json` de la lección (sale de la documentación), que Antigravity CLI reconozca la misma carpeta de skills (faltó iniciar sesión en `agy`), y su instalación: los instaladores de `S0029` (`install.cmd` para Windows, pedido por el profesor el 2026-10-09, e `install.sh`) existen en `antigravity.google/cli/`, pero no se ejecutaron.
 - Los archivos probados están en `recursos/sesion4/` (`AGENTS.md`, `opencode.json`, `docs/modelo.md` y la skill). El texto de `S0032` se generó desde ahí: si se cambia la skill, hay que cambiar los dos.
-- Las 17 figuras salen de `tools/sesion4_figuras.py`. `assets/ejemplo.svg` se muestra dibujado (`tsEjemplo`) y se descarga por enlace desde `recursos/sesion4/`, en vez de copiarse como código (pedido del profesor, 2026-10-09). `check.py` marca como error la URL del instalador en `agAntigravity`: es texto del comando mostrado, no un recurso que el SVG cargue. Las lecciones no llevan *Ejemplo completo*: no tienen código Dart.
+- Las 22 figuras salen de `tools/sesion4_figuras.py`. `S0032` muestra primero la estructura completa de la skill (`tsEstructura`) y la arma un elemento por paso, cada uno con su árbol (`tsPaso1` a `tsPaso4`). `assets/ejemplo.svg` va dibujado (`tsEjemplo`) **y** con su código, porque el archivo hay que crearlo (pedido del profesor, 2026-10-09).
 - La sesión 5 queda para instalar la skill de Flutter, generar una pantalla y auditarla contra el `AGENTS.md`.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles

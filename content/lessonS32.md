@@ -55,13 +55,176 @@ Necesitas, de las lecciones anteriores:
 - `opencode.json` y `AGENTS.md` en la raíz del proyecto.
 - `docs/modelo.md` con las tablas de **tu** app. Si todavía tienes el de la biblioteca, cámbialo ahora: es lo que hace que el diagrama sea el de tu entrega.
 
-## 1. Crea la carpeta de la skill
+## La estructura de la skill
 
-Desde VS Code, crea dentro de `miapp1` las carpetas `.agents/skills/mer-svg/`, y dentro de `mer-svg` las carpetas `references` y `assets`. El punto inicial de `.agents` es parte del nombre.
+Antes de escribir nada, mira a dónde vas: tres archivos repartidos en una carpeta con dos subcarpetas.
+
+```svg
+<svg id="tsEstructura" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 484" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tsEstructura-ttl tsEstructura-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tsEstructura-ttl">La skill completa</title>
+  <desc id="tsEstructura-dsc">El árbol de la skill dentro de miapp1: las carpetas .agents, skills y mer-svg, que se crean en el paso 1 junto con references y assets; el archivo SKILL.md, del paso 2; references/estilo.md, del paso 3; y assets/ejemplo.svg, del paso 4.</desc>
+  <defs>
+    <style>
+      #tsEstructura .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tsEstructura .sub{fill:#79809A;font-size:13.5px}
+      #tsEstructura .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tsEstructura .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tsEstructura .nb{fill:#454C61;font-size:13px}
+      #tsEstructura .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tsEstructura .foot{fill:#79809A;font-size:12px}
+      #tsEstructura .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tsEstructura .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tsEstructura-arrow)}
+    </style>
+    <marker id="tsEstructura-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="484" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">La skill completa</text>
+  <text class="sub" x="48" y="80" data-fit="860">Esto es lo que vas a tener al final. Se arma en cuatro pasos, uno por elemento.</text>
+  <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">miapp1/</text>
+  <path d="M76,150 V176 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M104,168 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="138" y="181" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
+  <path d="M116,186 V212 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M144,204 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="178" y="217" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
+  <path d="M156,222 V248 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M184,240 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="218" y="253" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
+  <path d="M196,258 V284 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M228,275 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="289" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">SKILL.md</text>
+  <path d="M196,258 V320 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,312 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="325" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
+  <path d="M236,330 V356 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,347 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="361" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">estilo.md</text>
+  <path d="M196,258 V392 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,384 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="397" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
+  <path d="M236,402 V428 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,419 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="433" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">ejemplo.svg</text>
+  <circle cx="540" cy="248" r="11" fill="#4453C9"/><text x="540" y="252.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="562" y="252.5" font-size="13.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="340"><tspan font-weight="700" fill="#4453C9">Paso 1.</tspan> Las carpetas</text>
+  <circle cx="540" cy="284" r="11" fill="#7439B8"/><text x="540" y="288.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="562" y="288.5" font-size="13.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="340"><tspan font-weight="700" fill="#7439B8">Paso 2.</tspan> Las instrucciones</text>
+  <circle cx="540" cy="356" r="11" fill="#0F8478"/><text x="540" y="360.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="562" y="360.5" font-size="13.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="340"><tspan font-weight="700" fill="#0F8478">Paso 3.</tspan> Las medidas y los colores</text>
+  <circle cx="540" cy="428" r="11" fill="#A96C05"/><text x="540" y="432.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <text x="562" y="432.5" font-size="13.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="340"><tspan font-weight="700" fill="#A96C05">Paso 4.</tspan> Un diagrama terminado</text>
+</svg>
+```
+
+En cada paso agregas un solo elemento y compruebas que quedó en su lugar.
+
+## 1. Crea las carpetas
+
+Desde el explorador de VS Code, crea dentro de `miapp1` la carpeta `.agents`, dentro de ella `skills` y dentro de ella `mer-svg`. Luego, dentro de `mer-svg`, crea `references` y `assets`.
+
+```svg
+<svg id="tsPaso1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 376" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tsPaso1-ttl tsPaso1-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tsPaso1-ttl">Paso 1 · Las carpetas</title>
+  <desc id="tsPaso1-dsc">El árbol de miapp1 con cinco carpetas nuevas: .agents, dentro skills, dentro mer-svg, y dentro de mer-svg las carpetas references y assets.</desc>
+  <defs>
+    <style>
+      #tsPaso1 .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tsPaso1 .sub{fill:#79809A;font-size:13.5px}
+      #tsPaso1 .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tsPaso1 .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tsPaso1 .nb{fill:#454C61;font-size:13px}
+      #tsPaso1 .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tsPaso1 .foot{fill:#79809A;font-size:12px}
+      #tsPaso1 .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tsPaso1 .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tsPaso1-arrow)}
+    </style>
+    <marker id="tsPaso1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="376" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Paso 1 · Las carpetas</text>
+  <text class="sub" x="48" y="80" data-fit="860">Cinco carpetas vacías. El punto de .agents es parte del nombre.</text>
+  <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">miapp1/</text>
+  <path d="M76,150 V176 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M104,168 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="138" y="181" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
+  <rect x="480" y="166" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="181" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+  <path d="M116,186 V212 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M144,204 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="178" y="217" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
+  <rect x="480" y="202" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="217" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+  <path d="M156,222 V248 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M184,240 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="218" y="253" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
+  <rect x="480" y="238" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="253" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+  <path d="M196,258 V284 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,276 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="289" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
+  <rect x="480" y="274" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="289" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+  <path d="M196,258 V320 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,312 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="325" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
+  <rect x="480" y="310" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="325" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+</svg>
+```
 
 ## 2. SKILL.md
 
-Crea `.agents/skills/mer-svg/SKILL.md` con este contenido:
+Crea el archivo `SKILL.md` dentro de `mer-svg`:
+
+```svg
+<svg id="tsPaso2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 412" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tsPaso2-ttl tsPaso2-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tsPaso2-ttl">Paso 2 · SKILL.md</title>
+  <desc id="tsPaso2-dsc">El mismo árbol, con un archivo nuevo dentro de mer-svg: SKILL.md.</desc>
+  <defs>
+    <style>
+      #tsPaso2 .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tsPaso2 .sub{fill:#79809A;font-size:13.5px}
+      #tsPaso2 .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tsPaso2 .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tsPaso2 .nb{fill:#454C61;font-size:13px}
+      #tsPaso2 .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tsPaso2 .foot{fill:#79809A;font-size:12px}
+      #tsPaso2 .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tsPaso2 .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tsPaso2-arrow)}
+    </style>
+    <marker id="tsPaso2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="412" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Paso 2 · SKILL.md</text>
+  <text class="sub" x="48" y="80" data-fit="860">El único archivo obligatorio. Va directamente dentro de mer-svg.</text>
+  <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">miapp1/</text>
+  <path d="M76,150 V176 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M104,168 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="138" y="181" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
+  <path d="M116,186 V212 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M144,204 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="178" y="217" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
+  <path d="M156,222 V248 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M184,240 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="218" y="253" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
+  <path d="M196,258 V284 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M228,275 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#3A8235" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="289" font-size="13.5" font-weight="700" fill="#3A8235" text-anchor="start" class="mono">SKILL.md</text>
+  <rect x="480" y="274" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="289" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+  <path d="M196,258 V320 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,312 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="325" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
+  <path d="M196,258 V356 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,348 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="361" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
+</svg>
+```
+
+Con este contenido:
 
 ```markdown
 ---
@@ -95,7 +258,59 @@ Lee los pasos antes de seguir: son las instrucciones que el agente va a obedecer
 
 ## 3. references/estilo.md
 
-Aquí está lo que hace que el diagrama se vea bien: medidas exactas en vez de "hazlo bonito". Crea `.agents/skills/mer-svg/references/estilo.md`:
+Crea el archivo `estilo.md` dentro de `references`:
+
+```svg
+<svg id="tsPaso3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 448" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tsPaso3-ttl tsPaso3-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tsPaso3-ttl">Paso 3 · references/estilo.md</title>
+  <desc id="tsPaso3-dsc">El mismo árbol, con un archivo nuevo dentro de references: estilo.md.</desc>
+  <defs>
+    <style>
+      #tsPaso3 .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tsPaso3 .sub{fill:#79809A;font-size:13.5px}
+      #tsPaso3 .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tsPaso3 .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tsPaso3 .nb{fill:#454C61;font-size:13px}
+      #tsPaso3 .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tsPaso3 .foot{fill:#79809A;font-size:12px}
+      #tsPaso3 .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tsPaso3 .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tsPaso3-arrow)}
+    </style>
+    <marker id="tsPaso3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="448" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Paso 3 · references/estilo.md</text>
+  <text class="sub" x="48" y="80" data-fit="860">Lo que el agente consulta. Va dentro de references.</text>
+  <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">miapp1/</text>
+  <path d="M76,150 V176 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M104,168 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="138" y="181" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
+  <path d="M116,186 V212 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M144,204 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="178" y="217" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
+  <path d="M156,222 V248 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M184,240 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="218" y="253" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
+  <path d="M196,258 V284 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M228,275 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="289" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">SKILL.md</text>
+  <path d="M196,258 V320 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,312 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="325" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
+  <path d="M236,330 V356 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,347 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#3A8235" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="361" font-size="13.5" font-weight="700" fill="#3A8235" text-anchor="start" class="mono">estilo.md</text>
+  <rect x="480" y="346" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="361" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+  <path d="M196,258 V392 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,384 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="397" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
+</svg>
+```
+
+Aquí está lo que hace que el diagrama se vea bien: medidas exactas en vez de "hazlo bonito".
 
 ```markdown
 # Estilo del MER
@@ -157,7 +372,62 @@ Una línea de texto bajo las tablas, 12.5 px, color `#79809A`, que dice cómo se
 
 ## 4. assets/ejemplo.svg
 
-Un diagrama terminado, para que el agente vea cómo se ve uno bien hecho. Es el de la biblioteca de la Entrega 1:
+Crea el archivo `ejemplo.svg` dentro de `assets`:
+
+```svg
+<svg id="tsPaso4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 484" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tsPaso4-ttl tsPaso4-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tsPaso4-ttl">Paso 4 · assets/ejemplo.svg</title>
+  <desc id="tsPaso4-dsc">El mismo árbol, con un archivo nuevo dentro de assets: ejemplo.svg. La skill está completa.</desc>
+  <defs>
+    <style>
+      #tsPaso4 .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tsPaso4 .sub{fill:#79809A;font-size:13.5px}
+      #tsPaso4 .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tsPaso4 .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tsPaso4 .nb{fill:#454C61;font-size:13px}
+      #tsPaso4 .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tsPaso4 .foot{fill:#79809A;font-size:12px}
+      #tsPaso4 .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tsPaso4 .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tsPaso4-arrow)}
+    </style>
+    <marker id="tsPaso4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="484" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Paso 4 · assets/ejemplo.svg</text>
+  <text class="sub" x="48" y="80" data-fit="860">Lo que el agente imita. Va dentro de assets.</text>
+  <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">miapp1/</text>
+  <path d="M76,150 V176 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M104,168 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="138" y="181" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
+  <path d="M116,186 V212 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M144,204 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="178" y="217" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
+  <path d="M156,222 V248 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M184,240 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="218" y="253" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
+  <path d="M196,258 V284 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M228,275 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="289" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">SKILL.md</text>
+  <path d="M196,258 V320 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,312 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="325" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
+  <path d="M236,330 V356 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,347 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="361" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">estilo.md</text>
+  <path d="M196,258 V392 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,384 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="397" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
+  <path d="M236,402 V428 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,419 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#3A8235" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="433" font-size="13.5" font-weight="700" fill="#3A8235" text-anchor="start" class="mono">ejemplo.svg</text>
+  <rect x="480" y="418" width="56" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D" stroke-width="1.5"/><text x="508" y="433" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nuevo</text>
+</svg>
+```
+
+Es un diagrama terminado, para que el agente vea cómo se ve uno bien hecho: el de la biblioteca de la Entrega 1.
 
 ```svg
 <svg id="tsEjemplo" width="100%" style="max-width:960px;display:block;margin:0 auto" viewBox="0 0 960 320" role="img" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -226,9 +496,76 @@ Un diagrama terminado, para que el agente vea cómo se ve uno bien hecho. Es el 
 </svg>
 ```
 
-Descárgalo de [ejemplo.svg](https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg): abre el enlace, guarda la página con `Ctrl + S` y déjala en `.agents/skills/mer-svg/assets/` con el nombre `ejemplo.svg`.
+Un SVG es texto. Este es el contenido del archivo:
 
-Ábrelo en Chrome para comprobar que se ve igual: arrastra el archivo a una pestaña.
+```xml
+<svg id="erEjemplo" viewBox="0 0 960 320" role="img" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+<title id="erEjemplo-t">Ejemplo de diagrama entidad-relación</title>
+<desc id="erEjemplo-d">Cuatro tablas de una biblioteca: categorias, libros, prestamos y usuarios, con relaciones uno a muchos.</desc>
+<style>
+#erEjemplo .mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:13px;fill:#161A26}
+#erEjemplo .nt{font-size:14px;font-weight:700}
+#erEjemplo .lk{fill:none;stroke:#556074;stroke-width:1.75}
+#erEjemplo .card{stroke-width:1.5}
+#erEjemplo .bd{font-size:10.5px;font-weight:700;fill:#fff;letter-spacing:.04em}
+#erEjemplo .card-t{font-size:13px;font-weight:700;fill:#161A26}
+#erEjemplo .card-b{font-size:12px;fill:#454C61}
+#erEjemplo .ca{font-size:13px;font-weight:700;fill:#556074}
+</style>
+<rect width="960" height="320" rx="16" fill="#FBFBFD"/>
+<text x="32" y="44" font-size="20" font-weight="700" fill="#161A26">Ejemplo: biblioteca de préstamos</text>
+<text x="32" y="66" font-size="13" fill="#79809A">Cada caja es una tabla; cada línea, una relación entre dos tablas.</text>
+<g><rect class="card" x="32" y="88" width="176" height="152" rx="10" fill="#EEF1FF" stroke="#A9B4F2"/>
+<path d="M32,120 H208" stroke="#A9B4F2" stroke-width="1.5"/>
+<text class="nt mono" x="120" y="109" text-anchor="middle" fill="#4453C9" style="fill:#4453C9;font-size:14px">categorias</text>
+<rect x="42" y="125" width="26" height="18" rx="9" fill="#4453C9"/><text class="bd" x="55" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="78" y="134" dy="0.35em">id</text>
+<text class="mono" x="78" y="162" dy="0.35em">nombre</text>
+<text class="mono" x="78" y="190" dy="0.35em">descripcion</text>
+</g>
+<g><rect class="card" x="272" y="88" width="176" height="152" rx="10" fill="#E3F6F3" stroke="#86D3CA"/>
+<path d="M272,120 H448" stroke="#86D3CA" stroke-width="1.5"/>
+<text class="nt mono" x="360" y="109" text-anchor="middle" fill="#0F8478" style="fill:#0F8478;font-size:14px">libros</text>
+<rect x="282" y="125" width="26" height="18" rx="9" fill="#0F8478"/><text class="bd" x="295" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="318" y="134" dy="0.35em">id</text>
+<text class="mono" x="318" y="162" dy="0.35em">titulo</text>
+<text class="mono" x="318" y="190" dy="0.35em">autor</text>
+<rect x="282" y="209" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="295" y="218" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="318" y="218" dy="0.35em">categoria_id</text>
+</g>
+<g><rect class="card" x="512" y="88" width="176" height="152" rx="10" fill="#FFF3DC" stroke="#F0C572"/>
+<path d="M512,120 H688" stroke="#F0C572" stroke-width="1.5"/>
+<text class="nt mono" x="600" y="109" text-anchor="middle" fill="#A96C05" style="fill:#A96C05;font-size:14px">prestamos</text>
+<rect x="522" y="125" width="26" height="18" rx="9" fill="#A96C05"/><text class="bd" x="535" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="558" y="134" dy="0.35em">id</text>
+<rect x="522" y="153" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="535" y="162" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="558" y="162" dy="0.35em">libro_id</text>
+<rect x="522" y="181" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="535" y="190" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="558" y="190" dy="0.35em">usuario_id</text>
+<text class="mono" x="558" y="218" dy="0.35em">fecha_prestamo</text>
+</g>
+<g><rect class="card" x="752" y="88" width="176" height="152" rx="10" fill="#F4EBFF" stroke="#C9A6EE"/>
+<path d="M752,120 H928" stroke="#C9A6EE" stroke-width="1.5"/>
+<text class="nt mono" x="840" y="109" text-anchor="middle" fill="#7439B8" style="fill:#7439B8;font-size:14px">usuarios</text>
+<rect x="762" y="125" width="26" height="18" rx="9" fill="#7439B8"/><text class="bd" x="775" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="798" y="134" dy="0.35em">id</text>
+<text class="mono" x="798" y="162" dy="0.35em">nombre</text>
+<text class="mono" x="798" y="190" dy="0.35em">correo</text>
+</g>
+<path class="lk" d="M208,164 H272"/><path class="lk" d="M222,155 V173"/><path class="lk" d="M248,164 L272,153 M248,164 L272,164 M248,164 L272,175"/>
+<path class="lk" d="M448,164 H512"/><path class="lk" d="M462,155 V173"/><path class="lk" d="M488,164 L512,153 M488,164 L512,164 M488,164 L512,175"/>
+<path class="lk" d="M688,164 H752"/><path class="lk" d="M712,164 L688,153 M712,164 L688,164 M712,164 L688,175"/><path class="lk" d="M738,155 V173"/>
+<text class="ca" x="220" y="146" text-anchor="middle">1</text>
+<text class="ca" x="260" y="146" text-anchor="middle">N</text>
+<text class="ca" x="460" y="146" text-anchor="middle">1</text>
+<text class="ca" x="500" y="146" text-anchor="middle">N</text>
+<text class="ca" x="700" y="146" text-anchor="middle">N</text>
+<text class="ca" x="740" y="146" text-anchor="middle">1</text>
+<text x="32" y="284" font-size="12.5" fill="#79809A">Se lee así: una categoría tiene muchos libros · un libro se presta muchas veces · un usuario hace muchos préstamos.</text>
+</svg>
+```
+
+Ábrelo en Chrome para comprobar que se ve como la figura: arrastra el archivo a una pestaña.
 
 ## 5. Pide el diagrama
 
