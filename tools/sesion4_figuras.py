@@ -1,8 +1,8 @@
-"""Figuras SVG de las lecciones de la sesión 4 (S0029 a S0032).
+"""Figuras SVG de las lecciones de la sesión 4 (S0029 a S0033).
 
     python3 tools/sesion4_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
     python3 tools/sesion4_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS29.md a
-                                                   lessonS32.md por la figura con el mismo id
+                                                   lessonS33.md por la figura con el mismo id
 """
 
 import pathlib
@@ -17,7 +17,7 @@ from sesion3_figuras import device, mark, txt  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INK, MUTED, FAINT = '#161A26', '#556074', '#79809A'
-LESSONS = ('lessonS29.md', 'lessonS30.md', 'lessonS31.md', 'lessonS32.md')
+LESSONS = ('lessonS29.md', 'lessonS30.md', 'lessonS31.md', 'lessonS32.md', 'lessonS33.md')
 
 FIGS = {}
 
@@ -41,12 +41,17 @@ def chip(cx, cy, n, color):
 
 
 def tree(nodes, x0=64, y0=140, step=36, indent=40, badge_x=560):
-    """Árbol de carpetas. nodes: (profundidad, nombre, 'd'|'f', nuevo). Devuelve (svg, posiciones)."""
+    """Árbol de carpetas. nodes: (profundidad, nombre, 'd'|'f', nuevo). Devuelve (svg, posiciones).
+
+    Con 'd?' o 'f?' el elemento se dibuja atenuado: existe en el formato, pero no se usa aquí."""
     out, pos, last = [], {}, {}
     green = FAM['green']
     for i, (depth, name, kind, new) in enumerate(nodes):
         x, y = x0 + depth * indent, y0 + i * step
         pos[name] = (x, y)
+        dim = kind.endswith('?')
+        kind = kind[0]
+        start = len(out)
         if depth:
             px, py = last[depth - 1]
             out.append(f'<path d="M{px + 12},{py + 10} V{y} H{x - 6}" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>')
@@ -62,6 +67,8 @@ def tree(nodes, x0=64, y0=140, step=36, indent=40, badge_x=560):
         if new:
             out.append(f'<rect x="{badge_x}" y="{y - 10}" width="56" height="22" rx="11" fill="{green[0]}" '
                        f'stroke="{green[1]}" stroke-width="1.5"/>' + txt(badge_x + 28, y + 5, 'nuevo', 12, 700, green[2], 'middle'))
+        if dim:
+            out[start:] = ['<g opacity=".55">' + ''.join(out[start:]) + '</g>']
     return '\n  '.join(out), pos
 
 
@@ -366,26 +373,33 @@ FIGS['cxPartes'] = cx_partes
 
 def sk_carpeta():
     fid = 'skCarpeta'
-    h = 556
+    h = 692
     s = head(fid, h, 'Una skill es una carpeta', 'Una skill es una carpeta',
              'Vive dentro del proyecto, en .agents/skills/. El nombre de la carpeta es el nombre de la skill.',
-             'El árbol de carpetas de mi_app_1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; y la carpeta assets con ejemplo.svg, lo que el agente imita.')
+             'El árbol de carpetas de mi_app_1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; la carpeta assets con ejemplo.svg, lo que el agente imita; y, atenuada porque esta skill no la usa, la carpeta scripts con tres programas de ejemplo que el agente ejecutaría: render.sh, render.bat y check.py.')
     nodes = [(0, 'mi_app_1/', 'd', False), (1, '.agents/', 'd', False), (2, 'skills/', 'd', False),
              (3, 'mer-svg/', 'd', False), (4, 'SKILL.md', 'f', False), (4, 'references/', 'd', False),
-             (5, 'estilo.md', 'f', False), (4, 'assets/', 'd', False), (5, 'ejemplo.svg', 'f', False)]
-    t, pos = tree(nodes, step=46)
+             (5, 'estilo.md', 'f', False), (4, 'assets/', 'd', False), (5, 'ejemplo.svg', 'f', False),
+             (4, 'scripts/', 'd?', False), (5, 'render.sh', 'f?', False), (5, 'render.bat', 'f?', False),
+             (5, 'check.py', 'f?', False)]
+    t, pos = tree(nodes, step=42)
     s += '  ' + t + '\n'
-    notes = [('mer-svg/', 'violet', 'La skill', 'Se llama como su carpeta.'),
-             ('SKILL.md', 'indigo', 'Obligatorio', 'Cuándo se usa y qué pasos sigue.'),
-             ('references/', 'teal', 'Lo que consulta', 'Medidas, colores y reglas.'),
-             ('assets/', 'amber', 'Lo que imita', 'Un ejemplo terminado.')]
-    for name, c, title, body in notes:
+    notes = [('mer-svg/', 'violet', 'La skill', 'Se llama como su carpeta.', False),
+             ('SKILL.md', 'indigo', 'Obligatorio', 'Cuándo se usa y qué pasos sigue.', False),
+             ('references/', 'teal', 'Lo que consulta', 'Medidas, colores y reglas.', False),
+             ('assets/', 'amber', 'Lo que imita', 'Un ejemplo terminado.', False),
+             ('scripts/', 'slate', 'Lo que ejecuta', 'Programas. Esta skill no los usa.', True)]
+    for name, c, title, body, dashed in notes:
         x, y = pos[name]
         soft, border, strong = FAM[c]
         end = x + 44 + len(name) * 8.6
+        extra = ' stroke-dasharray="6 4"' if dashed else ''
         s += f'  <path d="M{end:.0f},{y} H552" stroke="{border}" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>\n'
-        s += f'  <rect x="552" y="{y - 20}" width="360" height="40" rx="10" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += f'  <rect x="552" y="{y - 18}" width="360" height="36" rx="10" fill="{soft}" stroke="{border}" stroke-width="1.5"{extra}/>\n'
         s += ('  ' + txt(570, y + 4.5, f'<tspan font-weight="700" fill="{strong}">{title}.</tspan> {body}', 13, 400, '#454C61', fit=330) + '\n')
+    for name, what in (('render.sh', 'macOS y Linux'), ('render.bat', 'Windows'), ('check.py', 'Python, en cualquiera')):
+        x, y = pos[name]
+        s += '  ' + txt(x + 150, y + 5, what, 12.5, 400, FAINT) + '\n'
     return s + '</svg>\n'
 
 
@@ -638,6 +652,136 @@ def ts_carpetas():
 
 
 FIGS['tsCarpetas'] = ts_carpetas
+
+
+# ───────────────────────────── S0033 · Una skill para armar pantallas
+
+def fp_carpeta():
+    fid = 'fpCarpeta'
+    nodes = [(0, 'mi_app_1/', 'd', False), (1, '.agents/', 'd', False), (2, 'skills/', 'd', False),
+             (3, 'mer-svg/', 'd?', False), (3, 'flutter-pantallas/', 'd', True), (4, 'SKILL.md', 'f', True),
+             (4, 'references/', 'd', True), (5, 'widgets.md', 'f', True), (4, 'assets/', 'd', True),
+             (5, 'component.dart', 'f', True), (5, 'screen.dart', 'f', True)]
+    h = 140 + (len(nodes) - 1) * 40 + 52
+    s = head(fid, h, 'La segunda skill del proyecto', 'La segunda skill del proyecto',
+             'Va junto a mer-svg, en la misma carpeta skills. Cuatro archivos.',
+             'El árbol de mi_app_1: dentro de .agents y skills, junto a la skill mer-svg que ya existe, la carpeta nueva flutter-pantallas con SKILL.md, que son los pasos; references con widgets.md, que es la paleta; y assets con dos plantillas, component.dart y screen.dart.')
+    t, pos = tree(nodes, step=40, badge_x=470)
+    s += '  ' + t + '\n'
+    notes = [('SKILL.md', 'indigo', 'Los pasos', 'Cómo se arma una pantalla.'),
+             ('widgets.md', 'teal', 'La paleta', 'Los únicos widgets permitidos.'),
+             ('component.dart', 'amber', 'Plantilla', 'Cómo se escribe un componente.'),
+             ('screen.dart', 'amber', 'Plantilla', 'Cómo se escribe una pantalla.')]
+    for name, c, title, body in notes:
+        x, y = pos[name]
+        soft, border, strong = FAM[c]
+        s += f'  <rect x="552" y="{y - 17}" width="360" height="34" rx="10" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += ('  ' + txt(570, y + 4.5, f'<tspan font-weight="700" fill="{strong}">{title}.</tspan> {body}', 13, 400, '#454C61', fit=330) + '\n')
+    return s + '</svg>\n'
+
+
+FIGS['fpCarpeta'] = fp_carpeta
+
+
+def fp_paleta():
+    fid = 'fpPaleta'
+    groups = [('CONTENIDO', 'indigo', ['Text', 'Icon', 'Image', 'CircleAvatar']),
+              ('BOTONES', 'violet', ['ElevatedButton', 'OutlinedButton', 'TextButton', 'IconButton']),
+              ('ENTRADA', 'amber', ['TextField']),
+              ('ACOMODAR', 'teal', ['Column', 'Row', 'SizedBox', 'Expanded', 'Spacer', 'Padding', 'Container', 'Card',
+                                    'Center', 'SingleChildScrollView']),
+              ('ESTRUCTURA', 'slate', ['Scaffold', 'SafeArea', 'AppBar', 'BottomNavigationBar', 'FloatingActionButton']),
+              ('FUERA', 'rose', ['ListView', 'GridView', 'Stack', 'ListTile', 'StatefulWidget', 'Navigator', 'paquetes nuevos'])]
+    body, y = '', 128
+    for label, c, items in groups:
+        soft, border, strong = FAM[c]
+        out = c == 'rose'
+        if out:
+            y += 10
+            body += f'  <path d="M48,{y - 14} H912" stroke="#D9DEE8" stroke-width="1.5" stroke-dasharray="4 5"/>\n'
+            y += 12
+        body += '  ' + txt(48, y + 5, label, 12, 700, strong, cls='h') + '\n'
+        x = 176
+        for it in items:
+            w = round(len(it) * 8.1 + 26)
+            if x + w > 912:
+                x, y = 176, y + 40
+            dash = ' stroke-dasharray="5 4"' if out else ''
+            body += f'  <rect x="{x}" y="{y - 15}" width="{w}" height="30" rx="15" fill="{soft}" stroke="{border}" stroke-width="1.5"{dash}/>\n'
+            body += '  ' + txt(x + w / 2, y + 4.5, it, 13, 600, strong, 'middle', cls='' if it == 'paquetes nuevos' else 'mono') + '\n'
+            x += w + 8
+        y += 48
+    h = y + 36
+    s = head(fid, h, 'La paleta de widgets', 'La paleta de widgets',
+             'Lo que has visto hasta la sesión 3. El agente arma las pantallas solo con esto.',
+             'Los widgets permitidos, en cinco grupos. Contenido: Text, Icon, Image y CircleAvatar. Botones: ElevatedButton, OutlinedButton, TextButton e IconButton. Entrada: TextField. Acomodar: Column, Row, SizedBox, Expanded, Spacer, Padding, Container, Card, Center y SingleChildScrollView. Estructura: Scaffold, SafeArea, AppBar, BottomNavigationBar y FloatingActionButton. Fuera de la paleta por ahora: ListView, GridView, Stack, ListTile, StatefulWidget, Navigator y cualquier paquete nuevo.')
+    s = s.replace(f'#{fid} .h{{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}}',
+                  f'#{fid} .h{{font-size:12px;font-weight:700;letter-spacing:.08em}}')
+    s += body
+    s += '  ' + txt(48, h - 26, 'Lo de abajo no está prohibido para siempre: entra a la paleta cuando lo veas en clase.', 13, 400, '#454C61', fit=860) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['fpPaleta'] = fp_paleta
+
+
+def fp_componentes():
+    fid = 'fpComponentes'
+    h = 560
+    s = head(fid, h, 'Un componente, cinco usos', 'Un componente, cinco usos',
+             'La pantalla de mensajes que armó el agente: no escribió nada nuevo para las filas, reutilizó ChatItem.',
+             'Un celular con la pantalla Mensajes: cinco filas de conversación, cada una con avatar, nombre, último mensaje y hora. Las cinco salen del mismo componente, ChatItem, que vive en lib/components/chat_item.dart y recibe cuatro datos: image, name, message y time. La pantalla solo las acomoda en una Column.')
+    rows = [('Javier Montes', 'Perfecto, quedamos mañana…', '10:24'), ('Mariana Valenzuela', 'Gracias por los comentarios…', '9:05'),
+            ('Ana Torres', '¿Pudiste revisar el docu…', 'Ayer'), ('Carlos Restrepo', 'Listo, reviso el presupu…', 'Mar'),
+            ('Lucía Fernández', '¡Felicitaciones por el…', 'Lun')]
+    inner = '<rect width="220" height="46" fill="#F1ECF8"/>' + txt(16, 29, 'Mensajes', 15, 500)
+    for i, (n, m, tm) in enumerate(rows):
+        y = 62 + i * 58
+        inner += (f'<circle cx="28" cy="{y + 22}" r="14" fill="#C9A6EE"/>' + txt(50, y + 18, n, 11.5, 700)
+                  + txt(50, y + 33, m, 10, 400, MUTED) + txt(208, y + 18, tm, 9.5, 400, MUTED, 'end')
+                  + mark(6, y, 208, 46, 'teal', 8))
+    s += '  ' + device(96, 132, 220, 370, inner, '#FFFFFF', f'{fid}-a') + '\n'
+    for i in range(5):
+        y = 132 + 62 + i * 58 + 23
+        s += f'  <path d="M324,{y} C420,{y} 440,300 512,300" fill="none" stroke="{FAM["teal"][1]}" stroke-width="1.75"/>\n'
+    s += '  ' + box(520, 172, 392, 256, 'teal', strong=True) + '\n'
+    s += '  ' + txt(544, 208, 'ChatItem', 18, 700, FAM['teal'][2], cls='mono') + '\n'
+    s += '  ' + txt(544, 230, 'lib/components/chat_item.dart', 12.5, 400, MUTED, cls='mono', fit=340) + '\n'
+    s += '  ' + txt(544, 268, 'Se escribe una vez. Lo que cambia en cada fila', 13.5, 400, INK, fit=344) + '\n'
+    s += '  ' + txt(544, 288, 'llega por el constructor:', 13.5, 400, INK, fit=344) + '\n'
+    for i, par in enumerate(('image', 'name', 'message', 'time')):
+        x = 544 + i * 88
+        s += f'  <rect x="{x}" y="308" width="80" height="30" rx="15" fill="#FFFFFF" stroke="{FAM["teal"][1]}" stroke-width="1.5"/>\n'
+        s += '  ' + txt(x + 40, 327.5, par, 12.5, 600, FAM['teal'][2], 'middle', cls='mono') + '\n'
+    s += '  ' + txt(544, 376, 'La pantalla no dibuja filas: las acomoda', 13.5, 400, INK, fit=344) + '\n'
+    s += '  ' + txt(544, 396, 'en una Column y les pasa sus datos.', 13.5, 400, INK, fit=344) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['fpComponentes'] = fp_componentes
+
+FIGS['fpUso'] = lambda: console(dict(
+    id='fpUso',
+    title='Pedir una pantalla',
+    title_plain='Pedir una pantalla',
+    desc='Se le pide al agente la pantalla de mensajes. El agente lee los componentes que ya existen, carga la skill flutter-pantallas, lee la paleta y las plantillas, escribe la pantalla nueva y edita main.dart para registrarla.',
+    sub='Una sesión real, recortada. Primero mira lo que ya hay, después carga la skill.',
+    term_title='Terminal · C:\\develop\\mi_app_1',
+    lines=[('O', '> Crea la pantalla de mensajes con la lista de conversaciones'),
+           ('B', ''),
+           ('D', '→ Read lib/components/chat_item.dart'),
+           ('O', '→ Skill "flutter-pantallas"'),
+           ('D', '→ Read .agents/skills/flutter-pantallas/references/widgets.md'),
+           ('D', '→ Read .agents/skills/flutter-pantallas/assets/screen.dart'),
+           ('O', '← Write lib/screens/messages_screen.dart'),
+           ('O', '← Edit lib/main.dart'),
+           ('B', ''),
+           ('K', 'Listo: MessagesScreen reutiliza ChatItem. Sin errores en lib/.')],
+    rings=[(2, 0, 36, 1), (3, 0, 27, 2), (6, 0, 40, 3)],
+    cards=[(1, 'Miró lo que ya había', ['Encontró un componente', 'que servía.'], False),
+           (2, 'Cargó la skill', ['Y con ella, la paleta', 'y las plantillas.'], False),
+           (3, 'Un solo archivo nuevo', ['La pantalla. Ningún', 'componente repetido.'], False)],
+))
 
 
 def main():

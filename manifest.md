@@ -13,7 +13,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
 | 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `S0018` Taller · Componentes |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
-| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill |
+| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill · `S0033` Una skill para armar pantallas |
 | 5 | 21 | 11 | 3 | Skills: extender el agente | ⬜ | |
 | 6 | 22 | 11 | 4 | Stateful widget y setState | ⬜ | |
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
@@ -125,9 +125,11 @@ Notas:
 - Los modelos gratuitos de OpenCode Zen funcionaron **sin cuenta ni tarjeta**. La lista rota: si `big-pickle` desaparece, se elige otro.
 - **Sin comprobar**: la instalación en Windows de los dos agentes; el aviso de permiso de OpenCode en pantalla (la figura está simplificada); y todo lo de Antigravity CLI, que sale de su documentación oficial (`antigravity.google/docs/permissions` y `/docs/cli`) porque faltó iniciar sesión en `agy`: los pasos de `/permissions`, el alcance *Project*, `/model`, `/undo` y que reconozca `AGENTS.md` y `.agents/skills/`.
 - Los archivos probados están en `recursos/sesion4/` (`AGENTS.md`, `opencode.json`, `docs/modelo.md`, los dos diagramas y la skill con sus reglas finales). `S0030` y `S0032` se generaron desde ahí: si se cambia un archivo, hay que cambiar la lección.
-- Las 26 figuras salen de `tools/sesion4_figuras.py`. `agAgente` es el panel *Agente en consola* de la figura `iaTools` de `S0006`, recortado: si esa figura cambia, hay que volver a inyectar. `check.py` marca como error la URL del instalador en `agAntigravity`: es texto del comando mostrado, no un recurso que el SVG cargue.
+- Las 30 figuras salen de `tools/sesion4_figuras.py`. `agAgente` es el panel *Agente en consola* de la figura `iaTools` de `S0006`, recortado: si esa figura cambia, hay que volver a inyectar. `check.py` marca como error la URL del instalador en `agAntigravity`: es texto del comando mostrado, no un recurso que el SVG cargue.
 - `S0032` muestra primero la estructura completa de la skill (`tsEstructura`) y la arma un elemento por paso (`tsPaso1` a `tsPaso4`). Las lecciones no llevan *Ejemplo completo*: no tienen código Dart.
-- La sesión 5 queda para la skill de Flutter: generar una pantalla y auditarla contra el `AGENTS.md`. Hay un borrador sin probar en `recursos/sesion5/`, fuera del repo.
+- **`S0033` Una skill para armar pantallas** *(adelantada de la sesión 5, pedido del profesor del 2026-10-09)*: entrega la skill `flutter-pantallas` ya escrita (`SKILL.md`, `references/widgets.md` y dos plantillas en `assets/`). Limita al agente a la paleta de widgets de las sesiones 2 y 3 más lo que ya usa `mi_app_1` (`Card`, `spacing`), sin estado ni navegación, y le hace pensar en componentes reutilizables. Se probó el 2026-10-09 con el modelo gratuito: al pedirle la pantalla de mensajes reutilizó `ChatItem`, usó `Column` dentro de `SingleChildScrollView` en vez de `ListView` y no creó componentes repetidos. Esa corrida es la de las figuras `fpUso` y `fpComponentes`. `S0031` muestra además la carpeta `scripts/` en su figura de estructura, atenuada, aunque ninguna de las dos skills la usa.
+- `S0033` **no lleva *Ejemplo completo***, aunque tiene bloques `dart`: son las plantillas de la skill, no código para ejecutar. Si el profesor lo quiere, falta crear el gist.
+- La sesión 5 queda para practicar con esa skill: generar pantallas de la app del equipo y auditarlas contra el `AGENTS.md`.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 

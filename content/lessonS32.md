@@ -1099,4 +1099,4 @@ Es la misma idea del archivo de contexto: lo que se va a repetir se corrige en l
 - La skill `mer-svg` con sus tres archivos y las reglas que le hayas agregado.
 - `docs/mer.svg`, revisado contra el modelo.
 
-Para la **Entrega 1**, lleva la skill al repositorio de tu equipo, escribe el `docs/modelo.md` de su app y genera su diagrama. En la próxima sesión usas el agente para generar una pantalla y la auditas contra tu `AGENTS.md`.
+Para la **Entrega 1**, lleva la skill al repositorio de tu equipo, escribe el `docs/modelo.md` de su app y genera su diagrama. La lección que sigue te entrega otra skill, ya escrita, para que el agente arme pantallas.

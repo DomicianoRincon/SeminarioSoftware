@@ -1,15 +1,15 @@
 # Skills
 
-<!-- tags: skill, SKILL.md, .agents/skills, name y description, references y assets, cuándo se carga una skill, el agente no usa mi skill, skill de proyecto y skill global, AGENTS.md o skill, frontmatter, carpeta de la skill -->
+<!-- tags: skill, SKILL.md, .agents/skills, name y description, references y assets, scripts de una skill, cuándo se carga una skill, el agente no usa mi skill, skill de proyecto y skill global, AGENTS.md o skill, frontmatter, carpeta de la skill -->
 
 `AGENTS.md` viaja en cada pedido, así que tiene que ser corto. Pero hay tareas que necesitan instrucciones largas y solo de vez en cuando: dibujar un diagrama, escribir un tipo de documento, seguir una lista de revisión. Eso va en una **skill**.
 
 ## Una skill es una carpeta
 
 ```svg
-<svg id="skCarpeta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 556" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="skCarpeta-ttl skCarpeta-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+<svg id="skCarpeta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 692" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="skCarpeta-ttl skCarpeta-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="skCarpeta-ttl">Una skill es una carpeta</title>
-  <desc id="skCarpeta-dsc">El árbol de carpetas de mi_app_1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; y la carpeta assets con ejemplo.svg, lo que el agente imita.</desc>
+  <desc id="skCarpeta-dsc">El árbol de carpetas de mi_app_1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; la carpeta assets con ejemplo.svg, lo que el agente imita; y, atenuada porque esta skill no la usa, la carpeta scripts con tres programas de ejemplo que el agente ejecutaría: render.sh, render.bat y check.py.</desc>
   <defs>
     <style>
       #skCarpeta .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -26,51 +26,71 @@
       <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
     </marker>
   </defs>
-  <rect width="960" height="556" rx="16" fill="#FBFBFD"/>
+  <rect width="960" height="692" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">Una skill es una carpeta</text>
   <text class="sub" x="48" y="80" data-fit="860">Vive dentro del proyecto, en .agents/skills/. El nombre de la carpeta es el nombre de la skill.</text>
   <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
   <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mi_app_1/</text>
-  <path d="M76,150 V186 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M104,178 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="138" y="191" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
-  <path d="M116,196 V232 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M144,224 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="178" y="237" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
-  <path d="M156,242 V278 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M184,270 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="218" y="283" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
-  <path d="M196,288 V324 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M228,315 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="258" y="329" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">SKILL.md</text>
-  <path d="M196,288 V370 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M224,362 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="258" y="375" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
-  <path d="M236,380 V416 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M268,407 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="298" y="421" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">estilo.md</text>
-  <path d="M196,288 V462 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M224,454 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="258" y="467" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
-  <path d="M236,472 V508 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
-  <path d="M268,499 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="298" y="513" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">ejemplo.svg</text>
-  <path d="M297,278 H552" stroke="#C9A6EE" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
-  <rect x="552" y="258" width="360" height="40" rx="10" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
-  <text x="570" y="282.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#7439B8">La skill.</tspan> Se llama como su carpeta.</text>
-  <path d="M337,324 H552" stroke="#A9B4F2" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
-  <rect x="552" y="304" width="360" height="40" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
-  <text x="570" y="328.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#4453C9">Obligatorio.</tspan> Cuándo se usa y qué pasos sigue.</text>
-  <path d="M363,370 H552" stroke="#86D3CA" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
-  <rect x="552" y="350" width="360" height="40" rx="10" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
-  <text x="570" y="374.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#0F8478">Lo que consulta.</tspan> Medidas, colores y reglas.</text>
-  <path d="M328,462 H552" stroke="#F0C572" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
-  <rect x="552" y="442" width="360" height="40" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
-  <text x="570" y="466.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#A96C05">Lo que imita.</tspan> Un ejemplo terminado.</text>
+  <path d="M76,150 V182 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M104,174 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="138" y="187" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
+  <path d="M116,192 V224 H138" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M144,216 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="178" y="229" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">skills/</text>
+  <path d="M156,234 V266 H178" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M184,258 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="218" y="271" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mer-svg/</text>
+  <path d="M196,276 V308 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M228,299 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="313" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">SKILL.md</text>
+  <path d="M196,276 V350 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,342 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="355" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">references/</text>
+  <path d="M236,360 V392 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,383 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="397" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">estilo.md</text>
+  <path d="M196,276 V434 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M224,426 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="258" y="439" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">assets/</text>
+  <path d="M236,444 V476 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
+  <path d="M268,467 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="298" y="481" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">ejemplo.svg</text>
+  <g opacity=".55"><path d="M196,276 V518 H218" fill="none" stroke="#C4CBD8" stroke-width="1.5"/><path d="M224,510 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/><text x="258" y="523" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">scripts/</text></g>
+  <g opacity=".55"><path d="M236,528 V560 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/><path d="M268,551 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/><text x="298" y="565" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">render.sh</text></g>
+  <g opacity=".55"><path d="M236,528 V602 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/><path d="M268,593 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/><text x="298" y="607" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">render.bat</text></g>
+  <g opacity=".55"><path d="M236,528 V644 H258" fill="none" stroke="#C4CBD8" stroke-width="1.5"/><path d="M268,635 h10 l5,5 v13 h-15 Z" fill="#FFFFFF" stroke="#79809A" stroke-width="1.5" stroke-linejoin="round"/><text x="298" y="649" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" class="mono">check.py</text></g>
+  <path d="M297,266 H552" stroke="#C9A6EE" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
+  <rect x="552" y="248" width="360" height="36" rx="10" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
+  <text x="570" y="270.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#7439B8">La skill.</tspan> Se llama como su carpeta.</text>
+  <path d="M337,308 H552" stroke="#A9B4F2" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
+  <rect x="552" y="290" width="360" height="36" rx="10" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+  <text x="570" y="312.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#4453C9">Obligatorio.</tspan> Cuándo se usa y qué pasos sigue.</text>
+  <path d="M363,350 H552" stroke="#86D3CA" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
+  <rect x="552" y="332" width="360" height="36" rx="10" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="570" y="354.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#0F8478">Lo que consulta.</tspan> Medidas, colores y reglas.</text>
+  <path d="M328,434 H552" stroke="#F0C572" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
+  <rect x="552" y="416" width="360" height="36" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <text x="570" y="438.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#A96C05">Lo que imita.</tspan> Un ejemplo terminado.</text>
+  <path d="M337,518 H552" stroke="#C4CBD8" stroke-width="1.75" stroke-dasharray="4 4" fill="none"/>
+  <rect x="552" y="500" width="360" height="36" rx="10" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="570" y="522.5" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="330"><tspan font-weight="700" fill="#556074">Lo que ejecuta.</tspan> Programas. Esta skill no los usa.</text>
+  <text x="414" y="565" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="start">macOS y Linux</text>
+  <text x="414" y="607" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="start">Windows</text>
+  <text x="414" y="649" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="start">Python, en cualquiera</text>
 </svg>
 ```
 
-Lo único obligatorio es `SKILL.md`. Las otras dos carpetas son una costumbre útil: en `references/` va lo que el agente **consulta** y en `assets/` lo que **copia o imita**.
+Lo único obligatorio es `SKILL.md`. Las otras carpetas son una costumbre útil, y cada una guarda una cosa distinta:
+
+- `references/`: lo que el agente **consulta**.
+- `assets/`: lo que el agente **copia o imita**.
+- `scripts/`: lo que el agente **ejecuta**.
+
+La skill de esta sesión no lleva `scripts/`, pero conviene saber que existe. Un script sirve cuando un paso tiene que salir siempre igual y un programa lo hace mejor que el modelo: validar un archivo, convertir un SVG en imagen, contar algo. El `SKILL.md` le dice al agente cuándo correrlo, por ejemplo: "Al terminar, ejecuta `scripts/check.py docs/mer.svg`".
+
+Un script es un archivo de texto con comandos, y su extensión dice quién lo corre: `.sh` en macOS y Linux, `.bat` en Windows y `.py` en cualquier equipo con Python. Si la skill la va a usar gente con sistemas distintos, o se escribe en Python o se incluyen el `.sh` y el `.bat`.
+
+Como ejecutar un script es ejecutar un comando, el agente te pide permiso antes, igual que con `flutter analyze`.
 
 ## SKILL.md
 
