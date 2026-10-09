@@ -298,7 +298,79 @@ Si el agente hizo algo que no querías, escribe `/undo`: revierte los cambios de
 
 ## Si usas Antigravity CLI
 
-Antigravity CLI, de Google, es una alternativa también gratuita, con tu cuenta de Google. Todo lo de esta sesión funciona igual, con estas diferencias:
+Antigravity CLI, de Google, es una alternativa también gratuita, con tu cuenta de Google. Se instala con un solo comando:
+
+```svg
+<svg id="agAntigravity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 434" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="agAntigravity-ttl agAntigravity-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="agAntigravity-ttl">Instalar Antigravity CLI</title>
+  <desc id="agAntigravity-dsc">En PowerShell, un comando descarga y ejecuta el instalador de Antigravity CLI. Después, el comando de versión de agy responde con su número.</desc>
+  <defs>
+    <style>
+      #agAntigravity .title{fill:#161A26;font-size:22px;font-weight:700}
+      #agAntigravity .sub{fill:#79809A;font-size:13.5px}
+      #agAntigravity .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #agAntigravity .tl{font-size:13px;fill:#C9CFDA;white-space:pre}
+      #agAntigravity .pf{fill:#7F8AA3} #agAntigravity .cmd{fill:#FFFFFF;font-weight:600}
+      #agAntigravity .dim{fill:#8A93A6} #agAntigravity .okk{fill:#6BCB77;font-weight:600}
+      #agAntigravity .ring{fill:none;stroke:#F2C069;stroke-width:2}
+      #agAntigravity .chipc{fill:#F2C069} #agAntigravity .chipt{fill:#1F2430;font-size:11.5px;font-weight:700}
+      #agAntigravity .ct{fill:#161A26;font-size:14px;font-weight:700}
+      #agAntigravity .cb{fill:#454C61;font-size:13px}
+      #agAntigravity .foot{fill:#79809A;font-size:12px}
+    </style>
+  </defs>
+  <rect width="960" height="434" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Instalar Antigravity CLI</text>
+  <text class="sub" x="48" y="80" data-fit="860">En Windows se instala desde PowerShell. No necesita Node.js.</text>
+  <rect x="48" y="112" width="864" height="164" rx="12" fill="#1F2430"/>
+  <path d="M48,124 A12,12 0 0 1 60,112 H900 A12,12 0 0 1 912,124 V144 H48 Z" fill="#2A3040"/>
+  <circle cx="68" cy="128" r="5" fill="#F14C4C"/><circle cx="84" cy="128" r="5" fill="#E5C07B"/><circle cx="100" cy="128" r="5" fill="#6BCB77"/>
+  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">PowerShell · C:\develop</text>
+  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">irm https://antigravity.google/cli/install.ps1 | iex</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="226" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">agy <tspan letter-spacing="2">-</tspan>-version</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="252" data-fit="816">1.x.x</text>
+  <rect class="ring" x="138.2" y="158" width="413.6" height="22" rx="5"/>
+  <circle class="chipc" cx="551.8" cy="159" r="8"/>
+  <text class="chipt" x="551.8" y="159" dy="0.35em" text-anchor="middle" font-size="10.5">1</text>
+  <rect class="ring" x="68.0" y="236" width="47.0" height="22" rx="5"/>
+  <circle class="chipc" cx="115.0" cy="237" r="8"/>
+  <text class="chipt" x="115.0" y="237" dy="0.35em" text-anchor="middle" font-size="10.5">2</text>
+  <g transform="translate(48.0,300)">
+    <rect width="424.0" height="102" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <circle class="chipc" cx="26" cy="26" r="10"/>
+    <text class="chipt" x="26" y="26" dy="0.35em" text-anchor="middle">1</text>
+    <text class="ct" x="46" y="26" dy="0.35em" data-fit="362">Instalar</text>
+    <text class="cb" x="16" y="60" data-fit="392">Descarga el instalador</text>
+    <text class="cb" x="16" y="79" data-fit="392">oficial y lo ejecuta.</text>
+  </g>
+  <g transform="translate(488.0,300)">
+    <rect width="424.0" height="102" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+    <circle class="chipc" cx="26" cy="26" r="10"/>
+    <text class="chipt" x="26" y="26" dy="0.35em" text-anchor="middle">2</text>
+    <text class="ct" x="46" y="26" dy="0.35em" data-fit="362">Comprobar</text>
+    <text class="cb" x="16" y="60" data-fit="392">Abre una consola nueva</text>
+    <text class="cb" x="16" y="79" data-fit="392">antes de probarlo.</text>
+  </g>
+</svg>
+```
+
+En Windows, desde PowerShell:
+
+```shell
+irm https://antigravity.google/cli/install.ps1 | iex
+agy --version
+```
+
+En macOS y Linux:
+
+```shell
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+agy --version
+```
+
+Si la consola no reconoce `agy`, ciérrala y ábrela de nuevo. La primera vez que lo ejecutas dentro del proyecto abre el navegador para que inicies sesión con tu cuenta de Google.
+
+Todo lo de esta sesión funciona igual, con estas diferencias:
 
 - Se abre con `agy` en vez de `opencode`.
 - El modo de planeación se pide al abrirlo: `agy --mode plan`.

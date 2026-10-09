@@ -159,6 +159,23 @@ FIGS['agPermiso'] = lambda: console(dict(
 ))
 
 
+FIGS['agAntigravity'] = lambda: console(dict(
+    id='agAntigravity',
+    title='Instalar Antigravity CLI',
+    title_plain='Instalar Antigravity CLI',
+    desc='En PowerShell, un comando descarga y ejecuta el instalador de Antigravity CLI. Después, el comando de versión de agy responde con su número.',
+    sub='En Windows se instala desde PowerShell. No necesita Node.js.',
+    term_title='PowerShell · C:\\develop',
+    lines=[('P', 'irm https://antigravity.google/cli/install.ps1 | iex', 'develop'),
+           ('B', ''),
+           ('P', 'agy --version', 'develop'),
+           ('O', '1.x.x')],
+    rings=[(0, 9, 52, 1), (3, 0, 5, 2)],
+    cards=[(1, 'Instalar', ['Descarga el instalador', 'oficial y lo ejecuta.'], False),
+           (2, 'Comprobar', ['Abre una consola nueva', 'antes de probarlo.'], False)],
+))
+
+
 # ───────────────────────────── S0030 · El archivo de contexto
 
 def cx_que_ve():
