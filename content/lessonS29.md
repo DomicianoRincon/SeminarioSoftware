@@ -301,9 +301,9 @@ Si el agente hizo algo que no querías, escribe `/undo`: revierte los cambios de
 Antigravity CLI, de Google, es una alternativa también gratuita, con tu cuenta de Google. Se instala con un solo comando:
 
 ```svg
-<svg id="agAntigravity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 434" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="agAntigravity-ttl agAntigravity-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+<svg id="agAntigravity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="agAntigravity-ttl agAntigravity-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="agAntigravity-ttl">Instalar Antigravity CLI</title>
-  <desc id="agAntigravity-dsc">En PowerShell, un comando descarga y ejecuta el instalador de Antigravity CLI. Después, el comando de versión de agy responde con su número.</desc>
+  <desc id="agAntigravity-dsc">En el Símbolo del sistema de Windows, un comando descarga el instalador de Antigravity CLI, lo ejecuta y lo borra. Después, el comando de versión de agy responde con su número.</desc>
   <defs>
     <style>
       #agAntigravity .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -319,31 +319,32 @@ Antigravity CLI, de Google, es una alternativa también gratuita, con tu cuenta 
       #agAntigravity .foot{fill:#79809A;font-size:12px}
     </style>
   </defs>
-  <rect width="960" height="434" rx="16" fill="#FBFBFD"/>
+  <rect width="960" height="460" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">Instalar Antigravity CLI</text>
-  <text class="sub" x="48" y="80" data-fit="860">En Windows se instala desde PowerShell. No necesita Node.js.</text>
-  <rect x="48" y="112" width="864" height="164" rx="12" fill="#1F2430"/>
+  <text class="sub" x="48" y="80" data-fit="860">En Windows se instala desde el Símbolo del sistema (cmd). No necesita Node.js.</text>
+  <rect x="48" y="112" width="864" height="190" rx="12" fill="#1F2430"/>
   <path d="M48,124 A12,12 0 0 1 60,112 H900 A12,12 0 0 1 912,124 V144 H48 Z" fill="#2A3040"/>
   <circle cx="68" cy="128" r="5" fill="#F14C4C"/><circle cx="84" cy="128" r="5" fill="#E5C07B"/><circle cx="100" cy="128" r="5" fill="#6BCB77"/>
-  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">PowerShell · C:\develop</text>
-  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">irm https://antigravity.google/cli/install.ps1 | iex</tspan></text>
-  <text class="tl mono" font-size="13" x="72" y="226" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">agy <tspan letter-spacing="2">-</tspan>-version</tspan></text>
-  <text class="tl mono" font-size="13" x="72" y="252" data-fit="816">1.x.x</text>
-  <rect class="ring" x="138.2" y="158" width="413.6" height="22" rx="5"/>
-  <circle class="chipc" cx="551.8" cy="159" r="8"/>
-  <text class="chipt" x="551.8" y="159" dy="0.35em" text-anchor="middle" font-size="10.5">1</text>
-  <rect class="ring" x="68.0" y="236" width="47.0" height="22" rx="5"/>
-  <circle class="chipc" cx="115.0" cy="237" r="8"/>
-  <text class="chipt" x="115.0" y="237" dy="0.35em" text-anchor="middle" font-size="10.5">2</text>
-  <g transform="translate(48.0,300)">
+  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">Símbolo del sistema · C:\develop</text>
+  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd</tspan></text>
+  <text class="tl mono cmd" font-size="13" x="72" y="200" data-fit="816">         &amp;&amp; install.cmd &amp;&amp; del install.cmd</text>
+  <text class="tl mono" font-size="13" x="72" y="252" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">agy <tspan letter-spacing="2">-</tspan>-version</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="278" data-fit="816">1.x.x</text>
+  <rect class="ring" x="138.2" y="158" width="538.4" height="22" rx="5"/>
+  <circle class="chipc" cx="676.6" cy="159" r="8"/>
+  <text class="chipt" x="676.6" y="159" dy="0.35em" text-anchor="middle" font-size="10.5">1</text>
+  <rect class="ring" x="68.0" y="262" width="47.0" height="22" rx="5"/>
+  <circle class="chipc" cx="115.0" cy="263" r="8"/>
+  <text class="chipt" x="115.0" y="263" dy="0.35em" text-anchor="middle" font-size="10.5">2</text>
+  <g transform="translate(48.0,326)">
     <rect width="424.0" height="102" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
     <circle class="chipc" cx="26" cy="26" r="10"/>
     <text class="chipt" x="26" y="26" dy="0.35em" text-anchor="middle">1</text>
     <text class="ct" x="46" y="26" dy="0.35em" data-fit="362">Instalar</text>
-    <text class="cb" x="16" y="60" data-fit="392">Descarga el instalador</text>
-    <text class="cb" x="16" y="79" data-fit="392">oficial y lo ejecuta.</text>
+    <text class="cb" x="16" y="60" data-fit="392">Es una sola línea: descarga el</text>
+    <text class="cb" x="16" y="79" data-fit="392">instalador, lo ejecuta y lo borra.</text>
   </g>
-  <g transform="translate(488.0,300)">
+  <g transform="translate(488.0,326)">
     <rect width="424.0" height="102" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
     <circle class="chipc" cx="26" cy="26" r="10"/>
     <text class="chipt" x="26" y="26" dy="0.35em" text-anchor="middle">2</text>
@@ -354,12 +355,14 @@ Antigravity CLI, de Google, es una alternativa también gratuita, con tu cuenta 
 </svg>
 ```
 
-En Windows, desde PowerShell:
+En Windows, desde el **Símbolo del sistema** (`cmd`), en una sola línea:
 
 ```shell
-irm https://antigravity.google/cli/install.ps1 | iex
+curl -fsSL https://antigravity.google/cli/install.cmd -o install.cmd && install.cmd && del install.cmd
 agy --version
 ```
+
+En PowerShell esa línea no funciona: abre el Símbolo del sistema para instalarlo.
 
 En macOS y Linux:
 

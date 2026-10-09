@@ -18,6 +18,7 @@ Uso, desde un script propio:
                ('O', 'Found 3 connected devices:'),  # O: salida
                ('D', 'No wireless devices were found.'),  # D: salida tenue
                ('K', 'All done!'),                   # K: éxito, en verde
+               ('C', '  && otro comando'),           # C: continuación de un comando largo
                ('B', '')],                           # B: línea en blanco
         rings=[(1, 6, 9, 1)],   # (línea, columna, largo, número): recuadro amarillo numerado
         cards=[(1, 'Título', ['línea 1', 'línea 2'], False)],  # tarjetas bajo la terminal;
@@ -98,7 +99,7 @@ def frame(spec):
             a(f'  <text class="tl mono" font-size="13" x="{TX}" y="{y}" data-fit="{W-48}">'
               f'<tspan class="pf">{escape(folder)}&gt; </tspan><tspan class="cmd">{escape(text)}</tspan></text>')
         else:
-            cls = {'O': '', 'D': ' dim', 'K': ' okk'}[kind]
+            cls = {'O': '', 'D': ' dim', 'K': ' okk', 'C': ' cmd'}[kind]
             a(f'  <text class="tl mono{cls}" font-size="13" x="{TX}" y="{y}" data-fit="{W-48}">{escape(text)}</text>')
 
     for (li, col, ln_, num) in spec.get('rings', []):
