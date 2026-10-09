@@ -524,6 +524,42 @@ for _n in (1, 2, 3, 4):
     FIGS[f'tsPaso{_n}'] = (lambda n: lambda: ts_paso(n))(_n)
 
 
+def ts_modelo():
+    fid = 'tsModelo'
+    h = 536
+    s = head(fid, h, 'De la descripción al modelo', 'De la descripción al modelo',
+             'Se parte de contar la app en dos frases. Los sustantivos son las tablas.',
+             'Arriba, la descripción de una app de reserva de canchas. De sus sustantivos salen seis tablas: sedes, deportes, canchas, usuarios, reservas y pagos. Abajo, tres pasadas para escribir el modelo: una lista por tabla con su llave primaria y sus atributos, las llaves foráneas en la tabla del lado muchos, y las relaciones escritas como frases.')
+    s += '  <rect x="48" y="112" width="864" height="76" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    b = 'font-weight="700" fill="#161A26"'
+    s += '  ' + txt(68, 143, f'Una empresa tiene varias <tspan {b}>sedes</tspan> y en cada una hay <tspan {b}>canchas</tspan> de distintos <tspan {b}>deportes</tspan>.', 14, 400, '#454C61', fit=820) + '\n'
+    s += '  ' + txt(68, 169, f'Un <tspan {b}>usuario</tspan> hace una <tspan {b}>reserva</tspan> de una cancha para una fecha y una hora, y registra su <tspan {b}>pago</tspan>.', 14, 400, '#454C61', fit=820) + '\n'
+    s += '  <path class="link" d="M480,188 V214"/>\n'
+    names = [('sedes', 'indigo'), ('deportes', 'amber'), ('canchas', 'teal'), ('usuarios', 'violet'), ('reservas', 'indigo'), ('pagos', 'teal')]
+    for i, (n, c) in enumerate(names):
+        x = 48 + i * 146
+        soft, border, strong = FAM[c]
+        s += f'  <rect x="{x}" y="224" width="134" height="36" rx="18" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += '  ' + txt(x + 67, 247, n, 13.5, 700, strong, 'middle', cls='mono') + '\n'
+    cards = [('indigo', 'Una lista por tabla', ['## canchas', '- id (PK)', '- nombre', '- precio_hora'], 'Primero la llave primaria.'),
+             ('teal', 'Las llaves foráneas', ['- sede_id (FK a sedes)', '- deporte_id (FK a deportes)'], 'Van en la tabla del lado "muchos".'),
+             ('amber', 'Las relaciones, en frases', ['- Una sede tiene muchas canchas.', '- Una reserva tiene muchos pagos.'], 'Una frase por cada llave foránea.')]
+    for i, (c, title, lines, foot) in enumerate(cards):
+        x = 48 + i * 296
+        strong = FAM[c][2]
+        s += '  ' + box(x, 292, 272, 212, c) + '\n'
+        s += '  ' + chip(x + 30, 322, i + 1, c) + '\n'
+        s += '  ' + txt(x + 52, 327, title, 14, 700, strong, fit=200) + '\n'
+        s += f'  <rect x="{x + 16}" y="346" width="240" height="108" rx="8" fill="#FFFFFF" stroke="{FAM[c][1]}" stroke-width="1"/>\n'
+        for j, ln in enumerate(lines):
+            s += '  ' + txt(x + 28, 372 + j * 22, ln, 12.5 if i == 2 else 12, 400, INK, cls='' if i == 2 else 'mono', fit=220) + '\n'
+        s += '  ' + txt(x + 20, 482, foot, 12.5, 400, '#454C61', fit=236) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['tsModelo'] = ts_modelo
+
+
 def ts_ejemplo():
     src = (ROOT / 'recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg').read_text(encoding='utf-8')
     src = src.replace('erEjemplo', 'tsEjemplo')

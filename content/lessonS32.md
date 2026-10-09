@@ -53,7 +53,6 @@ Necesitas, de las lecciones anteriores:
 
 - OpenCode abierto dentro de `miapp1`, con un modelo gratuito elegido.
 - `opencode.json` y `AGENTS.md` en la raíz del proyecto.
-- `docs/modelo.md` con las tablas de **tu** app. Si todavía tienes el de la biblioteca, cámbialo ahora: es lo que hace que el diagrama sea el de tu entrega.
 
 ## La estructura de la skill
 
@@ -567,7 +566,138 @@ Un SVG es texto. Este es el contenido del archivo:
 
 Ábrelo en Chrome para comprobar que se ve como la figura: arrastra el archivo a una pestaña.
 
-## 5. Pide el diagrama
+## 5. Un modelo de prueba
+
+La skill dibuja lo que diga `docs/modelo.md`. Ese archivo no es la descripción de la app: es la **lista de sus tablas**. Pero se construye a partir de la descripción.
+
+```svg
+<svg id="tsModelo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 536" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tsModelo-ttl tsModelo-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="tsModelo-ttl">De la descripción al modelo</title>
+  <desc id="tsModelo-dsc">Arriba, la descripción de una app de reserva de canchas. De sus sustantivos salen seis tablas: sedes, deportes, canchas, usuarios, reservas y pagos. Abajo, tres pasadas para escribir el modelo: una lista por tabla con su llave primaria y sus atributos, las llaves foráneas en la tabla del lado muchos, y las relaciones escritas como frases.</desc>
+  <defs>
+    <style>
+      #tsModelo .title{fill:#161A26;font-size:22px;font-weight:700}
+      #tsModelo .sub{fill:#79809A;font-size:13.5px}
+      #tsModelo .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #tsModelo .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #tsModelo .nb{fill:#454C61;font-size:13px}
+      #tsModelo .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #tsModelo .foot{fill:#79809A;font-size:12px}
+      #tsModelo .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #tsModelo .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#tsModelo-arrow)}
+    </style>
+    <marker id="tsModelo-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+  </defs>
+  <rect width="960" height="536" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">De la descripción al modelo</text>
+  <text class="sub" x="48" y="80" data-fit="860">Se parte de contar la app en dos frases. Los sustantivos son las tablas.</text>
+  <rect x="48" y="112" width="864" height="76" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+  <text x="68" y="143" font-size="14" font-weight="400" fill="#454C61" text-anchor="start" data-fit="820">Una empresa tiene varias <tspan font-weight="700" fill="#161A26">sedes</tspan> y en cada una hay <tspan font-weight="700" fill="#161A26">canchas</tspan> de distintos <tspan font-weight="700" fill="#161A26">deportes</tspan>.</text>
+  <text x="68" y="169" font-size="14" font-weight="400" fill="#454C61" text-anchor="start" data-fit="820">Un <tspan font-weight="700" fill="#161A26">usuario</tspan> hace una <tspan font-weight="700" fill="#161A26">reserva</tspan> de una cancha para una fecha y una hora, y registra su <tspan font-weight="700" fill="#161A26">pago</tspan>.</text>
+  <path class="link" d="M480,188 V214"/>
+  <rect x="48" y="224" width="134" height="36" rx="18" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+  <text x="115" y="247" font-size="13.5" font-weight="700" fill="#4453C9" text-anchor="middle" class="mono">sedes</text>
+  <rect x="194" y="224" width="134" height="36" rx="18" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <text x="261" y="247" font-size="13.5" font-weight="700" fill="#A96C05" text-anchor="middle" class="mono">deportes</text>
+  <rect x="340" y="224" width="134" height="36" rx="18" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="407" y="247" font-size="13.5" font-weight="700" fill="#0F8478" text-anchor="middle" class="mono">canchas</text>
+  <rect x="486" y="224" width="134" height="36" rx="18" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
+  <text x="553" y="247" font-size="13.5" font-weight="700" fill="#7439B8" text-anchor="middle" class="mono">usuarios</text>
+  <rect x="632" y="224" width="134" height="36" rx="18" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+  <text x="699" y="247" font-size="13.5" font-weight="700" fill="#4453C9" text-anchor="middle" class="mono">reservas</text>
+  <rect x="778" y="224" width="134" height="36" rx="18" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="845" y="247" font-size="13.5" font-weight="700" fill="#0F8478" text-anchor="middle" class="mono">pagos</text>
+  <rect x="48" y="292" width="272" height="212" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
+  <circle cx="78" cy="322" r="11" fill="#4453C9"/><text x="78" y="326.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="100" y="327" font-size="14" font-weight="700" fill="#4453C9" text-anchor="start" data-fit="200">Una lista por tabla</text>
+  <rect x="64" y="346" width="240" height="108" rx="8" fill="#FFFFFF" stroke="#A9B4F2" stroke-width="1"/>
+  <text x="76" y="372" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" class="mono" data-fit="220">## canchas</text>
+  <text x="76" y="394" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" class="mono" data-fit="220">- id (PK)</text>
+  <text x="76" y="416" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" class="mono" data-fit="220">- nombre</text>
+  <text x="76" y="438" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" class="mono" data-fit="220">- precio_hora</text>
+  <text x="68" y="482" font-size="12.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="236">Primero la llave primaria.</text>
+  <rect x="344" y="292" width="272" height="212" rx="12" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <circle cx="374" cy="322" r="11" fill="#0F8478"/><text x="374" y="326.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="396" y="327" font-size="14" font-weight="700" fill="#0F8478" text-anchor="start" data-fit="200">Las llaves foráneas</text>
+  <rect x="360" y="346" width="240" height="108" rx="8" fill="#FFFFFF" stroke="#86D3CA" stroke-width="1"/>
+  <text x="372" y="372" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" class="mono" data-fit="220">- sede_id (FK a sedes)</text>
+  <text x="372" y="394" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" class="mono" data-fit="220">- deporte_id (FK a deportes)</text>
+  <text x="364" y="482" font-size="12.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="236">Van en la tabla del lado "muchos".</text>
+  <rect x="640" y="292" width="272" height="212" rx="12" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <circle cx="670" cy="322" r="11" fill="#A96C05"/><text x="670" y="326.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="692" y="327" font-size="14" font-weight="700" fill="#A96C05" text-anchor="start" data-fit="200">Las relaciones, en frases</text>
+  <rect x="656" y="346" width="240" height="108" rx="8" fill="#FFFFFF" stroke="#F0C572" stroke-width="1"/>
+  <text x="668" y="372" font-size="12.5" font-weight="400" fill="#161A26" text-anchor="start" data-fit="220">- Una sede tiene muchas canchas.</text>
+  <text x="668" y="394" font-size="12.5" font-weight="400" fill="#161A26" text-anchor="start" data-fit="220">- Una reserva tiene muchos pagos.</text>
+  <text x="660" y="482" font-size="12.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="236">Una frase por cada llave foránea.</text>
+</svg>
+```
+
+Para probar la skill, reemplaza el contenido de `docs/modelo.md` por este modelo, el de la app de canchas:
+
+```markdown
+# Modelo de datos
+
+## sedes
+
+- id (PK)
+- nombre
+- direccion
+
+## deportes
+
+- id (PK)
+- nombre
+
+## canchas
+
+- id (PK)
+- nombre
+- precio_hora
+- sede_id (FK a sedes)
+- deporte_id (FK a deportes)
+
+## usuarios
+
+- id (PK)
+- nombre
+- correo
+- telefono
+
+## reservas
+
+- id (PK)
+- cancha_id (FK a canchas)
+- usuario_id (FK a usuarios)
+- fecha
+- hora_inicio
+
+## pagos
+
+- id (PK)
+- reserva_id (FK a reservas)
+- valor
+- metodo
+
+## Relaciones
+
+- Una sede tiene muchas canchas.
+- Un deporte tiene muchas canchas.
+- Una cancha tiene muchas reservas.
+- Un usuario tiene muchas reservas.
+- Una reserva tiene muchos pagos.
+```
+
+Al escribir el de tu app, cuatro cuidados:
+
+- Nombres en minúsculas, sin tildes ni espacios: `precio_hora`, no `Precio por hora`.
+- Toda tabla empieza por su llave primaria, `id (PK)`.
+- La llave foránea dice a qué tabla apunta: `sede_id (FK a sedes)`.
+- Si dos tablas se relacionan de muchos a muchos, falta una tabla en medio. Entre `usuarios` y `canchas` esa tabla es `reservas`.
+
+## 6. Pide el diagrama
 
 Cierra OpenCode y ábrelo de nuevo, para que encuentre la skill. Luego pídelo sin nombrarla:
 
@@ -642,7 +772,7 @@ Cierra OpenCode y ábrelo de nuevo, para que encuentre la skill. Luego pídelo s
 
 Con un modelo gratuito tarda **entre tres y cinco minutos**. Mientras tanto, lee qué archivos va abriendo.
 
-Cuando termine, abre `docs/mer.svg` en Chrome. Este es el resultado de un modelo gratuito con una app de reserva de canchas, sin retoques:
+Cuando termine, abre `docs/mer.svg` en Chrome. Este es el resultado de un modelo gratuito con el modelo de prueba, sin retoques:
 
 ```svg
 <svg id="tsResultado" width="100%" style="max-width:960px;display:block;margin:0 auto" viewBox="0 0 960 560" role="img" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -748,7 +878,7 @@ Cuando termine, abre `docs/mer.svg` en Chrome. Este es el resultado de un modelo
 </svg>
 ```
 
-## 6. Revísalo
+## 7. Revísalo
 
 Compara el diagrama con `docs/modelo.md`, tabla por tabla:
 
@@ -757,7 +887,7 @@ Compara el diagrama con `docs/modelo.md`, tabla por tabla:
 - ¿Cada relación tiene su línea, con el `1` y la `N` del lado correcto?
 - ¿Alguna línea pasa por encima de una tabla?
 
-## 7. Si sale mal, corrige la skill
+## 8. Si sale mal, corrige la skill
 
 No edites el SVG a mano: la próxima vez saldría mal otra vez. Busca de dónde viene el error.
 
@@ -847,4 +977,4 @@ Es la misma idea del archivo de contexto: lo que se va a repetir se corrige en l
 - La skill `mer-svg` con sus tres archivos.
 - `docs/mer.svg`, revisado contra el modelo.
 
-Lleva todo al repositorio de tu equipo. El `docs/mer.svg` sirve como diagrama de base de datos de la **Entrega 1**. En la próxima sesión usas el agente para generar una pantalla y la auditas contra tu `AGENTS.md`.
+Cuando el diagrama de prueba salga bien, cambia `docs/modelo.md` por el de **tu** app y pídelo de nuevo. Lleva todo al repositorio de tu equipo. El `docs/mer.svg` sirve como diagrama de base de datos de la **Entrega 1**. En la próxima sesión usas el agente para generar una pantalla y la auditas contra tu `AGENTS.md`.
