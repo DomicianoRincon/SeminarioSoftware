@@ -462,6 +462,16 @@ def ts_resultado():
 FIGS['tsResultado'] = ts_resultado
 
 
+def ts_ejemplo():
+    src = (ROOT / 'recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg').read_text(encoding='utf-8')
+    src = src.replace('erEjemplo', 'tsEjemplo')
+    src = src.replace('<svg id="tsEjemplo" ', '<svg id="tsEjemplo" width="100%" style="max-width:960px;display:block;margin:0 auto" ', 1)
+    return src if src.endswith('\n') else src + '\n'
+
+
+FIGS['tsEjemplo'] = ts_ejemplo
+
+
 def ts_carpetas():
     fid = 'tsCarpetas'
     h = 600

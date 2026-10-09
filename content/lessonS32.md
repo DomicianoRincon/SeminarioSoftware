@@ -157,21 +157,21 @@ Una línea de texto bajo las tablas, 12.5 px, color `#79809A`, que dice cómo se
 
 ## 4. assets/ejemplo.svg
 
-Un diagrama terminado, para que el agente vea cómo se ve uno bien hecho. Es el de la biblioteca de la Entrega 1. Crea `.agents/skills/mer-svg/assets/ejemplo.svg`:
+Un diagrama terminado, para que el agente vea cómo se ve uno bien hecho. Es el de la biblioteca de la Entrega 1:
 
-```xml
-<svg id="erEjemplo" viewBox="0 0 960 320" role="img" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-<title id="erEjemplo-t">Ejemplo de diagrama entidad-relación</title>
-<desc id="erEjemplo-d">Cuatro tablas de una biblioteca: categorias, libros, prestamos y usuarios, con relaciones uno a muchos.</desc>
+```svg
+<svg id="tsEjemplo" width="100%" style="max-width:960px;display:block;margin:0 auto" viewBox="0 0 960 320" role="img" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+<title id="tsEjemplo-t">Ejemplo de diagrama entidad-relación</title>
+<desc id="tsEjemplo-d">Cuatro tablas de una biblioteca: categorias, libros, prestamos y usuarios, con relaciones uno a muchos.</desc>
 <style>
-#erEjemplo .mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:13px;fill:#161A26}
-#erEjemplo .nt{font-size:14px;font-weight:700}
-#erEjemplo .lk{fill:none;stroke:#556074;stroke-width:1.75}
-#erEjemplo .card{stroke-width:1.5}
-#erEjemplo .bd{font-size:10.5px;font-weight:700;fill:#fff;letter-spacing:.04em}
-#erEjemplo .card-t{font-size:13px;font-weight:700;fill:#161A26}
-#erEjemplo .card-b{font-size:12px;fill:#454C61}
-#erEjemplo .ca{font-size:13px;font-weight:700;fill:#556074}
+#tsEjemplo .mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:13px;fill:#161A26}
+#tsEjemplo .nt{font-size:14px;font-weight:700}
+#tsEjemplo .lk{fill:none;stroke:#556074;stroke-width:1.75}
+#tsEjemplo .card{stroke-width:1.5}
+#tsEjemplo .bd{font-size:10.5px;font-weight:700;fill:#fff;letter-spacing:.04em}
+#tsEjemplo .card-t{font-size:13px;font-weight:700;fill:#161A26}
+#tsEjemplo .card-b{font-size:12px;fill:#454C61}
+#tsEjemplo .ca{font-size:13px;font-weight:700;fill:#556074}
 </style>
 <rect width="960" height="320" rx="16" fill="#FBFBFD"/>
 <text x="32" y="44" font-size="20" font-weight="700" fill="#161A26">Ejemplo: biblioteca de préstamos</text>
@@ -226,7 +226,9 @@ Un diagrama terminado, para que el agente vea cómo se ve uno bien hecho. Es el 
 </svg>
 ```
 
-Ábrelo en Chrome para comprobar que se ve: arrastra el archivo a una pestaña.
+Descárgalo de [ejemplo.svg](https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg): abre el enlace, guarda la página con `Ctrl + S` y déjala en `.agents/skills/mer-svg/assets/` con el nombre `ejemplo.svg`.
+
+Ábrelo en Chrome para comprobar que se ve igual: arrastra el archivo a una pestaña.
 
 ## 5. Pide el diagrama
 
