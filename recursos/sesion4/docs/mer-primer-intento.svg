@@ -1,0 +1,77 @@
+<svg id="merApp" viewBox="0 0 960 372" role="img" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+<title id="merApp-t">Modelo de datos: red profesional</title>
+<desc id="merApp-d">Cuatro tablas: usuarios, publicaciones, mensajes y seguidores, con relaciones uno a muchos desde usuarios.</desc>
+<style>
+#merApp .mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;font-size:13px;fill:#161A26}
+#merApp .nt{font-size:14px;font-weight:700}
+#merApp .lk{fill:none;stroke:#556074;stroke-width:1.75}
+#merApp .card{stroke-width:1.5}
+#merApp .bd{font-size:10.5px;font-weight:700;fill:#fff;letter-spacing:.04em}
+#merApp .ca{font-size:13px;font-weight:700;fill:#556074}
+</style>
+<rect width="960" height="372" rx="16" fill="#FBFBFD"/>
+<text x="32" y="44" font-size="20" font-weight="700" fill="#161A26">Modelo de datos: red profesional</text>
+<text x="32" y="66" font-size="13" fill="#79809A">Cada caja es una tabla; cada línea, una relación entre dos tablas.</text>
+
+<g><rect class="card" x="32" y="88" width="176" height="152" rx="10" fill="#E3F6F3" stroke="#86D3CA"/>
+<path d="M32,120 H208" stroke="#86D3CA" stroke-width="1.5"/>
+<text class="nt mono" x="120" y="109" text-anchor="middle" style="fill:#0F8478;font-size:14px">publicaciones</text>
+<rect x="42" y="125" width="26" height="18" rx="9" fill="#0F8478"/><text class="bd" x="55" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="78" y="134" dy="0.35em">id</text>
+<rect x="42" y="153" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="55" y="162" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="78" y="162" dy="0.35em">usuario_id</text>
+<text class="mono" x="78" y="190" dy="0.35em">texto</text>
+<text class="mono" x="78" y="218" dy="0.35em">fecha</text>
+</g>
+
+<g><rect class="card" x="272" y="88" width="176" height="236" rx="10" fill="#EEF1FF" stroke="#A9B4F2"/>
+<path d="M272,120 H448" stroke="#A9B4F2" stroke-width="1.5"/>
+<text class="nt mono" x="360" y="109" text-anchor="middle" style="fill:#4453C9;font-size:14px">usuarios</text>
+<rect x="282" y="125" width="26" height="18" rx="9" fill="#4453C9"/><text class="bd" x="295" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="318" y="134" dy="0.35em">id</text>
+<text class="mono" x="318" y="162" dy="0.35em">nombre</text>
+<text class="mono" x="318" y="190" dy="0.35em">usuario</text>
+<text class="mono" x="318" y="218" dy="0.35em">cargo</text>
+<text class="mono" x="318" y="246" dy="0.35em">correo</text>
+<text class="mono" x="318" y="274" dy="0.35em">ciudad</text>
+<text class="mono" x="318" y="302" dy="0.35em">foto_url</text>
+</g>
+
+<g><rect class="card" x="512" y="88" width="176" height="180" rx="10" fill="#F4EBFF" stroke="#C9A6EE"/>
+<path d="M512,120 H688" stroke="#C9A6EE" stroke-width="1.5"/>
+<text class="nt mono" x="600" y="109" text-anchor="middle" style="fill:#7439B8;font-size:14px">mensajes</text>
+<rect x="522" y="125" width="26" height="18" rx="9" fill="#7439B8"/><text class="bd" x="535" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="558" y="134" dy="0.35em">id</text>
+<rect x="522" y="153" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="535" y="162" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="558" y="162" dy="0.35em">emisor_id</text>
+<rect x="522" y="181" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="535" y="190" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="558" y="190" dy="0.35em">receptor_id</text>
+<text class="mono" x="558" y="218" dy="0.35em">texto</text>
+<text class="mono" x="558" y="246" dy="0.35em">hora</text>
+</g>
+
+<g><rect class="card" x="752" y="88" width="176" height="124" rx="10" fill="#FFF3DC" stroke="#F0C572"/>
+<path d="M752,120 H928" stroke="#F0C572" stroke-width="1.5"/>
+<text class="nt mono" x="840" y="109" text-anchor="middle" style="fill:#A96C05;font-size:14px">seguidores</text>
+<rect x="762" y="125" width="26" height="18" rx="9" fill="#A96C05"/><text class="bd" x="775" y="134" text-anchor="middle" dy="0.35em">PK</text>
+<text class="mono" x="798" y="134" dy="0.35em">id</text>
+<rect x="762" y="153" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="775" y="162" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="798" y="162" dy="0.35em">seguidor_id</text>
+<rect x="762" y="181" width="26" height="18" rx="9" fill="#556074"/><text class="bd" x="775" y="190" text-anchor="middle" dy="0.35em">FK</text>
+<text class="mono" x="798" y="190" dy="0.35em">seguido_id</text>
+</g>
+
+<path class="lk" d="M208,164 H272"/><path class="lk" d="M258,155 V173"/><path class="lk" d="M232,164 L208,153 M232,164 L208,164 M232,164 L208,175"/>
+<text class="ca" x="260" y="146" text-anchor="middle">1</text>
+<text class="ca" x="220" y="146" text-anchor="middle">N</text>
+
+<path class="lk" d="M448,164 H512"/><path class="lk" d="M462,155 V173"/><path class="lk" d="M488,164 L512,153 M488,164 L512,164 M488,164 L512,175"/>
+<text class="ca" x="460" y="146" text-anchor="middle">1</text>
+<text class="ca" x="500" y="146" text-anchor="middle">N</text>
+
+<path class="lk" d="M688,164 H752"/><path class="lk" d="M702,155 V173"/><path class="lk" d="M728,164 L752,153 M728,164 L752,164 M728,164 L752,175"/>
+<text class="ca" x="700" y="146" text-anchor="middle">1</text>
+<text class="ca" x="740" y="146" text-anchor="middle">N</text>
+
+<text x="32" y="356" font-size="12.5" fill="#79809A">Se lee así: usuario→publicaciones, usuario→mensajes y usuario→seguidores; siempre del uno a los muchos. seguidores enlaza dos veces con usuarios: seguidor_id (quién sigue) y seguido_id (a quién sigue).</text>
+</svg>

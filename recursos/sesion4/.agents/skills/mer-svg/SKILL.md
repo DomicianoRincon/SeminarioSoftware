@@ -23,3 +23,5 @@ Escribes el SVG a mano, como código. No uses Mermaid ni ninguna librería.
 - Fondo claro fijo. Sin modo oscuro, sin imágenes y sin enlaces externos.
 - Los nombres de tablas y atributos van igual que en `docs/modelo.md`.
 - Si una relación no cabe entre tablas vecinas, cambia el orden de las tablas. No cruces líneas sobre una tabla.
+- Una línea solo une las dos tablas de su relación. Si una tabla tiene más de dos relaciones, va en el centro: dos tablas a sus lados y las demás justo debajo, en la misma columna.
+- El pie es una sola línea de máximo 100 caracteres.

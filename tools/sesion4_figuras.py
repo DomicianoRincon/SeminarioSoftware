@@ -67,6 +67,49 @@ def tree(nodes, x0=64, y0=140, step=36, indent=40, badge_x=560):
 
 # ───────────────────────────── S0029 · El agente en consola
 
+def ag_agente():
+    """El panel «Agente en consola» de la figura iaTools de S0006, recortado."""
+    src = (ROOT / 'content/lessonS6.md').read_text(encoding='utf-8')
+    svg = re.search(r'<svg id="iaTools".*?</svg>', src, re.S).group(0).replace('iaTools', 'agAgente')
+    defs = re.search(r'<defs>.*?</defs>', svg, re.S).group(0)
+    body = svg[svg.index('<rect x="504" y="112"'):svg.index('<text x="48" y="440"')]
+    return ('<svg id="agAgente" xmlns="http://www.w3.org/2000/svg" viewBox="480 88 456 344" width="100%" '
+            'style="max-width:560px;display:block;margin:0 auto" role="img" aria-labelledby="agAgente-ttl agAgente-dsc" '
+            "font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif\">\n"
+            '  <title id="agAgente-ttl">Agente en consola</title>\n'
+            '  <desc id="agAgente-dsc">Un modelo de IA conectado a un tool system con cuatro herramientas: leer archivos, buscar en el código, editar archivos y ejecutar comandos. Con ellas actúa directamente sobre tu proyecto.</desc>\n'
+            f'  {defs}\n  <rect x="480" y="88" width="456" height="344" rx="16" fill="#FBFBFD"/>\n  {body.rstrip()}\n</svg>\n')
+
+
+FIGS['agAgente'] = ag_agente
+
+
+def ag_reglas():
+    fid = 'agReglas'
+    h = 388
+    s = head(fid, h, 'Lo que cada agente hace sin preguntar', 'Lo que cada agente hace sin preguntar',
+             'Así vienen de fábrica. Con las reglas de esta lección, los dos preguntan antes de editar y de ejecutar.',
+             'Dos tarjetas. OpenCode, tal como viene, edita archivos y ejecuta comandos sin preguntar. Antigravity CLI edita archivos dentro del proyecto sin preguntar, pero pregunta antes de ejecutar un comando. Con las reglas de la lección, los dos preguntan en ambos casos.')
+
+    def card(x, color, name, rows):
+        strong = FAM[color][2]
+        o = '  ' + box(x, 112, 408, 172, color) + '\n'
+        o += '  ' + txt(x + 24, 148, name, 18, 700, strong) + '\n'
+        for i, (what, asks) in enumerate(rows):
+            y = 190 + i * 44
+            o += '  ' + txt(x + 24, y, what, 14, 400, INK, fit=210) + '\n'
+            fill, ink, label = ('#E8F6E3', '#3A8235', 'pregunta') if asks else ('#FFEBEF', '#C2354F', 'no pregunta')
+            o += f'  <rect x="{x + 264}" y="{y - 18}" width="120" height="28" rx="14" fill="{fill}" stroke="{ink}" stroke-width="1.5"/>\n'
+            o += '  ' + txt(x + 324, y + 0.5, label, 12.5, 700, ink, 'middle') + '\n'
+        return o
+    s += card(48, 'violet', 'OpenCode', [('Editar un archivo', False), ('Ejecutar un comando', False)])
+    s += card(504, 'indigo', 'Antigravity CLI', [('Editar un archivo', False), ('Ejecutar un comando', True)])
+    s += '  ' + callout(308, '<tspan font-weight="700">Tú diriges:</tspan> en el curso, el agente pregunta antes de editar y antes de ejecutar.') + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['agReglas'] = ag_reglas
+
 FIGS['agInstalar'] = lambda: console(dict(
     id='agInstalar',
     title='Instalar OpenCode',
@@ -90,8 +133,8 @@ FIGS['agSesion'] = lambda: console(dict(
     title_plain='La primera pregunta',
     desc='Dentro de la carpeta del proyecto se ejecuta opencode. Se le pide que explique el proyecto; el agente busca y lee archivos de lib y responde con un resumen.',
     sub='Una sesión de OpenCode, simplificada. El agente se abre dentro de la carpeta del proyecto.',
-    term_title='Terminal · C:\\develop\\miapp1',
-    lines=[('P', 'opencode', 'miapp1'),
+    term_title='Terminal · C:\\develop\\mi_app_1',
+    lines=[('P', 'opencode', 'mi_app_1'),
            ('B', ''),
            ('O', '> Explícame este proyecto'),
            ('B', ''),
@@ -99,8 +142,8 @@ FIGS['agSesion'] = lambda: console(dict(
            ('O', '→ Read lib/main.dart'),
            ('O', '→ Read lib/screens/profile_screen.dart'),
            ('B', ''),
-           ('K', 'Es una app Flutter con una pantalla, ProfileScreen, y sus componentes.')],
-    rings=[(2, 0, 26, 1), (5, 0, 21, 2), (8, 0, 71, 3)],
+           ('K', 'Es una app Flutter con una pantalla, ProfileScreen, y siete componentes.')],
+    rings=[(2, 0, 26, 1), (5, 0, 21, 2), (8, 0, 72, 3)],
     cards=[(1, 'Tú preguntas', ['En lenguaje natural,', 'como en un chat.'], False),
            (2, 'El agente lee', ['Cada archivo que abre', 'queda a la vista.'], False),
            (3, 'Responde', ['Con lo que encontró.', 'No cambió nada.'], False)],
@@ -146,7 +189,7 @@ FIGS['agPermiso'] = lambda: console(dict(
     title_plain='El agente pide permiso',
     desc='Se le pide al agente crear una pantalla de ajustes. Antes de escribir el archivo, el agente muestra qué va a editar y ofrece tres opciones: una vez, siempre o rechazar.',
     sub='Con opencode.json en el proyecto, cada edición y cada comando esperan tu respuesta. Simplificado y en español.',
-    term_title='Terminal · C:\\develop\\miapp1',
+    term_title='Terminal · C:\\develop\\mi_app_1',
     lines=[('O', '> Crea una pantalla de ajustes'),
            ('B', ''),
            ('O', '→ Read lib/main.dart'),
@@ -199,7 +242,7 @@ def cx_que_ve():
     s += '  <rect x="412" y="204" width="136" height="88" rx="12" fill="#7439B8"/>\n'
     s += '  ' + txt(480, 244, 'Modelo', 14.5, 700, '#FFFFFF', 'middle') + '\n'
     s += '  ' + txt(480, 263, 'de IA', 14.5, 700, '#FFFFFF', 'middle') + '\n'
-    right = [('De qué trata tu app', 'Biblioteca, tienda, reservas…'),
+    right = [('De qué trata tu app', 'Red profesional, tienda, reservas…'),
              ('Qué datos guarda', 'Las tablas y sus atributos.'),
              ('Lo que acordaron en clase', 'Lo que todavía no está en el código.')]
     for i, (t, d) in enumerate(right):
@@ -218,30 +261,33 @@ def cx_antes_despues():
     fid = 'cxAntesDespues'
     h = 560
     s = head(fid, h, 'El mismo pedido, sin y con contexto', 'El mismo pedido, sin y con contexto',
-             'Pedido: «Crea la pantalla de detalle de un libro». Resultado real de un modelo gratuito, redibujado.',
-             'Dos celulares con la pantalla de detalle de un libro. Sin contexto, el agente copió el estilo del proyecto pero inventó una calificación con reseñas, el género, las páginas, el ISBN y los botones Leer y Favorito. Con AGENTS.md, la pantalla solo muestra autor y categoría, que sí están en el modelo de datos, y el botón Pedir prestado.')
+             'Pedido: «Crea la pantalla de inicio con las publicaciones recientes». Resultado real de un modelo gratuito, redibujado.',
+             'Dos celulares con la pantalla de inicio de la red profesional. Sin contexto, el agente copió el estilo del proyecto pero inventó una foto en cada publicación, contadores de me gusta y de comentarios y un botón de compartir. Con AGENTS.md, cada publicación muestra solo su autor con usuario y cargo, el texto y la fecha, que sí están en el modelo de datos.')
     bar = '<rect width="200" height="44" fill="#F1ECF8"/>'
-    cover = '<rect x="70" y="58" width="60" height="80" rx="6" fill="#E3E7EF"/><path d="M88,84 h24 v28 h-24 Z M100,84 v28" fill="none" stroke="#9AA3B5" stroke-width="1.5"/>'
 
-    def btn(x, w, y, label):
-        return (f'<rect x="{x}" y="{y}" width="{w}" height="32" rx="16" fill="#7439B8"/>'
-                + txt(x + w / 2, y + 20, label, 12, 700, '#FFFFFF', 'middle'))
-    left = (bar + txt(16, 27, 'Detalle del libro', 14, 500) + cover
-            + txt(100, 160, 'El gran viaje', 14, 700, INK, 'middle')
-            + txt(100, 178, 'María López', 12, 400, MUTED, 'middle')
-            + txt(100, 198, '★ 4.5 (128 reseñas)', 12, 400, INK, 'middle')
-            + ''.join(txt(20, y, a, 12, 700) + txt(84, y, b, 12, 400, MUTED)
-                      for y, a, b in ((228, 'Género', 'Novela'), (248, 'Páginas', '320'), (268, 'ISBN', '978-84-1234')))
-            + btn(14, 82, 292, 'Leer') + btn(104, 82, 292, 'Favorito')
-            + mark(30, 185, 140, 20, 'rose', 6) + mark(10, 212, 180, 64, 'rose', 8) + mark(10, 286, 180, 44, 'rose', 8))
-    right = (bar + txt(16, 27, 'Detalle del libro', 14, 500) + cover
-             + txt(100, 160, 'Cien años de soledad', 14, 700, INK, 'middle')
-             + ''.join(txt(20, y, a, 12, 700) + txt(92, y, b, 12, 400, MUTED)
-                       for y, a, b in ((196, 'Autor', 'García Márquez'), (216, 'Categoría', 'Novela')))
-             + btn(14, 172, 246, 'Pedir prestado')
-             + mark(10, 180, 180, 44, 'teal', 8) + mark(10, 240, 180, 44, 'teal', 8))
-    s += '  ' + device(64, 136, 200, 340, left, '#FFFFFF', f'{fid}-a') + '\n'
-    s += '  ' + device(512, 136, 200, 340, right, '#FFFFFF', f'{fid}-b') + '\n'
+    def author(y, name, sub):
+        return (f'<circle cx="30" cy="{y}" r="11" fill="#C9A6EE"/>' + txt(48, y - 2, name, 11.5, 700)
+                + txt(48, y + 12, sub, 10, 400, MUTED))
+
+    def card(y, hh):
+        return f'<rect x="10" y="{y}" width="180" height="{hh}" rx="8" fill="#FFFFFF" stroke="#DCDDE6" stroke-width="1.5"/>'
+    left = (bar + txt(16, 27, 'Inicio', 14, 500) + card(54, 224) + author(76, 'Mariana Valenzuela', '@marianav · 2 h')
+            + '<rect x="20" y="96" width="160" height="92" rx="6" fill="#E3E7EF"/><path d="M20,176 l40,-36 l30,24 l26,-18 l64,42 v0 h-160 Z" fill="#C4CBD8"/>'
+            + txt(20, 206, 'Nuevo avance del rediseño…', 11, 400)
+            + txt(22, 262, '♡ 124', 12, 600, INK) + txt(78, 262, '◌ 18', 12, 600, INK) + txt(160, 262, '↗', 13, 600, INK)
+            + card(288, 60) + author(310, 'Javier Montes', '@javierm · 5 h')
+            + mark(15, 92, 170, 100, 'rose', 8) + mark(15, 244, 170, 28, 'rose', 8))
+    right = (bar + txt(16, 27, 'Publicaciones recientes', 14, 500)
+             + card(54, 104) + author(76, 'Mariana Valenzuela', '@marianav · Diseñadora')
+             + txt(20, 108, 'Nuevo avance del rediseño', 11, 400) + txt(20, 123, 'del componente de pagos.', 11, 400)
+             + txt(180, 146, 'Hace 10 min', 10, 400, MUTED, 'end')
+             + card(168, 104) + author(190, 'Javier Montes', '@javierm · Ingeniero')
+             + txt(20, 222, 'Cerramos la demo con el', 11, 400) + txt(20, 237, 'cliente esta mañana.', 11, 400)
+             + txt(180, 260, 'Hace 1 h', 10, 400, MUTED, 'end')
+             + card(282, 70) + author(304, 'Ana Torres', '@anatorres · Gerente')
+             + mark(15, 62, 170, 90, 'teal', 8))
+    s += '  ' + device(64, 136, 200, 340, left, '#F7F7FB', f'{fid}-a') + '\n'
+    s += '  ' + device(512, 136, 200, 340, right, '#F7F7FB', f'{fid}-b') + '\n'
 
     def col(x, color, name, facts):
         strong = FAM[color][2]
@@ -252,11 +298,11 @@ def cx_antes_despues():
             o += '  ' + txt(x, y + 20, b, 12.5, 400, MUTED, fit=176) + '\n'
         return o
     s += col(292, 'rose', 'SIN CONTEXTO',
-             [('Copió el estilo', 'Scaffold, SafeArea, imports.'), ('Inventó los datos', 'Reseñas, género, ISBN.'),
-              ('Inventó la app', 'Leer y Favorito.')])
+             [('Copió el estilo', 'Tarjetas, colores, avatar.'), ('Inventó los datos', 'Foto, me gusta, comentarios.'),
+              ('Tocó de más', 'Reescribió test/.')])
     s += col(740, 'teal', 'CON AGENTS.md',
-             [('Solo datos del modelo', 'Autor y categoría.'), ('La acción de la app', 'Pedir prestado.'),
-              ('Secciones aparte', 'En lib/components/.')])
+             [('Solo datos del modelo', 'Autor, cargo, texto, fecha.'), ('Respetó los límites', 'No tocó test/ y lo dijo.'),
+              ('Componente aparte', 'PostItem, en components/.')])
     s = s.replace(f'#{fid} .h{{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}}',
                   f'#{fid} .h{{font-size:12px;font-weight:700;letter-spacing:.08em}}')
     s += '  <path d="M488,128 V488" stroke="#D9DEE8" stroke-width="1.5" stroke-dasharray="4 5"/>\n'
@@ -272,7 +318,7 @@ FIGS['cxInit'] = lambda: console(dict(
     title_plain='Crear el archivo con /init',
     desc='Dentro de OpenCode se escribe /init. El agente lee pubspec.yaml y los archivos de lib, y escribe AGENTS.md en la raíz del proyecto.',
     sub='El agente recorre el proyecto y escribe un primer borrador. Es un punto de partida, no el archivo final.',
-    term_title='Terminal · C:\\develop\\miapp1',
+    term_title='Terminal · C:\\develop\\mi_app_1',
     lines=[('O', '> /init'),
            ('B', ''),
            ('D', '→ Read pubspec.yaml'),
@@ -323,8 +369,8 @@ def sk_carpeta():
     h = 556
     s = head(fid, h, 'Una skill es una carpeta', 'Una skill es una carpeta',
              'Vive dentro del proyecto, en .agents/skills/. El nombre de la carpeta es el nombre de la skill.',
-             'El árbol de carpetas de miapp1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; y la carpeta assets con ejemplo.svg, lo que el agente imita.')
-    nodes = [(0, 'miapp1/', 'd', False), (1, '.agents/', 'd', False), (2, 'skills/', 'd', False),
+             'El árbol de carpetas de mi_app_1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; y la carpeta assets con ejemplo.svg, lo que el agente imita.')
+    nodes = [(0, 'mi_app_1/', 'd', False), (1, '.agents/', 'd', False), (2, 'skills/', 'd', False),
              (3, 'mer-svg/', 'd', False), (4, 'SKILL.md', 'f', False), (4, 'references/', 'd', False),
              (5, 'estilo.md', 'f', False), (4, 'assets/', 'd', False), (5, 'ejemplo.svg', 'f', False)]
     t, pos = tree(nodes, step=46)
@@ -435,7 +481,7 @@ FIGS['tsUso'] = lambda: console(dict(
     title_plain='Pedir el diagrama',
     desc='Se le pide al agente que dibuje el MER de la app. El agente carga la skill mer-svg, lee docs/modelo.md, el estilo y el ejemplo de la skill, y escribe docs/mer.svg.',
     sub='El pedido no nombra la skill. El agente la elige por su description.',
-    term_title='Terminal · C:\\develop\\miapp1',
+    term_title='Terminal · C:\\develop\\mi_app_1',
     lines=[('O', '> Dibuja el MER de la app'),
            ('B', ''),
            ('O', '→ Skill "mer-svg"'),
@@ -444,7 +490,7 @@ FIGS['tsUso'] = lambda: console(dict(
            ('D', '→ Read .agents/skills/mer-svg/assets/ejemplo.svg'),
            ('O', '← Write docs/mer.svg'),
            ('B', ''),
-           ('K', 'Listo: docs/mer.svg con 6 tablas y 5 relaciones.')],
+           ('K', 'Listo: docs/mer.svg con 4 tablas y 3 relaciones.')],
     rings=[(2, 0, 17, 1), (4, 0, 50, 2), (6, 0, 20, 3)],
     cards=[(1, 'Eligió la skill', ['La encontró por su', 'description.'], False),
            (2, 'Leyó lo que la skill pide', ['El modelo, el estilo', 'y el ejemplo.'], False),
@@ -452,11 +498,17 @@ FIGS['tsUso'] = lambda: console(dict(
 ))
 
 
-def ts_resultado():
-    src = (ROOT / 'recursos/sesion4/docs/mer-ejemplo-canchas.svg').read_text(encoding='utf-8')
-    src = src.replace('merApp', 'tsResultado')
-    src = src.replace('<svg id="tsResultado" ', '<svg id="tsResultado" width="100%" style="max-width:960px;display:block;margin:0 auto" ', 1)
+def embedded(path, old_id, new_id):
+    src = (ROOT / path).read_text(encoding='utf-8').replace(old_id, new_id)
+    src = src.replace(f'<svg id="{new_id}" ', f'<svg id="{new_id}" width="100%" style="max-width:960px;display:block;margin:0 auto" ', 1)
     return src if src.endswith('\n') else src + '\n'
+
+
+def ts_resultado():
+    return embedded('recursos/sesion4/docs/mer.svg', 'merRed', 'tsResultado')
+
+
+FIGS['tsPrimerIntento'] = lambda: embedded('recursos/sesion4/docs/mer-primer-intento.svg', 'merApp', 'tsPrimerIntento')
 
 
 FIGS['tsResultado'] = ts_resultado
@@ -468,7 +520,7 @@ TS_FILES = [('SKILL.md', 4, None), ('estilo.md', 5, 'references/'), ('ejemplo.sv
 def ts_nodes(step):
     """Árbol de la skill tras el paso `step` (1 = carpetas, 2 a 4 = un archivo más). El último elemento va como nuevo."""
     fresh = step == 1
-    nodes = [(0, 'miapp1/', 'd', False), (1, '.agents/', 'd', fresh), (2, 'skills/', 'd', fresh), (3, 'mer-svg/', 'd', fresh)]
+    nodes = [(0, 'mi_app_1/', 'd', False), (1, '.agents/', 'd', fresh), (2, 'skills/', 'd', fresh), (3, 'mer-svg/', 'd', fresh)]
     for i, (name, depth, folder) in enumerate(TS_FILES):
         if i == 0:
             if step >= 2:
@@ -486,7 +538,7 @@ def ts_estructura():
     h = 140 + (len(nodes) - 1) * 36 + 56
     s = head(fid, h, 'La skill completa', 'La skill completa',
              'Esto es lo que vas a tener al final. Se arma en cuatro pasos, uno por elemento.',
-             'El árbol de la skill dentro de miapp1: las carpetas .agents, skills y mer-svg, que se crean en el paso 1 junto con references y assets; el archivo SKILL.md, del paso 2; references/estilo.md, del paso 3; y assets/ejemplo.svg, del paso 4.')
+             'El árbol de la skill dentro de mi_app_1: las carpetas .agents, skills y mer-svg, que se crean en el paso 1 junto con references y assets; el archivo SKILL.md, del paso 2; references/estilo.md, del paso 3; y assets/ejemplo.svg, del paso 4.')
     t, pos = tree(nodes)
     s += '  ' + t + '\n'
     marks = [('mer-svg/', 1, 'Las carpetas', 'indigo'), ('SKILL.md', 2, 'Las instrucciones', 'violet'),
@@ -509,7 +561,7 @@ def ts_paso(step):
            2: 'El único archivo obligatorio. Va directamente dentro de mer-svg.',
            3: 'Lo que el agente consulta. Va dentro de references.',
            4: 'Lo que el agente imita. Va dentro de assets.'}[step]
-    desc = {1: 'El árbol de miapp1 con cinco carpetas nuevas: .agents, dentro skills, dentro mer-svg, y dentro de mer-svg las carpetas references y assets.',
+    desc = {1: 'El árbol de mi_app_1 con cinco carpetas nuevas: .agents, dentro skills, dentro mer-svg, y dentro de mer-svg las carpetas references y assets.',
             2: 'El mismo árbol, con un archivo nuevo dentro de mer-svg: SKILL.md.',
             3: 'El mismo árbol, con un archivo nuevo dentro de references: estilo.md.',
             4: 'El mismo árbol, con un archivo nuevo dentro de assets: ejemplo.svg. La skill está completa.'}[step]
@@ -529,31 +581,32 @@ def ts_modelo():
     h = 536
     s = head(fid, h, 'De la descripción al modelo', 'De la descripción al modelo',
              'Se parte de contar la app en dos frases. Los sustantivos son las tablas.',
-             'Arriba, la descripción de una app de reserva de canchas. De sus sustantivos salen seis tablas: sedes, deportes, canchas, usuarios, reservas y pagos. Abajo, tres pasadas para escribir el modelo: una lista por tabla con su llave primaria y sus atributos, las llaves foráneas en la tabla del lado muchos, y las relaciones escritas como frases.')
+             'Arriba, la descripción de la red profesional. De sus sustantivos salen cuatro tablas: usuarios, publicaciones, seguidores y mensajes. Abajo, tres pasadas para escribir el modelo: una lista por tabla con su llave primaria y sus atributos, las llaves foráneas en la tabla del lado muchos, y las relaciones escritas como frases.')
     s += '  <rect x="48" y="112" width="864" height="76" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
     b = 'font-weight="700" fill="#161A26"'
-    s += '  ' + txt(68, 143, f'Una empresa tiene varias <tspan {b}>sedes</tspan> y en cada una hay <tspan {b}>canchas</tspan> de distintos <tspan {b}>deportes</tspan>.', 14, 400, '#454C61', fit=820) + '\n'
-    s += '  ' + txt(68, 169, f'Un <tspan {b}>usuario</tspan> hace una <tspan {b}>reserva</tspan> de una cancha para una fecha y una hora, y registra su <tspan {b}>pago</tspan>.', 14, 400, '#454C61', fit=820) + '\n'
+    s += '  ' + txt(68, 143, f'Cada <tspan {b}>usuario</tspan> tiene un perfil con su cargo y su ciudad, y escribe <tspan {b}>publicaciones</tspan> sobre su trabajo.', 14, 400, '#454C61', fit=820) + '\n'
+    s += '  ' + txt(68, 169, f'Sigue a otras personas, que pasan a tenerlo entre sus <tspan {b}>seguidores</tspan>, y les envía <tspan {b}>mensajes</tspan>.', 14, 400, '#454C61', fit=820) + '\n'
     s += '  <path class="link" d="M480,188 V214"/>\n'
-    names = [('sedes', 'indigo'), ('deportes', 'amber'), ('canchas', 'teal'), ('usuarios', 'violet'), ('reservas', 'indigo'), ('pagos', 'teal')]
+    names = [('usuarios', 'indigo'), ('publicaciones', 'teal'), ('seguidores', 'amber'), ('mensajes', 'violet')]
     for i, (n, c) in enumerate(names):
-        x = 48 + i * 146
+        x = 48 + i * 222
         soft, border, strong = FAM[c]
-        s += f'  <rect x="{x}" y="224" width="134" height="36" rx="18" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
-        s += '  ' + txt(x + 67, 247, n, 13.5, 700, strong, 'middle', cls='mono') + '\n'
-    cards = [('indigo', 'Una lista por tabla', ['## canchas', '- id (PK)', '- nombre', '- precio_hora'], 'Primero la llave primaria.'),
-             ('teal', 'Las llaves foráneas', ['- sede_id (FK a sedes)', '- deporte_id (FK a deportes)'], 'Van en la tabla del lado "muchos".'),
-             ('amber', 'Las relaciones, en frases', ['- Una sede tiene muchas canchas.', '- Una reserva tiene muchos pagos.'], 'Una frase por cada llave foránea.')]
-    for i, (c, title, lines, foot) in enumerate(cards):
-        x = 48 + i * 296
+        s += f'  <rect x="{x}" y="224" width="198" height="36" rx="18" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += '  ' + txt(x + 99, 247, n, 13.5, 700, strong, 'middle', cls='mono') + '\n'
+    cards = [('teal', 232, 'Una lista por tabla', ['## publicaciones', '- id (PK)', '- texto', '- fecha'], 'Primero la llave primaria.', True),
+             ('indigo', 296, 'Las llaves foráneas', ['- usuario_id (FK a usuarios)', '- emisor_id (FK a usuarios)'], 'Van en la tabla del lado "muchos".', True),
+             ('amber', 304, 'Las relaciones, en frases', ['- Un usuario tiene muchos mensajes.', '- Un usuario tiene muchos seguidores.'], 'Una frase por cada relación.', False)]
+    x = 48
+    for i, (c, w, title, lines, foot, mono) in enumerate(cards):
         strong = FAM[c][2]
-        s += '  ' + box(x, 292, 272, 212, c) + '\n'
+        s += '  ' + box(x, 292, w, 212, c) + '\n'
         s += '  ' + chip(x + 30, 322, i + 1, c) + '\n'
-        s += '  ' + txt(x + 52, 327, title, 14, 700, strong, fit=200) + '\n'
-        s += f'  <rect x="{x + 16}" y="346" width="240" height="108" rx="8" fill="#FFFFFF" stroke="{FAM[c][1]}" stroke-width="1"/>\n'
+        s += '  ' + txt(x + 52, 327, title, 14, 700, strong, fit=w - 72) + '\n'
+        s += f'  <rect x="{x + 16}" y="346" width="{w - 32}" height="108" rx="8" fill="#FFFFFF" stroke="{FAM[c][1]}" stroke-width="1"/>\n'
         for j, ln in enumerate(lines):
-            s += '  ' + txt(x + 28, 372 + j * 22, ln, 12.5 if i == 2 else 12, 400, INK, cls='' if i == 2 else 'mono', fit=220) + '\n'
-        s += '  ' + txt(x + 20, 482, foot, 12.5, 400, '#454C61', fit=236) + '\n'
+            s += '  ' + txt(x + 28, 372 + j * 22, ln, 12, 400, INK, cls='mono' if mono else '', fit=w - 52) + '\n'
+        s += '  ' + txt(x + 20, 482, foot, 12.5, 400, '#454C61', fit=w - 36) + '\n'
+        x += w + 16
     return s + '</svg>\n'
 
 
@@ -561,10 +614,7 @@ FIGS['tsModelo'] = ts_modelo
 
 
 def ts_ejemplo():
-    src = (ROOT / 'recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg').read_text(encoding='utf-8')
-    src = src.replace('erEjemplo', 'tsEjemplo')
-    src = src.replace('<svg id="tsEjemplo" ', '<svg id="tsEjemplo" width="100%" style="max-width:960px;display:block;margin:0 auto" ', 1)
-    return src if src.endswith('\n') else src + '\n'
+    return embedded('recursos/sesion4/.agents/skills/mer-svg/assets/ejemplo.svg', 'merEjemplo', 'tsEjemplo')
 
 
 FIGS['tsEjemplo'] = ts_ejemplo
@@ -572,15 +622,14 @@ FIGS['tsEjemplo'] = ts_ejemplo
 
 def ts_carpetas():
     fid = 'tsCarpetas'
-    h = 600
+    h = 566
     s = head(fid, h, 'Tu proyecto al terminar', 'Tu proyecto al terminar',
              'Nada de lib/ cambió. Lo nuevo es lo que dirige al agente y lo que el agente produjo.',
-             'El árbol de miapp1 al terminar el taller. Son nuevos la carpeta .agents con la skill mer-svg y sus tres archivos, SKILL.md, estilo.md y ejemplo.svg; la carpeta docs con modelo.md y mer.svg; y en la raíz AGENTS.md y opencode.json. La carpeta lib queda igual.')
-    nodes = [(0, 'miapp1/', 'd', False), (1, '.agents/', 'd', False), (2, 'skills/', 'd', False),
+             'El árbol de mi_app_1 al terminar el taller. Son nuevos la carpeta .agents con la skill mer-svg y sus tres archivos, SKILL.md, estilo.md y ejemplo.svg; la carpeta docs con modelo.md y mer.svg; y en la raíz AGENTS.md. La carpeta lib queda igual.')
+    nodes = [(0, 'mi_app_1/', 'd', False), (1, '.agents/', 'd', False), (2, 'skills/', 'd', False),
              (3, 'mer-svg/', 'd', False), (4, 'SKILL.md', 'f', True), (4, 'references/estilo.md', 'f', True),
              (4, 'assets/ejemplo.svg', 'f', True), (1, 'docs/', 'd', False), (2, 'modelo.md', 'f', True),
-             (2, 'mer.svg', 'f', True), (1, 'lib/', 'd', False), (1, 'AGENTS.md', 'f', True),
-             (1, 'opencode.json', 'f', True)]
+             (2, 'mer.svg', 'f', True), (1, 'lib/', 'd', False), (1, 'AGENTS.md', 'f', True)]
     t, pos = tree(nodes, step=34, badge_x=520)
     s += '  ' + t + '\n'
     x, y = pos['lib/']

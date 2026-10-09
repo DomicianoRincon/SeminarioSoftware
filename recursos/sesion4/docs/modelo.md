@@ -1,33 +1,38 @@
 # Modelo de datos
 
-## categorias
-
-- id (PK)
-- nombre
-- descripcion
-
-## libros
-
-- id (PK)
-- titulo
-- autor
-- categoria_id (FK a categorias)
-
 ## usuarios
 
 - id (PK)
 - nombre
+- usuario
+- cargo
 - correo
+- ciudad
+- foto_url
 
-## prestamos
+## publicaciones
 
 - id (PK)
-- libro_id (FK a libros)
 - usuario_id (FK a usuarios)
-- fecha_prestamo
+- texto
+- fecha
+
+## seguidores
+
+- id (PK)
+- seguidor_id (FK a usuarios)
+- seguido_id (FK a usuarios)
+
+## mensajes
+
+- id (PK)
+- emisor_id (FK a usuarios)
+- receptor_id (FK a usuarios)
+- texto
+- hora
 
 ## Relaciones
 
-- Una categoria tiene muchos libros.
-- Un libro tiene muchos prestamos.
-- Un usuario tiene muchos prestamos.
+- Un usuario tiene muchas publicaciones.
+- Un usuario tiene muchos seguidores.
+- Un usuario tiene muchos mensajes.

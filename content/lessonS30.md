@@ -48,7 +48,7 @@ El agente no sabe nada de tu proyecto hasta que lo lee. Y hay cosas que no puede
   <text x="480" y="263" font-size="14.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">de IA</text>
   <rect x="612" y="140" width="300" height="64" rx="12" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="6 4"/>
   <text x="632" y="167" font-size="14.5" font-weight="700" fill="#556074" text-anchor="start" data-fit="260">De qué trata tu app</text>
-  <text x="632" y="188" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="260">Biblioteca, tienda, reservas…</text>
+  <text x="632" y="188" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="260">Red profesional, tienda, reservas…</text>
   <rect x="612" y="216" width="300" height="64" rx="12" fill="#EFF1F5" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="6 4"/>
   <text x="632" y="243" font-size="14.5" font-weight="700" fill="#556074" text-anchor="start" data-fit="260">Qué datos guarda</text>
   <text x="632" y="264" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="260">Las tablas y sus atributos.</text>
@@ -63,14 +63,14 @@ El agente no sabe nada de tu proyecto hasta que lo lee. Y hay cosas que no puede
 
 ## El mismo pedido, dos veces
 
-Haz la prueba. Con el proyecto como lo dejaste en el taller, pídele al agente una pantalla de tu app. En el ejemplo, una app de biblioteca:
+Haz la prueba. Con el proyecto como lo dejaste en el taller, pídele al agente una pantalla nueva. El proyecto del curso es una **red social profesional**, al estilo de LinkedIn, que por ahora solo tiene la pantalla de perfil:
 
-> Crea la pantalla de detalle de un libro y regístrala en la app
+> Crea la pantalla de inicio con las publicaciones recientes y regístrala en la app
 
 ```svg
 <svg id="cxAntesDespues" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="cxAntesDespues-ttl cxAntesDespues-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="cxAntesDespues-ttl">El mismo pedido, sin y con contexto</title>
-  <desc id="cxAntesDespues-dsc">Dos celulares con la pantalla de detalle de un libro. Sin contexto, el agente copió el estilo del proyecto pero inventó una calificación con reseñas, el género, las páginas, el ISBN y los botones Leer y Favorito. Con AGENTS.md, la pantalla solo muestra autor y categoría, que sí están en el modelo de datos, y el botón Pedir prestado.</desc>
+  <desc id="cxAntesDespues-dsc">Dos celulares con la pantalla de inicio de la red profesional. Sin contexto, el agente copió el estilo del proyecto pero inventó una foto en cada publicación, contadores de me gusta y de comentarios y un botón de compartir. Con AGENTS.md, cada publicación muestra solo su autor con usuario y cargo, el texto y la fecha, que sí están en el modelo de datos.</desc>
   <defs>
     <style>
       #cxAntesDespues .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -89,23 +89,23 @@ Haz la prueba. Con el proyecto como lo dejaste en el taller, pídele al agente u
   </defs>
   <rect width="960" height="560" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">El mismo pedido, sin y con contexto</text>
-  <text class="sub" x="48" y="80" data-fit="860">Pedido: «Crea la pantalla de detalle de un libro». Resultado real de un modelo gratuito, redibujado.</text>
-  <clipPath id="cxAntesDespues-a"><rect width="200" height="340" rx="20"/></clipPath><rect x="57" y="129" width="214" height="354" rx="27" fill="#1F2430"/><g transform="translate(64,136)"><g clip-path="url(#cxAntesDespues-a)"><rect width="200" height="340" rx="20" fill="#FFFFFF"/><rect width="200" height="44" fill="#F1ECF8"/><text x="16" y="27" font-size="14" font-weight="500" fill="#161A26" text-anchor="start">Detalle del libro</text><rect x="70" y="58" width="60" height="80" rx="6" fill="#E3E7EF"/><path d="M88,84 h24 v28 h-24 Z M100,84 v28" fill="none" stroke="#9AA3B5" stroke-width="1.5"/><text x="100" y="160" font-size="14" font-weight="700" fill="#161A26" text-anchor="middle">El gran viaje</text><text x="100" y="178" font-size="12" font-weight="400" fill="#556074" text-anchor="middle">María López</text><text x="100" y="198" font-size="12" font-weight="400" fill="#161A26" text-anchor="middle">★ 4.5 (128 reseñas)</text><text x="20" y="228" font-size="12" font-weight="700" fill="#161A26" text-anchor="start">Género</text><text x="84" y="228" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Novela</text><text x="20" y="248" font-size="12" font-weight="700" fill="#161A26" text-anchor="start">Páginas</text><text x="84" y="248" font-size="12" font-weight="400" fill="#556074" text-anchor="start">320</text><text x="20" y="268" font-size="12" font-weight="700" fill="#161A26" text-anchor="start">ISBN</text><text x="84" y="268" font-size="12" font-weight="400" fill="#556074" text-anchor="start">978-84-1234</text><rect x="14" y="292" width="82" height="32" rx="16" fill="#7439B8"/><text x="55.0" y="312" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">Leer</text><rect x="104" y="292" width="82" height="32" rx="16" fill="#7439B8"/><text x="145.0" y="312" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">Favorito</text><rect x="30" y="185" width="140" height="20" rx="6" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/><rect x="10" y="212" width="180" height="64" rx="8" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/><rect x="10" y="286" width="180" height="44" rx="8" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/></g></g>
-  <clipPath id="cxAntesDespues-b"><rect width="200" height="340" rx="20"/></clipPath><rect x="505" y="129" width="214" height="354" rx="27" fill="#1F2430"/><g transform="translate(512,136)"><g clip-path="url(#cxAntesDespues-b)"><rect width="200" height="340" rx="20" fill="#FFFFFF"/><rect width="200" height="44" fill="#F1ECF8"/><text x="16" y="27" font-size="14" font-weight="500" fill="#161A26" text-anchor="start">Detalle del libro</text><rect x="70" y="58" width="60" height="80" rx="6" fill="#E3E7EF"/><path d="M88,84 h24 v28 h-24 Z M100,84 v28" fill="none" stroke="#9AA3B5" stroke-width="1.5"/><text x="100" y="160" font-size="14" font-weight="700" fill="#161A26" text-anchor="middle">Cien años de soledad</text><text x="20" y="196" font-size="12" font-weight="700" fill="#161A26" text-anchor="start">Autor</text><text x="92" y="196" font-size="12" font-weight="400" fill="#556074" text-anchor="start">García Márquez</text><text x="20" y="216" font-size="12" font-weight="700" fill="#161A26" text-anchor="start">Categoría</text><text x="92" y="216" font-size="12" font-weight="400" fill="#556074" text-anchor="start">Novela</text><rect x="14" y="246" width="172" height="32" rx="16" fill="#7439B8"/><text x="100.0" y="266" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">Pedir prestado</text><rect x="10" y="180" width="180" height="44" rx="8" fill="#0F8478" fill-opacity=".08" stroke="#0F8478" stroke-width="2"/><rect x="10" y="240" width="180" height="44" rx="8" fill="#0F8478" fill-opacity=".08" stroke="#0F8478" stroke-width="2"/></g></g>
+  <text class="sub" x="48" y="80" data-fit="860">Pedido: «Crea la pantalla de inicio con las publicaciones recientes». Resultado real de un modelo gratuito, redibujado.</text>
+  <clipPath id="cxAntesDespues-a"><rect width="200" height="340" rx="20"/></clipPath><rect x="57" y="129" width="214" height="354" rx="27" fill="#1F2430"/><g transform="translate(64,136)"><g clip-path="url(#cxAntesDespues-a)"><rect width="200" height="340" rx="20" fill="#F7F7FB"/><rect width="200" height="44" fill="#F1ECF8"/><text x="16" y="27" font-size="14" font-weight="500" fill="#161A26" text-anchor="start">Inicio</text><rect x="10" y="54" width="180" height="224" rx="8" fill="#FFFFFF" stroke="#DCDDE6" stroke-width="1.5"/><circle cx="30" cy="76" r="11" fill="#C9A6EE"/><text x="48" y="74" font-size="11.5" font-weight="700" fill="#161A26" text-anchor="start">Mariana Valenzuela</text><text x="48" y="88" font-size="10" font-weight="400" fill="#556074" text-anchor="start">@marianav · 2 h</text><rect x="20" y="96" width="160" height="92" rx="6" fill="#E3E7EF"/><path d="M20,176 l40,-36 l30,24 l26,-18 l64,42 v0 h-160 Z" fill="#C4CBD8"/><text x="20" y="206" font-size="11" font-weight="400" fill="#161A26" text-anchor="start">Nuevo avance del rediseño…</text><text x="22" y="262" font-size="12" font-weight="600" fill="#161A26" text-anchor="start">♡ 124</text><text x="78" y="262" font-size="12" font-weight="600" fill="#161A26" text-anchor="start">◌ 18</text><text x="160" y="262" font-size="13" font-weight="600" fill="#161A26" text-anchor="start">↗</text><rect x="10" y="288" width="180" height="60" rx="8" fill="#FFFFFF" stroke="#DCDDE6" stroke-width="1.5"/><circle cx="30" cy="310" r="11" fill="#C9A6EE"/><text x="48" y="308" font-size="11.5" font-weight="700" fill="#161A26" text-anchor="start">Javier Montes</text><text x="48" y="322" font-size="10" font-weight="400" fill="#556074" text-anchor="start">@javierm · 5 h</text><rect x="15" y="92" width="170" height="100" rx="8" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/><rect x="15" y="244" width="170" height="28" rx="8" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/></g></g>
+  <clipPath id="cxAntesDespues-b"><rect width="200" height="340" rx="20"/></clipPath><rect x="505" y="129" width="214" height="354" rx="27" fill="#1F2430"/><g transform="translate(512,136)"><g clip-path="url(#cxAntesDespues-b)"><rect width="200" height="340" rx="20" fill="#F7F7FB"/><rect width="200" height="44" fill="#F1ECF8"/><text x="16" y="27" font-size="14" font-weight="500" fill="#161A26" text-anchor="start">Publicaciones recientes</text><rect x="10" y="54" width="180" height="104" rx="8" fill="#FFFFFF" stroke="#DCDDE6" stroke-width="1.5"/><circle cx="30" cy="76" r="11" fill="#C9A6EE"/><text x="48" y="74" font-size="11.5" font-weight="700" fill="#161A26" text-anchor="start">Mariana Valenzuela</text><text x="48" y="88" font-size="10" font-weight="400" fill="#556074" text-anchor="start">@marianav · Diseñadora</text><text x="20" y="108" font-size="11" font-weight="400" fill="#161A26" text-anchor="start">Nuevo avance del rediseño</text><text x="20" y="123" font-size="11" font-weight="400" fill="#161A26" text-anchor="start">del componente de pagos.</text><text x="180" y="146" font-size="10" font-weight="400" fill="#556074" text-anchor="end">Hace 10 min</text><rect x="10" y="168" width="180" height="104" rx="8" fill="#FFFFFF" stroke="#DCDDE6" stroke-width="1.5"/><circle cx="30" cy="190" r="11" fill="#C9A6EE"/><text x="48" y="188" font-size="11.5" font-weight="700" fill="#161A26" text-anchor="start">Javier Montes</text><text x="48" y="202" font-size="10" font-weight="400" fill="#556074" text-anchor="start">@javierm · Ingeniero</text><text x="20" y="222" font-size="11" font-weight="400" fill="#161A26" text-anchor="start">Cerramos la demo con el</text><text x="20" y="237" font-size="11" font-weight="400" fill="#161A26" text-anchor="start">cliente esta mañana.</text><text x="180" y="260" font-size="10" font-weight="400" fill="#556074" text-anchor="end">Hace 1 h</text><rect x="10" y="282" width="180" height="70" rx="8" fill="#FFFFFF" stroke="#DCDDE6" stroke-width="1.5"/><circle cx="30" cy="304" r="11" fill="#C9A6EE"/><text x="48" y="302" font-size="11.5" font-weight="700" fill="#161A26" text-anchor="start">Ana Torres</text><text x="48" y="316" font-size="10" font-weight="400" fill="#556074" text-anchor="start">@anatorres · Gerente</text><rect x="15" y="62" width="170" height="90" rx="8" fill="#0F8478" fill-opacity=".08" stroke="#0F8478" stroke-width="2"/></g></g>
   <text x="292" y="150" font-size="13" font-weight="700" fill="#C2354F" text-anchor="start" class="h" data-fit="176">SIN CONTEXTO</text>
   <text x="292" y="196" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Copió el estilo</text>
-  <text x="292" y="216" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Scaffold, SafeArea, imports.</text>
+  <text x="292" y="216" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Tarjetas, colores, avatar.</text>
   <text x="292" y="262" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Inventó los datos</text>
-  <text x="292" y="282" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Reseñas, género, ISBN.</text>
-  <text x="292" y="328" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Inventó la app</text>
-  <text x="292" y="348" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Leer y Favorito.</text>
+  <text x="292" y="282" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Foto, me gusta, comentarios.</text>
+  <text x="292" y="328" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Tocó de más</text>
+  <text x="292" y="348" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Reescribió test/.</text>
   <text x="740" y="150" font-size="13" font-weight="700" fill="#0F8478" text-anchor="start" class="h" data-fit="176">CON AGENTS.md</text>
   <text x="740" y="196" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Solo datos del modelo</text>
-  <text x="740" y="216" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Autor y categoría.</text>
-  <text x="740" y="262" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">La acción de la app</text>
-  <text x="740" y="282" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Pedir prestado.</text>
-  <text x="740" y="328" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Secciones aparte</text>
-  <text x="740" y="348" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">En lib/components/.</text>
+  <text x="740" y="216" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">Autor, cargo, texto, fecha.</text>
+  <text x="740" y="262" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Respetó los límites</text>
+  <text x="740" y="282" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">No tocó test/ y lo dijo.</text>
+  <text x="740" y="328" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="176">Componente aparte</text>
+  <text x="740" y="348" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="176">PostItem, en components/.</text>
   <path d="M488,128 V488" stroke="#D9DEE8" stroke-width="1.5" stroke-dasharray="4 5"/>
   <text x="48" y="528" font-size="13.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="860">El código le enseñó cómo escribir. De qué trata la app no estaba en ninguna parte.</text>
 </svg>
@@ -113,9 +113,9 @@ Haz la prueba. Con el proyecto como lo dejaste en el taller, pídele al agente u
 
 Revisa lo que hizo con lo que ya sabes:
 
-- **Lo que copió bien.** `Scaffold`, `SafeArea`, imports con `package:`, tus componentes. Lo aprendió leyendo tu código.
-- **Lo que inventó.** Datos que tu app no guarda y botones de otra app. De eso no había nada que leer.
-- **Lo que hizo distinto a lo acordado.** Clases privadas dentro de la pantalla, en vez de secciones en `lib/components/`.
+- **Lo que copió bien.** Las tarjetas, los colores, el avatar, los imports con `package:`. Lo aprendió leyendo tu código.
+- **Lo que inventó.** Una foto en cada publicación, contadores de "me gusta" y de comentarios, un botón de compartir. Hizo una red social cualquiera, no la tuya: de eso no había nada que leer.
+- **Lo que tocó sin que se lo pidieras.** Borró la `HomeScreen` de prueba que había en `main.dart` y reescribió `test/widget_test.dart`.
 
 Deshaz el cambio con `/undo`. Ahora vas a escribir el contexto y a repetir exactamente el mismo pedido.
 
@@ -146,7 +146,7 @@ Deshaz el cambio con `/undo`. Ahora vas a escribir el contexto y a repetir exact
   <rect x="48" y="112" width="864" height="268" rx="12" fill="#1F2430"/>
   <path d="M48,124 A12,12 0 0 1 60,112 H900 A12,12 0 0 1 912,124 V144 H48 Z" fill="#2A3040"/>
   <circle cx="68" cy="128" r="5" fill="#F14C4C"/><circle cx="84" cy="128" r="5" fill="#E5C07B"/><circle cx="100" cy="128" r="5" fill="#6BCB77"/>
-  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">Terminal · C:\develop\miapp1</text>
+  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">Terminal · C:\develop\mi_app_1</text>
   <text class="tl mono" font-size="13" x="72" y="174" data-fit="816">&gt; /init</text>
   <text class="tl mono dim" font-size="13" x="72" y="226" data-fit="816">→ Read pubspec.yaml</text>
   <text class="tl mono dim" font-size="13" x="72" y="252" data-fit="816">→ Read lib/main.dart</text>
@@ -183,6 +183,8 @@ Deshaz el cambio con `/undo`. Ahora vas a escribir el contexto y a repetir exact
 ```
 
 Lo que escribe `/init` sale de tu código: comandos, carpetas y poco más. Sirve de base. Lo que falta, que es lo importante, lo pones tú.
+
+Si tu agente no tiene `/init`, crea `AGENTS.md` a mano en la raíz del proyecto: el contenido lo vas a reemplazar de todas formas.
 
 ## Los seis apartados
 
@@ -245,37 +247,38 @@ Lo que escribe `/init` sale de tu código: comandos, carpetas y poco más. Sirve
 </svg>
 ```
 
-Con una sola pantalla hay poco código, pero ya hay mucho decidido. Este es el archivo completo de la app de biblioteca. Reemplaza el contenido que dejó `/init` por uno así, con los datos de tu app:
+Con una sola pantalla hay poco código, pero ya hay mucho decidido. Este es el archivo completo de la red profesional. Reemplaza el contenido que dejó `/init` por este:
 
 ```markdown
-# Biblioteca de préstamos
+# Red profesional
 
 ## Qué es
 
-App para la biblioteca de un colegio. Quien la usa busca libros por categoría, abre el
-detalle de un libro y lo pide prestado. También ve la lista de sus préstamos.
-No hay compras, reseñas ni lectura dentro de la app.
+Red social profesional, al estilo de LinkedIn. Cada persona tiene un perfil con su cargo
+y su ciudad, publica textos cortos sobre su trabajo, sigue a otras personas y conversa
+con ellas por mensajes.
+No hay fotos en las publicaciones, ni "me gusta", ni comentarios, ni compartir.
 
 ## Cómo se ejecuta y se revisa
 
 - Ejecutar: `flutter run -d chrome`
-- Revisar: `flutter analyze`. El único aviso aceptado es `avoid_print`.
+- Revisar: `flutter analyze`. No debe quedar ningún error en `lib/`.
 
 ## Estructura
 
 - `lib/main.dart`: la app y la tabla de rutas.
 - `lib/screens/`: una pantalla por archivo, `XxxScreen`.
-- `lib/components/`: componentes y secciones reutilizables.
+- `lib/components/`: componentes reutilizables, uno por archivo.
 - `docs/modelo.md`: el modelo de datos.
 
 ## Convenciones
 
 - Una Screen tiene `Scaffold` y su `body` empieza con `SafeArea`.
-- Cada bloque de una pantalla es una sección en `lib/components/`, en su propio archivo. Nada de clases privadas dentro de la pantalla.
+- Lo que se repite en una pantalla es un componente en `lib/components/`. Nada de clases privadas.
 - Antes de crear un componente, revisa si ya existe en `lib/components/`.
-- Imports propios con `package:miapp1/`.
-- Código en inglés, también los nombres que vienen del modelo de datos: `titulo` se escribe `title`. Textos de la interfaz en español.
-- Solo `StatelessWidget`. Los botones todavía no hacen nada: `print`.
+- Imports propios con `package:mi_app_1/`.
+- Código en inglés, también los nombres que vienen del modelo de datos: `cargo` se escribe `role`. Textos de la interfaz en español.
+- Solo `StatelessWidget`. Los botones todavía no hacen nada: `onPressed: () {}`.
 
 ## Modelo de datos
 
@@ -288,46 +291,51 @@ Está en `docs/modelo.md`. Una pantalla solo muestra datos que existan ahí: no 
 - Al terminar, ejecuta `flutter analyze` y di qué archivos creaste o cambiaste.
 ```
 
-Fíjate en la última frase de *Qué es*: decir lo que la app **no** hace es lo que evita los botones inventados.
+Fíjate en la última frase de *Qué es*: decir lo que la app **no** hace es lo que evita los datos inventados. Y en las *Reglas para el agente*: la segunda es la que impide que toque `test/`.
 
 ## El modelo de datos, en texto
 
-El apartado *Modelo de datos* apunta a otro archivo. Crea `docs/modelo.md` con las tablas de tu diagrama de la Entrega 1, una lista por tabla:
+El apartado *Modelo de datos* apunta a otro archivo. Crea la carpeta `docs` y, dentro, `modelo.md` con las tablas de la app, una lista por tabla. Cómo se llega de la descripción a estas tablas está en el taller de esta sesión.
 
 ```markdown
 # Modelo de datos
-
-## categorias
-
-- id (PK)
-- nombre
-- descripcion
-
-## libros
-
-- id (PK)
-- titulo
-- autor
-- categoria_id (FK a categorias)
 
 ## usuarios
 
 - id (PK)
 - nombre
+- usuario
+- cargo
 - correo
+- ciudad
+- foto_url
 
-## prestamos
+## publicaciones
 
 - id (PK)
-- libro_id (FK a libros)
 - usuario_id (FK a usuarios)
-- fecha_prestamo
+- texto
+- fecha
+
+## seguidores
+
+- id (PK)
+- seguidor_id (FK a usuarios)
+- seguido_id (FK a usuarios)
+
+## mensajes
+
+- id (PK)
+- emisor_id (FK a usuarios)
+- receptor_id (FK a usuarios)
+- texto
+- hora
 
 ## Relaciones
 
-- Una categoria tiene muchos libros.
-- Un libro tiene muchos prestamos.
-- Un usuario tiene muchos prestamos.
+- Un usuario tiene muchas publicaciones.
+- Un usuario tiene muchos seguidores.
+- Un usuario tiene muchos mensajes.
 ```
 
 Con los dos archivos guardados, repite el pedido de la pantalla y compara.
@@ -339,10 +347,10 @@ El archivo de contexto no se escribe una vez. Se corrige cada vez que el agente 
 - **Si el error es de una sola vez**, corriges el código o se lo pides de nuevo.
 - **Si el error se va a repetir**, agregas una línea al `AGENTS.md`.
 
-Un ejemplo real: con la regla "código en inglés", el agente llamó `titulo` a una variable, porque así se llama en el modelo de datos. La regla era ambigua. Se corrigió la regla, no solo la variable.
+Un ejemplo real: con el archivo de arriba, el agente volvió a borrar la `HomeScreen` de prueba de `main.dart`, porque chocaba de nombre con la pantalla nueva. Lo avisó, pero nadie se lo había pedido. Si no lo quieres, no basta con restaurarla: se agrega una regla, "No borres código que ya existe sin preguntar".
 
 Mantenlo corto. Todo lo que escribes ahí viaja en cada pedido: si pasa de una página, el agente empieza a perder de vista lo importante.
 
 ## Para tu equipo
 
-Lleva el `AGENTS.md`, el `opencode.json` y `docs/modelo.md` al repositorio del equipo, con el contexto y el modelo de **su** app. A partir de la próxima sesión, todo lo que el agente genere se revisa contra ese archivo.
+Escribe el `AGENTS.md` y el `docs/modelo.md` de la app de **tu equipo**, con su propio *Qué es* y sus propias tablas, y súbelos al repositorio junto con las reglas de permiso. A partir de la próxima sesión, todo lo que el agente genere se revisa contra ese archivo.

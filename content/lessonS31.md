@@ -9,7 +9,7 @@
 ```svg
 <svg id="skCarpeta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 556" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="skCarpeta-ttl skCarpeta-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="skCarpeta-ttl">Una skill es una carpeta</title>
-  <desc id="skCarpeta-dsc">El árbol de carpetas de miapp1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; y la carpeta assets con ejemplo.svg, lo que el agente imita.</desc>
+  <desc id="skCarpeta-dsc">El árbol de carpetas de mi_app_1: dentro de .agents y skills está la carpeta mer-svg, que es la skill. Adentro tiene el archivo SKILL.md, obligatorio, con las instrucciones; la carpeta references con estilo.md, lo que el agente consulta; y la carpeta assets con ejemplo.svg, lo que el agente imita.</desc>
   <defs>
     <style>
       #skCarpeta .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -30,7 +30,7 @@
   <text class="title" x="48" y="56">Una skill es una carpeta</text>
   <text class="sub" x="48" y="80" data-fit="860">Vive dentro del proyecto, en .agents/skills/. El nombre de la carpeta es el nombre de la skill.</text>
   <path d="M64,132 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
-  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">miapp1/</text>
+  <text x="98" y="145" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">mi_app_1/</text>
   <path d="M76,150 V186 H98" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>
   <path d="M104,178 h9 l3,3 h12 v13 h-24 Z" fill="#FFF3DC" stroke="#A96C05" stroke-width="1.5" stroke-linejoin="round"/>
   <text x="138" y="191" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">.agents/</text>
