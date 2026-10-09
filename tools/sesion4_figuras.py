@@ -162,8 +162,8 @@ def ag_modos():
     h = 404
     s = head(fid, h, 'Dos modos: <tspan class="mono">plan</tspan> y <tspan class="mono">build</tspan>',
              'Dos modos: plan y build',
-             'El agente arranca en build. La tecla Tab cambia de modo, y el modo actual se ve abajo a la derecha.',
-             'Dos tarjetas. Plan: el agente lee los archivos y propone qué haría, y pide permiso para editar o ejecutar. Build: crea y edita archivos y ejecuta comandos. La tecla Tab cambia de un modo al otro.')
+             'El agente arranca en build. Una tecla lo pasa a plan y lo devuelve. Mira siempre en cuál estás.',
+             'Dos tarjetas. Plan: el agente lee los archivos y propone qué haría, y pide permiso para editar o ejecutar. Build: crea y edita archivos y ejecuta comandos. En OpenCode se cambia de modo con la tecla Tab y en Antigravity CLI con Shift más Tab.')
 
     def card(x, color, name, tag, facts, last):
         strong = FAM[color][2]
@@ -182,9 +182,12 @@ def ag_modos():
     s += card(504, 'violet', 'build', 'Hace los cambios.',
               ['Crea y edita archivos.', 'Ejecuta comandos.', 'Es el modo en que arranca.'],
               'Cuando ya sabes qué quieres.')
-    s += '  <rect x="48" y="344" width="64" height="32" rx="8" fill="#FFFFFF" stroke="#556074" stroke-width="1.75"/>\n'
-    s += '  ' + txt(80, 365, 'Tab', 13.5, 700, INK, 'middle', cls='mono') + '\n'
-    s += '  ' + txt(128, 365, 'cambia de un modo al otro. Mira siempre en cuál estás antes de pedir algo.', 13.5, 400, MUTED, fit=760) + '\n'
+    def key(x, w, label, where):
+        o = f'  <rect x="{x}" y="344" width="{w}" height="32" rx="8" fill="#FFFFFF" stroke="#556074" stroke-width="1.75"/>\n'
+        o += '  ' + txt(x + w / 2, 365, label, 13.5, 700, INK, 'middle', cls='mono') + '\n'
+        return o + '  ' + txt(x + w + 14, 365, where, 13.5, 400, MUTED, fit=220) + '\n'
+    s += key(48, 64, 'Tab', 'en OpenCode')
+    s += key(504, 120, 'Shift + Tab', 'en Antigravity CLI')
     return s + '</svg>\n'
 
 

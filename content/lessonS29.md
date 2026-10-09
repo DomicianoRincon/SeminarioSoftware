@@ -418,18 +418,6 @@ Que pregunte todo:
 }
 ```
 
-La del curso:
-
-```json
-{
-  "permissions": {
-    "allow": [],
-    "ask": ["write_file(*)", "command(*)"],
-    "deny": []
-  }
-}
-```
-
 ## Los datos que no van en el agente
 
 Los modelos gratuitos pueden usar lo que escribes para entrenarse. **No pegues contraseñas, claves ni datos personales** en ninguno de los dos.
@@ -518,7 +506,7 @@ Prueba también con una pregunta más concreta:
 ```svg
 <svg id="agModos" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 404" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="agModos-ttl agModos-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="agModos-ttl">Dos modos: plan y build</title>
-  <desc id="agModos-dsc">Dos tarjetas. Plan: el agente lee los archivos y propone qué haría, y pide permiso para editar o ejecutar. Build: crea y edita archivos y ejecuta comandos. La tecla Tab cambia de un modo al otro.</desc>
+  <desc id="agModos-dsc">Dos tarjetas. Plan: el agente lee los archivos y propone qué haría, y pide permiso para editar o ejecutar. Build: crea y edita archivos y ejecuta comandos. En OpenCode se cambia de modo con la tecla Tab y en Antigravity CLI con Shift más Tab.</desc>
   <defs>
     <style>
       #agModos .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -537,7 +525,7 @@ Prueba también con una pregunta más concreta:
   </defs>
   <rect width="960" height="404" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">Dos modos: <tspan class="mono">plan</tspan> y <tspan class="mono">build</tspan></text>
-  <text class="sub" x="48" y="80" data-fit="860">El agente arranca en build. La tecla Tab cambia de modo, y el modo actual se ve abajo a la derecha.</text>
+  <text class="sub" x="48" y="80" data-fit="860">El agente arranca en build. Una tecla lo pasa a plan y lo devuelve. Mira siempre en cuál estás.</text>
   <rect x="48" y="112" width="408" height="208" rx="12" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
   <text x="72" y="148" font-size="20" font-weight="700" fill="#0F8478" text-anchor="start" class="mono">plan</text>
   <text x="72" y="172" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="360">Lee y propone.</text>
@@ -559,18 +547,17 @@ Prueba también con una pregunta más concreta:
   <text x="550" y="264" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" data-fit="340">Es el modo en que arranca.</text>
   <text x="528" y="300" font-size="13" font-weight="700" fill="#7439B8" text-anchor="start" data-fit="360">Cuando ya sabes qué quieres.</text>
   <rect x="48" y="344" width="64" height="32" rx="8" fill="#FFFFFF" stroke="#556074" stroke-width="1.75"/>
-  <text x="80" y="365" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="middle" class="mono">Tab</text>
-  <text x="128" y="365" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="760">cambia de un modo al otro. Mira siempre en cuál estás antes de pedir algo.</text>
+  <text x="80.0" y="365" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="middle" class="mono">Tab</text>
+  <text x="126" y="365" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="220">en OpenCode</text>
+  <rect x="504" y="344" width="120" height="32" rx="8" fill="#FFFFFF" stroke="#556074" stroke-width="1.75"/>
+  <text x="564.0" y="365" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="middle" class="mono">Shift + Tab</text>
+  <text x="638" y="365" font-size="13.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="220">en Antigravity CLI</text>
 </svg>
 ```
 
 En `plan` el agente te cuenta qué haría antes de hacerlo. Úsalo cuando el cambio toque varios archivos: lees el plan, lo corriges y solo entonces lo dejas hacer.
 
-En OpenCode se cambia de modo con la tecla Tab. En Antigravity CLI el modo de planeación se pide al abrirlo:
-
-```shell
-agy --mode plan
-```
+Se cambia de modo sin salir del agente: en OpenCode con la tecla `Tab` y en Antigravity CLI con `Shift + Tab`.
 
 ## Deshacer
 
