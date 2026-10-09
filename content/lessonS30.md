@@ -184,7 +184,9 @@ Deshaz el cambio con `/undo`. Ahora vas a escribir el contexto y a repetir exact
 
 Lo que escribe `/init` sale de tu código: comandos, carpetas y poco más. Sirve de base. Lo que falta, que es lo importante, lo pones tú.
 
-Si tu agente no tiene `/init`, crea `AGENTS.md` a mano en la raíz del proyecto: el contenido lo vas a reemplazar de todas formas.
+Antigravity CLI no tiene el comando `/init`. Ahí se le pide con un mensaje normal, y crea el mismo archivo de contexto:
+
+> Crea el AGENTS.md
 
 ## Los seis apartados
 

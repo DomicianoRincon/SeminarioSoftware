@@ -78,7 +78,7 @@ Como el agente puede tocar tus archivos y tu terminal, lo primero después de in
   </defs>
   <rect width="960" height="388" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">Lo que cada agente hace sin preguntar</text>
-  <text class="sub" x="48" y="80" data-fit="860">Así vienen de fábrica. Con las reglas de esta lección, los dos preguntan antes de editar y de ejecutar.</text>
+  <text class="sub" x="48" y="80" data-fit="860">Así vienen de fábrica. Las reglas de permiso lo cambian: desde que pregunten todo hasta que lo permitan todo.</text>
   <rect x="48" y="112" width="408" height="172" rx="12" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
   <text x="72" y="148" font-size="18" font-weight="700" fill="#7439B8" text-anchor="start">OpenCode</text>
   <text x="72" y="190" font-size="14" font-weight="400" fill="#161A26" text-anchor="start" data-fit="210">Editar un archivo</text>
@@ -186,7 +186,33 @@ Ya adentro, escribe `/models` y elige un modelo **gratuito**: los que dicen *Fre
 
 ### Las reglas de permiso
 
-OpenCode, tal como viene, edita y ejecuta sin preguntar. Para cambiarlo, crea el archivo `opencode.json` en la raíz del proyecto, junto a `pubspec.yaml`:
+Las reglas van en el archivo `opencode.json`, en la raíz del proyecto, junto a `pubspec.yaml`. Cada permiso puede valer `ask` (pregunta), `allow` (lo hace) o `deny` (nunca lo hace). Después de cambiar el archivo, cierra OpenCode y ábrelo de nuevo.
+
+**Que lo permita todo.** Es como viene OpenCode si no hay archivo. Escrito, se ve así:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": "allow"
+}
+```
+
+El agente edita y ejecuta sin detenerse. Es rápido, y solo es buena idea en un proyecto de prueba que puedas perder.
+
+**Que pregunte todo.** El `*` significa "cualquier herramienta":
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "*": "ask"
+  }
+}
+```
+
+Con esta regla pregunta hasta para leer un archivo. Sirve para ver, una vez, todo lo que el agente hace por dentro; para trabajar es demasiado lento.
+
+**La del curso.** Leer y buscar, libre. Editar archivos (`edit`) y ejecutar comandos (`bash`), con tu permiso:
 
 ```json
 {
@@ -198,9 +224,7 @@ OpenCode, tal como viene, edita y ejecuta sin preguntar. Para cambiarlo, crea el
 }
 ```
 
-`edit` son los cambios en archivos y `bash` son los comandos. Cada uno puede valer `ask` (pregunta), `allow` (lo hace) o `deny` (nunca lo hace).
-
-Cierra OpenCode y ábrelo de nuevo. Desde ahí, cada edición y cada comando esperan tu respuesta:
+Así se ve cuando el agente espera tu respuesta:
 
 ```svg
 <svg id="agPermiso" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 486" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="agPermiso-ttl agPermiso-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -349,24 +373,59 @@ La primera vez abre el navegador para que inicies sesión con tu cuenta de Googl
 
 ### Las reglas de permiso
 
-Antigravity CLI ya pregunta antes de ejecutar un comando, pero edita los archivos del proyecto sin preguntar. Las reglas se manejan desde adentro, con `/permissions`:
+Las reglas se manejan desde adentro, con `/permissions`. Hay tres listas: **allowlist** (lo hace), **asklist** (pregunta) y **denylist** (nunca lo hace). Una regla se escribe `acción(sobre qué)`, y el `*` significa "cualquiera":
+
+- `read_file(*)`: leer cualquier archivo.
+- `write_file(*)`: escribir cualquier archivo.
+- `command(*)`: ejecutar cualquier comando.
+
+Para agregar una regla:
 
 1. Escribe `/permissions`.
-2. Pasa a la pestaña **asklist** con la tecla Tab.
-3. Pulsa `A` para agregar una regla, escribe `write_file(*)` y pulsa Enter.
-4. Agrega otra igual: `command(*)`.
-5. Cuando pregunte dónde guardarlas, elige **Project**: así aplican solo a este proyecto.
+2. Pasa a la lista que quieres con la tecla Tab.
+3. Pulsa `A`, escribe la regla y pulsa Enter.
+4. Cuando pregunte dónde guardarla, elige **Project**: así aplica solo a este proyecto.
 
-Una regla se escribe `acción(sobre qué)`. `write_file(*)` es "escribir cualquier archivo" y `command(*)` es "ejecutar cualquier comando". Hay tres listas: **asklist** (pregunta), **allowlist** (lo hace) y **denylist** (nunca lo hace). Si una acción está en varias, gana la más estricta.
+Para quitar una, se resalta y se pulsa `D`. Si una acción está en dos listas, gana la más estricta: una regla en la *asklist* le gana a la misma regla en la *allowlist*.
 
-Las mismas reglas, escritas en el archivo de configuración de Antigravity CLI (`.gemini/antigravity-cli/settings.json`, en la carpeta de tu usuario), se ven así. Ahí aplican a todos tus proyectos:
+**Que lo permita todo.** Las tres reglas en la **allowlist**, y ninguna en la *asklist*. El agente lee, edita y ejecuta sin detenerse. Solo es buena idea en un proyecto de prueba que puedas perder.
+
+**Que pregunte todo.** Las tres reglas en la **asklist**. Pregunta hasta para leer un archivo: sirve para ver, una vez, todo lo que el agente hace por dentro.
+
+**La del curso.** `write_file(*)` y `command(*)` en la **asklist**. Leer queda libre; editar y ejecutar, con tu permiso. Tal como viene, Antigravity CLI ya pregunta antes de ejecutar un comando, pero edita los archivos del proyecto sin preguntar.
+
+Las mismas reglas se pueden escribir en el archivo de configuración de Antigravity CLI (`.gemini/antigravity-cli/settings.json`, en la carpeta de tu usuario), donde aplican a todos tus proyectos. Que lo permita todo:
+
+```json
+{
+  "permissions": {
+    "allow": ["read_file(*)", "write_file(*)", "command(*)"],
+    "ask": [],
+    "deny": []
+  }
+}
+```
+
+Que pregunte todo:
 
 ```json
 {
   "permissions": {
     "allow": [],
-    "deny": [],
-    "ask": ["write_file(*)", "command(*)"]
+    "ask": ["read_file(*)", "write_file(*)", "command(*)"],
+    "deny": []
+  }
+}
+```
+
+La del curso:
+
+```json
+{
+  "permissions": {
+    "allow": [],
+    "ask": ["write_file(*)", "command(*)"],
+    "deny": []
   }
 }
 ```

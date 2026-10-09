@@ -95,7 +95,7 @@ def ag_reglas():
     fid = 'agReglas'
     h = 388
     s = head(fid, h, 'Lo que cada agente hace sin preguntar', 'Lo que cada agente hace sin preguntar',
-             'Así vienen de fábrica. Con las reglas de esta lección, los dos preguntan antes de editar y de ejecutar.',
+             'Así vienen de fábrica. Las reglas de permiso lo cambian: desde que pregunten todo hasta que lo permitan todo.',
              'Dos tarjetas. OpenCode, tal como viene, edita archivos y ejecuta comandos sin preguntar. Antigravity CLI edita archivos dentro del proyecto sin preguntar, pero pregunta antes de ejecutar un comando. Con las reglas de la lección, los dos preguntan en ambos casos.')
 
     def card(x, color, name, rows):
