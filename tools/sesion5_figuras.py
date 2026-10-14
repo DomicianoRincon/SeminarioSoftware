@@ -1,4 +1,4 @@
-"""Figuras SVG de las lecciones de la sesión 5 (S0034 a S0038).
+"""Figuras SVG de las lecciones de la sesión 5 (S0034 a S0039).
 
     python3 tools/sesion5_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
     python3 tools/sesion5_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS34.md a
@@ -418,6 +418,206 @@ def ts_carpetas_mcp():
 
     s += '  ' + callout(410, '<tspan font-weight="700">Resultado del taller:</tspan> Dos pantallas nuevas listas en tu aplicación, diseñadas desde Stitch y verificadas con Playwright.') + '\n'
     return s + '</svg>\n'
+
+
+# ───────────────────────────── Figuras de apertura: qué permite hacer cada servidor
+
+def cap_card(x, y, n, color, title, lines, art):
+    """Tarjeta de capacidad: dibujo de 176×168 a la izquierda, número, título y texto a la derecha."""
+    out = box(x, y, 420, 200, color)
+    out += f'<g transform="translate({x + 16},{y + 16})">{art}</g>'
+    out += chip(x + 220, y + 40, n, color)
+    out += txt(x + 240, y + 45, title, 15, 700, FAM[color][2], fit=164)
+    for i, ln in enumerate(lines):
+        out += txt(x + 208, y + 80 + i * 21, ln, 13, 400, '#454C61', fit=196)
+    return out
+
+
+def cap_figure(fid, title, sub, desc, cards, note_text):
+    s = head(fid, 636, title, title, sub, desc)
+    pos = [(48, 112), (492, 112), (48, 336), (492, 336)]
+    for (x, y), (n, card) in zip(pos, enumerate(cards, 1)):
+        s += '  ' + cap_card(x, y, n, *card) + '\n'
+    s += '  ' + callout(560, note_text) + '\n'
+    return s + '</svg>\n'
+
+
+def phone(x, y, w, h, inner=''):
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="#1F2430"/>'
+            f'<rect x="{x + 4}" y="{y + 4}" width="{w - 8}" height="{h - 8}" rx="9" fill="#FFFFFF"/>'
+            f'<g transform="translate({x + 4},{y + 4})">{inner}</g>')
+
+
+def bar(x, y, w, h=8, fill='#E3E7EF', rx=4):
+    return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="{fill}"/>'
+
+
+def login_screen(w, accent, extra=False):
+    """Pantalla de login en miniatura, en coordenadas de la pantalla del teléfono."""
+    c = w / 2
+    out = f'<circle cx="{c}" cy="16" r="8" fill="{accent}"/>'
+    out += bar(8, 32, w - 16, 10, '#FFFFFF') + f'<rect x="8" y="32" width="{w - 16}" height="10" rx="4" fill="none" stroke="#C4CBD8"/>'
+    out += f'<rect x="8" y="48" width="{w - 16}" height="10" rx="4" fill="none" stroke="#C4CBD8"/>'
+    out += bar(8, 64, w - 16, 12, accent)
+    if extra:
+        out += (f'<rect x="8" y="81" width="{w - 16}" height="12" rx="4" fill="#E8F6E3" stroke="#3A8235" stroke-width="1.5"/>')
+    return out
+
+
+def check(cx, cy, color='green'):
+    return (f'<circle cx="{cx}" cy="{cy}" r="9" fill="{FAM[color][2]}"/>'
+            f'<path d="M{cx - 4},{cy} l3,3 l5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" '
+            f'stroke-linecap="round" stroke-linejoin="round"/>')
+
+
+def bubble(w, text, color):
+    soft, border, st = FAM[color]
+    return (f'<rect x="0" y="0" width="{w}" height="30" rx="10" fill="#FFFFFF" stroke="{border}" stroke-width="1.5"/>'
+            + txt(12, 20, text, 12, 600, st, cls='mono'))
+
+
+def st_capacidades():
+    teal, amber = FAM['teal'][2], FAM['amber'][2]
+    a1 = (bubble(176, '"Login para Patitas"', 'indigo')
+          + f'<path d="M88,34 V52" class="link"/>'
+          + phone(52, 58, 72, 110, login_screen(64, teal)))
+    a2 = (bubble(176, '"Agrega Google"', 'teal')
+          + phone(10, 48, 64, 110, login_screen(56, teal))
+          + f'<path d="M80,103 H96" class="link"/>'
+          + phone(102, 48, 64, 110, login_screen(56, teal, extra=True)))
+    a3 = ''.join(phone(4 + i * 58, 30, 52, 100, login_screen(44, c))
+                 for i, c in enumerate((teal, FAM['indigo'][2], amber)))
+    a3 += txt(88, 156, '3 versiones', 12, 600, FAM['violet'][2], 'middle')
+    a4 = ('<rect width="176" height="168" rx="10" fill="#1F2430"/>'
+          + txt(12, 24, 'stitch_get_screen', 12, 600, '#9AA3B8', cls='mono')
+          + ''.join(txt(12, 56 + i * 26, k, 12, 400, '#E6E9F0', cls='mono') for i, k in
+                    enumerate(('primary', 'surface', 'TextField ×2', 'Button ×1')))
+          + f'<rect x="140" y="45" width="22" height="14" rx="3" fill="{teal}"/>'
+          + '<rect x="140" y="71" width="22" height="14" rx="3" fill="#FDFCFB"/>')
+    return cap_figure(
+        'stCapacidades', 'Lo que puedes hacer con Stitch MCP',
+        'Cuatro cosas que haces con tus pantallas cuando Stitch está conectado a Antigravity.',
+        'Cuatro tarjetas. 1: describir una pantalla en lenguaje natural y Stitch la dibuja. 2: corregirla con un prompt corto, por ejemplo agregar un botón. 3: explorar variantes con otros colores. 4: Antigravity lee colores y componentes del diseño con stitch_get_screen.',
+        [('indigo', 'Generar pantallas', ['Describes la pantalla en', 'español y Stitch la dibuja', 'con campos y botones.'], a1),
+         ('teal', 'Corregir rápido', ['Pides solo el cambio y', 'Stitch ajusta la pantalla', 'sin rehacerla.'], a2),
+         ('violet', 'Explorar variantes', ['Genera versiones con otros', 'colores o distribución', 'para compararlas.'], a3),
+         ('amber', 'Leer el diseño', ['Antigravity lee colores y', 'componentes para pasar', 'el diseño a Flutter.'], a4)],
+        '<tspan font-weight="700">Tú describes, Stitch dibuja:</tspan> y Antigravity lee el diseño para convertirlo en código, sin copiar colores ni medidas a mano.')
+
+
+FIGS['stCapacidades'] = st_capacidades
+
+
+def browser(y, h, url):
+    return (f'<rect x="0" y="{y}" width="176" height="{h}" rx="10" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>'
+            f'<path d="M0,{y + 26} H176" stroke="#C4CBD8" stroke-width="1.5"/>'
+            + ''.join(f'<circle cx="{12 + i * 11}" cy="{y + 13}" r="3.5" fill="{c}"/>'
+                      for i, c in enumerate(('#F3A3B2', '#F0C572', '#9FD68D')))
+            + f'<rect x="48" y="{y + 5}" width="120" height="16" rx="8" fill="#EFF1F5"/>'
+            + txt(56, y + 17, url, 12, 400, MUTED, cls='mono'))
+
+
+def pw_capacidades():
+    green, violet, indigo = FAM['green'][2], FAM['violet'][2], FAM['indigo'][2]
+    a1 = (browser(8, 152, 'localhost:8080')
+          + '<rect x="40" y="52" width="96" height="16" rx="5" fill="none" stroke="#C4CBD8"/>'
+          + '<rect x="40" y="76" width="96" height="16" rx="5" fill="none" stroke="#C4CBD8"/>'
+          + bar(40, 100, 96, 18, FAM['indigo'][2], 5)
+          + txt(88, 140, 'Chromium', 12, 600, MUTED, 'middle'))
+    rows = (('heading', '"Patitas"'), ('textbox', '"Correo"'), ('textbox', '"Clave"'), ('button', '"Entrar"'))
+    a2 = '<rect width="176" height="168" rx="10" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>'
+    a2 += txt(12, 24, '- page', 12, 700, INK, cls='mono')
+    for i, (role, name) in enumerate(rows):
+        yy = 52 + i * 28
+        a2 += f'<path d="M16,{yy - 22} V{yy - 4} H24" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>'
+        a2 += txt(28, yy, role, 12, 600, violet, cls='mono') + txt(96, yy, name, 12, 400, INK, cls='mono')
+    a3 = ('<rect width="176" height="168" rx="10" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>'
+          + '<rect x="16" y="24" width="144" height="28" rx="6" fill="#FFFFFF" stroke="#0F8478" stroke-width="2"/>'
+          + txt(26, 43, 'ana@mail.com', 12, 400, INK, cls='mono')
+          + '<path d="M120,30 V46" stroke="#0F8478" stroke-width="1.5"/>'
+          + '<rect x="16" y="64" width="144" height="28" rx="6" fill="none" stroke="#C4CBD8"/>'
+          + bar(16, 104, 144, 30, indigo, 6) + txt(64, 124, 'Entrar', 13, 700, '#FFFFFF', 'middle')
+          + '<circle cx="128" cy="119" r="13" fill="none" stroke="#F0C572" stroke-width="2"/>'
+          + '<path d="M128,119 l0,24 l6,-6 l5,10 l4,-2 l-5,-10 l8,0 Z" fill="#161A26" stroke="#FFFFFF" stroke-width="1.25" stroke-linejoin="round"/>')
+    a4 = '<rect width="176" height="168" rx="10" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>'
+    for i, t in enumerate(('Abrió /home', 'Ve "Hola, Ana"', '0 errores')):
+        a4 += check(26, 34 + i * 36) + txt(44, 39 + i * 36, t, 12.5, 600, INK)
+    a4 += ('<rect x="16" y="128" width="144" height="26" rx="6" fill="#EFF1F5"/>'
+           + txt(88, 145, 'captura.png', 12, 600, MUTED, 'middle', cls='mono'))
+    return cap_figure(
+        'pwCapacidades', 'Lo que puedes hacer con Playwright MCP',
+        'Antigravity usa un navegador real para probar tu app como lo haría una persona.',
+        'Cuatro tarjetas. 1: abrir la app en un navegador Chromium. 2: leer la página como árbol de accesibilidad, con el rol y el nombre de cada elemento. 3: escribir en los campos y hacer clic en los botones. 4: verificar el resultado, revisar la consola y tomar capturas.',
+        [('indigo', 'Abrir tu app', ['Lanza un navegador real', 'y entra a tu app Flutter', 'web o a cualquier URL.'], a1),
+         ('violet', 'Leer la página', ['Ve la página como árbol', 'de accesibilidad: el rol', 'y nombre de cada cosa.'], a2),
+         ('teal', 'Escribir y hacer clic', ['Rellena campos, pulsa', 'botones y navega como', 'lo haría un usuario.'], a3),
+         ('green', 'Verificar', ['Comprueba el resultado,', 'revisa la consola y', 'toma capturas.'], a4)],
+        '<tspan font-weight="700">Pruebas sin clics manuales:</tspan> tú das la instrucción en español y Playwright la convierte en acciones reales en el navegador.')
+
+
+FIGS['pwCapacidades'] = pw_capacidades
+
+
+def pill(x, y, text, color):
+    soft, border, st = FAM[color]
+    w = int(len(text) * 7.2 + 16)
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="20" rx="10" fill="{soft}" stroke="{border}"/>'
+            + txt(x + w / 2, y + 14, text, 12, 700, st, 'middle'))
+
+
+def gh_capacidades():
+    green, rose, indigo = FAM['green'][2], FAM['rose'][2], FAM['indigo'][2]
+    card = '<rect width="176" height="168" rx="10" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>'
+    a1 = (card + f'<circle cx="20" cy="22" r="7" fill="none" stroke="{green}" stroke-width="2"/>'
+          + f'<circle cx="20" cy="22" r="2" fill="{green}"/>'
+          + txt(34, 27, '#3 Pantalla login', 12.5, 700, INK)
+          + pill(14, 40, 'frontend', 'indigo')
+          + txt(14, 86, 'Criterios:', 12, 700, MUTED))
+    for i, t in enumerate(('Campo correo', 'Campo clave', 'Botón Entrar')):
+        a1 += (f'<rect x="14" y="{98 + i * 22}" width="12" height="12" rx="3" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>'
+               + txt(34, 109 + i * 22, t, 12, 400, INK))
+    a2 = (card + f'<circle cx="20" cy="22" r="7" fill="none" stroke="{green}" stroke-width="2"/>'
+          + f'<circle cx="20" cy="22" r="2" fill="{green}"/>'
+          + txt(34, 27, 'Botón no responde', 12.5, 700, INK)
+          + pill(14, 40, 'bug', 'rose')
+          + txt(14, 86, 'Pasos:', 12, 700, MUTED)
+          + ''.join(txt(14, 108 + i * 20, t, 12, 400, INK) for i, t in
+                    enumerate(('1. Abrir /registro', '2. Llenar campos', '3. Pulsar Registrar'))))
+    main_y, feat_y = 128, 64
+    a3 = card + txt(14, 24, 'PR #12', 13, 700, FAM['violet'][2]) + pill(70, 10, 'abierto', 'green')
+    a3 += f'<path d="M12,{main_y} H164" stroke="{MUTED}" stroke-width="2"/>'
+    a3 += f'<path d="M40,{main_y} C60,{main_y} 52,{feat_y} 76,{feat_y} H120" fill="none" stroke="{indigo}" stroke-width="2"/>'
+    a3 += f'<path d="M120,{feat_y} C144,{feat_y} 136,{main_y} 156,{main_y}" fill="none" stroke="{indigo}" stroke-width="2" stroke-dasharray="5 4"/>'
+    for cx, cy, c in ((24, main_y, MUTED), (40, main_y, MUTED), (88, feat_y, indigo), (116, feat_y, indigo)):
+        a3 += f'<circle cx="{cx}" cy="{cy}" r="6" fill="#FFFFFF" stroke="{c}" stroke-width="2.5"/>'
+    a3 += txt(88, feat_y - 14, 'feat/login', 12, 600, indigo, 'middle', cls='mono')
+    a3 += txt(12, main_y + 24, 'main', 12, 600, MUTED, cls='mono')
+    nodes = ((0, 'equipo/app', 'd'), (1, 'lib', 'd'), (2, 'screens', 'd'), (3, 'login.dart', 'f'))
+    a4 = card
+    for i, (d, name, kind) in enumerate(nodes):
+        x, y = 14 + d * 16, 30 + i * 32
+        if d:
+            a4 += f'<path d="M{x - 10},{y - 22} V{y - 4} H{x - 2}" fill="none" stroke="#C4CBD8" stroke-width="1.5"/>'
+        if kind == 'd':
+            a4 += (f'<path d="M{x},{y - 9} h7 l3,3 h10 v12 h-20 Z" fill="{FAM["amber"][0]}" '
+                   f'stroke="{FAM["amber"][2]}" stroke-width="1.5" stroke-linejoin="round"/>')
+        else:
+            a4 += (f'<path d="M{x + 3},{y - 10} h9 l5,5 v12 h-14 Z" fill="#FFFFFF" '
+                   f'stroke="{indigo}" stroke-width="1.5" stroke-linejoin="round"/>')
+        a4 += txt(x + 26, y + 4, name, 12, 700 if kind == 'f' else 600, indigo if kind == 'f' else INK, cls='mono')
+    a4 += txt(88, 156, 'sin clonar', 12, 600, MUTED, 'middle')
+    return cap_figure(
+        'ghCapacidades', 'Lo que puedes hacer con GitHub MCP',
+        'Antigravity trabaja sobre el repositorio del equipo sin salir de la conversación.',
+        'Cuatro tarjetas. 1: leer un issue con sus criterios de aceptación. 2: crear un issue de bug con los pasos para reproducirlo. 3: abrir un pull request desde la rama feat/login hacia main. 4: consultar archivos de un repositorio sin clonarlo.',
+        [('green', 'Leer issues', ['Lista las tareas del equipo', 'y lee los criterios de', 'aceptación de cada una.'], a1),
+         ('rose', 'Reportar fallos', ['Crea un issue con título,', 'etiqueta y los pasos', 'para reproducirlo.'], a2),
+         ('violet', 'Abrir pull requests', ['Crea la rama y el PR con', 'un resumen de los cambios', 'para que el equipo revise.'], a3),
+         ('amber', 'Leer otros repos', ['Consulta archivos y ramas', 'de un repositorio sin', 'tener que clonarlo.'], a4)],
+        '<tspan font-weight="700">Lo delicado se confirma:</tspan> fusionar un PR, subir archivos directo o borrarlos quedan en "ask", y el agente te pregunta antes.')
+
+
+FIGS['ghCapacidades'] = gh_capacidades
 
 
 # FIGS['tsCarpetasMcp'] = ts_carpetas_mcp
