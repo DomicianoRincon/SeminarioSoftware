@@ -17,22 +17,6 @@ Al integrar Stitch con Antigravity mediante un servidor MCP:
 - **El diseño es inspeccionable:** Antigravity puede leer directamente la estructura jerárquica de la pantalla en Stitch a través de llamadas MCP.
 - **Coherencia visual garantizada:** puedes reutilizar tokens cromáticos y componentes entre pantallas del mismo flujo.
 
-## Anatomía de un prompt de interfaz para Stitch
-
-Un prompt vago como *"hazme una pantalla de veterinaria"* produce resultados impredecibles. Para obtener prototipos nítidos y coherentes para una aplicación móvil, cada prompt debe especificar cuatro dimensiones fundamentales:
-
-- **1. Contexto, identidad y atmósfera:**
-  Indica el nombre de la marca, el público objetivo y la paleta cromática dominante. En entornos clínicos o de salud animal, los tonos cálidos, blancos suaves (#FDFCFB) y verdes esmeralda (#0F8478) transmiten confianza, higiene y cercanía.
-
-- **2. Jerarquía visual y organización espacial:**
-  Define el orden vertical de lectura de la pantalla móvil: cabecera con identidad, contenido principal en tarjetas o formularios, y elementos anclados como barras de acciones o navegación inferior.
-
-- **3. Campos de entrada y micro-componentes:**
-  Especifica el tipo de cada campo (correo, contraseña, selector de fecha), su icono distintivo a la izquierda y el texto de ayuda o placeholder. Menciona botones primarios de ancho completo y botones secundarios contorneados.
-
-- **4. Restricciones móviles y accesibilidad:**
-  Asegura áreas táctiles amplias (mínimo 48 píxeles de alto), textos con alto contraste sobre el fondo y agrupación lógica para no saturar al usuario en pantallas pequeñas.
-
 ## El flujo de prototipado con Stitch MCP
 
 El prototipado asistido por IA conecta la redacción del diseño en Stitch con la capacidad de análisis de Antigravity:
@@ -102,121 +86,9 @@ El flujo comprende cuatro fases coordinadas:
 3. **Auditoría e inspección en Antigravity:** El agente examina la distribución espacial, los contrastes de accesibilidad y la consistencia entre pantallas sin que tengas que exportar archivos ni capturas de pantalla manualmente.
 4. **Mockups consolidados:** Las tres pantallas quedan validadas y alineadas con los requisitos de la aplicación, listas para la presentación de la Entrega 1.
 
-## Prompt 1: Pantalla de Inicio de Sesión (`LoginScreen`)
+## Paso a paso: Configurar, diseñar y experimentar con Stitch MCP
 
-El inicio de sesión de la clínica veterinaria "Patitas & Co." debe permitir a los tutores ingresar de forma rápida a la ficha de sus mascotas, ofreciendo accesos alternativos y recuperación de contraseña.
-
-Copia este prompt para generar la pantalla en Stitch:
-
-```text
-Pantalla móvil de inicio de sesión para la clínica veterinaria "Patitas & Co.".
-Estilo cálido y profesional en tonos verde esmeralda (#0F8478) y fondo claro (#FDFCFB).
-
-- Cabecera: Logo de huellita esmeralda, título "Patitas & Co." y mensaje de bienvenida.
-- Campos:
-  * Correo electrónico con icono de email.
-  * Contraseña con icono de candado y botón de mostrar/ocultar.
-- Opciones: Casilla "Recordar sesión" y enlace "¿Olvidaste tu contraseña?".
-- Acciones:
-  * Botón principal "Iniciar Sesión" en verde esmeralda.
-  * Botón secundario "Ingresar con Google".
-- Pie: Enlace "¿No tienes cuenta? Regístrate aquí".
-```
-
-Puntos clave de este diseño:
-- El fondo blanco cálido evita la fatiga visual frente al blanco puro clínico.
-- Los campos incluyen iconos semánticos que guían al usuario antes de empezar a escribir.
-- La jerarquía de acciones prioriza el botón esmeralda principal sobre el acceso social secundario.
-
-## Prompt 2: Pantalla de Registro (`SigninScreen`)
-
-Cuando un tutor llega por primera vez a la clínica, el formulario de registro debe capturar la información de contacto esencial y los datos de emergencia, vinculando de inmediato al animal de compañía.
-
-Copia este prompt para generar la pantalla en Stitch:
-
-```text
-Pantalla móvil de registro (Crear Cuenta) para la app de la clínica veterinaria "Patitas & Co.".
-Estilo limpio y moderno, coherente con la paleta verde esmeralda (#0F8478).
-
-- Cabecera: Botón de regreso, título "Crear Cuenta" y subtítulo de bienvenida.
-- Formulario:
-  * Nombre completo del tutor.
-  * Teléfono de contacto / emergencias.
-  * Correo electrónico y contraseña segura.
-  * Nombre de tu primera mascota (opcional).
-- Términos: Casilla de verificación para aceptar términos del servicio y tratamiento de datos.
-- Acción principal: Botón "Registrarme" en verde esmeralda.
-- Pie: Enlace "¿Ya tienes cuenta? Inicia sesión".
-```
-
-Puntos clave de este diseño:
-- Incluye el teléfono de emergencias, un campo crítico en el dominio veterinario que no suele estar en aplicaciones genéricas.
-- El campo opcional de la primera mascota humaniza el proceso de bienvenida y prepara el contenido del Home.
-- La barra de navegación superior permite abortar el flujo y regresar sin frustración.
-
-## Prompt 3: Tablero Principal (`HomeScreen`)
-
-Una vez autenticado el tutor, la pantalla principal debe actuar como el centro de mando para la salud preventiva del animal: mostrar qué mascota está activa, alertar sobre la próxima cita agendada, ofrecer accesos directos a servicios comunes y facilitar el contacto con urgencias médicas 24 horas.
-
-Copia este prompt para generar la pantalla en Stitch:
-
-```text
-Dashboard móvil (Home) para la clínica veterinaria "Patitas & Co.".
-Tonos verde esmeralda (#0F8478), menta (#E3F6F3) y detalles cálidos (#F0C572).
-
-- Barra superior: Foto de perfil, saludo "Hola, Mariana 👋" y campana de notificaciones.
-- Tarjeta de la mascota activa: Foto de la mascota ("Milo"), raza, edad, chip "Vacunas al día ✓" y selector para alternar mascota.
-- Recordatorio de cita: Tarjeta con fecha ("Mañana, 10:30 AM"), motivo ("Vacuna Antirrábica") y botón "Reprogramar".
-- Accesos rápidos: 4 botones con iconos: Agendar Cita, Vacunación, Peluquería y Urgencias 24h.
-- Historial reciente: Tarjetas con las últimas 2 consultas o atenciones médicas.
-- Barra inferior: Navegación con Inicio, Mascotas, Citas y Perfil.
-```
-
-Puntos clave de este diseño:
-- **Hero Card de la mascota:** centraliza la información vital (peso, raza, estado de vacunas) y permite alternar entre mascotas registradas sin cambiar de cuenta.
-- **Banner de cita:** el uso del color ámbar destaca el recordatorio inmediato sin alarmar al tutor.
-- **Acceso a Urgencias 24h:** resaltado con alerta visual para situaciones críticas donde cada segundo cuenta.
-- **Barra inferior fija:** garantiza navegación consistente hacia las demás secciones del sistema.
-
-## Cómo Antigravity inspecciona las pantallas con Stitch MCP
-
-Cuando Stitch MCP está configurado en tu archivo `.agents/mcp_config.json`, Antigravity dispone de herramientas para interactuar con tus lienzos de Stitch directamente desde el entorno de trabajo:
-
-- `stitch_list_projects`: Enumera los proyectos de diseño activos asociados a tu clave de API de Stitch.
-- `stitch_get_screen`: Descarga la descripción estructurada (tokens de color, tipografías, jerarquía de contenedores y componentes) de una pantalla específica mediante su identificador.
-
-Por ejemplo, puedes pedirle a Antigravity:
-
-> *"Inspecciona la pantalla de HomeScreen en mi proyecto de Stitch de la veterinaria. Lista los colores primarios y la jerarquía de componentes de la tarjeta de la mascota."*
-
-Antigravity invoca `stitch_get_screen` y recibe una estructura JSON con los tokens exactos:
-
-```json
-{
-  "screenId": "home-veterinaria-patitas",
-  "name": "HomeScreen Patitas",
-  "themeTokens": {
-    "primary": "#0F8478",
-    "surface": "#FDFCFB",
-    "cardHero": "#E3F6F3",
-    "alertWarning": "#F0C572",
-    "textPrimary": "#161A26"
-  },
-  "sections": [
-    { "type": "AppBar", "elements": ["AvatarTutor", "GreetingText", "NotificationBell"] },
-    { "type": "HeroCard", "petName": "Milo", "status": "Vacunas al día" },
-    { "type": "AppointmentBanner", "date": "Mañana, 10:30 AM" },
-    { "type": "QuickServicesGrid", "items": ["Agendar", "Vacunación", "Peluquería", "Urgencias"] },
-    { "type": "BottomBar", "tabs": ["Inicio", "Mascotas", "Citas", "Perfil"] }
-  ]
-}
-```
-
-Gracias a esta integración, no necesitas transcribir valores hexadecimales a ciegas ni adivinar el espaciado entre widgets. El agente utiliza los datos exactos del prototipo para cualquier análisis o documentación de tu proyecto.
-
-## Paso a paso: Configurar y experimentar con Stitch MCP
-
-Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch para experimentar la extracción de prototipos con Antigravity:
+Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar el flujo de la veterinaria y experimentar la auditoría autónoma desde Antigravity:
 
 - **Paso 1: Obtener tu API Key de Google:**
   Para que Antigravity pueda autenticarse con el servidor remoto de Google Stitch en `https://stitch.googleapis.com/mcp`, necesitas una clave de API de Google (Google AI Studio / Gemini API key):
@@ -242,20 +114,125 @@ Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch 
 
   *Nota de seguridad:* Nunca hagas commit de tu clave real en un repositorio público. Si compartes el repositorio de tu equipo, es recomendable registrar el bloque con tu clave privada en la configuración global de Antigravity en `~/.gemini/config/mcp_config.json` para que viaje en tus sesiones locales sin exponerla en el control de versiones.
 
-- **Paso 3: Generar el prototipo en Google Stitch:**
-  En [stitch.withgoogle.com](https://stitch.withgoogle.com), crea un nuevo lienzo e ingresa los prompts estructurados de la clínica veterinaria vistos en esta lección (o los de tu proyecto de semestre). Verifica que se generen los mockups de `LoginScreen`, `SigninScreen` y `HomeScreen`.
+- **Paso 3: Generar los mockups en Google Stitch con prompts estructurados:**
+  Ingresa a [stitch.withgoogle.com](https://stitch.withgoogle.com) y crea un nuevo lienzo.
 
-- **Paso 4: Experimentar la consulta en Antigravity:**
-  Abre una terminal en tu proyecto e inicia Antigravity. Como `.agents/mcp_config.json` se procesa al arrancar, el agente descubrirá de inmediato las herramientas de Stitch.
-  
-  Pídele al agente en lenguaje natural:
+  Un prompt vago como *"hazme una pantalla de veterinaria"* produce resultados impredecibles. Para obtener prototipos nítidos y coherentes para una aplicación móvil, cada prompt debe especificar cuatro dimensiones fundamentales:
+  - **1. Contexto, identidad y atmósfera:** Nombre de la marca, público objetivo y paleta cromática dominante (tonos cálidos, blanco suave `#FDFCFB` y verde esmeralda `#0F8478`).
+  - **2. Jerarquía visual y organización espacial:** Cabecera con identidad, contenido principal en tarjetas o formularios, y elementos anclados como barras de acciones o navegación inferior.
+  - **3. Campos de entrada y micro-componentes:** Tipo de cada campo con su icono distintivo a la izquierda, placeholder claro y botones primarios destacados.
+  - **4. Restricciones móviles y accesibilidad:** Áreas táctiles amplias (mínimo 48 píxeles de alto) y contraste suficiente sobre el fondo.
+
+  Copia los siguientes prompts estructurados para generar las tres pantallas del flujo de la veterinaria:
+
+  ### Prompt 1: Pantalla de Inicio de Sesión (`LoginScreen`)
+
+  El inicio de sesión de la clínica veterinaria "Patitas & Co." debe permitir a los tutores ingresar de forma rápida a la ficha de sus mascotas, ofreciendo accesos alternativos y recuperación de contraseña.
+
+  ```text
+  Pantalla móvil de inicio de sesión para la clínica veterinaria "Patitas & Co.".
+  Estilo cálido y profesional en tonos verde esmeralda (#0F8478) y fondo claro (#FDFCFB).
+
+  - Cabecera: Logo de huellita esmeralda, título "Patitas & Co." y mensaje de bienvenida.
+  - Campos:
+    * Correo electrónico con icono de email.
+    * Contraseña con icono de candado y botón de mostrar/ocultar.
+  - Opciones: Casilla "Recordar sesión" y enlace "¿Olvidaste tu contraseña?".
+  - Acciones:
+    * Botón principal "Iniciar Sesión" en verde esmeralda.
+    * Botón secundario "Ingresar con Google".
+  - Pie: Enlace "¿No tienes cuenta? Regístrate aquí".
+  ```
+
+  Puntos clave de este diseño:
+  - El fondo blanco cálido evita la fatiga visual frente al blanco puro clínico.
+  - Los campos incluyen iconos semánticos que guían al usuario antes de empezar a escribir.
+  - La jerarquía de acciones prioriza el botón esmeralda principal sobre el acceso social secundario.
+
+  ### Prompt 2: Pantalla de Registro (`SigninScreen`)
+
+  Cuando un tutor llega por primera vez a la clínica, el formulario de registro debe capturar la información de contacto esencial y los datos de emergencia, vinculando de inmediato al animal de compañía.
+
+  ```text
+  Pantalla móvil de registro (Crear Cuenta) para la app de la clínica veterinaria "Patitas & Co.".
+  Estilo limpio y moderno, coherente con la paleta verde esmeralda (#0F8478).
+
+  - Cabecera: Botón de regreso, título "Crear Cuenta" y subtítulo de bienvenida.
+  - Formulario:
+    * Nombre completo del tutor.
+    * Teléfono de contacto / emergencias.
+    * Correo electrónico y contraseña segura.
+    * Nombre de tu primera mascota (opcional).
+  - Términos: Casilla de verificación para aceptar términos del servicio y tratamiento de datos.
+  - Acción principal: Botón "Registrarme" en verde esmeralda.
+  - Pie: Enlace "¿Ya tienes cuenta? Inicia sesión".
+  ```
+
+  Puntos clave de este diseño:
+  - Incluye el teléfono de emergencias, un campo crítico en el dominio veterinario que no suele estar en aplicaciones genéricas.
+  - El campo opcional de la primera mascota humaniza el proceso de bienvenida y prepara el contenido del Home.
+  - La barra de navegación superior permite abortar el flujo y regresar sin frustración.
+
+  ### Prompt 3: Tablero Principal (`HomeScreen`)
+
+  Una vez autenticado el tutor, la pantalla principal actúa como el centro de mando para la salud preventiva del animal: mostrar qué mascota está activa, alertar sobre la próxima cita agendada, ofrecer accesos directos a servicios comunes y facilitar el contacto con urgencias médicas 24 horas.
+
+  ```text
+  Dashboard móvil (Home) para la clínica veterinaria "Patitas & Co.".
+  Tonos verde esmeralda (#0F8478), menta (#E3F6F3) y detalles cálidos (#F0C572).
+
+  - Barra superior: Foto de perfil, saludo "Hola, Mariana 👋" con subtítulo "3 mascotas registradas" y campana de notificaciones.
+  - Tarjeta de la mascota activa: Foto de la mascota ("Milo"), raza, edad, chip "Vacunas al día ✓" y selector para alternar mascota.
+  - Recordatorio de cita: Tarjeta con fecha ("Mañana, 10:30 AM"), motivo ("Vacuna Antirrábica") y botón "Reprogramar".
+  - Accesos rápidos: 4 botones con iconos: Agendar Cita, Vacunación, Peluquería y Urgencias 24h.
+  - Historial reciente: Tarjetas con las últimas 2 consultas o atenciones médicas.
+  - Barra inferior: Navegación con Inicio, Mascotas, Citas y Perfil.
+  ```
+
+  Puntos clave de este diseño:
+  - **Hero Card de la mascota:** centraliza la información vital (peso, raza, estado de vacunas) y permite alternar entre mascotas registradas sin cambiar de cuenta.
+  - **Banner de cita:** el uso del color cálido destaca el recordatorio inmediato sin alarmar al tutor.
+  - **Acceso a Urgencias 24h:** resaltado con alerta visual para situaciones críticas donde cada segundo cuenta.
+  - **Barra inferior fija:** garantiza navegación consistente hacia las demás secciones del sistema.
+
+- **Paso 4: Inspeccionar y auditar las pantallas desde Antigravity:**
+  Abre una terminal en tu proyecto e inicia Antigravity. Como `.agents/mcp_config.json` se procesa al arrancar, el agente descubrirá de inmediato las herramientas de Stitch:
+  - **`stitch_list_projects`:** Enumera los proyectos de diseño activos asociados a tu clave de API de Stitch.
+  - **`stitch_get_screen`:** Descarga la descripción estructurada (tokens de color, tipografías, jerarquía de contenedores y componentes) de una pantalla específica mediante su identificador.
+
+  Al consultar una pantalla, Antigravity recibe una estructura JSON con los tokens exactos del diseño:
+
+  ```json
+  {
+    "screenId": "home-veterinaria-patitas",
+    "name": "HomeScreen Patitas",
+    "themeTokens": {
+      "primary": "#0F8478",
+      "surface": "#FDFCFB",
+      "cardHero": "#E3F6F3",
+      "alertWarning": "#F0C572",
+      "textPrimary": "#161A26"
+    },
+    "sections": [
+      { "type": "AppBar", "elements": ["AvatarTutor", "GreetingText", "NotificationBell"] },
+      { "type": "HeroCard", "petName": "Milo", "status": "Vacunas al día" },
+      { "type": "AppointmentBanner", "date": "Mañana, 10:30 AM" },
+      { "type": "QuickServicesGrid", "items": ["Agendar", "Vacunación", "Peluquería", "Urgencias"] },
+      { "type": "BottomBar", "tabs": ["Inicio", "Mascotas", "Citas", "Perfil"] }
+    ]
+  }
+  ```
+
+  Gracias a esta integración, no necesitas transcribir valores hexadecimales a ciegas ni adivinar el espaciado entre widgets. Puedes pedirle al agente en lenguaje natural:
+
   ```text
   > Consulta mis proyectos en Google Stitch
     y muéstrame las pantallas disponibles
     del flujo de veterinaria.
   ```
-  
+
   Luego, solicítale una inspección detallada:
+
   ```text
   > Extrae los tokens visuales de la pantalla
     HomeScreen en Stitch: colores primarios,
@@ -263,5 +240,4 @@ Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch 
   ```
 
 - **Paso 5: Qué descubres con este ejercicio:**
-  Antigravity ejecuta internamente `stitch_list_projects` y `stitch_get_screen`, mostrando el árbol de componentes y los códigos cromáticos exactos. Has conectado el diseño en la nube con tu asistente local, eliminando la transcripción manual de medidas.
-
+  Antigravity ejecuta internamente `stitch_list_projects` y `stitch_get_screen`, mostrando el árbol de componentes y los códigos cromáticos exactos. Has conectado el diseño en la nube con tu asistente local, eliminando la transcripción manual de medidas y dejando tus mockups auditados y listos para la Entrega 1.
