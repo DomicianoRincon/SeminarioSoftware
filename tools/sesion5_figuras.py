@@ -240,7 +240,7 @@ def st_flujo():
     s += '  ' + chip(72, 146, 1, 'amber') + '\n'
     s += '  ' + txt(96, 151, 'Lienzo Stitch', 14, 700, FAM['amber'][2]) + '\n'
     s += '  ' + txt(64, 184, 'Prompts UI', 13.5, 700, INK) + '\n'
-    s += '  ' + txt(64, 206, 'Veterinaria Patitas', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(64, 206, 'Veterinaria Peludos', 12.5, 400, MUTED) + '\n'
     s += '  ' + txt(64, 226, 'Signin, Login y Home', 12.5, 400, MUTED) + '\n'
     s += '  ' + txt(64, 250, 'stitch.withgoogle', 11.5, 600, FAM['amber'][2], cls='mono') + '\n'
 
@@ -478,7 +478,7 @@ def bubble(w, text, color):
 
 def st_capacidades():
     teal, amber = FAM['teal'][2], FAM['amber'][2]
-    a1 = (bubble(176, '"Login para Patitas"', 'indigo')
+    a1 = (bubble(176, '"Login para Peludos"', 'indigo')
           + f'<path d="M88,34 V52" class="link"/>'
           + phone(52, 58, 72, 110, login_screen(64, teal)))
     a2 = (bubble(176, '"Agrega Google"', 'teal')
@@ -524,7 +524,7 @@ def pw_capacidades():
           + '<rect x="40" y="76" width="96" height="16" rx="5" fill="none" stroke="#C4CBD8"/>'
           + bar(40, 100, 96, 18, FAM['indigo'][2], 5)
           + txt(88, 140, 'Chromium', 12, 600, MUTED, 'middle'))
-    rows = (('heading', '"Patitas"'), ('textbox', '"Correo"'), ('textbox', '"Clave"'), ('button', '"Entrar"'))
+    rows = (('heading', '"Peludos"'), ('textbox', '"Correo"'), ('textbox', '"Clave"'), ('button', '"Entrar"'))
     a2 = '<rect width="176" height="168" rx="10" fill="#FFFFFF" stroke="#C4CBD8" stroke-width="1.5"/>'
     a2 += txt(12, 24, '- page', 12, 700, INK, cls='mono')
     for i, (role, name) in enumerate(rows):
