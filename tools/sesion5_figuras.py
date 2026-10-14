@@ -231,18 +231,18 @@ FIGS['mcpConfiguracion'] = mcp_configuracion
 def st_flujo():
     fid = 'stFlujo'
     h = 440
-    s = head(fid, h, 'De Stitch al código Flutter con Antigravity',
-             'De Stitch al código Flutter con Antigravity',
-             'El diseño en Stitch entrega la apariencia; la skill flutter-pantallas impone los componentes permitidos.',
-             'Cuatro pasos enlazados. 1: Diseño en Stitch canvas. 2: Antigravity consulta Stitch MCP. 3: Antigravity filtra con la skill flutter-pantallas. 4: Código generado en lib/screens/login_screen.dart.')
+    s = head(fid, h, 'Flujo de prototipado de UI con Stitch MCP',
+             'Flujo de prototipado de UI con Stitch MCP',
+             'De los prompts en lenguaje natural a los mockups consultados por Antigravity.',
+             'Cuatro pasos enlazados. 1: Prompts estructurados en Stitch (Clínica Veterinaria). 2: Stitch MCP extrae jerarquía y tokens. 3: Antigravity inspecciona pantallas y elementos. 4: Mockups validados listos para SigninScreen, LoginScreen y HomeScreen.')
 
     # Paso 1: Stitch
     s += '  ' + box(48, 120, 196, 170, 'amber') + '\n'
     s += '  ' + chip(72, 146, 1, 'amber') + '\n'
     s += '  ' + txt(96, 151, 'Lienzo Stitch', 14, 700, FAM['amber'][2]) + '\n'
-    s += '  ' + txt(64, 184, 'Diseño con IA', 13.5, 700, INK) + '\n'
-    s += '  ' + txt(64, 206, 'Mockup visual de', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(64, 226, 'Login y Registro', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(64, 184, 'Prompts UI', 13.5, 700, INK) + '\n'
+    s += '  ' + txt(64, 206, 'Veterinaria Patitas', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(64, 226, 'Signin, Login y Home', 12.5, 400, MUTED) + '\n'
     s += '  ' + txt(64, 250, 'stitch.withgoogle', 11.5, 600, FAM['amber'][2], cls='mono') + '\n'
 
     # Paso 2: Stitch MCP
@@ -250,34 +250,34 @@ def st_flujo():
     s += '  ' + chip(294, 146, 2, 'violet') + '\n'
     s += '  ' + txt(318, 151, 'Stitch MCP', 14, 700, FAM['violet'][2]) + '\n'
     s += '  ' + txt(286, 184, 'Extracción', 13.5, 700, INK) + '\n'
-    s += '  ' + txt(286, 206, 'Lee campos de texto,', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(286, 226, 'botones, colores y', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(286, 246, 'distribución espacial.', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(286, 206, 'stitch_get_screen', 12, 600, FAM['violet'][2], cls='mono') + '\n'
+    s += '  ' + txt(286, 226, 'Lee campos, botones,', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(286, 246, 'colores y jerarquía.', 12.5, 400, MUTED) + '\n'
 
-    # Paso 3: Skill flutter-pantallas
+    # Paso 3: Antigravity
     s += '  ' + box(492, 120, 196, 170, 'indigo') + '\n'
     s += '  ' + chip(516, 146, 3, 'indigo') + '\n'
-    s += '  ' + txt(540, 151, 'Skill Pantallas', 14, 700, FAM['indigo'][2]) + '\n'
-    s += '  ' + txt(508, 184, 'Auditoría', 13.5, 700, INK) + '\n'
-    s += '  ' + txt(508, 206, 'Exige widgets.md,', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(508, 226, 'StatelessWidget y', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(508, 246, 'reutilizar componentes.', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(540, 151, 'Antigravity', 14, 700, FAM['indigo'][2]) + '\n'
+    s += '  ' + txt(508, 184, 'Auditoría Visual', 13.5, 700, INK) + '\n'
+    s += '  ' + txt(508, 206, 'Verifica accesibilidad,', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(508, 226, 'contraste de colores y', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(508, 246, 'distribución mobile.', 12.5, 400, MUTED) + '\n'
 
-    # Paso 4: Código Flutter
+    # Paso 4: Mockups Listos
     s += '  ' + box(714, 120, 198, 170, 'green', strong=True) + '\n'
     s += '  ' + chip(738, 146, 4, 'green') + '\n'
-    s += '  ' + txt(762, 151, 'Código Flutter', 14, 700, FAM['green'][2]) + '\n'
-    s += '  ' + txt(730, 184, 'LoginScreen', 13.5, 700, INK, cls='mono') + '\n'
-    s += '  ' + txt(730, 206, 'Limpia, navegable y', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(730, 226, '100% entendible para', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(730, 246, 'el estudiante.', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(762, 151, 'Mockups Listos', 14, 700, FAM['green'][2]) + '\n'
+    s += '  ' + txt(730, 184, 'Clínica Veterinaria', 13.5, 700, INK) + '\n'
+    s += '  ' + txt(730, 206, '3 pantallas listas:', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(730, 226, 'Signin, Login y Home', 12.5, 600, MUTED) + '\n'
+    s += '  ' + txt(730, 246, 'Base para Entrega 1.', 12.5, 400, MUTED) + '\n'
 
     # Conectores
     s += f'  <path d="M244,205 H264" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
     s += f'  <path d="M466,205 H486" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
     s += f'  <path d="M688,205 H708" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
 
-    s += '  ' + callout(316, '<tspan font-weight="700">El agente no inventa la UI:</tspan> toma la intención visual de Stitch, pero la traduce únicamente con los widgets autorizados del curso.') + '\n'
+    s += '  ' + callout(316, '<tspan font-weight="700">El agente inspecciona el diseño en vivo:</tspan> a través de Stitch MCP, Antigravity lee directamente los elementos visuales sin necesidad de exportar capturas ni medidas manuales.') + '\n'
     return s + '</svg>\n'
 
 

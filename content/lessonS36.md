@@ -1,23 +1,46 @@
 # Prototipado con Stitch MCP
 
-<!-- tags: Stitch MCP, Google Stitch, prototipo de interfaz, login en Flutter, registro en Flutter, diseño a código, Entrega 1, flutter-pantallas y Stitch, stitch.withgoogle.com -->
+<!-- tags: Stitch MCP, Google Stitch, prototipado visual, prompts de interfaz, mockup veterinaria, mobile UI prompt, Antigravity Stitch, diseño de interfaces -->
 
-En la Entrega 1 del curso debes presentar el prototipo no funcional de tu aplicación en **Stitch o Figma**. En lugar de copiar a mano cada medida, color y campo de texto desde la herramienta gráfica hacia Flutter, puedes conectar a Antigravity directamente con tu diseño usando el **MCP de Google Stitch**.
+En la Entrega 1 del curso debes presentar el prototipo de interfaz para tu aplicación móvil. Tradicionalmente, prototipar requiere dominar herramientas complejas de dibujo vectorial y transcribir a mano cada medida, color y elemento gráfico. Con **Google Stitch** y su integración a través del protocolo **MCP en Antigravity**, el prototipado visual se convierte en un proceso guiado por **prompts estructurados en lenguaje natural**.
 
-## Qué es Google Stitch
+En esta lección exploramos cómo formular prompts efectivos para generar pantallas móviles de alta fidelidad, tomando como caso práctico el diseño de tres pantallas clave para una **Clínica Veterinaria**: inicio de sesión (`LoginScreen`), registro de nuevo propietario (`SigninScreen`) y el tablero de control de la mascota (`HomeScreen`).
 
-**Google Stitch** (`stitch.withgoogle.com`) es un entorno experimental de diseño de interfaces desarrollado por Google Labs. Permite conceptualizar y refinar pantallas completas a partir de descripciones en lenguaje natural, ajustando la tipografía, los contrastes y la distribución de los componentes visuales en un lienzo interactivo.
+## Qué es Google Stitch y por qué prototipar con prompts
 
-Tradicionalmente, pasar de un mockup a código requiere inspeccionar visualmente cada elemento y transcribirlo línea por línea. Con el servidor MCP de Stitch, Antigravity puede consultar la estructura del lienzo y traducir los elementos visuales a widgets de Flutter.
+**Google Stitch** (`stitch.withgoogle.com`) es un entorno experimental de diseño de interfaces desarrollado por Google Labs. Permite conceptualizar, iterar y refinar pantallas completas a partir de instrucciones descriptivas en lenguaje natural.
 
-## El flujo de diseño a código
+A diferencia de un generador genérico de imágenes, Stitch genera **árboles de componentes interactivos con semántica de interfaz de usuario**: reconoce botones, campos de entrada, barras de navegación, tipografías y paletas de color con tokens formales.
 
-El diseño visual entrega la apariencia y los colores, pero la skill `flutter-pantallas` impone la disciplina arquitectónica:
+Al integrar Stitch con Antigravity mediante un servidor MCP:
+- **No necesitas dibujar píxel por píxel:** describes la intención funcional y estética en un prompt estructurado.
+- **El diseño es inspeccionable:** Antigravity puede leer directamente la estructura jerárquica de la pantalla en Stitch a través de llamadas MCP.
+- **Coherencia visual garantizada:** puedes reutilizar tokens cromáticos y componentes entre pantallas del mismo flujo.
+
+## Anatomía de un prompt de interfaz para Stitch
+
+Un prompt vago como *"hazme una pantalla de veterinaria"* produce resultados impredecibles. Para obtener prototipos nítidos y coherentes para una aplicación móvil, cada prompt debe especificar cuatro dimensiones fundamentales:
+
+- **1. Contexto, identidad y atmósfera:**
+  Indica el nombre de la marca, el público objetivo y la paleta cromática dominante. En entornos clínicos o de salud animal, los tonos cálidos, blancos suaves (#FDFCFB) y verdes esmeralda (#0F8478) transmiten confianza, higiene y cercanía.
+
+- **2. Jerarquía visual y organización espacial:**
+  Define el orden vertical de lectura de la pantalla móvil: cabecera con identidad, contenido principal en tarjetas o formularios, y elementos anclados como barras de acciones o navegación inferior.
+
+- **3. Campos de entrada y micro-componentes:**
+  Especifica el tipo de cada campo (correo, contraseña, selector de fecha), su icono distintivo a la izquierda y el texto de ayuda o placeholder. Menciona botones primarios de ancho completo y botones secundarios contorneados.
+
+- **4. Restricciones móviles y accesibilidad:**
+  Asegura áreas táctiles amplias (mínimo 48 píxeles de alto), textos con alto contraste sobre el fondo y agrupación lógica para no saturar al usuario en pantallas pequeñas.
+
+## El flujo de prototipado con Stitch MCP
+
+El prototipado asistido por IA conecta la redacción del diseño en Stitch con la capacidad de análisis de Antigravity:
 
 ```svg
 <svg id="stFlujo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="stFlujo-ttl stFlujo-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="stFlujo-ttl">De Stitch al código Flutter con Antigravity</title>
-  <desc id="stFlujo-dsc">Cuatro pasos enlazados. 1: Diseño en Stitch canvas. 2: Antigravity consulta Stitch MCP. 3: Antigravity filtra con la skill flutter-pantallas. 4: Código generado en lib/screens/login_screen.dart.</desc>
+  <title id="stFlujo-ttl">Flujo de prototipado de UI con Stitch MCP</title>
+  <desc id="stFlujo-dsc">Cuatro pasos enlazados. 1: Prompts estructurados en Stitch (Clínica Veterinaria). 2: Stitch MCP extrae jerarquía y tokens. 3: Antigravity inspecciona pantallas y elementos. 4: Mockups validados listos para SigninScreen, LoginScreen y HomeScreen.</desc>
   <defs>
     <style>
       #stFlujo .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -35,153 +58,202 @@ El diseño visual entrega la apariencia y los colores, pero la skill `flutter-pa
     </marker>
   </defs>
   <rect width="960" height="440" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">De Stitch al código Flutter con Antigravity</text>
-  <text class="sub" x="48" y="80" data-fit="860">El diseño en Stitch entrega la apariencia; la skill flutter-pantallas impone los componentes permitidos.</text>
+  <text class="title" x="48" y="56">Flujo de prototipado de UI con Stitch MCP</text>
+  <text class="sub" x="48" y="80" data-fit="860">De los prompts en lenguaje natural a los mockups consultados por Antigravity.</text>
   <rect x="48" y="120" width="196" height="170" rx="12" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
   <circle cx="72" cy="146" r="11" fill="#A96C05"/><text x="72" y="150.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
   <text x="96" y="151" font-size="14" font-weight="700" fill="#A96C05" text-anchor="start">Lienzo Stitch</text>
-  <text x="64" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Diseño con IA</text>
-  <text x="64" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Mockup visual de</text>
-  <text x="64" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Login y Registro</text>
+  <text x="64" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Prompts UI</text>
+  <text x="64" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Veterinaria Patitas</text>
+  <text x="64" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Signin, Login y Home</text>
   <text x="64" y="250" font-size="11.5" font-weight="600" fill="#A96C05" text-anchor="start" class="mono">stitch.withgoogle</text>
   <rect x="270" y="120" width="196" height="170" rx="12" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
   <circle cx="294" cy="146" r="11" fill="#7439B8"/><text x="294" y="150.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
   <text x="318" y="151" font-size="14" font-weight="700" fill="#7439B8" text-anchor="start">Stitch MCP</text>
   <text x="286" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Extracción</text>
-  <text x="286" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Lee campos de texto,</text>
-  <text x="286" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">botones, colores y</text>
-  <text x="286" y="246" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">distribución espacial.</text>
+  <text x="286" y="206" font-size="12" font-weight="600" fill="#7439B8" text-anchor="start" class="mono">stitch_get_screen</text>
+  <text x="286" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Lee campos, botones,</text>
+  <text x="286" y="246" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">colores y jerarquía.</text>
   <rect x="492" y="120" width="196" height="170" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
   <circle cx="516" cy="146" r="11" fill="#4453C9"/><text x="516" y="150.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-  <text x="540" y="151" font-size="14" font-weight="700" fill="#4453C9" text-anchor="start">Skill Pantallas</text>
-  <text x="508" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Auditoría</text>
-  <text x="508" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Exige widgets.md,</text>
-  <text x="508" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">StatelessWidget y</text>
-  <text x="508" y="246" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">reutilizar componentes.</text>
+  <text x="540" y="151" font-size="14" font-weight="700" fill="#4453C9" text-anchor="start">Antigravity</text>
+  <text x="508" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Auditoría Visual</text>
+  <text x="508" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Verifica accesibilidad,</text>
+  <text x="508" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">contraste de colores y</text>
+  <text x="508" y="246" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">distribución mobile.</text>
   <rect x="714" y="120" width="198" height="170" rx="12" fill="#E8F6E3" stroke="#3A8235" stroke-width="2.5"/>
   <circle cx="738" cy="146" r="11" fill="#3A8235"/><text x="738" y="150.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-  <text x="762" y="151" font-size="14" font-weight="700" fill="#3A8235" text-anchor="start">Código Flutter</text>
-  <text x="730" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">LoginScreen</text>
-  <text x="730" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Limpia, navegable y</text>
-  <text x="730" y="226" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">100% entendible para</text>
-  <text x="730" y="246" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">el estudiante.</text>
+  <text x="762" y="151" font-size="14" font-weight="700" fill="#3A8235" text-anchor="start">Mockups Listos</text>
+  <text x="730" y="184" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Clínica Veterinaria</text>
+  <text x="730" y="206" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">3 pantallas listas:</text>
+  <text x="730" y="226" font-size="12.5" font-weight="600" fill="#556074" text-anchor="start">Signin, Login y Home</text>
+  <text x="730" y="246" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Base para Entrega 1.</text>
   <path d="M244,205 H264" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#stFlujo-arrow)"/>
   <path d="M466,205 H486" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#stFlujo-arrow)"/>
   <path d="M688,205 H708" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#stFlujo-arrow)"/>
-  <rect x="48" y="316" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="342" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">El agente no inventa la UI:</tspan> toma la intención visual de Stitch, pero la traduce únicamente con los widgets autorizados del curso.</text>
+  <rect x="48" y="316" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="342" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">El agente inspecciona el diseño en vivo:</tspan> a través de Stitch MCP, Antigravity lee directamente los elementos visuales sin necesidad de exportar capturas ni medidas manuales.</text>
 </svg>
 ```
 
-El proceso sigue cuatro momentos claros:
+El flujo comprende cuatro fases coordinadas:
 
-1. **Diseño en el lienzo:** Creas el prompt de la pantalla en Stitch (o partes de una plantilla prediseñada). En esta sesión trabajaremos con el flujo de autenticación: la pantalla de inicio de sesión (`LoginScreen`) y la pantalla de registro de nuevo usuario (`RegisterScreen`).
-2. **Consulta vía MCP:** Antigravity llama a las herramientas de Stitch MCP para extraer la información estructural: qué títulos hay, qué campos de entrada se necesitan (`TextField`), qué botones de acción existen y qué paleta cromática se definió.
-3. **Filtro con la skill del curso:** Antigravity no genera código descontrolado. Como tiene activa la skill `flutter-pantallas`, toma los datos de Stitch pero los traduce estrictamente a la paleta de `widgets.md` vista en clase. Si Stitch sugiere elementos no cubiertos todavía (como animaciones o gestores de estado complejos), la skill obliga al agente a ceñirse a `StatelessWidget` y componentes limpios.
-4. **Archivos generados:** El agente escribe los archivos en `lib/screens/` y los registra en las rutas de `lib/main.dart`.
+1. **Prompts estructurados en Stitch:** Redactas el prompt con la identidad visual, los campos requeridos y las acciones clave directamente en el lienzo de Stitch.
+2. **Extracción mediante Stitch MCP:** Antigravity se comunica con el servidor MCP de Stitch invocando herramientas como `stitch_get_screen` para obtener la jerarquía de nodos visuales, colores y tipografías.
+3. **Auditoría e inspección en Antigravity:** El agente examina la distribución espacial, los contrastes de accesibilidad y la consistencia entre pantallas sin que tengas que exportar archivos ni capturas de pantalla manualmente.
+4. **Mockups consolidados:** Las tres pantallas quedan validadas y alineadas con los requisitos de la aplicación, listas para la presentación de la Entrega 1.
 
-## La pantalla de inicio de sesión (LoginScreen)
+## Prompt 1: Pantalla de Inicio de Sesión (`LoginScreen`)
 
-La pantalla de login para la red profesional `mi_app_1` reúne los widgets esenciales de entrada y acción:
+El inicio de sesión de la clínica veterinaria "Patitas & Co." debe permitir a los tutores ingresar de forma rápida a la ficha de sus mascotas, ofreciendo accesos alternativos y recuperación de contraseña.
 
-```dart
-import 'package:flutter/material.dart';
+Copia este prompt para generar la pantalla en Stitch:
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+```text
+Diseña una pantalla móvil moderna y acogedora de inicio de sesión para una app de clínica veterinaria llamada "Patitas & Co.".
+- Contexto y atmósfera: Estilo cálido, profesional y amigable para dueños de mascotas. Fondo limpio en blanco cálido (#FDFCFB).
+- Cabecera:
+  * Icono o ilustración minimalista de una huella de perro/gato estilizada en tono esmeralda (#0F8478).
+  * Título tipográfico claro: "Patitas & Co.".
+  * Subtítulo cálido: "Cuidamos a quienes más quieres. Ingresa a tu cuenta para gestionar citas y salud de tu mascota".
+- Campos del formulario:
+  * Campo de texto para Correo Electrónico: icono de correo a la izquierda, borde redondeado suave, placeholder "propietario@ejemplo.com".
+  * Campo de texto para Contraseña: icono de candado a la izquierda, icono de ojo a la derecha para ver/ocultar contraseña, placeholder "••••••••".
+- Fila de opciones:
+  * Casilla de verificación "Recordar sesión".
+  * Enlace tipográfico a la derecha: "¿Olvidaste tu contraseña?".
+- Acciones:
+  * Botón principal de ancho completo en color verde esmeralda (#0F8478) con esquinas redondeadas y texto en blanco en negrita: "Iniciar Sesión".
+  * Divisor sutil con texto central: "o continúa con".
+  * Botón secundario contorneado (outline) con icono de Google: "Ingresar con Google".
+- Pie de pantalla:
+  * Texto sutil: "¿Aún no tienes cuenta? Regístrate aquí" (con "Regístrate aquí" resaltado en color esmeralda y negrita).
+```
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFBFBFD),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 20),
-              const Center(
-                child: CircleAvatar(
-                  radius: 36,
-                  backgroundColor: Color(0xFFEEF1FF),
-                  child: Icon(Icons.work_outline, size: 36, color: Color(0xFF4453C9)),
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Bienvenido de nuevo',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Color(0xFF161A26)),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Ingresa con tus credenciales profesionales',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Color(0xFF556074)),
-              ),
-              const SizedBox(height: 36),
-              const TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Correo electrónico',
-                  hintText: 'tu.nombre@empresa.com',
-                  prefixIcon: Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Contraseña',
-                  hintText: '••••••••',
-                  prefixIcon: Icon(Icons.lock_outline),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('¿Olvidaste tu contraseña?', style: TextStyle(color: Color(0xFF4453C9), fontWeight: FontWeight.w600)),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4453C9),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                child: const Text('Iniciar sesión', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+Puntos clave de este diseño:
+- El fondo blanco cálido evita la fatiga visual frente al blanco puro clínico.
+- Los campos incluyen iconos semánticos que guían al usuario antes de empezar a escribir.
+- La jerarquía de acciones prioriza el botón esmeralda principal sobre el acceso social secundario.
+
+## Prompt 2: Pantalla de Registro (`SigninScreen`)
+
+Cuando un tutor llega por primera vez a la clínica, el formulario de registro debe capturar la información de contacto esencial y los datos de emergencia, vinculando de inmediato al animal de compañía.
+
+Copia este prompt para generar la pantalla en Stitch:
+
+```text
+Diseña una pantalla móvil limpia y organizada de registro (Sign In / Register) para la app de la clínica veterinaria "Patitas & Co.".
+- Contexto y navegación:
+  * Barra superior con botón circular de regreso hacia la izquierda.
+  * Título grande: "Crear Cuenta".
+  * Subtítulo: "Únete a la familia Patitas y lleva el control médico de tus consentidos".
+- Campos del formulario (agrupados con espaciado vertical cómodo):
+  * Campo "Nombre completo del tutor": icono de usuario, placeholder "Ej. Mariana Pérez".
+  * Campo "Teléfono de contacto / Emergencias": icono de teléfono, selector de prefijo de país, placeholder "300 123 4567".
+  * Campo "Correo electrónico": icono de email, placeholder "mariana@correo.com".
+  * Campo "Contraseña segura": indicador sutil de fortaleza de contraseña con barra de progreso verde/amarilla.
+  * Campo "Nombre de tu primera mascota" (opcional para personalizar el onboarding): icono de huellita, placeholder "Ej. Milo, Luna, Rocky...".
+- Términos y privacidad:
+  * Casilla marcada para aceptar "Términos del Servicio y Política de Tratamiento de Datos Veterinarios".
+- Acción principal:
+  * Botón prominente de ancho completo en verde esmeralda (#0F8478) con esquinas redondeadas: "Registrarme".
+- Pie de página:
+  * Enlace inferior: "¿Ya tienes cuenta registrada? Inicia sesión".
+```
+
+Puntos clave de este diseño:
+- Incluye el teléfono de emergencias, un campo crítico en el dominio veterinario que no suele estar en aplicaciones genéricas.
+- El campo opcional de la primera mascota humaniza el proceso de bienvenida y prepara el contenido del Home.
+- La barra de navegación superior permite abortar el flujo y regresar sin frustración.
+
+## Prompt 3: Tablero Principal (`HomeScreen`)
+
+Una vez autenticado el tutor, la pantalla principal debe actuar como el centro de mando para la salud preventiva del animal: mostrar qué mascota está activa, alertar sobre la próxima cita agendada, ofrecer accesos directos a servicios comunes y facilitar el contacto con urgencias médicas 24 horas.
+
+Copia este prompt para generar la pantalla en Stitch:
+
+```text
+Diseña el dashboard o pantalla principal móvil (Home) para la app de la clínica veterinaria "Patitas & Co.".
+- Barra superior de estado (AppBar):
+  * Foto de perfil circular del tutor a la izquierda.
+  * Saludo personalizado: "Hola, Mariana 👋" con subtítulo "3 mascotas registradas".
+  * Botón de campana de notificaciones con punto rojo indicador a la derecha.
+- Tarjeta destacada de la mascota activa (Hero Card):
+  * Fondo verde menta suave (#E3F6F3) con borde redondeado pronunciado y sombra ligera.
+  * Foto de un perro Golden Retriever sonriente en avatar grande.
+  * Datos destacados: "Milo" (Golden Retriever, 2 años y medio, 28 kg).
+  * Chip indicador de estado de salud: "Vacunas al día ✓" en verde oscuro.
+  * Selector desplegable sutil para cambiar a otra mascota ("Luna - Gato Siamés").
+- Banner de Próxima Cita Médica (Appointment Card):
+  * Fondo blanco con borde naranja/ámbar cálido (#F0C572).
+  * Icono de calendario y hora: "Mañana, 10:30 AM".
+  * Detalle: "Control de Vacuna Antirrábica con Dra. Gómez".
+  * Botón secundario compacto: "Reprogramar".
+- Accesos rápidos a servicios clínicos (Grid de 4 botones circulares con etiquetas):
+  * Icono de estetoscopio: "Agendar Cita".
+  * Icono de jeringa: "Vacunación".
+  * Icono de tijeras: "Peluquería".
+  * Icono de ambulancia con alerta roja: "Urgencias 24h".
+- Sección de Historial Clínico Reciente:
+  * Lista de 2 tarjetas compactas con últimas atenciones:
+    - "Desparasitación interna" - 12 de septiembre (Dr. Ramírez).
+    - "Limpieza dental preventiva" - 04 de julio (Dra. Gómez).
+- Barra de navegación inferior fija (BottomNavigationBar):
+  * 4 iconos con etiqueta:
+    - Inicio (activo, verde #0F8478).
+    - Mascotas.
+    - Citas.
+    - Perfil / Ajustes.
+```
+
+Puntos clave de este diseño:
+- **Hero Card de la mascota:** centraliza la información vital (peso, raza, estado de vacunas) y permite alternar entre mascotas registradas sin cambiar de cuenta.
+- **Banner de cita:** el uso del color ámbar destaca el recordatorio inmediato sin alarmar al tutor.
+- **Acceso a Urgencias 24h:** resaltado con alerta visual para situaciones críticas donde cada segundo cuenta.
+- **Barra inferior fija:** garantiza navegación consistente hacia las demás secciones del sistema.
+
+## Cómo Antigravity inspecciona las pantallas con Stitch MCP
+
+Cuando Stitch MCP está configurado en tu archivo `.agents/mcp_config.json`, Antigravity dispone de herramientas para interactuar con tus lienzos de Stitch directamente desde el entorno de trabajo:
+
+- `stitch_list_projects`: Enumera los proyectos de diseño activos asociados a tu clave de API de Stitch.
+- `stitch_get_screen`: Descarga la descripción estructurada (tokens de color, tipografías, jerarquía de contenedores y componentes) de una pantalla específica mediante su identificador.
+
+Por ejemplo, puedes pedirle a Antigravity:
+
+> *"Inspecciona la pantalla de HomeScreen en mi proyecto de Stitch de la veterinaria. Lista los colores primarios y la jerarquía de componentes de la tarjeta de la mascota."*
+
+Antigravity invoca `stitch_get_screen` y recibe una estructura JSON con los tokens exactos:
+
+```json
+{
+  "screenId": "home-veterinaria-patitas",
+  "name": "HomeScreen Patitas",
+  "themeTokens": {
+    "primary": "#0F8478",
+    "surface": "#FDFCFB",
+    "cardHero": "#E3F6F3",
+    "alertWarning": "#F0C572",
+    "textPrimary": "#161A26"
+  },
+  "sections": [
+    { "type": "AppBar", "elements": ["AvatarTutor", "GreetingText", "NotificationBell"] },
+    { "type": "HeroCard", "petName": "Milo", "status": "Vacunas al día" },
+    { "type": "AppointmentBanner", "date": "Mañana, 10:30 AM" },
+    { "type": "QuickServicesGrid", "items": ["Agendar", "Vacunación", "Peluquería", "Urgencias"] },
+    { "type": "BottomBar", "tabs": ["Inicio", "Mascotas", "Citas", "Perfil"] }
+  ]
 }
 ```
 
-## La pantalla de registro (RegisterScreen)
+Gracias a esta integración, no necesitas transcribir valores hexadecimales a ciegas ni adivinar el espaciado entre widgets. El agente utiliza los datos exactos del prototipo para cualquier análisis o documentación de tu proyecto.
 
-La pantalla de registro complementa el flujo solicitando el nombre, titular profesional, correo y contraseña:
+## Archivo de recursos y preparación de la Entrega 1
 
-- Se hospeda en `lib/screens/register_screen.dart`.
-- Utiliza un `AppBar` con botón para volver atrás.
-- Organiza los campos dentro de una `Column` con scroll para evitar desbordamientos verticales (*overflow*).
-- Respeta la regla de que los botones tienen `onPressed: () {}` porque el estado dinámico y la lógica de autenticación corresponden a sesiones posteriores.
+En la carpeta del curso encuentras el archivo con los prompts listos para copiar y utilizar en Stitch:
 
-## Cómo pedirle la pantalla al agente
+- `recursos/sesion5/prompts_stitch_veterinaria.md`: contiene la colección completa de prompts para la clínica veterinaria con todas sus variantes de personalización.
 
-Con el servidor MCP configurado y la skill en `.agents/skills/flutter-pantallas/`, abres Antigravity y haces la solicitud de forma directa:
-
-```text
-> Consulta el diseño de autenticación en Stitch e implementa LoginScreen y RegisterScreen en lib/screens/, asegurando que cumplan la paleta de flutter-pantallas.
-```
-
-Antigravity consultará el servidor MCP de Stitch, leerá `widgets.md`, escribirá los archivos y registrará las rutas en `main.dart`. En la siguiente lección veremos cómo verificar estas pantallas en un navegador real usando Playwright MCP.
+Recomendaciones para tu entrega:
+- **Prueba variaciones en Stitch:** Si tu aplicación es de otro dominio (por ejemplo, gestión académica o finanzas personales), adapta la estructura de estos prompts sustituyendo la identidad, los campos requeridos y las acciones clave.
+- **Verifica contrastes:** Asegúrate de que los textos sobre fondos de tarjetas (como el verde menta o el ámbar) mantengan una relación de contraste accesible según las pautas WCAG.
+- **Mantén la coherencia:** Los tres prototipos deben compartir la misma barra de navegación, el mismo estilo de botones y la misma tipografía base para presentar un flujo de usuario armónico.

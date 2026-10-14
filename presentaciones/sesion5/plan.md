@@ -64,11 +64,11 @@ Siguiendo el estándar de las presentaciones institucionales de Icesi:
 | 14 | Permisos: tú mantienes el control | `slideSidebarLeftOrange` | Lecturas automáticas vs. confirmación explícita para acciones con efectos externos | Panel lateral con íconos |
 | 15 | Google Stitch MCP | `sectionSlideEBlue` | Divisor de bloque | · |
 | 16 | Google Stitch en la Entrega 1 | `slideStandard` | El lienzo de diseño asistido por IA (`stitch.withgoogle.com`) | Tarjeta de Entrega 1 |
-| 17 | De Stitch a Flutter | `slideStandard` | Stitch entrega la apariencia; la skill `flutter-pantallas` impone la arquitectura | SVG `stFlujo` |
-| 18 | Pantalla de inicio de sesión | `slideStandard` | Campos de correo, contraseña, botón principal y enlaces | Código anotado `LoginScreen` |
-| 19 | Pantalla de registro | `slideStandard` | Campos adicionales con titular profesional, `AppBar` y scroll vertical | Código anotado `RegisterScreen` |
-| 20 | El pedido en Antigravity | `slideStandard` | Instrucción directa para consultar Stitch e implementar con la skill | Simulación de consola |
-| 21 | Qué se audita en el código | `slideSidebarLeftOrange` | `StatelessWidget`, sin paquetes nuevos, solo widgets de `widgets.md` | Panel lateral con íconos |
+| 17 | Flujo de prototipado con Stitch MCP | `slideStandard` | De los prompts en lenguaje natural a los mockups consultados por Antigravity | SVG `stFlujo` |
+| 18 | Prompts para prototipado en Stitch | `slideStandard` | Anatomía de un buen prompt: contexto, jerarquía, inputs y restricciones mobile | Tarjeta con desglose |
+| 19 | Caso de uso: Clínica Veterinaria | `slideStandard` | Prompts estructurados para `SigninScreen`, `LoginScreen` y `HomeScreen` | Desglose de 3 pantallas |
+| 20 | Consulta e inspección con Stitch MCP | `slideStandard` | Herramientas `stitch_list_projects` y `stitch_get_screen` en acción desde Antigravity | Simulación de consola |
+| 21 | Prototipado sin fricción | `slideSidebarLeftOrange` | Validación de tokens, contraste y componentes visuales para la Entrega 1 | Panel lateral con íconos |
 | 22 | Playwright MCP | `sectionSlideEBlue` | Divisor de bloque | · |
 | 23 | Ojos y manos en el navegador | `slideStandard` | `@playwright/mcp`: control de Chromium en vivo desde Antigravity | Descripción de herramientas |
 | 24 | El árbol de accesibilidad | `slideStandard` | Por qué la semántica en texto estructurado supera a las capturas de imagen | SVG `pwFlujo` |
