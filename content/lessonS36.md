@@ -154,8 +154,8 @@ Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar
   Cuando un tutor llega por primera vez a la clínica, el formulario de registro debe capturar la información de contacto esencial y los datos de emergencia, vinculando de inmediato al animal de compañía.
 
   ```text
-  Pantalla móvil de registro (Crear Cuenta) para la app de la clínica veterinaria "Patitas & Co.".
-  Estilo limpio y moderno, coherente con la paleta verde esmeralda (#0F8478).
+  Pantalla móvil de registro (Crear Cuenta) para la clínica "Patitas & Co.".
+  Estilo limpio y moderno, con la paleta verde esmeralda (#0F8478).
 
   - Cabecera: Botón de regreso, título "Crear Cuenta" y subtítulo de bienvenida.
   - Formulario:
@@ -163,7 +163,7 @@ Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar
     * Teléfono de contacto / emergencias.
     * Correo electrónico y contraseña segura.
     * Nombre de tu primera mascota (opcional).
-  - Términos: Casilla de verificación para aceptar términos del servicio y tratamiento de datos.
+  - Términos: Casilla para aceptar términos y tratamiento de datos.
   - Acción principal: Botón "Registrarme" en verde esmeralda.
   - Pie: Enlace "¿Ya tienes cuenta? Inicia sesión".
   ```
@@ -179,14 +179,23 @@ Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar
 
   ```text
   Dashboard móvil (Home) para la clínica veterinaria "Patitas & Co.".
-  Tonos verde esmeralda (#0F8478), menta (#E3F6F3) y detalles cálidos (#F0C572).
+  Tonos verde esmeralda (#0F8478), menta (#E3F6F3) y ámbar (#F0C572).
 
-  - Barra superior: Foto de perfil, saludo "Hola, Mariana 👋" con subtítulo "3 mascotas registradas" y campana de notificaciones.
-  - Tarjeta de la mascota activa: Foto de la mascota ("Milo"), raza, edad, chip "Vacunas al día ✓" y selector para alternar mascota.
-  - Recordatorio de cita: Tarjeta con fecha ("Mañana, 10:30 AM"), motivo ("Vacuna Antirrábica") y botón "Reprogramar".
-  - Accesos rápidos: 4 botones con iconos: Agendar Cita, Vacunación, Peluquería y Urgencias 24h.
-  - Historial reciente: Tarjetas con las últimas 2 consultas o atenciones médicas.
-  - Barra inferior: Navegación con Inicio, Mascotas, Citas y Perfil.
+  - Barra superior:
+    * Foto de perfil y saludo "Hola, Mariana 👋".
+    * Subtítulo "3 mascotas registradas".
+    * Campana de notificaciones.
+  - Tarjeta de la mascota activa:
+    * Foto de "Milo", raza y edad.
+    * Chip "Vacunas al día ✓".
+    * Selector para cambiar de mascota.
+  - Recordatorio de cita:
+    * Fecha "Mañana, 10:30 AM" y motivo "Vacuna Antirrábica".
+    * Botón "Reprogramar".
+  - Accesos rápidos (4 botones con icono):
+    * Agendar Cita, Vacunación, Peluquería y Urgencias 24h.
+  - Historial reciente: las últimas 2 atenciones médicas.
+  - Barra inferior: Inicio, Mascotas, Citas y Perfil.
   ```
 
   Puntos clave de este diseño:
@@ -214,10 +223,16 @@ Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar
       "textPrimary": "#161A26"
     },
     "sections": [
-      { "type": "AppBar", "elements": ["AvatarTutor", "GreetingText", "NotificationBell"] },
+      {
+        "type": "AppBar",
+        "elements": ["AvatarTutor", "GreetingText", "NotificationBell"]
+      },
       { "type": "HeroCard", "petName": "Milo", "status": "Vacunas al día" },
       { "type": "AppointmentBanner", "date": "Mañana, 10:30 AM" },
-      { "type": "QuickServicesGrid", "items": ["Agendar", "Vacunación", "Peluquería", "Urgencias"] },
+      {
+        "type": "QuickServicesGrid",
+        "items": ["Agendar", "Vacunación", "Peluquería", "Urgencias"]
+      },
       { "type": "BottomBar", "tabs": ["Inicio", "Mascotas", "Citas", "Perfil"] }
     ]
   }
