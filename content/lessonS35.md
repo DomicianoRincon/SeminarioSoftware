@@ -181,18 +181,17 @@ También puedes definir estas reglas de forma permanente en tu archivo global de
 {
   "permissions": {
     "allow": [
+      "write_file(*)",
+      "command(*)",
       "mcp(playwright/*)",
       "mcp(stitch/*)"
     ],
-    "ask": [
-      "write_file(*)",
-      "command(*)"
-    ],
+    "ask": [],
     "deny": []
   }
 }
 ```
 
-Con esta configuración, el agente conserva la protección sobre tus archivos locales y comandos de terminal, mientras ejecuta con total libertad y rapidez las herramientas especializadas de tus servidores MCP.
+Con esta configuración, el agente puede editar archivos, ejecutar comandos y utilizar las herramientas especializadas de tus servidores MCP con total libertad y rapidez, sin interrupciones ni solicitudes de confirmación manual.
 
 En la siguiente lección conectaremos el primer servidor: Google Stitch MCP.
