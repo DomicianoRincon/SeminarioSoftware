@@ -1,6 +1,6 @@
 # Automatización con Playwright MCP
 
-<!-- tags: Playwright MCP, @playwright/mcp, automatización con IA, árbol de accesibilidad, pruebas de interfaz, verificar pantalla en navegador, Flutter web, navegador Chromium -->
+<!-- tags: Playwright MCP, @playwright/mcp, automatización con IA, árbol de accesibilidad, pruebas de interfaz, verificar pantalla en navegador, Flutter web, navegador Chromium, flujo de registro e2e -->
 
 Una vez que Antigravity genera una pantalla de Flutter, el paso natural es abrirla y comprobar que los campos de texto respondan, que los botones estén en su lugar y que el diseño no se rompa. En lugar de hacer clics manuales repetitivos en cada iteración, puedes darle a Antigravity un navegador real mediante **Playwright MCP**.
 
@@ -127,5 +127,27 @@ Sigue estos pasos para configurar Playwright MCP y experimentar cómo Antigravit
   ```
   Antigravity ejecutará `browser_fill` sobre los selectores semánticos y simulará el clic con `browser_click`, reportando el resultado de la interacción.
 
-- **Paso 5: Qué descubres con este ejercicio:**
+- **Paso 5: Fluir por toda la aplicación de registro paso a paso:**
+  Lleva la automatización un paso más allá solicitándole a Antigravity que recorra el flujo completo de registro de la aplicación, transitando de manera autónoma por cada una de sus pantallas y pasos:
+  ```text
+  > Navega a http://localhost:8080 y completa el flujo integral
+    de registro recorriendo todos los pasos de la aplicación:
+    1. Desde la pantalla de bienvenida o login, localiza y pulsa
+       el botón o enlace para registrarse ("Regístrate aquí" / "Crear cuenta").
+    2. Inspecciona el árbol de accesibilidad de la pantalla de registro
+       y localiza todos los campos del formulario.
+    3. Diligencia los datos requeridos en cada paso: nombre completo,
+       teléfono de contacto, correo electrónico y contraseña segura.
+    4. Si el asistente de registro incluye pasos adicionales (como datos de
+       perfil, mascota o preferencias), avanza secuencialmente completando
+       cada sección.
+    5. Acepta los términos de servicio y políticas de privacidad activando
+       la casilla correspondiente.
+    6. Presiona el botón final de confirmación ("Registrarme").
+    7. Valida que la navegación concluya con éxito en el tablero principal
+       (Home) o pantalla de confirmación, y reporta si hubo errores de validación.
+  ```
+  Antigravity coordinará de forma encadenada llamadas a `browser_snapshot`, `browser_fill` y `browser_click`. Al terminar, te presentará un resumen detallado de cada paso completado, los selectores identificados y el estado final de la interfaz.
+
+- **Paso 6: Qué descubres con este ejercicio:**
   Playwright MCP dota a tu agente de capacidad sensorial y motora en el navegador. Las comprobaciones de interfaz dejan de ser una tarea manual y repetitiva, permitiéndote auditar la funcionalidad de tus pantallas de manera continua.

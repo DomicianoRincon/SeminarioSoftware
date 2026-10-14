@@ -1,6 +1,6 @@
 # Configurar MCP en Antigravity
 
-<!-- tags: mcp_config.json, mcpServers, configurar MCP, permisos MCP, transporte stdio, npx mcp, herramientas externas en Antigravity, .agents/mcp_config.json -->
+<!-- tags: mcp_config.json, mcpServers, configurar MCP, permisos MCP, /permissions, transporte stdio, npx mcp, herramientas externas en Antigravity, .agents/mcp_config.json -->
 
 Para que Antigravity pueda utilizar un servidor MCP, solo necesitas decírselo en un archivo JSON. No tienes que compilar servidores ni modificar el código de la aplicación.
 
@@ -151,4 +151,48 @@ En la sesión 4 configuraste las reglas de permiso para que Antigravity no edite
 - **Lecturas seguras:** Operaciones como consultar la estructura de un diseño o inspeccionar el contenido de una página suelen ejecutarse fluidamente.
 - **Acciones externas:** Si una herramienta realiza acciones que modifican recursos remotos, envían peticiones a servicios de terceros o ejecutan scripts externos, Antigravity te mostrará el nombre de la herramienta y sus parámetros para que confirmes antes de proceder.
 
-Tú mantienes siempre el control de lo que el agente hace hacia afuera. En la siguiente lección conectaremos el primer servidor: Google Stitch MCP.
+### Ejecutar herramientas MCP libremente con /permissions
+
+Cuando interactúas con servidores como Playwright o Stitch, confirmar manualmente cada clic, campo de texto o captura de accesibilidad puede volverse repetitivo e interrumpir la fluidez del agente. Para permitir que Antigravity ejecute las herramientas de un servidor MCP sin pedir confirmación en cada llamada, puedes agregarlas a la lista de permitidos (**allowlist**) mediante el comando `/permissions` (o `/permission`).
+
+**Paso a paso para autorizar un servidor MCP:**
+
+1. En la consola interactiva de Antigravity, escribe:
+   ```text
+   /permissions
+   ```
+2. Desplázate con la tecla **Tab** hasta situarte en la sección **allowlist**.
+3. Presiona la tecla **A** (*Add*) para registrar una nueva regla.
+4. Escribe el patrón de permiso según el nivel de libertad que desees otorgar:
+   - **Para un servidor específico:** autoriza todas las herramientas de ese servidor. Por ejemplo:
+     - `mcp(playwright/*)` para permitir que Playwright navegue, haga clics y rellene formularios sin pausas.
+     - `mcp(stitch/*)` para permitir consultas e inspección en Google Stitch.
+   - **Para una herramienta puntual:** si solo deseas liberar una acción concreta:
+     - `mcp(playwright/browser_navigate)`
+   - **Para todos los servidores MCP:** si estás en un entorno de pruebas controlado y quieres habilitar cualquier herramienta de cualquier MCP:
+     - `mcp(*)`
+5. Presiona **Enter** y selecciona el alcance (**Scope**):
+   - Elige **Project** para que la autorización aplique únicamente a este repositorio.
+   - Elige **User** si deseas que la regla aplique a todos tus proyectos en tu equipo.
+
+También puedes definir estas reglas de forma permanente en tu archivo global de configuración (`~/.gemini/antigravity-cli/settings.json`), dentro del arreglo `"allow"`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp(playwright/*)",
+      "mcp(stitch/*)"
+    ],
+    "ask": [
+      "write_file(*)",
+      "command(*)"
+    ],
+    "deny": []
+  }
+}
+```
+
+Con esta configuración, el agente conserva la protección sobre tus archivos locales y comandos de terminal, mientras ejecuta con total libertad y rapidez las herramientas especializadas de tus servidores MCP.
+
+En la siguiente lección conectaremos el primer servidor: Google Stitch MCP.
