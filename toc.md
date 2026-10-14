@@ -43,7 +43,6 @@
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS36.md | Prototipado con Stitch MCP | S0036
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS37.md | Automatización con Playwright MCP | S0037
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS39.md | Colaboración con GitHub MCP | S0039
-[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS38.md | Taller · Servidores MCP | S0038
 [t] Instalación avanzada
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC1.md | Instalación de Flutter | 0019
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC2.md | Tu primera app Flutter | 0020

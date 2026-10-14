@@ -17,7 +17,7 @@ from sesion3_figuras import mark, txt  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INK, MUTED, FAINT = '#161A26', '#556074', '#79809A'
-LESSONS = ('lessonS34.md', 'lessonS35.md', 'lessonS36.md', 'lessonS37.md', 'lessonS38.md', 'lessonS39.md')
+LESSONS = ('lessonS34.md', 'lessonS35.md', 'lessonS36.md', 'lessonS37.md', 'lessonS39.md')
 
 FIGS = {}
 
@@ -421,7 +421,7 @@ def ts_carpetas_mcp():
     return s + '</svg>\n'
 
 
-FIGS['tsCarpetasMcp'] = ts_carpetas_mcp
+# FIGS['tsCarpetasMcp'] = ts_carpetas_mcp
 
 
 def main():

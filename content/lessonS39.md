@@ -120,12 +120,47 @@ Al iniciar, GitHub MCP inyecta un conjunto de herramientas especializadas en la 
 - **`create_pull_request`:** Abre un Pull Request desde una rama de trabajo hacia `main`, incluyendo una descripción estructurada de las pantallas agregadas.
 - **`get_file_contents`:** Consulta archivos o ramas de otros repositorios sin necesidad de clonarlos localmente.
 
-## Caso práctico en el proyecto
+## Paso a paso: Configurar y experimentar con GitHub MCP
 
-Imagina que tu equipo tiene abierto el **Issue #3: Crear pantalla de Login**. Con GitHub MCP, el flujo de trabajo con Antigravity es directo:
+Sigue estos pasos para conectar Antigravity con los repositorios de tu equipo y experimentar la trazabilidad colaborativa:
 
-```text
-> Lee el Issue #3 de nuestro repositorio, verifica los requerimientos de la pantalla de Login y asegúrate de que login_screen.dart cumpla con todos los campos solicitados.
-```
+- **Paso 1: Generar tu Personal Access Token (PAT):**
+  En tu cuenta de GitHub (github.com), dirígete a *Settings* → *Developer settings* → *Personal access tokens* → *Tokens (classic)*. Genera un token nuevo con alcance `repo` (lectura y escritura de repositorios).
 
-Antigravity leerá el issue remoto, comprobará que el correo y la contraseña coincidan con los nombres pedidos por tu equipo, y confirmará el cumplimiento de los requerimientos. Esta trazabilidad garantiza que todo lo construido en clase responda fielmente a las entregas pactadas en el planeador del curso.
+- **Paso 2: Registrar el servidor en tu entorno:**
+  En el archivo `.agents/mcp_config.json` de tu proyecto, añade el bloque de GitHub dentro de `mcpServers`:
+  ```json
+  {
+    "mcpServers": {
+      "github": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-github"],
+        "env": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_tu_token_aqui"
+        }
+      }
+    }
+  }
+  ```
+  *Nota de seguridad:* Si tu repositorio es público o compartido, es preferible definir la variable en tu entorno del sistema o configurar el bloque en `~/.gemini/config/mcp_config.json` para no dejar expuesto el token en el historial de Git.
+
+- **Paso 3: Experimentar la consulta de Issues del equipo:**
+  Abre Antigravity en la carpeta del repositorio y pídele al agente:
+  ```text
+  > Consulta nuestro repositorio de GitHub y lista los issues abiertos para el sprint actual.
+  ```
+  Antigravity invocará `list_issues` y te entregará el listado estructurado con número de issue, título, autor y etiquetas.
+
+- **Paso 4: Experimentar la lectura de especificaciones y reporte de tareas:**
+  Pídele al agente que examine los criterios de aceptación de una tarea específica:
+  ```text
+  > Lee el Issue #3 de nuestro repositorio y resume los requisitos que debe cumplir la pantalla.
+  ```
+  También puedes probar la creación de un nuevo issue de seguimiento:
+  ```text
+  > Crea un issue titulado "Revisión de accesibilidad en formularios" con la etiqueta "triage" y una descripción breve sobre la necesidad de contrastes adecuados.
+  ```
+
+- **Paso 5: Qué descubres con este ejercicio:**
+  GitHub MCP convierte a Antigravity en un miembro activo del equipo: lee especificaciones directamente de los issues, documenta hallazgos y mantiene la trazabilidad del proyecto sin necesidad de copiar y pegar manualmente entre pestañas del navegador.
+

@@ -83,17 +83,43 @@ Al conectar `@playwright/mcp`, Antigravity incorpora herramientas clave para int
 - **`browser_snapshot`:** Captura el estado actual del árbol de accesibilidad para que el agente verifique el resultado de una acción.
 - **`browser_take_screenshot`:** Toma una captura visual únicamente cuando se requiere una comprobación estética puntual.
 
-## Caso práctico: verificar el flujo de autenticación
+## Paso a paso: Configurar y experimentar con Playwright MCP
 
-Para probar la pantalla de login con Antigravity y Playwright:
+Sigue estos pasos para configurar Playwright MCP y experimentar cómo Antigravity interactúa de forma autónoma con tu aplicación web:
 
-1. **Inicias la aplicación en modo web:**
-   Ejecutas en la terminal `flutter run -d web-server --web-port 8080`.
-2. **Le das la instrucción a Antigravity:**
-   ```text
-   > Abre http://localhost:8080 con Playwright, entra a la pantalla de login, escribe "domiciano@icesi.edu.co" en el correo y "clave123" en la contraseña, y verifica que los botones y enlaces del formulario sean detectados correctamente.
-   ```
-3. **Antigravity ejecuta la verificación:**
-   Llama a `browser_navigate`, lee el árbol de accesibilidad, invoca `browser_fill` en los campos indicados y te entrega un reporte detallando qué elementos encontró y si hubo algún problema de visualización.
+- **Paso 1: Configurar el servidor en tu proyecto:**
+  En `.agents/mcp_config.json`, añade el bloque de Playwright dentro del objeto `mcpServers`:
+  ```json
+  {
+    "mcpServers": {
+      "playwright": {
+        "command": "npx",
+        "args": ["-y", "@playwright/mcp@latest"]
+      }
+    }
+  }
+  ```
 
-Este ciclo automatizado ahorra minutos valiosos en cada sesión de desarrollo y sienta las bases para probar la aplicación de forma continua a lo largo del semestre. En la siguiente lección integraremos todo en el taller práctico.
+- **Paso 2: Iniciar la aplicación web en segundo plano:**
+  Abre una terminal en tu proyecto y levanta el servidor web de Flutter en un puerto fijo:
+  ```bash
+  flutter run -d web-server --web-port=8080
+  ```
+  Espera hasta que la consola indique que el servidor web está sirviendo en `http://localhost:8080`.
+
+- **Paso 3: Experimentar la navegación y lectura de accesibilidad:**
+  En tu sesión de Antigravity, pídele al agente que examine la página inicial:
+  ```text
+  > Conéctate a http://localhost:8080 mediante Playwright y extrae el árbol de accesibilidad de la pantalla activa.
+  ```
+  Antigravity invocará `browser_navigate` y `browser_snapshot`. Observa cómo devuelve la lista estructurada de botones, campos de texto y encabezados sin haber cargado una sola imagen gráfica.
+
+- **Paso 4: Experimentar la interacción con formularios:**
+  Prueba la capacidad del agente para rellenar campos y accionar botones:
+  ```text
+  > En la pantalla de login, escribe "estudiante@icesi.edu.co" en el campo de correo, ingresa una contraseña de prueba y presiona el botón "Iniciar sesión". Verifica si los elementos respondieron y si hay mensajes de error.
+  ```
+  Antigravity ejecutará `browser_fill` sobre los selectores semánticos y simulará el clic con `browser_click`, reportando el resultado de la interacción.
+
+- **Paso 5: Qué descubres con este ejercicio:**
+  Playwright MCP dota a tu agente de capacidad sensorial y motora en el navegador. Las comprobaciones de interfaz dejan de ser una tarea manual y repetitiva, permitiéndote auditar la funcionalidad de tus pantallas de manera continua.

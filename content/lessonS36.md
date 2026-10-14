@@ -246,3 +246,43 @@ Antigravity invoca `stitch_get_screen` y recibe una estructura JSON con los toke
 ```
 
 Gracias a esta integración, no necesitas transcribir valores hexadecimales a ciegas ni adivinar el espaciado entre widgets. El agente utiliza los datos exactos del prototipo para cualquier análisis o documentación de tu proyecto.
+
+## Paso a paso: Configurar y experimentar con Stitch MCP
+
+Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch para experimentar la extracción de prototipos con Antigravity:
+
+- **Paso 1: Configurar el servidor en tu proyecto:**
+  En la raíz de tu proyecto, abre o crea el archivo `.agents/mcp_config.json` y registra el servidor de Stitch dentro de `mcpServers`:
+  ```json
+  {
+    "mcpServers": {
+      "stitch": {
+        "command": "npx",
+        "args": ["-y", "stitch-mcp"],
+        "env": {
+          "STITCH_API_KEY": "tu_clave_de_google_stitch"
+        }
+      }
+    }
+  }
+  ```
+
+- **Paso 2: Generar el prototipo en Google Stitch:**
+  Entra a [stitch.withgoogle.com](https://stitch.withgoogle.com) con tu cuenta de Google Labs. Crea un nuevo lienzo e ingresa los prompts estructurados vistos en esta lección (para la clínica veterinaria o el tema de tu proyecto). Verifica que se generen los mockups de `LoginScreen`, `SigninScreen` y `HomeScreen`.
+
+- **Paso 3: Experimentar la consulta en Antigravity:**
+  Abre una terminal en tu proyecto e inicia Antigravity. Como `.agents/mcp_config.json` se procesa al arrancar, el agente descubrirá de inmediato las herramientas de Stitch.
+  
+  Pídele al agente en lenguaje natural:
+  ```text
+  > Consulta mis proyectos en Google Stitch y muéstrame las pantallas disponibles del flujo de veterinaria.
+  ```
+  
+  Luego, solicítale una inspección detallada:
+  ```text
+  > Extrae los tokens visuales de la pantalla HomeScreen en Stitch: colores primarios, fondo de tarjetas y componentes detectados.
+  ```
+
+- **Paso 4: Qué descubres con este ejercicio:**
+  Antigravity ejecuta internamente `stitch_list_projects` y `stitch_get_screen`, mostrando el árbol de componentes y los códigos cromáticos exactos. Has conectado el diseño en la nube con tu asistente local, eliminando la transcripción manual de medidas.
+
