@@ -276,7 +276,7 @@ def st_flujo():
     s += f'  <path d="M466,205 H486" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
     s += f'  <path d="M688,205 H708" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
 
-    s += '  ' + callout(316, '<tspan font-weight="700">El agente inspecciona el diseño en vivo:</tspan> a través de Stitch MCP, Antigravity lee directamente los elementos visuales sin necesidad de exportar capturas ni medidas manuales.') + '\n'
+    s += '  ' + callout(316, '<tspan font-weight="700">El agente inspecciona el diseño en vivo:</tspan> Antigravity lee los elementos visuales por Stitch MCP, sin exportar capturas.') + '\n'
     return s + '</svg>\n'
 
 
