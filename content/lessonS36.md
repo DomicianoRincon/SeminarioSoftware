@@ -251,8 +251,18 @@ Gracias a esta integración, no necesitas transcribir valores hexadecimales a ci
 
 Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch para experimentar la extracción de prototipos con Antigravity:
 
-- **Paso 1: Configurar el servidor en tu proyecto:**
-  En la raíz de tu proyecto, abre o crea el archivo `.agents/mcp_config.json` y registra el servidor de Stitch dentro de `mcpServers`:
+- **Paso 1: Obtener tu API Key en Google Stitch:**
+  Para que el servidor MCP pueda conectarse a tu cuenta de Stitch sin abrir ventanas interactivas del navegador en cada ejecución, necesitas una clave de API:
+  1. Ingresa a [stitch.withgoogle.com](https://stitch.withgoogle.com) con tu cuenta de Google.
+  2. Haz clic en el icono de tu perfil o avatar en la esquina superior derecha de la pantalla.
+  3. Selecciona **Settings** (Configuración) en el menú desplegable.
+  4. Dirígete a la pestaña o sección **API Keys**.
+  5. Haz clic en **Create Key** (o *Generate a Key*) y copia de inmediato la clave generada.
+  
+  *(Opción alternativa por consola: puedes ejecutar en tu terminal `npx @_davideast/stitch-mcp init` para autenticarte mediante el asistente guiado interactivo).*
+
+- **Paso 2: Configurar el servidor en tu proyecto:**
+  En la raíz de tu proyecto, abre o crea el archivo `.agents/mcp_config.json` y registra el servidor de Stitch dentro de `mcpServers`, reemplazando el valor de `STITCH_API_KEY` con tu clave:
   ```json
   {
     "mcpServers": {
@@ -266,11 +276,12 @@ Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch 
     }
   }
   ```
+  *Nota de seguridad:* Nunca hagas commit de tu clave en un repositorio público. Si compartes el repositorio de tu equipo, es recomendable definir la variable de entorno en tu sistema operativo (`export STITCH_API_KEY="..."`) o agregar el bloque a la configuración global en `~/.gemini/config/mcp_config.json`.
 
-- **Paso 2: Generar el prototipo en Google Stitch:**
-  Entra a [stitch.withgoogle.com](https://stitch.withgoogle.com) con tu cuenta de Google Labs. Crea un nuevo lienzo e ingresa los prompts estructurados vistos en esta lección (para la clínica veterinaria o el tema de tu proyecto). Verifica que se generen los mockups de `LoginScreen`, `SigninScreen` y `HomeScreen`.
+- **Paso 3: Generar el prototipo en Google Stitch:**
+  En [stitch.withgoogle.com](https://stitch.withgoogle.com), crea un nuevo lienzo e ingresa los prompts estructurados de la clínica veterinaria vistos en esta lección (o los de tu proyecto de semestre). Verifica que se generen los mockups de `LoginScreen`, `SigninScreen` y `HomeScreen`.
 
-- **Paso 3: Experimentar la consulta en Antigravity:**
+- **Paso 4: Experimentar la consulta en Antigravity:**
   Abre una terminal en tu proyecto e inicia Antigravity. Como `.agents/mcp_config.json` se procesa al arrancar, el agente descubrirá de inmediato las herramientas de Stitch.
   
   Pídele al agente en lenguaje natural:
@@ -283,6 +294,6 @@ Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch 
   > Extrae los tokens visuales de la pantalla HomeScreen en Stitch: colores primarios, fondo de tarjetas y componentes detectados.
   ```
 
-- **Paso 4: Qué descubres con este ejercicio:**
+- **Paso 5: Qué descubres con este ejercicio:**
   Antigravity ejecuta internamente `stitch_list_projects` y `stitch_get_screen`, mostrando el árbol de componentes y los códigos cromáticos exactos. Has conectado el diseño en la nube con tu asistente local, eliminando la transcripción manual de medidas.
 
