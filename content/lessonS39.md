@@ -1,6 +1,6 @@
 # Colaboración con GitHub MCP
 
-<!-- tags: GitHub MCP, server-github, gestión de issues, pull requests con IA, GITHUB_PERSONAL_ACCESS_TOKEN, automatización de repositorios, trabajo en equipo, trazabilidad del reto -->
+<!-- tags: GitHub MCP, server-github, gestión de issues, pull requests con IA, GITHUB_PERSONAL_ACCESS_TOKEN, permisos mcp(github/*), merge_pull_request, automatización de repositorios, trabajo en equipo, trazabilidad del reto -->
 
 Hasta ahora has conectado a Antigravity con dos herramientas externas: **Stitch** para el diseño visual y **Playwright** para la verificación en el navegador. Sin embargo, el software no se construye de forma aislada: en el Seminario trabajas en equipo y todo el ciclo de vida del proyecto vive en **GitHub**.
 
@@ -118,6 +118,36 @@ Al iniciar, GitHub MCP inyecta un conjunto de herramientas especializadas en la 
 - **`create_issue`:** Permite que el agente reporte automáticamente un bug con título, etiquetas y pasos de reproducción cuando una prueba de Playwright falla.
 - **`create_pull_request`:** Abre un Pull Request desde una rama de trabajo hacia `main`, incluyendo una descripción estructurada de las pantallas agregadas.
 - **`get_file_contents`:** Consulta archivos o ramas de otros repositorios sin necesidad de clonarlos localmente.
+
+## Permisos para GitHub MCP
+
+En la lección de configuración de MCP aprendiste a liberar un servidor completo con `mcp(playwright/*)`. Con GitHub conviene ser más fino: la mayoría de sus herramientas son seguras (leer issues, abrir un PR que otro va a revisar), pero unas pocas cambian el repositorio del equipo de forma directa y difícil de revertir.
+
+La estrategia es permitir todo el servidor y, al mismo tiempo, exigir confirmación para esas acciones delicadas. En `~/.gemini/antigravity-cli/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp(github/*)"
+    ],
+    "ask": [
+      "mcp(github/merge_pull_request)",
+      "mcp(github/push_files)",
+      "mcp(github/delete_file)"
+    ],
+    "deny": []
+  }
+}
+```
+
+Las tres herramientas que quedan en `"ask"` son las que se saltan la revisión entre compañeros:
+
+- **`merge_pull_request`:** fusiona un PR en `main`. Es justo el paso que debe decidir una persona del equipo después de revisar.
+- **`push_files`:** sube uno o varios archivos con un commit directo a una rama, sin pasar por un Pull Request.
+- **`delete_file`:** borra un archivo del repositorio remoto con su propio commit.
+
+La regla de `"ask"` es más específica que el comodín de `"allow"`, así que gana: Antigravity consulta issues y abre PRs sin pausas, pero se detiene y te muestra los parámetros antes de fusionar, subir o borrar.
 
 ## Paso a paso: Configurar y experimentar con GitHub MCP
 
