@@ -14,7 +14,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `S0018` Taller · Componentes |
 | 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill · `S0033` Una skill para armar pantallas |
-| 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0038` Taller · Servidores MCP |
+| 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0039` Colaboración con GitHub MCP · `S0038` Taller · Servidores MCP |
 | 6 | 22 | 11 | 4 | Stateful widget y setState | ⬜ | |
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | ⬜ | |
@@ -191,4 +191,5 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS35.md` | `S0035` | Configurar MCP en Antigravity | 5 |
 | `lessonS36.md` | `S0036` | Prototipado con Stitch MCP | 5 |
 | `lessonS37.md` | `S0037` | Automatización con Playwright MCP | 5 |
+| `lessonS39.md` | `S0039` | Colaboración con GitHub MCP | 5 |
 | `lessonS38.md` | `S0038` | Taller · Servidores MCP | 5 |

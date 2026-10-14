@@ -17,7 +17,7 @@ from sesion3_figuras import mark, txt  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INK, MUTED, FAINT = '#161A26', '#556074', '#79809A'
-LESSONS = ('lessonS34.md', 'lessonS35.md', 'lessonS36.md', 'lessonS37.md', 'lessonS38.md')
+LESSONS = ('lessonS34.md', 'lessonS35.md', 'lessonS36.md', 'lessonS37.md', 'lessonS38.md', 'lessonS39.md')
 
 FIGS = {}
 
@@ -331,6 +331,53 @@ def pw_flujo():
 
 
 FIGS['pwFlujo'] = pw_flujo
+
+
+# ───────────────────────────── S0039 · Colaboración con GitHub MCP
+
+def gh_flujo():
+    fid = 'ghFlujo'
+    h = 420
+    s = head(fid, h, 'Gestión colaborativa con GitHub MCP',
+             'Gestión colaborativa con GitHub MCP',
+             'Antigravity interactúa con el repositorio remoto para consultar issues, reportar hallazgos y abrir pull requests.',
+             'Tres bloques. A la izquierda, Antigravity gestionando el flujo de trabajo. En el centro, GitHub MCP Server con herramientas de issues y PRs. A la derecha, la plataforma de GitHub con el repositorio del equipo.')
+
+    # Antigravity
+    s += '  ' + box(48, 120, 250, 160, 'indigo', strong=True) + '\n'
+    s += '  ' + txt(72, 154, 'Antigravity', 16, 700, FAM['indigo'][2]) + '\n'
+    s += '  ' + txt(72, 180, '1. Lee requerimientos', 13, 400, INK) + '\n'
+    s += '  ' + txt(72, 204, '2. Implementa y audita', 13, 400, INK) + '\n'
+    s += '  ' + txt(72, 228, '3. Documenta hallazgos', 13, 400, INK) + '\n'
+    s += '  ' + txt(72, 252, '4. Abre Pull Request', 13, 400, INK) + '\n'
+
+    # GitHub MCP Server
+    s += '  ' + box(348, 120, 240, 160, 'violet') + '\n'
+    s += '  ' + txt(372, 154, 'GitHub MCP Server', 16, 700, FAM['violet'][2], cls='mono') + '\n'
+    s += '  ' + txt(372, 182, '• list_issues / get', 13, 600, MUTED, cls='mono') + '\n'
+    s += '  ' + txt(372, 206, '• create_issue', 13, 600, MUTED, cls='mono') + '\n'
+    s += '  ' + txt(372, 230, '• create_pull_request', 13, 600, MUTED, cls='mono') + '\n'
+    s += '  ' + txt(372, 254, '• get_file_contents', 13, 600, MUTED, cls='mono') + '\n'
+
+    # GitHub Remoto
+    s += '  ' + box(638, 120, 274, 160, 'green') + '\n'
+    s += '  ' + txt(662, 154, 'GitHub del Equipo', 16, 700, FAM['green'][2]) + '\n'
+    s += '  ' + txt(662, 182, 'Issue #3: Pantalla de Login', 13, 400, INK) + '\n'
+    s += '  ' + txt(662, 206, 'PR #12: feat/auth-screens', 13, 600, FAM['indigo'][2]) + '\n'
+    s += '  ' + txt(662, 230, 'Revisión por compañeros', 13, 400, MUTED) + '\n'
+    s += '  ' + txt(662, 254, 'Trazabilidad del reto', 12.5, 700, FAM['green'][2]) + '\n'
+
+    # Flechas bidireccionales
+    s += f'  <path d="M298,185 H342" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
+    s += f'  <path d="M342,215 H298" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
+    s += f'  <path d="M588,185 H632" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
+    s += f'  <path d="M632,215 H588" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
+
+    s += '  ' + callout(306, '<tspan font-weight="700">Trazabilidad en equipo:</tspan> Antigravity conecta el trabajo local con el tablero de GitHub, documentando avances y abriendo revisiones de código automáticamente.') + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['ghFlujo'] = gh_flujo
 
 
 # ───────────────────────────── S0038 · Taller y Carpetas

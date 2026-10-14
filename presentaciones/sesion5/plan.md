@@ -6,7 +6,7 @@
 **Público:** estudiantes de Ingeniería de Sistemas, con `mi_app_1` tal como quedó en la sesión 4 (con `AGENTS.md` y `flutter-pantallas`) y la Entrega 1 en curso.  
 **Proyecto de referencia:** `mi_app_1`, la red social profesional del curso.  
 **Herramienta de desarrollo:** **Google Antigravity** exclusivamente.  
-**Fuente:** las cinco lecciones de la sección *Sesión 5 · Servidores MCP* del visor (`S0034`, `S0035`, `S0036`, `S0037`, `S0038`). El plan sigue su orden y su contenido.
+**Fuente:** las seis lecciones de la sección *Sesión 5 · Servidores MCP* del visor (`S0034`, `S0035`, `S0036`, `S0037`, `S0039`, `S0038`). El plan sigue su orden y su contenido.
 
 **Estado:** plan redactado siguiendo los lineamientos pedagógicos del curso y el planeador institucional.
 
@@ -14,23 +14,25 @@
 
 1. Que entiendan la diferencia conceptual entre una **Skill** (instrucciones y metodología) y un **Servidor MCP** (herramientas y conexiones externas vivas).
 2. Que conozcan la arquitectura de MCP: Host/Cliente (Antigravity), Servidor local (proceso `stdio`) y Servicios externos.
-3. Que configuren `.agents/mcp_config.json` con los servidores de **Google Stitch** y **Playwright**.
+3. Que configuren `.agents/mcp_config.json` con los servidores de **Google Stitch**, **Playwright** y **GitHub**.
 4. Que comprendan el modelo de permisos y supervisión al invocar herramientas externas.
 5. Que usen Stitch MCP para extraer el diseño de autenticación y generen `LoginScreen` y `RegisterScreen` en Flutter bajo las reglas de `flutter-pantallas`.
 6. Que usen Playwright MCP para que Antigravity navegue en Chromium, lea el árbol de accesibilidad y verifique los campos del formulario.
-7. Que dejen las pantallas y la configuración integradas en su repositorio como evidencia de la Entrega 1.
+7. Que usen GitHub MCP para consultar issues del equipo, documentar hallazgos y abrir Pull Requests.
+8. Que dejen las pantallas y la configuración integradas en su repositorio como evidencia de la Entrega 1.
 
 ## Tiempos
 
 | Bloque | Slides | Minutos |
 |---|---|---|
 | Apertura y contexto | 1 a 3 | 10 |
-| De las instrucciones a las herramientas (MCP) | 4 a 9 | 20 |
+| De las instrucciones a las herramientas (MCP) | 4 a 9 | 15 |
 | Configuración de MCP en Antigravity | 10 a 14 | 15 |
-| Google Stitch MCP: Login y Registro | 15 a 21 | 25 |
-| Playwright MCP: Verificación en navegador | 22 a 26 | 20 |
-| Taller práctico en clase | 27 a 30 | 20 |
-| Cierre y Entrega 1 | 31 y 32 | 10 |
+| Google Stitch MCP: Login y Registro | 15 a 20 | 25 |
+| Playwright MCP: Verificación en navegador | 21 a 24 | 15 |
+| GitHub MCP: Colaboración y repositorios | 25 a 28 | 15 |
+| Taller práctico en clase | 29 a 32 | 15 |
+| Cierre y Entrega 1 | 33 y 34 | 10 |
 
 Total: 120 minutos (2 horas).
 
@@ -70,13 +72,15 @@ Siguiendo el estándar de las presentaciones institucionales de Icesi:
 | 22 | Playwright MCP | `sectionSlideEBlue` | Divisor de bloque | · |
 | 23 | Ojos y manos en el navegador | `slideStandard` | `@playwright/mcp`: control de Chromium en vivo desde Antigravity | Descripción de herramientas |
 | 24 | El árbol de accesibilidad | `slideStandard` | Por qué la semántica en texto estructurado supera a las capturas de imagen | SVG `pwFlujo` |
-| 25 | Verificación automatizada de Login | `slideStandard` | Navegación a localhost:8080, rellenado de credenciales y validación de elementos | Flujo de comandos |
-| 26 | Cero clics repetitivos | `sectionSlideEGreen` | *El agente valida la interfaz en segundos cada vez que haces un cambio de layout.* | · |
-| 27 | Manos a la obra | `titleSlideF` | Separador: *Taller · Servidores MCP en tu proyecto* | · |
-| 28 | Paso 1 y 2: Configurar y verificar | `slideStandard` | Crear `.agents/mcp_config.json` y comprobar las herramientas en Antigravity | Pasos guiados |
-| 29 | Paso 3: Generar Login y Registro | `slideStandard` | Pedir las pantallas respetando la paleta de widgets | Bloque de instrucciones |
-| 30 | Paso 4 y 5: Probar y auditar | `slideStandard` | Levantar Flutter web, ejecutar verificación con Playwright y auditar código | Checklist de auditoría |
-| 31 | Lo que te llevas para la Entrega 1 | `slideStandard` | `mer.svg`, prototipo en Stitch, pantallas en Flutter y herramientas configuradas | Lista de entregables |
-| 32 | Para la próxima sesión | `slideSidebarLeftOrange` | Próximo tema: `StatefulWidget` y `setState` (dar vida a los formularios) | Panel lateral con íconos |
+| 25 | GitHub MCP | `sectionSlideEBlue` | Divisor de bloque | · |
+| 26 | El software se construye en equipo | `slideStandard` | Conectar Antigravity con los Issues, Pull Requests y ramas del proyecto | SVG `ghFlujo` |
+| 27 | Herramientas de GitHub | `slideStandard` | `list_issues`, `create_issue`, `create_pull_request`, `get_file_contents` | Descripción de herramientas |
+| 28 | Cero fricción en el equipo | `sectionSlideEGreen` | *Antigravity lee el issue del sprint, programa la pantalla y abre el Pull Request automáticamente.* | · |
+| 29 | Manos a la obra | `titleSlideF` | Separador: *Taller · Servidores MCP en tu proyecto* | · |
+| 30 | Paso 1 y 2: Configurar y verificar | `slideStandard` | Crear `.agents/mcp_config.json` con Stitch, Playwright y GitHub | Pasos guiados |
+| 31 | Paso 3: Generar Login y Registro | `slideStandard` | Pedir las pantallas respetando la paleta de widgets | Bloque de instrucciones |
+| 32 | Paso 4 y 5: Probar y auditar | `slideStandard` | Levantar Flutter web, ejecutar verificación con Playwright y auditar código | Checklist de auditoría |
+| 33 | Lo que te llevas para la Entrega 1 | `slideStandard` | `mer.svg`, prototipo en Stitch, pantallas en Flutter y herramientas configuradas | Lista de entregables |
+| 34 | Para la próxima sesión | `slideSidebarLeftOrange` | Próximo tema: `StatefulWidget` y `setState` (dar vida a los formularios) | Panel lateral con íconos |
 
-**32 slides.** Cada slide de contenido cuenta con sus notas de orador (tecla `S`) correspondientes a las lecciones `S0034` a `S0038`.
+**34 slides.** Cada slide de contenido cuenta con sus notas de orador (tecla `S`) correspondientes a las lecciones `S0034` a `S0039`.
