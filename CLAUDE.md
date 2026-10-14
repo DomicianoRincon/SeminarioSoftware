@@ -349,6 +349,12 @@ Markdown estándar (CommonMark + GFM) para todo, más estos bloques cercados:
 Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a secas): sin
 él, el renderizador la confunde con código en línea.
 
+**Líneas cortas en bloques cercados (máximo 80–85 caracteres)**: El visor no hace salto
+de línea automático dentro de ` ```text `, ` ```json `, ` ```bash ` o ` ```dart `. Líneas de
+más de ~85–90 caracteres desbordan el contenedor y hacen que los párrafos de la lección
+se recorten a lo ancho. Divide prompts largos en sub-viñetas y formatea JSONs y comandos
+en varias líneas.
+
 > DartPad corre en un iframe de `dartpad.dev`. Por la política de mismo origen no se
 > puede leer el código que escribe el estudiante, ni si compila, ni el error. Solo se
 > registra que lo abrió y cuánto tiempo tuvo el foco.

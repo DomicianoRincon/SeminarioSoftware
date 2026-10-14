@@ -96,6 +96,7 @@ npx vitest run <file> # Ejecutar un único archivo de pruebas
 Las lecciones deben estar **ampliamente ilustradas mediante figuras vectoriales SVG**, no solamente con bloques de texto.
 - **PROHIBIDO el uso de tablas Markdown** (`|---|`). Explicar en prosa corta, listas o diagramas SVG.
 - **PROHIBIDO árboles de carpetas en texto ASCII (`├──`)**. Usar figuras SVG.
+- **Límite de caracteres en bloques de código cercados (máximo 80–85 caracteres por línea)**: El visor de notas no aplica salto de línea automático en bloques cercados (` ```text `, ` ```json `, ` ```bash `, ` ```dart `). Líneas de más de ~85–90 caracteres desbordan el contenedor a lo ancho y recortan los párrafos de la lección. Partir prompts extensos en sub-viñetas y dividir JSONs o comandos largos en múltiples líneas.
 - Fondo claro fijo (`<rect fill="#FBFBFD" rx="16">`) sin media queries de modo oscuro (en modo oscuro se muestra como tarjeta clara aislada).
 - Cada SVG lleva `id` raíz único (`<svg id="fiPasos" ...>`) y **todo** selector de estilo va prefijado (`#fiPasos .card`).
 
