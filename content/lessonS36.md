@@ -286,12 +286,16 @@ Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch 
   
   Pídele al agente en lenguaje natural:
   ```text
-  > Consulta mis proyectos en Google Stitch y muéstrame las pantallas disponibles del flujo de veterinaria.
+  > Consulta mis proyectos en Google Stitch
+    y muéstrame las pantallas disponibles
+    del flujo de veterinaria.
   ```
   
   Luego, solicítale una inspección detallada:
   ```text
-  > Extrae los tokens visuales de la pantalla HomeScreen en Stitch: colores primarios, fondo de tarjetas y componentes detectados.
+  > Extrae los tokens visuales de la pantalla
+    HomeScreen en Stitch: colores primarios,
+    fondo de tarjetas y componentes detectados.
   ```
 
 - **Paso 5: Qué descubres con este ejercicio:**

@@ -110,14 +110,20 @@ Sigue estos pasos para configurar Playwright MCP y experimentar cómo Antigravit
 - **Paso 3: Experimentar la navegación y lectura de accesibilidad:**
   En tu sesión de Antigravity, pídele al agente que examine la página inicial:
   ```text
-  > Conéctate a http://localhost:8080 mediante Playwright y extrae el árbol de accesibilidad de la pantalla activa.
+  > Conéctate a http://localhost:8080
+    mediante Playwright y extrae el árbol
+    de accesibilidad de la pantalla activa.
   ```
   Antigravity invocará `browser_navigate` y `browser_snapshot`. Observa cómo devuelve la lista estructurada de botones, campos de texto y encabezados sin haber cargado una sola imagen gráfica.
 
 - **Paso 4: Experimentar la interacción con formularios:**
   Prueba la capacidad del agente para rellenar campos y accionar botones:
   ```text
-  > En la pantalla de login, escribe "estudiante@icesi.edu.co" en el campo de correo, ingresa una contraseña de prueba y presiona el botón "Iniciar sesión". Verifica si los elementos respondieron y si hay mensajes de error.
+  > En la pantalla de login, escribe
+    "estudiante@icesi.edu.co" en el correo,
+    ingresa una contraseña de prueba y
+    presiona el botón "Iniciar sesión".
+    Verifica si los elementos respondieron.
   ```
   Antigravity ejecutará `browser_fill` sobre los selectores semánticos y simulará el clic con `browser_click`, reportando el resultado de la interacción.
 

@@ -147,18 +147,24 @@ Sigue estos pasos para conectar Antigravity con los repositorios de tu equipo y 
 - **Paso 3: Experimentar la consulta de Issues del equipo:**
   Abre Antigravity en la carpeta del repositorio y pídele al agente:
   ```text
-  > Consulta nuestro repositorio de GitHub y lista los issues abiertos para el sprint actual.
+  > Consulta nuestro repositorio de GitHub
+    y lista los issues abiertos para
+    el sprint actual.
   ```
   Antigravity invocará `list_issues` y te entregará el listado estructurado con número de issue, título, autor y etiquetas.
 
 - **Paso 4: Experimentar la lectura de especificaciones y reporte de tareas:**
   Pídele al agente que examine los criterios de aceptación de una tarea específica:
   ```text
-  > Lee el Issue #3 de nuestro repositorio y resume los requisitos que debe cumplir la pantalla.
+  > Lee el Issue #3 de nuestro repositorio
+    y resume los requisitos que debe
+    cumplir la pantalla.
   ```
   También puedes probar la creación de un nuevo issue de seguimiento:
   ```text
-  > Crea un issue titulado "Revisión de accesibilidad en formularios" con la etiqueta "triage" y una descripción breve sobre la necesidad de contrastes adecuados.
+  > Crea un issue titulado "Revisión de accesibilidad
+    en formularios" con etiqueta "triage"
+    y descripción breve del hallazgo.
   ```
 
 - **Paso 5: Qué descubres con este ejercicio:**
