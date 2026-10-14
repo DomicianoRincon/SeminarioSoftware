@@ -117,92 +117,99 @@ Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar
 - **Paso 3: Generar los mockups en Google Stitch con prompts estructurados:**
   Ingresa a [stitch.withgoogle.com](https://stitch.withgoogle.com) y crea un nuevo lienzo.
 
-  Un prompt vago como *"hazme una pantalla de veterinaria"* produce resultados impredecibles. Para obtener prototipos nítidos y coherentes para una aplicación móvil, cada prompt debe especificar cuatro dimensiones fundamentales:
-  - **1. Contexto, identidad y atmósfera:** Nombre de la marca, público objetivo y paleta cromática dominante (tonos cálidos, blanco suave `#FDFCFB` y verde esmeralda `#0F8478`).
-  - **2. Jerarquía visual y organización espacial:** Cabecera con identidad, contenido principal en tarjetas o formularios, y elementos anclados como barras de acciones o navegación inferior.
-  - **3. Campos de entrada y micro-componentes:** Tipo de cada campo con su icono distintivo a la izquierda, placeholder claro y botones primarios destacados.
-  - **4. Restricciones móviles y accesibilidad:** Áreas táctiles amplias (mínimo 48 píxeles de alto) y contraste suficiente sobre el fondo.
+  Un prompt vago como *"hazme una pantalla de veterinaria"* produce resultados impredecibles. No hace falta un prompt largo: basta con que responda tres preguntas.
+  - **1. Qué pantalla y de qué app:** inicio de sesión, registro o home, y el nombre de la marca.
+  - **2. Con qué colores:** uno o dos colores con su código, por ejemplo verde esmeralda `#0F8478`.
+  - **3. Qué lleva, de arriba hacia abajo:** una viñeta por elemento, en el orden en que aparece en pantalla.
 
-  Copia los siguientes prompts estructurados para generar las tres pantallas del flujo de la veterinaria:
+  Lo demás (iconos, espaciado, tipografía) lo decide Stitch. Si algo no te gusta, lo corriges con un segundo prompt corto en lugar de escribirlo todo desde el principio.
+
+  Copia los siguientes prompts para generar las tres pantallas del flujo de la veterinaria:
 
   ### Prompt 1: Pantalla de Inicio de Sesión (`LoginScreen`)
 
-  El inicio de sesión de la clínica veterinaria "Patitas & Co." debe permitir a los tutores ingresar de forma rápida a la ficha de sus mascotas, ofreciendo accesos alternativos y recuperación de contraseña.
+  El tutor de la mascota entra con su correo y su contraseña.
 
   ```text
-  Pantalla móvil de inicio de sesión para la clínica veterinaria "Patitas & Co.".
-  Estilo cálido y profesional en tonos verde esmeralda (#0F8478) y fondo claro (#FDFCFB).
+  Pantalla móvil de inicio de sesión
+  para la veterinaria "Patitas & Co.".
+  Colores: verde esmeralda (#0F8478)
+  y fondo claro (#FDFCFB).
 
-  - Cabecera: Logo de huellita esmeralda, título "Patitas & Co." y mensaje de bienvenida.
-  - Campos:
-    * Correo electrónico con icono de email.
-    * Contraseña con icono de candado y botón de mostrar/ocultar.
-  - Opciones: Casilla "Recordar sesión" y enlace "¿Olvidaste tu contraseña?".
-  - Acciones:
-    * Botón principal "Iniciar Sesión" en verde esmeralda.
-    * Botón secundario "Ingresar con Google".
-  - Pie: Enlace "¿No tienes cuenta? Regístrate aquí".
+  - Logo y nombre de la clínica.
+  - Campo de correo.
+  - Campo de contraseña.
+  - Botón "Iniciar sesión".
+  - Enlace "¿No tienes cuenta? Regístrate".
   ```
 
   Puntos clave de este diseño:
-  - El fondo blanco cálido evita la fatiga visual frente al blanco puro clínico.
-  - Los campos incluyen iconos semánticos que guían al usuario antes de empezar a escribir.
-  - La jerarquía de acciones prioriza el botón esmeralda principal sobre el acceso social secundario.
+  - Las dos primeras líneas responden qué pantalla es y de qué app; la tercera, los colores.
+  - Las viñetas siguen el orden de la pantalla, de arriba hacia abajo.
+  - No se piden iconos ni tamaños: Stitch los propone y tú decides si los cambias.
 
   ### Prompt 2: Pantalla de Registro (`SigninScreen`)
 
-  Cuando un tutor llega por primera vez a la clínica, el formulario de registro debe capturar la información de contacto esencial y los datos de emergencia, vinculando de inmediato al animal de compañía.
+  Cuando un tutor llega por primera vez, deja sus datos de contacto.
 
   ```text
-  Pantalla móvil de registro (Crear Cuenta) para la clínica "Patitas & Co.".
-  Estilo limpio y moderno, con la paleta verde esmeralda (#0F8478).
+  Pantalla móvil de registro
+  para la veterinaria "Patitas & Co.".
+  Colores: verde esmeralda (#0F8478)
+  y fondo claro (#FDFCFB).
 
-  - Cabecera: Botón de regreso, título "Crear Cuenta" y subtítulo de bienvenida.
-  - Formulario:
-    * Nombre completo del tutor.
-    * Teléfono de contacto / emergencias.
-    * Correo electrónico y contraseña segura.
-    * Nombre de tu primera mascota (opcional).
-  - Términos: Casilla para aceptar términos y tratamiento de datos.
-  - Acción principal: Botón "Registrarme" en verde esmeralda.
-  - Pie: Enlace "¿Ya tienes cuenta? Inicia sesión".
+  - Botón de regreso y título "Crear cuenta".
+  - Campos: nombre, teléfono, correo
+    y contraseña.
+  - Botón "Registrarme".
+  - Enlace "¿Ya tienes cuenta? Inicia sesión".
   ```
 
   Puntos clave de este diseño:
-  - Incluye el teléfono de emergencias, un campo crítico en el dominio veterinario que no suele estar en aplicaciones genéricas.
-  - El campo opcional de la primera mascota humaniza el proceso de bienvenida y prepara el contenido del Home.
-  - La barra de navegación superior permite abortar el flujo y regresar sin frustración.
+  - Repite los mismos colores del login: así las pantallas se ven como una sola app.
+  - El teléfono es un dato propio del dominio veterinario, para avisar en una emergencia.
+  - El botón de regreso permite volver al login sin terminar el registro.
 
   ### Prompt 3: Tablero Principal (`HomeScreen`)
 
-  Una vez autenticado el tutor, la pantalla principal actúa como el centro de mando para la salud preventiva del animal: mostrar qué mascota está activa, alertar sobre la próxima cita agendada, ofrecer accesos directos a servicios comunes y facilitar el contacto con urgencias médicas 24 horas.
+  Ya con la sesión iniciada, el tutor ve a su mascota, su próxima cita y los servicios de la clínica.
 
   ```text
-  Dashboard móvil (Home) para la clínica veterinaria "Patitas & Co.".
-  Tonos verde esmeralda (#0F8478), menta (#E3F6F3) y ámbar (#F0C572).
+  Pantalla principal (Home)
+  para la veterinaria "Patitas & Co.".
+  Colores: verde esmeralda (#0F8478)
+  y ámbar (#F0C572) para los avisos.
 
-  - Barra superior:
-    * Foto de perfil y saludo "Hola, Mariana 👋".
-    * Subtítulo "3 mascotas registradas".
-    * Campana de notificaciones.
-  - Tarjeta de la mascota activa:
-    * Foto de "Milo", raza y edad.
-    * Chip "Vacunas al día ✓".
-    * Selector para cambiar de mascota.
-  - Recordatorio de cita:
-    * Fecha "Mañana, 10:30 AM" y motivo "Vacuna Antirrábica".
-    * Botón "Reprogramar".
-  - Accesos rápidos (4 botones con icono):
-    * Agendar Cita, Vacunación, Peluquería y Urgencias 24h.
-  - Historial reciente: las últimas 2 atenciones médicas.
-  - Barra inferior: Inicio, Mascotas, Citas y Perfil.
+  - Saludo "Hola, Mariana".
+  - Tarjeta de su mascota "Milo"
+    con foto, raza y edad.
+  - Aviso de la próxima cita:
+    "Mañana, 10:30 AM · Vacuna".
+  - Cuatro botones: Agendar cita, Vacunas,
+    Peluquería y Urgencias.
+  - Barra inferior: Inicio, Mascotas,
+    Citas y Perfil.
   ```
 
   Puntos clave de este diseño:
-  - **Hero Card de la mascota:** centraliza la información vital (peso, raza, estado de vacunas) y permite alternar entre mascotas registradas sin cambiar de cuenta.
-  - **Banner de cita:** el uso del color cálido destaca el recordatorio inmediato sin alarmar al tutor.
-  - **Acceso a Urgencias 24h:** resaltado con alerta visual para situaciones críticas donde cada segundo cuenta.
-  - **Barra inferior fija:** garantiza navegación consistente hacia las demás secciones del sistema.
+  - **Tarjeta de la mascota:** lo primero que el tutor quiere ver al entrar.
+  - **Aviso de cita:** el ámbar lo destaca sin alarmar.
+  - **Accesos rápidos:** los cuatro servicios más usados, a un toque.
+  - **Barra inferior fija:** la navegación hacia las demás secciones.
+
+  ### Corregir con prompts cortos
+
+  Si el resultado no es el que esperabas, pide solo el cambio sobre la pantalla generada:
+
+  ```text
+  Agrega un botón "Ingresar con Google"
+  debajo de "Iniciar sesión".
+  ```
+
+  ```text
+  Haz más grande el botón de Urgencias
+  y ponlo en rojo.
+  ```
 
 - **Paso 4: Inspeccionar y auditar las pantallas desde Antigravity:**
   Abre una terminal en tu proyecto e inicia Antigravity. Como `.agents/mcp_config.json` se procesa al arrancar, el agente descubrirá de inmediato las herramientas de Stitch:
@@ -225,9 +232,9 @@ Sigue estos pasos para conectar tu entorno de trabajo con Google Stitch, generar
     "sections": [
       {
         "type": "AppBar",
-        "elements": ["AvatarTutor", "GreetingText", "NotificationBell"]
+        "elements": ["GreetingText"]
       },
-      { "type": "HeroCard", "petName": "Milo", "status": "Vacunas al día" },
+      { "type": "HeroCard", "petName": "Milo" },
       { "type": "AppointmentBanner", "date": "Mañana, 10:30 AM" },
       {
         "type": "QuickServicesGrid",
