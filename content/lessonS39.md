@@ -96,7 +96,7 @@ El agente actúa como un colaborador activo del repositorio:
   <path d="M342,215 H298" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#ghFlujo-arrow)"/>
   <path d="M588,185 H632" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#ghFlujo-arrow)"/>
   <path d="M632,215 H588" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#ghFlujo-arrow)"/>
-  <rect x="48" y="306" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="332" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">Trazabilidad en equipo:</tspan> Antigravity conecta el trabajo local con el tablero de GitHub, documentando avances y abriendo revisiones de código automáticamente.</text>
+  <rect x="48" y="306" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="332" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">Trazabilidad en equipo:</tspan> Antigravity une el trabajo local con GitHub: documenta avances y abre revisiones.</text>
 </svg>
 ```
 

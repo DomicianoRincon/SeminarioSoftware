@@ -2,6 +2,8 @@
 
 <!-- tags: MCP, Model Context Protocol, servidor MCP, herramientas externas, protocolo abierto, transporte stdio, host y cliente, JSON-RPC, AGENTS.md vs skill vs MCP -->
 
+**Presentación de la sesión:** [Servidores MCP](https://domicianorincon.github.io/SeminarioSoftware/presentaciones/5/)
+
 En la sesión anterior aprendiste a dirigir a Antigravity con dos herramientas: `AGENTS.md` para las reglas generales del proyecto y las **skills** para explicarle procedimientos paso a paso. Con eso el agente puede escribir código limpio y organizado, pero sigue encerrado en tu disco duro: no puede abrir un navegador, no puede ver un diseño en la nube y no puede consultar una base de datos externa.
 
 Para romper esa barrera existe **MCP** (*Model Context Protocol*).
@@ -70,7 +72,7 @@ El protocolo funciona bajo una arquitectura cliente-servidor muy clara:
   <path d="M308,282 H350" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#mcpArquitectura-arrow)"/>
   <path d="M606,168 H648" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#mcpArquitectura-arrow)"/>
   <path d="M606,282 H648" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#mcpArquitectura-arrow)"/>
-  <rect x="48" y="356" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="382" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">Protocolo abierto:</tspan> Antigravity no sabe qué hace cada servicio internamente; solo se comunica mediante el catálogo de herramientas que cada servidor MCP publica.</text>
+  <rect x="48" y="356" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="382" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">Protocolo abierto:</tspan> Antigravity no conoce cada servicio por dentro: solo usa el catálogo que publica cada servidor.</text>
 </svg>
 ```
 

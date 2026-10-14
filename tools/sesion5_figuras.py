@@ -117,7 +117,7 @@ def mcp_arquitectura():
     s += f'  <path d="M606,168 H648" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
     s += f'  <path d="M606,282 H648" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
 
-    s += '  ' + callout(356, '<tspan font-weight="700">Protocolo abierto:</tspan> Antigravity no sabe qué hace cada servicio internamente; solo se comunica mediante el catálogo de herramientas que cada servidor MCP publica.') + '\n'
+    s += '  ' + callout(356, '<tspan font-weight="700">Protocolo abierto:</tspan> Antigravity no conoce cada servicio por dentro: solo usa el catálogo que publica cada servidor.') + '\n'
     return s + '</svg>\n'
 
 
@@ -323,7 +323,7 @@ def pw_flujo():
     s += f'  <path d="M588,185 H632" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
     s += f'  <path d="M632,215 H588" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
 
-    s += '  ' + callout(306, '<tspan font-weight="700">Accesibilidad semántica:</tspan> Playwright MCP entrega a Antigravity la estructura de botones, etiquetas y campos de entrada en texto estructurado, ahorrando miles de tokens frente a procesar capturas de imagen.') + '\n'
+    s += '  ' + callout(306, '<tspan font-weight="700">Accesibilidad semántica:</tspan> el agente lee botones, etiquetas y campos como texto, sin gastar tokens en capturas.') + '\n'
     return s + '</svg>\n'
 
 
@@ -370,7 +370,7 @@ def gh_flujo():
     s += f'  <path d="M588,185 H632" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
     s += f'  <path d="M632,215 H588" fill="none" stroke="{MUTED}" stroke-width="1.75" marker-end="url(#{fid}-arrow)"/>\n'
 
-    s += '  ' + callout(306, '<tspan font-weight="700">Trazabilidad en equipo:</tspan> Antigravity conecta el trabajo local con el tablero de GitHub, documentando avances y abriendo revisiones de código automáticamente.') + '\n'
+    s += '  ' + callout(306, '<tspan font-weight="700">Trazabilidad en equipo:</tspan> Antigravity une el trabajo local con GitHub: documenta avances y abre revisiones.') + '\n'
     return s + '</svg>\n'
 
 

@@ -29,10 +29,10 @@
 | Apertura y contexto | 1 a 3 | 10 |
 | De las instrucciones a las herramientas (MCP) | 4 a 9 | 15 |
 | Configuración de MCP en Antigravity | 10 a 14 | 15 |
-| Google Stitch MCP: Prototipado y práctica | 15 a 21 | 25 |
-| Playwright MCP: Verificación web y práctica | 22 a 25 | 20 |
-| GitHub MCP: Colaboración y práctica | 26 a 29 | 25 |
-| Cierre y Entrega 1 | 30 y 31 | 10 |
+| Google Stitch MCP: Prototipado y práctica | 15 a 22 | 25 |
+| Playwright MCP: Verificación web y práctica | 23 a 27 | 20 |
+| GitHub MCP: Colaboración y práctica | 28 a 32 | 25 |
+| Cierre y Entrega 1 | 33 y 34 | 10 |
 
 Total: 120 minutos (2 horas).
 
@@ -63,21 +63,24 @@ Siguiendo el estándar de las presentaciones institucionales de Icesi:
 | 13 | Ciclo de descubrimiento | `slideStandard` | Inicio de sesión → lectura de catálogo de herramientas → inyección en contexto | Diagrama de pasos |
 | 14 | Permisos: tú mantienes el control | `slideSidebarLeftOrange` | Lecturas automáticas vs. confirmación explícita para acciones con efectos externos | Panel lateral con íconos |
 | 15 | Google Stitch MCP | `sectionSlideEBlue` | Divisor de bloque | · |
-| 16 | Google Stitch en la Entrega 1 | `slideStandard` | El lienzo de diseño asistido por IA (`stitch.withgoogle.com`) | Tarjeta de Entrega 1 |
-| 17 | Flujo de prototipado con Stitch MCP | `slideStandard` | De los prompts en lenguaje natural a los mockups consultados por Antigravity | SVG `stFlujo` |
-| 18 | Prompts para prototipado en Stitch | `slideStandard` | Anatomía de un buen prompt: contexto, jerarquía, inputs y restricciones mobile | Tarjeta con desglose |
-| 19 | Caso de uso: Clínica Veterinaria | `slideStandard` | Prompts estructurados para `SigninScreen`, `LoginScreen` y `HomeScreen` | Desglose de 3 pantallas |
-| 20 | Consulta e inspección con Stitch MCP | `slideStandard` | Herramientas `stitch_list_projects` y `stitch_get_screen` en acción desde Antigravity | Simulación de consola |
-| 21 | Paso a paso: Experimenta con Stitch MCP | `slideSidebarLeftOrange` | Configurar `.agents/mcp_config.json`, generar en Stitch y extraer tokens desde Antigravity | Checklist guiado |
-| 22 | Playwright MCP | `sectionSlideEBlue` | Divisor de bloque | · |
-| 23 | Ojos y manos en el navegador | `slideStandard` | `@playwright/mcp`: control de Chromium en vivo desde Antigravity | Descripción de herramientas |
-| 24 | El árbol de accesibilidad | `slideStandard` | Por qué la semántica en texto estructurado supera a las capturas de imagen | SVG `pwFlujo` |
-| 25 | Paso a paso: Experimenta con Playwright MCP | `slideSidebarLeftOrange` | Levantar Flutter web, navegar e interactuar con formularios desde Antigravity | Checklist guiado |
-| 26 | GitHub MCP | `sectionSlideEBlue` | Divisor de bloque | · |
-| 27 | El software se construye en equipo | `slideStandard` | Conectar Antigravity con los Issues, Pull Requests y ramas del proyecto | SVG `ghFlujo` |
-| 28 | Herramientas de GitHub | `slideStandard` | `list_issues`, `create_issue`, `create_pull_request`, `get_file_contents` | Descripción de herramientas |
-| 29 | Paso a paso: Experimenta con GitHub MCP | `slideSidebarLeftOrange` | Configurar PAT, consultar requerimientos de sprint y reportar issues | Checklist guiado |
-| 30 | Lo que te llevas para la Entrega 1 | `slideStandard` | Prototipo en Stitch, servidores MCP configurados y automatizaciones probadas | Lista de entregables |
-| 31 | Para la próxima sesión | `slideSidebarLeftOrange` | Próximo tema: `StatefulWidget` y `setState` (dar vida a los formularios) | Panel lateral con íconos |
+| 16 | Lo que puedes hacer con Stitch MCP | `slideStandard` | Generar pantallas, corregir con un prompt corto, explorar variantes y leer el diseño desde Antigravity | SVG `stCapacidades` |
+| 17 | Google Stitch en la Entrega 1 | `slideStandard` | El lienzo de diseño asistido por IA (`stitch.withgoogle.com`) | Tarjeta de Entrega 1 |
+| 18 | Flujo de prototipado con Stitch MCP | `slideStandard` | De los prompts en lenguaje natural a los mockups consultados por Antigravity | SVG `stFlujo` |
+| 19 | Prompts para prototipado en Stitch | `slideStandard` | Un buen prompt responde tres preguntas: qué pantalla y de qué app, con qué colores y qué lleva de arriba hacia abajo; lo que falte se corrige con un prompt corto | Tarjeta con desglose |
+| 20 | Caso de uso: Clínica Veterinaria | `slideStandard` | Prompts estructurados para `SigninScreen`, `LoginScreen` y `HomeScreen` | Desglose de 3 pantallas |
+| 21 | Consulta e inspección con Stitch MCP | `slideStandard` | Herramientas `stitch_list_projects` y `stitch_get_screen` en acción desde Antigravity | Simulación de consola |
+| 22 | Paso a paso: Experimenta con Stitch MCP | `slideSidebarLeftOrange` | Configurar `.agents/mcp_config.json`, generar en Stitch y extraer tokens desde Antigravity | Checklist guiado |
+| 23 | Playwright MCP | `sectionSlideEBlue` | Divisor de bloque | · |
+| 24 | Lo que puedes hacer con Playwright MCP | `slideStandard` | Abrir la app, leer la página como árbol de accesibilidad, escribir y hacer clic, y verificar | SVG `pwCapacidades` |
+| 25 | Ojos y manos en el navegador | `slideStandard` | `@playwright/mcp`: control de Chromium en vivo desde Antigravity | Descripción de herramientas |
+| 26 | El árbol de accesibilidad | `slideStandard` | Por qué la semántica en texto estructurado supera a las capturas de imagen | SVG `pwFlujo` |
+| 27 | Paso a paso: Experimenta con Playwright MCP | `slideSidebarLeftOrange` | Levantar Flutter web, navegar e interactuar con formularios desde Antigravity | Checklist guiado |
+| 28 | GitHub MCP | `sectionSlideEBlue` | Divisor de bloque | · |
+| 29 | Lo que puedes hacer con GitHub MCP | `slideStandard` | Leer issues, reportar fallos, abrir pull requests y leer otros repos; fusionar, subir y borrar piden confirmación | SVG `ghCapacidades` |
+| 30 | El software se construye en equipo | `slideStandard` | Conectar Antigravity con los Issues, Pull Requests y ramas del proyecto | SVG `ghFlujo` |
+| 31 | Herramientas de GitHub | `slideStandard` | `list_issues`, `create_issue`, `create_pull_request`, `get_file_contents` | Descripción de herramientas |
+| 32 | Paso a paso: Experimenta con GitHub MCP | `slideSidebarLeftOrange` | Configurar PAT, consultar requerimientos de sprint y reportar issues | Checklist guiado |
+| 33 | Lo que te llevas para la Entrega 1 | `slideStandard` | Prototipo en Stitch, servidores MCP configurados y automatizaciones probadas | Lista de entregables |
+| 34 | Para la próxima sesión | `slideSidebarLeftOrange` | Próximo tema: `StatefulWidget` y `setState` (dar vida a los formularios) | Panel lateral con íconos |
 
-**31 slides.** Cada slide de contenido cuenta con sus notas de orador (tecla `S`) correspondientes a las lecciones `S0034` a `S0039`.
+**34 slides.** Cada slide de contenido cuenta con sus notas de orador (tecla `S`) correspondientes a las lecciones `S0034` a `S0039`.

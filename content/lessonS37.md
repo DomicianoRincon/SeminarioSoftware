@@ -92,7 +92,7 @@ Playwright MCP resuelve esto utilizando el **árbol de accesibilidad** (*accessi
   <path d="M342,215 H298" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#pwFlujo-arrow)"/>
   <path d="M588,185 H632" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#pwFlujo-arrow)"/>
   <path d="M632,215 H588" fill="none" stroke="#556074" stroke-width="1.75" marker-end="url(#pwFlujo-arrow)"/>
-  <rect x="48" y="306" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="332" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">Accesibilidad semántica:</tspan> Playwright MCP entrega a Antigravity la estructura de botones, etiquetas y campos de entrada en texto estructurado, ahorrando miles de tokens frente a procesar capturas de imagen.</text>
+  <rect x="48" y="306" width="864" height="52" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.25" stroke-dasharray="5 4"/><text x="68" y="332" dy="0.35em" fill="#7C4F04" font-size="13.5" data-fit="820"><tspan font-weight="700">Accesibilidad semántica:</tspan> el agente lee botones, etiquetas y campos como texto, sin gastar tokens en capturas.</text>
 </svg>
 ```
 
