@@ -251,32 +251,29 @@ Gracias a esta integración, no necesitas transcribir valores hexadecimales a ci
 
 Ahora pondrás en práctica la conexión entre tu entorno local y Google Stitch para experimentar la extracción de prototipos con Antigravity:
 
-- **Paso 1: Obtener tu API Key en Google Stitch:**
-  Para que el servidor MCP pueda conectarse a tu cuenta de Stitch sin abrir ventanas interactivas del navegador en cada ejecución, necesitas una clave de API:
-  1. Ingresa a [stitch.withgoogle.com](https://stitch.withgoogle.com) con tu cuenta de Google.
-  2. Haz clic en el icono de tu perfil o avatar en la esquina superior derecha de la pantalla.
-  3. Selecciona **Settings** (Configuración) en el menú desplegable.
-  4. Dirígete a la pestaña o sección **API Keys**.
-  5. Haz clic en **Create Key** (o *Generate a Key*) y copia de inmediato la clave generada.
-  
-  *(Opción alternativa por consola: puedes ejecutar en tu terminal `npx @_davideast/stitch-mcp init` para autenticarte mediante el asistente guiado interactivo).*
+- **Paso 1: Obtener tu API Key de Google:**
+  Para que Antigravity pueda autenticarse con el servidor remoto de Google Stitch en `https://stitch.googleapis.com/mcp`, necesitas una clave de API de Google (Google AI Studio / Gemini API key):
+  1. Ingresa a [aistudio.google.com/apikey](https://aistudio.google.com/apikey) con tu cuenta de Google.
+  2. Haz clic en **Create API key** (Crear clave de API).
+  3. Copia de inmediato la clave generada.
 
 - **Paso 2: Configurar el servidor en tu proyecto:**
-  En la raíz de tu proyecto, abre o crea el archivo `.agents/mcp_config.json` y registra el servidor de Stitch dentro de `mcpServers`, reemplazando el valor de `STITCH_API_KEY` con tu clave:
+  En la raíz de tu proyecto, abre o crea el archivo `.agents/mcp_config.json` y registra el servidor de Stitch dentro de `mcpServers`, indicando la URL remota del endpoint y tu clave en la cabecera `X-Goog-Api-Key`:
   ```json
   {
     "mcpServers": {
       "stitch": {
-        "command": "npx",
-        "args": ["-y", "stitch-mcp"],
-        "env": {
-          "STITCH_API_KEY": "tu_clave_de_google_stitch"
+        "serverUrl": "https://stitch.googleapis.com/mcp",
+        "headers": {
+          "X-Goog-Api-Key": "key"
         }
       }
     }
   }
   ```
-  *Nota de seguridad:* Nunca hagas commit de tu clave en un repositorio público. Si compartes el repositorio de tu equipo, es recomendable definir la variable de entorno en tu sistema operativo (`export STITCH_API_KEY="..."`) o agregar el bloque a la configuración global en `~/.gemini/config/mcp_config.json`.
+  *(Reemplaza `"key"` con el valor de tu clave de API).*
+
+  *Nota de seguridad:* Nunca hagas commit de tu clave real en un repositorio público. Si compartes el repositorio de tu equipo, es recomendable registrar el bloque con tu clave privada en la configuración global de Antigravity en `~/.gemini/config/mcp_config.json` para que viaje en tus sesiones locales sin exponerla en el control de versiones.
 
 - **Paso 3: Generar el prototipo en Google Stitch:**
   En [stitch.withgoogle.com](https://stitch.withgoogle.com), crea un nuevo lienzo e ingresa los prompts estructurados de la clínica veterinaria vistos en esta lección (o los de tu proyecto de semestre). Verifica que se generen los mockups de `LoginScreen`, `SigninScreen` y `HomeScreen`.

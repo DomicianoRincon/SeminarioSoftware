@@ -13,7 +13,7 @@
 ## Qué tiene que lograr
 
 1. Que entiendan la diferencia conceptual entre una **Skill** (instrucciones y metodología) y un **Servidor MCP** (herramientas y conexiones externas vivas).
-2. Que conozcan la arquitectura de MCP: Host/Cliente (Antigravity), Servidor local (proceso `stdio`) y Servicios externos.
+2. Que conozcan la arquitectura de MCP: Host/Cliente (Antigravity), Servidores locales (`stdio`) y remotos (HTTP), y Servicios externos.
 3. Que configuren `.agents/mcp_config.json` con los servidores de **Google Stitch**, **Playwright** y **GitHub**.
 4. Que comprendan el modelo de permisos y supervisión al invocar herramientas externas.
 5. Que experimenten el paso a paso de cada MCP directamente en su lección:
@@ -58,8 +58,8 @@ Siguiendo el estándar de las presentaciones institucionales de Icesi:
 | 8 | La tríada de Antigravity | `slideStandard` | Reglas fijas (`AGENTS.md`) + Metodología (`Skills`) + Herramientas vivas (`MCP`) | SVG `mcpTriada` |
 | 9 | La idea de la sesión | `sectionSlideEGreen` | *Una skill le enseña al agente cómo pensar; un servidor MCP le da manos y ojos para interactuar con sistemas reales.* | · |
 | 10 | Configuración de MCP en Antigravity | `sectionSlideEBlue` | Divisor de bloque | · |
-| 11 | El archivo .agents/mcp_config.json | `slideStandard` | La clave `mcpServers`, comando `npx`, argumentos y variables de entorno | SVG `mcpConfiguracion` |
-| 12 | Transporte local con stdio | `slideStandard` | Procesos hijos en segundo plano sin exponer puertos de red | Esquema de procesos |
+| 11 | El archivo .agents/mcp_config.json | `slideStandard` | La clave `mcpServers`: remotos (`serverUrl` y `headers`) y locales (`npx`, `stdio`) | SVG `mcpConfiguracion` |
+| 12 | Transporte local y remoto | `slideStandard` | `stdio` para herramientas locales y `Streamable HTTP` para servicios cloud como Stitch | Esquema de procesos |
 | 13 | Ciclo de descubrimiento | `slideStandard` | Inicio de sesión → lectura de catálogo de herramientas → inyección en contexto | Diagrama de pasos |
 | 14 | Permisos: tú mantienes el control | `slideSidebarLeftOrange` | Lecturas automáticas vs. confirmación explícita para acciones con efectos externos | Panel lateral con íconos |
 | 15 | Google Stitch MCP | `sectionSlideEBlue` | Divisor de bloque | · |

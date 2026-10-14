@@ -23,7 +23,7 @@ El protocolo funciona bajo una arquitectura cliente-servidor muy clara:
 ```svg
 <svg id="mcpArquitectura" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="mcpArquitectura-ttl mcpArquitectura-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="mcpArquitectura-ttl">Arquitectura del Model Context Protocol (MCP)</title>
-  <desc id="mcpArquitectura-dsc">Tres bloques horizontales. A la izquierda, Antigravity Host y Cliente. En el centro, dos Servidores MCP: Stitch y Playwright. A la derecha, los servicios externos: el lienzo de Stitch y el navegador Chromium.</desc>
+  <desc id="mcpArquitectura-dsc">Tres bloques horizontales. A la izquierda, Antigravity Host y Cliente. En el centro, dos Servidores MCP: Stitch (remoto HTTP) y Playwright (local stdio). A la derecha, los servicios externos: el lienzo de Stitch y el navegador Chromium.</desc>
   <defs>
     <style>
       #mcpArquitectura .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -42,7 +42,7 @@ El protocolo funciona bajo una arquitectura cliente-servidor muy clara:
   </defs>
   <rect width="960" height="440" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">Arquitectura del Model Context Protocol (MCP)</text>
-  <text class="sub" x="48" y="80" data-fit="860">Antigravity actúa como Host y Cliente. Se comunica con servidores independientes mediante stdio (JSON-RPC).</text>
+  <text class="sub" x="48" y="80" data-fit="860">Antigravity actúa como Host y Cliente. Se comunica con servidores locales (stdio) y remotos (HTTP).</text>
   <rect x="48" y="120" width="260" height="210" rx="12" fill="#EEF1FF" stroke="#4453C9" stroke-width="2.5"/>
   <text x="72" y="154" font-size="17" font-weight="700" fill="#4453C9" text-anchor="start">Google Antigravity</text>
   <text x="72" y="178" font-size="13" font-weight="600" fill="#556074" text-anchor="start">Host y Cliente MCP</text>
@@ -52,7 +52,7 @@ El protocolo funciona bajo una arquitectura cliente-servidor muy clara:
   <text x="72" y="284" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start">• Gestión de permisos</text>
   <rect x="356" y="120" width="250" height="96" rx="12" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
   <text x="376" y="150" font-size="15" font-weight="700" fill="#A96C05" text-anchor="start" class="mono">Stitch MCP Server</text>
-  <text x="376" y="174" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Proceso local · stdio</text>
+  <text x="376" y="174" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start">Servidor remoto · HTTP</text>
   <text x="376" y="194" font-size="12.5" font-weight="600" fill="#161A26" text-anchor="start">Herramientas de UI / tokens</text>
   <rect x="356" y="234" width="250" height="96" rx="12" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
   <text x="376" y="264" font-size="15" font-weight="700" fill="#0F8478" text-anchor="start" class="mono">Playwright MCP Server</text>
@@ -77,7 +77,7 @@ El protocolo funciona bajo una arquitectura cliente-servidor muy clara:
 Tres piezas componen este sistema:
 
 - **Host y Cliente (Antigravity):** Es el entorno donde trabajas. Antigravity actúa como host del modelo y como cliente MCP. Se encarga de descubrir los servidores configurados, consultar qué herramientas ofrecen y decidir cuándo invocarlas según lo que le pidas.
-- **Servidores MCP (Procesos locales):** Son programas independientes que implementan el protocolo. Cada servidor se especializa en una tarea: uno sabe hablar con Google Stitch, otro sabe controlar un navegador Chromium mediante Playwright y otro sabe conectarse a Postgres.
+- **Servidores MCP (Locales y remotos):** Son programas o servicios que implementan el protocolo. Un servidor puede ejecutarse de forma local (como Playwright controlando Chromium mediante `stdio`) o conectarse a un servicio remoto en la nube (como Google Stitch vía HTTP).
 - **Recursos y Servicios externos:** Es el mundo real con el que interactúa cada servidor: la plataforma web de Stitch, un navegador en ejecución, APIs en la nube o archivos remotos.
 
 El agente nunca necesita conocer los detalles internos de cómo funciona Playwright o cómo se comunica la API de Stitch. El servidor MCP expone un catálogo de herramientas con nombres, descripciones y parámetros en formato JSON-RPC. Antigravity lee ese catálogo y sabe exactamente cuándo y cómo llamar a cada herramienta.
@@ -143,11 +143,11 @@ Cada nivel resuelve un problema diferente:
 - **Skills (Metodología bajo demanda):** Se cargan únicamente cuando la tarea coincide con su descripción. Guardan listas largas, paletas de diseño, plantillas de código y guías de paso a paso.
 - **Servidores MCP (Capacidades externas):** Le dan al agente ojos y manos fuera del editor. Le permiten consultar servicios web, ejecutar pruebas en navegadores y traer información viva al contexto de trabajo.
 
-## Cómo se comunica: el transporte stdio
+## Cómo se comunica: transportes de MCP
 
 Existen dos formas de conectar un servidor MCP con Antigravity:
 
-- **Transporte local (`stdio`):** Antigravity arranca el servidor MCP como un proceso hijo en tu propio computador y se comunica con él a través de la entrada y salida estándar (*standard input / output*). Es el mecanismo más rápido, seguro y común para desarrollo, y no requiere configurar puertos de red ni certificados SSL.
-- **Transporte remoto (`Streamable HTTP`):** El servidor MCP se ejecuta en un servidor remoto y Antigravity se conecta a él mediante peticiones HTTP. Se utiliza para servicios compartidos en equipos corporativos.
+- **Transporte local (`stdio`):** Antigravity arranca el servidor MCP como un proceso hijo en tu propio computador y se comunica con él a través de la entrada y salida estándar (*standard input / output*). Es el mecanismo utilizado para herramientas locales como Playwright y GitHub mediante `npx`.
+- **Transporte remoto (`Streamable HTTP` / HTTP):** El servidor MCP se ejecuta como un servicio web en la nube y Antigravity se conecta a él mediante peticiones HTTP autenticadas (como Google Stitch en `https://stitch.googleapis.com/mcp`). No requiere instalar ni ejecutar procesos adicionales en tu máquina.
 
-En este curso utilizaremos el transporte local (`stdio`) ejecutando paquetes mediante `npx`. En la siguiente lección aprenderás a registrar tus primeros servidores en `mcp_config.json`.
+En este curso utilizaremos ambos transportes en `mcp_config.json`: servidores remotos vía HTTP (`serverUrl` y `headers`) para el diseño con Google Stitch, y servidores locales vía `stdio` (`command` y `args`) para la automatización web y la colaboración.

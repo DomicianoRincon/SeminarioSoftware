@@ -77,8 +77,8 @@ def mcp_arquitectura():
     h = 440
     s = head(fid, h, 'Arquitectura del Model Context Protocol (MCP)',
              'Arquitectura del Model Context Protocol (MCP)',
-             'Antigravity actúa como Host y Cliente. Se comunica con servidores independientes mediante stdio (JSON-RPC).',
-             'Tres bloques horizontales. A la izquierda, Antigravity Host y Cliente. En el centro, dos Servidores MCP: Stitch y Playwright. A la derecha, los servicios externos: el lienzo de Stitch y el navegador Chromium.')
+             'Antigravity actúa como Host y Cliente. Se comunica con servidores locales (stdio) y remotos (HTTP).',
+             'Tres bloques horizontales. A la izquierda, Antigravity Host y Cliente. En el centro, dos Servidores MCP: Stitch (remoto HTTP) y Playwright (local stdio). A la derecha, los servicios externos: el lienzo de Stitch y el navegador Chromium.')
     
     # Host Antigravity
     s += '  ' + box(48, 120, 260, 210, 'indigo', strong=True) + '\n'
@@ -92,7 +92,7 @@ def mcp_arquitectura():
     # Servidores MCP (centro)
     s += '  ' + box(356, 120, 250, 96, 'amber') + '\n'
     s += '  ' + txt(376, 150, 'Stitch MCP Server', 15, 700, FAM['amber'][2], cls='mono') + '\n'
-    s += '  ' + txt(376, 174, 'Proceso local · stdio', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(376, 174, 'Servidor remoto · HTTP', 12.5, 400, MUTED) + '\n'
     s += '  ' + txt(376, 194, 'Herramientas de UI / tokens', 12.5, 600, INK) + '\n'
 
     s += '  ' + box(356, 234, 250, 96, 'teal') + '\n'
@@ -177,17 +177,16 @@ def mcp_configuracion():
         id=fid,
         title='Configuración en <tspan class="mono">.agents/mcp_config.json</tspan>',
         title_plain='Configuración en .agents/mcp_config.json',
-        desc='El archivo mcp_config.json define los servidores en la clave mcpServers. Cada servidor declara su comando ejecutable, argumentos y variables de entorno.',
-        sub='Antigravity levanta cada servidor al arrancar la sesión.',
+        desc='El archivo mcp_config.json define los servidores en la clave mcpServers. Soporta servidores remotos (serverUrl y headers) y locales (command y args).',
+        sub='Antigravity conecta o levanta cada servidor al arrancar la sesión.',
         file='.agents/mcp_config.json',
         code=[
             '{',
             '  "mcpServers": {',
             '    "stitch": {',
-            '      "command": "npx",',
-            '      "args": ["-y", "stitch-mcp"],',
-            '      "env": {',
-            '        "STITCH_API_KEY": "..."',
+            '      "serverUrl": "https://stitch.googleapis.com/mcp",',
+            '      "headers": {',
+            '        "X-Goog-Api-Key": "key"',
             '      }',
             '    },',
             '    "playwright": {',
@@ -202,7 +201,7 @@ def mcp_configuracion():
 <g transform="translate(16,26)">
   <rect width="328" height="90" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
   <text x="16" y="32" font-size="14" font-weight="700" fill="#A96C05" class="mono">stitch</text>
-  <text x="16" y="54" font-size="12.5" fill="#454C61">Conecta con Google Stitch.</text>
+  <text x="16" y="54" font-size="12.5" fill="#454C61">Servidor remoto en la nube.</text>
   <text x="16" y="74" font-size="12.5" fill="#454C61">Extrae tokens visuales, colores y pantallas.</text>
 </g>
 <g transform="translate(16,194)">
@@ -214,7 +213,7 @@ def mcp_configuracion():
 ''',
         arrows=[
             dict(line=2, find='"stitch":', to=(16, 71), color='amber'),
-            dict(line=9, find='"playwright":', to=(16, 239), color='teal'),
+            dict(line=8, find='"playwright":', to=(16, 239), color='teal'),
         ],
         cards=[
             ('amber', 'Stitch MCP', ['Prototipado rápido de interfaces', 'y extracción de diseño.']),

@@ -84,10 +84,9 @@ Para registrar el servidor de GitHub en `.agents/mcp_config.json`, se añade el 
 {
   "mcpServers": {
     "stitch": {
-      "command": "npx",
-      "args": ["-y", "stitch-mcp"],
-      "env": {
-        "STITCH_API_KEY": "tu_clave_de_google_stitch_aqui"
+      "serverUrl": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "X-Goog-Api-Key": "key"
       }
     },
     "playwright": {
