@@ -246,14 +246,3 @@ Antigravity invoca `stitch_get_screen` y recibe una estructura JSON con los toke
 ```
 
 Gracias a esta integración, no necesitas transcribir valores hexadecimales a ciegas ni adivinar el espaciado entre widgets. El agente utiliza los datos exactos del prototipo para cualquier análisis o documentación de tu proyecto.
-
-## Archivo de recursos y preparación de la Entrega 1
-
-En la carpeta del curso encuentras el archivo con los prompts listos para copiar y utilizar en Stitch:
-
-- `recursos/sesion5/prompts_stitch_veterinaria.md`: contiene la colección completa de prompts para la clínica veterinaria con todas sus variantes de personalización.
-
-Recomendaciones para tu entrega:
-- **Prueba variaciones en Stitch:** Si tu aplicación es de otro dominio (por ejemplo, gestión académica o finanzas personales), adapta la estructura de estos prompts sustituyendo la identidad, los campos requeridos y las acciones clave.
-- **Verifica contrastes:** Asegúrate de que los textos sobre fondos de tarjetas (como el verde menta o el ámbar) mantengan una relación de contraste accesible según las pautas WCAG.
-- **Mantén la coherencia:** Los tres prototipos deben compartir la misma barra de navegación, el mismo estilo de botones y la misma tipografía base para presentar un flujo de usuario armónico.
