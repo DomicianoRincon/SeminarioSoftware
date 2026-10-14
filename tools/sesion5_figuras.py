@@ -199,24 +199,22 @@ def mcp_configuracion():
         ],
         panel='QUÉ HACE CADA SERVIDOR',
         result='''
-<g transform="translate(16,16)">
-  <rect width="328" height="110" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
-  <text x="14" y="24" font-size="14" font-weight="700" fill="#A96C05" class="mono">stitch</text>
-  <text x="14" y="46" font-size="12.5" fill="#454C61">Conecta con Google Stitch.</text>
-  <text x="14" y="66" font-size="12.5" fill="#454C61">Extrae tokens visuales, colores</text>
-  <text x="14" y="86" font-size="12.5" fill="#454C61">y estructura de pantallas.</text>
+<g transform="translate(16,26)">
+  <rect width="328" height="90" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <text x="16" y="32" font-size="14" font-weight="700" fill="#A96C05" class="mono">stitch</text>
+  <text x="16" y="54" font-size="12.5" fill="#454C61">Conecta con Google Stitch.</text>
+  <text x="16" y="74" font-size="12.5" fill="#454C61">Extrae tokens visuales, colores y pantallas.</text>
 </g>
-<g transform="translate(16,140)">
-  <rect width="328" height="110" rx="10" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
-  <text x="14" y="24" font-size="14" font-weight="700" fill="#0F8478" class="mono">playwright</text>
-  <text x="14" y="46" font-size="12.5" fill="#454C61">Controla Chromium en vivo.</text>
-  <text x="14" y="66" font-size="12.5" fill="#454C61">Lee el árbol de accesibilidad y</text>
-  <text x="14" y="86" font-size="12.5" fill="#454C61">simula escritura y clics.</text>
+<g transform="translate(16,194)">
+  <rect width="328" height="90" rx="10" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="16" y="32" font-size="14" font-weight="700" fill="#0F8478" class="mono">playwright</text>
+  <text x="16" y="54" font-size="12.5" fill="#454C61">Controla Chromium en vivo.</text>
+  <text x="16" y="74" font-size="12.5" fill="#454C61">Lee el árbol de accesibilidad y simula clics.</text>
 </g>
 ''',
         arrows=[
-            dict(line=2, find='"stitch":', to=(40, 60), color='amber', lane=0),
-            dict(line=9, find='"playwright":', to=(40, 185), color='teal', lane=1),
+            dict(line=2, find='"stitch":', to=(16, 71), color='amber'),
+            dict(line=9, find='"playwright":', to=(16, 239), color='teal'),
         ],
         cards=[
             ('amber', 'Stitch MCP', ['Prototipado rápido de interfaces', 'y extracción de diseño.']),

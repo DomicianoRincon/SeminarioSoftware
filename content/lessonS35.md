@@ -73,26 +73,24 @@ El archivo contiene un objeto principal llamado `mcpServers`. Dentro de él, cad
   <text class="cl mono" font-size="13" x="68.0" y="508" textLength="7.8" lengthAdjust="spacingAndGlyphs" data-fit="432">}</text>
   <g transform="translate(552,144)">
 
-<g transform="translate(16,16)">
-  <rect width="328" height="110" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
-  <text x="14" y="24" font-size="14" font-weight="700" fill="#A96C05" class="mono">stitch</text>
-  <text x="14" y="46" font-size="12.5" fill="#454C61">Conecta con Google Stitch.</text>
-  <text x="14" y="66" font-size="12.5" fill="#454C61">Extrae tokens visuales, colores</text>
-  <text x="14" y="86" font-size="12.5" fill="#454C61">y estructura de pantallas.</text>
+<g transform="translate(16,26)">
+  <rect width="328" height="90" rx="10" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <text x="16" y="32" font-size="14" font-weight="700" fill="#A96C05" class="mono">stitch</text>
+  <text x="16" y="54" font-size="12.5" fill="#454C61">Conecta con Google Stitch.</text>
+  <text x="16" y="74" font-size="12.5" fill="#454C61">Extrae tokens visuales, colores y pantallas.</text>
 </g>
-<g transform="translate(16,140)">
-  <rect width="328" height="110" rx="10" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
-  <text x="14" y="24" font-size="14" font-weight="700" fill="#0F8478" class="mono">playwright</text>
-  <text x="14" y="46" font-size="12.5" fill="#454C61">Controla Chromium en vivo.</text>
-  <text x="14" y="66" font-size="12.5" fill="#454C61">Lee el árbol de accesibilidad y</text>
-  <text x="14" y="86" font-size="12.5" fill="#454C61">simula escritura y clics.</text>
+<g transform="translate(16,194)">
+  <rect width="328" height="90" rx="10" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="16" y="32" font-size="14" font-weight="700" fill="#0F8478" class="mono">playwright</text>
+  <text x="16" y="54" font-size="12.5" fill="#454C61">Controla Chromium en vivo.</text>
+  <text x="16" y="74" font-size="12.5" fill="#454C61">Lee el árbol de accesibilidad y simula clics.</text>
 </g>
 
   </g>
   <path class="ld-amber" d="M191.0,215 H504"/>
-  <path class="ar-amber" d="M504,215 H514 V204 H592"/>
+  <path class="ar-amber" d="M504,215 H568"/>
   <path class="ld-teal" d="M222.2,383 H504"/>
-  <path class="ar-teal" d="M504,383 H523 V329 H592"/>
+  <path class="ar-teal" d="M504,383 H568"/>
   <g transform="translate(48.0,556)">
     <rect width="424.0" height="102" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
     <circle cx="24" cy="26" r="7" fill="#FFF3DC" stroke="#A96C05" stroke-width="2"/>
