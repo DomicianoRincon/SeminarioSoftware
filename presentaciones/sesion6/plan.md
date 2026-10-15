@@ -53,7 +53,7 @@ Total: 120 minutos. El bloque de la playlist incluye el arranque del taller en c
 | 4 | Lo que te llevas hoy | `slideStandard` | Saber cuándo usar Stateful · setState · initState y dispose · la playlist con `SongCard` | Lista con íconos |
 | 5 | ¿Qué es el estado? | `sectionSlideEBlue` | Divisor | · |
 | 6 | Estado es lo que cambia con la pantalla abierta | `slideStandard` | Contador, bombillo, texto de un campo, canciones. La pregunta: *¿puede valer distinto en un minuto?* | Cuatro tarjetas |
-| 7 | Un widget sin estado y uno con estado | `slideStandard` | Una clase frente a dos | SVG `ewComparar` |
+| 7 | El estado detrás de una pantalla | `slideStandard` | Una app con sus datos y, al lado, las cuatro variables de estado con flechas a lo que muestran | SVG `ewPantalla` |
 | 8 | Las dos clases de un StatefulWidget | `slideStandard` | Widget, `createState`, campos del State, `build` | SVG `ewAnatomia` |
 | 9 | **En vivo** · El widget se recrea, el State no | `slideStandard` | Encender el bombillo y luego *Reconstruir App*: `_isOn` sigue en la sección Estado | Interactivo `state-tree bulb` |
 | 10 | La idea de la sesión | `sectionSlideEGreen` | *La pantalla es lo que sale de pintar el estado.* | · |

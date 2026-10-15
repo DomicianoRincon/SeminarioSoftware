@@ -50,33 +50,78 @@ def arrow(d):
 # ───────────────────────────── S0040 · Stateless frente a Stateful
 
 
-def ew_comparar():
-    fid = 'ewComparar'
-    s = head(fid, 488, 'Un widget sin estado y uno con estado', 'Un widget sin estado y uno con estado',
-             'El StatelessWidget es una sola clase. El StatefulWidget se parte en dos: el widget y su State.',
-             'A la izquierda, un StatelessWidget: una sola clase con campos final y un build que dibuja lo que '
-             'recibe. A la derecha, un StatefulWidget: la clase del widget, que solo guarda la configuración, '
-             'crea con createState un objeto State que guarda los datos que cambian, tiene el build y sobrevive '
-             'cuando el widget se vuelve a crear.')
-    s += '  ' + txt(48, 128, 'STATELESSWIDGET', 12, 700, MUTED, cls='h') + '\n'
-    s += '  ' + box(48, 144, 408, 156, 'indigo') + '\n'
-    s += '  ' + txt(72, 176, 'ProfileInfo', 15, 700, INK, cls='mono') + '\n'
-    s += '  ' + lines(72, 204, ['Recibe sus datos por el constructor,', 'en campos final.',
-                                'build() los dibuja tal cual llegan.', 'No puede cambiar por sí solo.'], fit=360) + '\n'
-    s += '  ' + note_box(48, 324, 408, 'indigo', 'Para piezas que solo muestran',
-                         ['Los componentes de la sesión 2: botones,', 'tarjetas, filas de estadísticas.']) + '\n'
+def ew_pantalla():
+    fid = 'ewPantalla'
+    s = head(fid, 640, 'El estado detrás de una pantalla', 'El estado detrás de una pantalla',
+             'A la izquierda, la app con sus datos. A la derecha, los datos que pueden cambiar: el estado.',
+             'Un reproductor de música en un celular: la barra con el título Mi playlist, la canción que suena '
+             '(Levitating, de Dua Lipa), un botón de pausa, 12 me gusta y una lista de tres canciones. A la '
+             'derecha, la sección Estado con cuatro variables, cada una con una flecha de su color hacia la '
+             'parte de la pantalla que la muestra: _current a la canción que suena, _isPlaying al botón de '
+             'pausa, _likes al contador de me gusta y _songs a la lista. Una nota gris señala que el título de '
+             'la barra no es estado porque nunca cambia.')
+    colors = {'violet': '#7439B8', 'amber': '#A96C05', 'rose': '#C2354F', 'teal': '#0F8478', 'slate': '#79809A'}
+    marks = ''.join(
+        f'<marker id="{fid}-{c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" '
+        f'markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="{v}"/></marker>'
+        for c, v in colors.items())
+    s = s.replace('  </defs>', '    ' + marks + '\n    ' + GRAD.format(f'{fid}-cover') + '\n  </defs>', 1)
 
-    s += '  ' + txt(504, 128, 'STATEFULWIDGET', 12, 700, MUTED, cls='h') + '\n'
-    s += '  ' + box(504, 144, 408, 76, 'indigo') + '\n'
-    s += '  ' + txt(528, 174, 'HomeScreen', 15, 700, INK, cls='mono') + '\n'
-    s += '  ' + txt(528, 200, 'El widget: solo la configuración. Se puede recrear.', 13, 400, '#454C61', fit=360) + '\n'
-    s += '  ' + arrow('M708,220 V262') + '\n'
-    s += '  ' + txt(718, 246, 'createState()', 12.5, 600, MUTED, cls='mono') + '\n'
-    s += '  ' + box(504, 264, 408, 132, 'violet') + '\n'
-    s += '  ' + txt(528, 294, '_HomeScreenState', 15, 700, INK, cls='mono') + '\n'
-    s += '  ' + lines(528, 322, ['El State: guarda los datos que cambian.', 'Aquí vive build().',
-                                 'Sobrevive cuando el widget se recrea.'], fit=360) + '\n'
-    s += '  ' + note_box(504, 412, 408, 'violet', 'Para pantallas que cambian', ['Un contador, un formulario, una playlist.'], h=48) + '\n'
+    px, py, pw, ph = 96, 112, 320, 456
+    s += f'  <rect x="{px - 10}" y="{py - 10}" width="{pw + 20}" height="{ph + 20}" rx="36" fill="#1F2430"/>\n'
+    s += f'  <rect x="{px}" y="{py}" width="{pw}" height="{ph}" rx="26" fill="#FEF7FF"/>\n'
+    s += (f'  <path d="M{px},{py + 26} A26,26 0 0 1 {px + 26},{py} H{px + pw - 26} A26,26 0 0 1 {px + pw},{py + 26} '
+          f'V{py + 56} H{px} Z" fill="#D0BCFF"/>\n')
+    s += '  ' + txt(px + 18, py + 37, 'Mi playlist', 17, 500) + '\n'
+
+    s += f'  <rect x="{px + 14}" y="196" width="{pw - 28}" height="148" rx="16" fill="#FFFFFF" stroke="#E6E0F2"/>\n'
+    s += '  ' + cover(px + 28, 208, 56, 12, f'{fid}-cover') + '\n'
+    s += '  ' + txt(px + 26, 194 - 6, 'SONANDO AHORA', 11, 700, '#625B71') + '\n'
+    s += '  ' + txt(px + 98, 230, 'Levitating', 16, 700) + '\n'
+    s += '  ' + txt(px + 98, 250, 'Dua Lipa', 13, 400, '#625B71') + '\n'
+    s += f'  <circle cx="{px + pw / 2}" cy="290" r="20" fill="#6750A4"/>\n'
+    s += (f'  <rect x="{px + pw / 2 - 7}" y="281" width="5" height="18" rx="1.5" fill="#FFFFFF"/>'
+          f'<rect x="{px + pw / 2 + 2}" y="281" width="5" height="18" rx="1.5" fill="#FFFFFF"/>\n')
+    hx, hy = px + 34, 326
+    s += (f'  <path d="M{hx},{hy + 5} l-6,-6 a3.6,3.6 0 0 1 6,-4 a3.6,3.6 0 0 1 6,4 Z" fill="#C2354F"/>\n')
+    s += '  ' + txt(hx + 12, hy + 4, '12 me gusta', 13, 600, '#C2354F') + '\n'
+
+    s += '  ' + txt(px + 18, 376, 'Siguiente en la lista', 13, 700, '#49454F') + '\n'
+    queue = [('Imagine', 'John Lennon'), ('Yellow', 'Coldplay'), ('Bohemian Rhapsody', 'Queen')]
+    for j, (t, a) in enumerate(queue):
+        y = 388 + j * 54
+        s += f'  <rect x="{px + 14}" y="{y}" width="{pw - 28}" height="46" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/>\n'
+        s += '  ' + cover(px + 22, y + 7, 32, 7, f'{fid}-cover') + '\n'
+        s += '  ' + txt(px + 66, y + 21, t, 13.5, 700) + '\n'
+        s += '  ' + txt(px + 66, y + 37, a, 12, 400, '#625B71') + '\n'
+
+    s += '  ' + txt(520, 136, 'ESTADO', 12, 700, '#7439B8', cls='h') + '\n'
+    s += '  ' + txt(584, 136, 'vive en _PlayerScreenState', 12, 400, FAINT, cls='mono') + '\n'
+    rows = [
+        ('violet', 222, 'Song _current', "Song('Levitating', …)", px + pw - 14),
+        ('amber', 290, 'bool _isPlaying', 'true', px + pw / 2 + 24),
+        ('rose', 326, 'int _likes', '12', hx + 96),
+        ('teal', 442, 'List&lt;Song&gt; _songs', '3 canciones', px + pw - 14),
+    ]
+    for color, y, name, value, tx in rows:
+        soft, border, strong = FAM[color]
+        s += f'  <rect x="520" y="{y - 16}" width="392" height="32" rx="8" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += '  ' + txt(534, y + 5, name, 13, 700, strong, cls='mono') + '\n'
+        s += f'  <rect x="724" y="{y - 11}" width="180" height="22" rx="6" fill="#FFFFFF" stroke="{border}"/>\n'
+        s += '  ' + txt(814, y + 4.5, value, 12.5, 600, INK, 'middle', 'mono', 168) + '\n'
+        s += (f'  <path d="M520,{y} H{tx + 6}" fill="none" stroke="{strong}" stroke-width="2" '
+              f'marker-end="url(#{fid}-{color})"/>\n')
+        s += f'  <circle cx="520" cy="{y}" r="3.5" fill="{strong}"/>\n'
+    s += f'  <path d="M{px + pw - 14},380 H{px + pw - 6} V{388 + 2 * 54 + 46} H{px + pw - 14}" fill="none" stroke="#0F8478" stroke-width="2"/>\n'
+    s += f'  <path d="M{px + pw - 14},200 H{px + pw - 8} V266 H{px + pw - 14}" fill="none" stroke="#7439B8" stroke-width="2"/>\n'
+
+    s += '  ' + txt(520, 172, 'No es estado: el título nunca cambia', 12.5, 400, FAINT) + '\n'
+    s += (f'  <path d="M512,168 H360 V144 H198" fill="none" stroke="#79809A" stroke-width="1.5" stroke-dasharray="4 4" '
+          f'marker-end="url(#{fid}-slate)"/>\n')
+
+    s += '  ' + txt(520, 500, 'Cada flecha va de un dato a la parte de la pantalla', 13, 400, '#454C61', fit=392) + '\n'
+    s += '  ' + txt(520, 520, 'que lo muestra. Si el dato cambia, esa parte cambia.', 13, 400, '#454C61', fit=392) + '\n'
+    s += '  ' + txt(48, 612, 'El estado vive en el objeto State de la pantalla. El build() lo lee para dibujar.', 13, 400, MUTED, fit=864) + '\n'
     return s + '</svg>\n'
 
 
@@ -89,7 +134,7 @@ def note_box(x, y, w, color, title, rows, h=None):
     return o
 
 
-FIGS['ewComparar'] = ew_comparar
+FIGS['ewPantalla'] = ew_pantalla
 
 
 def ew_anatomia_result():

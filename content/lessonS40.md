@@ -15,50 +15,100 @@ El estado son los **datos que cambian mientras la pantalla está abierta** y que
 
 El título de la barra o el texto de un botón no son estado, porque no cambian. Una buena pregunta para distinguirlos es: *¿esto puede valer distinto dentro de un minuto, sin salir de la pantalla?* Si la respuesta es sí, es estado.
 
+Mira una app de música con sus datos cargados. A la derecha está su estado: la canción que suena, si está sonando, cuántos "me gusta" tiene y la lista que sigue. Cada flecha llega a la parte de la pantalla que muestra ese dato.
+
+```svg
+<svg id="ewPantalla" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="ewPantalla-ttl ewPantalla-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="ewPantalla-ttl">El estado detrás de una pantalla</title>
+  <desc id="ewPantalla-dsc">Un reproductor de música en un celular: la barra con el título Mi playlist, la canción que suena (Levitating, de Dua Lipa), un botón de pausa, 12 me gusta y una lista de tres canciones. A la derecha, la sección Estado con cuatro variables, cada una con una flecha de su color hacia la parte de la pantalla que la muestra: _current a la canción que suena, _isPlaying al botón de pausa, _likes al contador de me gusta y _songs a la lista. Una nota gris señala que el título de la barra no es estado porque nunca cambia.</desc>
+  <defs>
+    <style>
+      #ewPantalla .title{fill:#161A26;font-size:22px;font-weight:700}
+      #ewPantalla .sub{fill:#79809A;font-size:13.5px}
+      #ewPantalla .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #ewPantalla .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #ewPantalla .nb{fill:#454C61;font-size:13px}
+      #ewPantalla .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #ewPantalla .foot{fill:#79809A;font-size:12px}
+      #ewPantalla .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #ewPantalla .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#ewPantalla-arrow)}
+    </style>
+    <marker id="ewPantalla-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+    <marker id="ewPantalla-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#7439B8"/></marker><marker id="ewPantalla-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#A96C05"/></marker><marker id="ewPantalla-rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#C2354F"/></marker><marker id="ewPantalla-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#0F8478"/></marker><marker id="ewPantalla-slate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#79809A"/></marker>
+    <linearGradient id="ewPantalla-cover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B69DF8"/><stop offset="1" stop-color="#6750A4"/></linearGradient>
+  </defs>
+  <rect width="960" height="640" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">El estado detrás de una pantalla</text>
+  <text class="sub" x="48" y="80" data-fit="860">A la izquierda, la app con sus datos. A la derecha, los datos que pueden cambiar: el estado.</text>
+  <rect x="86" y="102" width="340" height="476" rx="36" fill="#1F2430"/>
+  <rect x="96" y="112" width="320" height="456" rx="26" fill="#FEF7FF"/>
+  <path d="M96,138 A26,26 0 0 1 122,112 H390 A26,26 0 0 1 416,138 V168 H96 Z" fill="#D0BCFF"/>
+  <text x="114" y="149" font-size="17" font-weight="500" fill="#161A26" text-anchor="start">Mi playlist</text>
+  <rect x="110" y="196" width="292" height="148" rx="16" fill="#FFFFFF" stroke="#E6E0F2"/>
+  <rect x="124" y="208" width="56" height="56" rx="12" fill="url(#ewPantalla-cover)"/><circle cx="162.1" cy="225.9" r="6.7" fill="#FFFFFF" fill-opacity=".7"/><path d="M124,253.9 L144.2,236.0 L158.7,248.3 L167.7,241.6 L180,252.8 V252 A12,12 0 0 1 168,264 H136 A12,12 0 0 1 124,252 Z" fill="#FFFFFF" fill-opacity=".35"/>
+  <text x="122" y="188" font-size="11" font-weight="700" fill="#625B71" text-anchor="start">SONANDO AHORA</text>
+  <text x="194" y="230" font-size="16" font-weight="700" fill="#161A26" text-anchor="start">Levitating</text>
+  <text x="194" y="250" font-size="13" font-weight="400" fill="#625B71" text-anchor="start">Dua Lipa</text>
+  <circle cx="256.0" cy="290" r="20" fill="#6750A4"/>
+  <rect x="249.0" y="281" width="5" height="18" rx="1.5" fill="#FFFFFF"/><rect x="258.0" y="281" width="5" height="18" rx="1.5" fill="#FFFFFF"/>
+  <path d="M130,331 l-6,-6 a3.6,3.6 0 0 1 6,-4 a3.6,3.6 0 0 1 6,4 Z" fill="#C2354F"/>
+  <text x="142" y="330" font-size="13" font-weight="600" fill="#C2354F" text-anchor="start">12 me gusta</text>
+  <text x="114" y="376" font-size="13" font-weight="700" fill="#49454F" text-anchor="start">Siguiente en la lista</text>
+  <rect x="110" y="388" width="292" height="46" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/>
+  <rect x="118" y="395" width="32" height="32" rx="7" fill="url(#ewPantalla-cover)"/><circle cx="139.8" cy="405.2" r="3.8" fill="#FFFFFF" fill-opacity=".7"/><path d="M118,421.2 L129.5,411.0 L137.8,418.0 L143.0,414.2 L150,420.6 V420 A7,7 0 0 1 143,427 H125 A7,7 0 0 1 118,420 Z" fill="#FFFFFF" fill-opacity=".35"/>
+  <text x="162" y="409" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Imagine</text>
+  <text x="162" y="425" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">John Lennon</text>
+  <rect x="110" y="442" width="292" height="46" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/>
+  <rect x="118" y="449" width="32" height="32" rx="7" fill="url(#ewPantalla-cover)"/><circle cx="139.8" cy="459.2" r="3.8" fill="#FFFFFF" fill-opacity=".7"/><path d="M118,475.2 L129.5,465.0 L137.8,472.0 L143.0,468.2 L150,474.6 V474 A7,7 0 0 1 143,481 H125 A7,7 0 0 1 118,474 Z" fill="#FFFFFF" fill-opacity=".35"/>
+  <text x="162" y="463" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Yellow</text>
+  <text x="162" y="479" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">Coldplay</text>
+  <rect x="110" y="496" width="292" height="46" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/>
+  <rect x="118" y="503" width="32" height="32" rx="7" fill="url(#ewPantalla-cover)"/><circle cx="139.8" cy="513.2" r="3.8" fill="#FFFFFF" fill-opacity=".7"/><path d="M118,529.2 L129.5,519.0 L137.8,526.0 L143.0,522.2 L150,528.6 V528 A7,7 0 0 1 143,535 H125 A7,7 0 0 1 118,528 Z" fill="#FFFFFF" fill-opacity=".35"/>
+  <text x="162" y="517" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Bohemian Rhapsody</text>
+  <text x="162" y="533" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">Queen</text>
+  <text x="520" y="136" font-size="12" font-weight="700" fill="#7439B8" text-anchor="start" class="h">ESTADO</text>
+  <text x="584" y="136" font-size="12" font-weight="400" fill="#79809A" text-anchor="start" class="mono">vive en _PlayerScreenState</text>
+  <rect x="520" y="206" width="392" height="32" rx="8" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
+  <text x="534" y="227" font-size="13" font-weight="700" fill="#7439B8" text-anchor="start" class="mono">Song _current</text>
+  <rect x="724" y="211" width="180" height="22" rx="6" fill="#FFFFFF" stroke="#C9A6EE"/>
+  <text x="814" y="226.5" font-size="12.5" font-weight="600" fill="#161A26" text-anchor="middle" class="mono" data-fit="168">Song('Levitating', …)</text>
+  <path d="M520,222 H408" fill="none" stroke="#7439B8" stroke-width="2" marker-end="url(#ewPantalla-violet)"/>
+  <circle cx="520" cy="222" r="3.5" fill="#7439B8"/>
+  <rect x="520" y="274" width="392" height="32" rx="8" fill="#FFF3DC" stroke="#F0C572" stroke-width="1.5"/>
+  <text x="534" y="295" font-size="13" font-weight="700" fill="#A96C05" text-anchor="start" class="mono">bool _isPlaying</text>
+  <rect x="724" y="279" width="180" height="22" rx="6" fill="#FFFFFF" stroke="#F0C572"/>
+  <text x="814" y="294.5" font-size="12.5" font-weight="600" fill="#161A26" text-anchor="middle" class="mono" data-fit="168">true</text>
+  <path d="M520,290 H286.0" fill="none" stroke="#A96C05" stroke-width="2" marker-end="url(#ewPantalla-amber)"/>
+  <circle cx="520" cy="290" r="3.5" fill="#A96C05"/>
+  <rect x="520" y="310" width="392" height="32" rx="8" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/>
+  <text x="534" y="331" font-size="13" font-weight="700" fill="#C2354F" text-anchor="start" class="mono">int _likes</text>
+  <rect x="724" y="315" width="180" height="22" rx="6" fill="#FFFFFF" stroke="#F3A3B2"/>
+  <text x="814" y="330.5" font-size="12.5" font-weight="600" fill="#161A26" text-anchor="middle" class="mono" data-fit="168">12</text>
+  <path d="M520,326 H232" fill="none" stroke="#C2354F" stroke-width="2" marker-end="url(#ewPantalla-rose)"/>
+  <circle cx="520" cy="326" r="3.5" fill="#C2354F"/>
+  <rect x="520" y="426" width="392" height="32" rx="8" fill="#E3F6F3" stroke="#86D3CA" stroke-width="1.5"/>
+  <text x="534" y="447" font-size="13" font-weight="700" fill="#0F8478" text-anchor="start" class="mono">List&lt;Song&gt; _songs</text>
+  <rect x="724" y="431" width="180" height="22" rx="6" fill="#FFFFFF" stroke="#86D3CA"/>
+  <text x="814" y="446.5" font-size="12.5" font-weight="600" fill="#161A26" text-anchor="middle" class="mono" data-fit="168">3 canciones</text>
+  <path d="M520,442 H408" fill="none" stroke="#0F8478" stroke-width="2" marker-end="url(#ewPantalla-teal)"/>
+  <circle cx="520" cy="442" r="3.5" fill="#0F8478"/>
+  <path d="M402,380 H410 V542 H402" fill="none" stroke="#0F8478" stroke-width="2"/>
+  <path d="M402,200 H408 V266 H402" fill="none" stroke="#7439B8" stroke-width="2"/>
+  <text x="520" y="172" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="start">No es estado: el título nunca cambia</text>
+  <path d="M512,168 H360 V144 H198" fill="none" stroke="#79809A" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#ewPantalla-slate)"/>
+  <text x="520" y="500" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Cada flecha va de un dato a la parte de la pantalla</text>
+  <text x="520" y="520" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">que lo muestra. Si el dato cambia, esa parte cambia.</text>
+  <text x="48" y="612" font-size="13" font-weight="400" fill="#556074" text-anchor="start" data-fit="864">El estado vive en el objeto State de la pantalla. El build() lo lee para dibujar.</text>
+</svg>
+```
+
+Cuando alguien pulsa pausa, cambia `_isPlaying` y con él el botón. Cuando da "me gusta", cambia `_likes` y con él el número. La pantalla no se cambia a mano: se cambia el dato, y la pantalla lo muestra.
+
 ## Dos tipos de widget
 
 Los componentes que hiciste en la sesión 2 eran `StatelessWidget`: reciben sus datos por el constructor, los guardan en campos `final` y los dibujan. No pueden cambiar por sí solos. Para algo que cambia, Flutter tiene el `StatefulWidget`, que se parte en dos clases:
-
-```svg
-<svg id="ewComparar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 488" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="ewComparar-ttl ewComparar-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="ewComparar-ttl">Un widget sin estado y uno con estado</title>
-  <desc id="ewComparar-dsc">A la izquierda, un StatelessWidget: una sola clase con campos final y un build que dibuja lo que recibe. A la derecha, un StatefulWidget: la clase del widget, que solo guarda la configuración, crea con createState un objeto State que guarda los datos que cambian, tiene el build y sobrevive cuando el widget se vuelve a crear.</desc>
-  <defs>
-    <style>
-      #ewComparar .title{fill:#161A26;font-size:22px;font-weight:700}
-      #ewComparar .sub{fill:#79809A;font-size:13.5px}
-      #ewComparar .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
-      #ewComparar .nt{font-size:15px;font-weight:700;fill:#161A26}
-      #ewComparar .nb{fill:#454C61;font-size:13px}
-      #ewComparar .lbl{fill:#556074;font-size:12px;font-weight:600}
-      #ewComparar .foot{fill:#79809A;font-size:12px}
-      #ewComparar .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
-      #ewComparar .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#ewComparar-arrow)}
-    </style>
-    <marker id="ewComparar-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
-    </marker>
-  </defs>
-  <rect width="960" height="488" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">Un widget sin estado y uno con estado</text>
-  <text class="sub" x="48" y="80" data-fit="860">El StatelessWidget es una sola clase. El StatefulWidget se parte en dos: el widget y su State.</text>
-  <text x="48" y="128" font-size="12" font-weight="700" fill="#556074" text-anchor="start" class="h">STATELESSWIDGET</text>
-  <rect x="48" y="144" width="408" height="156" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
-  <text x="72" y="176" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" class="mono">ProfileInfo</text>
-  <text x="72" y="204" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">Recibe sus datos por el constructor,</text><text x="72" y="223" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">en campos final.</text><text x="72" y="242" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">build() los dibuja tal cual llegan.</text><text x="72" y="261" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">No puede cambiar por sí solo.</text>
-  <rect x="48" y="324" width="408" height="76" rx="10" fill="#FFFFFF" stroke="#A9B4F2" stroke-width="1.5"/><text x="64" y="346" font-size="13.5" font-weight="700" fill="#4453C9" text-anchor="start" data-fit="376">Para piezas que solo muestran</text><text x="64" y="366" font-size="12.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="376">Los componentes de la sesión 2: botones,</text><text x="64" y="383" font-size="12.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="376">tarjetas, filas de estadísticas.</text>
-  <text x="504" y="128" font-size="12" font-weight="700" fill="#556074" text-anchor="start" class="h">STATEFULWIDGET</text>
-  <rect x="504" y="144" width="408" height="76" rx="12" fill="#EEF1FF" stroke="#A9B4F2" stroke-width="1.5"/>
-  <text x="528" y="174" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" class="mono">HomeScreen</text>
-  <text x="528" y="200" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">El widget: solo la configuración. Se puede recrear.</text>
-  <path class="link" d="M708,220 V262"/>
-  <text x="718" y="246" font-size="12.5" font-weight="600" fill="#556074" text-anchor="start" class="mono">createState()</text>
-  <rect x="504" y="264" width="408" height="132" rx="12" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
-  <text x="528" y="294" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" class="mono">_HomeScreenState</text>
-  <text x="528" y="322" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">El State: guarda los datos que cambian.</text><text x="528" y="341" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">Aquí vive build().</text><text x="528" y="360" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="360">Sobrevive cuando el widget se recrea.</text>
-  <rect x="504" y="412" width="408" height="48" rx="10" fill="#FFFFFF" stroke="#C9A6EE" stroke-width="1.5"/><text x="520" y="434" font-size="13.5" font-weight="700" fill="#7439B8" text-anchor="start" data-fit="376">Para pantallas que cambian</text><text x="520" y="454" font-size="12.5" font-weight="400" fill="#454C61" text-anchor="start" data-fit="376">Un contador, un formulario, una playlist.</text>
-</svg>
-```
 
 - **El widget** (`HomeScreen`) solo guarda la configuración. Flutter lo puede tirar y crear otro en cualquier momento.
 - **El State** (`_HomeScreenState`) guarda los datos que cambian y tiene el `build()`. Vive mientras la pantalla esté montada.
