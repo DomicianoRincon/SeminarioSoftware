@@ -9,7 +9,8 @@ const CSS = `
   --fs-accent-soft:#EADDFF;--fs-appbar:#D0BCFF;--fs-flash:#FFE082;--fs-ok:#2E7D32;--fs-err:#C62828;
   background:var(--fs-bg);color:var(--fs-ink);border:1px solid var(--fs-line);border-radius:16px;
   padding:16px;font-family:Roboto,Arial,sans-serif;font-size:14px;line-height:1.4;
-  display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;box-sizing:border-box;max-width:960px;margin:0 auto;overflow:hidden}
+  display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;box-sizing:border-box;max-width:960px;margin:0 auto;overflow:hidden;
+  container-type:inline-size}
 .fsim *{box-sizing:border-box}
 .fsim .fs-col{display:flex;flex-direction:column;gap:12px;align-items:center;flex:0 1 280px;min-width:0;max-width:100%;margin:0 auto}
 .fsim .fs-side{flex:1 1 300px;min-width:0;max-width:100%;display:flex;flex-direction:column;gap:12px}
@@ -108,6 +109,7 @@ const CSS = `
 @keyframes fsimPress{0%{box-shadow:0 0 0 0 rgba(169,108,5,.7)}100%{box-shadow:0 0 0 18px rgba(169,108,5,0)}}
 .fsim .fs-tag{font-size:12px;padding:2px 10px;border-radius:10px;background:#E8F6E3;color:#3A8235;font-weight:500}
 .fsim .fs-tag.fs-dirty{background:#FFF3DC;color:#A96C05}
+.fsim .fs-tag.fs-lost{background:#FFEBEF;color:#C2354F}
 .fsim .fs-stepbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .fsim .fs-sp{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:3px 10px 3px 4px;border-radius:14px;
   border:1px solid var(--fs-line);color:#79747E;background:#fff}
@@ -135,6 +137,7 @@ const CSS = `
 .fsim .fs-seg{display:inline-flex;border:1px solid var(--fs-accent);border-radius:20px;overflow:hidden}
 .fsim .fs-seg button{border:0;background:#fff;color:var(--fs-accent);padding:6px 14px;font:500 13px Roboto,Arial,sans-serif;cursor:pointer}
 .fsim .fs-seg button.fs-sel{background:var(--fs-accent);color:#fff}
+@container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
 
@@ -506,6 +509,25 @@ const TREE_SCENARIOS = {
   }
 }`,
     file: 'lib/main.dart',
+    forgetCode: `class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    _counter++;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Contador')),
+      body: Text('$_counter'),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _incrementCounter(),
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}`,
     triggerName: () => '+',
     idle: 'Pulsa + y sigue los pasos: primero cambia el estado y al final la pantalla.',
     read: (v) => `Mientras construye, build() lee _counter: el Text nuevo recibe '${v._counter}'.`,
@@ -640,18 +662,22 @@ const mountTree = (root, args = []) => {
   const stepsPanel = el('div', { class: 'fs-panel' }, stepBar, caption);
 
   const code = codePanel(sc.file);
-  code.setCode(sc.code);
-  const source = sc.code.split('\n');
   const varNames = sc.vars.map((v) => v.name);
-  const buildAt = source.findIndex((l) => l.includes('Widget build('));
-  const findLines = (test) => source.map((l, i) => (test(l, i) ? i : -1)).filter((i) => i >= 0);
-  const codeLines = {
-    trigger: findLines((l) => l.includes('onPressed')),
-    set: findLines((l, i) => i < buildAt && (l.includes('setState(') || varNames.some((n) => l.trim().startsWith(n)))),
-    build: [buildAt],
-    reads: findLines((l, i) => i > buildAt && varNames.some((n) => l.includes(n))),
+  const codeLines = {};
+  const applyCode = (text) => {
+    code.setCode(text);
+    const source = text.split('\n');
+    const buildAt = source.findIndex((l) => l.includes('Widget build('));
+    const findLines = (test) => source.map((l, i) => (test(l, i) ? i : -1)).filter((i) => i >= 0);
+    Object.assign(codeLines, {
+      trigger: findLines((l) => l.includes('onPressed')),
+      set: findLines((l, i) => i < buildAt && (l.includes('setState(') || varNames.some((n) => l.trim().startsWith(n)))),
+      build: [buildAt],
+      reads: findLines((l, i) => i > buildAt && varNames.some((n) => l.includes(n))),
+    });
+    decorateCode();
   };
-  code.lineNodes().forEach((line, i) => {
+  const decorateCode = () => code.lineNodes().forEach((line, i) => {
     varNames.forEach((n) => {
       line.innerHTML = line.innerHTML.replace(new RegExp(`\\b${n}\\b`, 'g'), `<span class="fs-sv">${n}</span>`);
     });
@@ -660,6 +686,7 @@ const mountTree = (root, args = []) => {
       line.innerHTML = line.innerHTML.replace('onPressed', '<span class="fs-trig">onPressed</span>');
     }
   });
+  applyCode(sc.code);
 
   const codeAt = (key) => code.mark(...(codeLines[key] || []));
 
@@ -728,8 +755,9 @@ const mountTree = (root, args = []) => {
     sc.vars.forEach((v) => {
       varBoxes[v.name].textContent = showValue(model.vars[v.name]);
     });
-    dirtyTag.textContent = model.dirty ? 'sucio: pide build()' : 'al día';
-    dirtyTag.className = model.dirty ? 'fs-tag fs-dirty' : 'fs-tag';
+    const stale = sc.vars.some((v) => model.vars[v.name] !== model.painted[v.name]);
+    dirtyTag.textContent = model.dirty ? 'sucio: pide build()' : stale ? 'Flutter no se enteró' : 'al día';
+    dirtyTag.className = model.dirty ? 'fs-tag fs-dirty' : stale ? 'fs-tag fs-lost' : 'fs-tag';
     scheduleLines();
   };
 
@@ -855,7 +883,50 @@ const mountTree = (root, args = []) => {
     target.classList.add(kind);
   };
 
+  let forgot = false;
+  const forgottenSteps = () => {
+    const before = { ...model.vars };
+    const after = sc.next(before);
+    const v = sc.vars[0].name;
+    return {
+      names: ['Toque', `${v} cambia`, 'Sin build()'],
+      steps: [
+        {
+          caption: `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
+          fx: () => {
+            pop(phoneView.trigger, 'fs-press');
+            hot(triggerNode.key);
+            codeAt('trigger');
+            activeLines(['write']);
+            travel(paths.write, '#D08A12');
+          },
+        },
+        {
+          caption: `${sc.fn} cambia ${v} de ${showValue(before[v])} a ${showValue(after[v])}, pero no llama a setState.`,
+          apply: () => {
+            model.vars = after;
+            renderState();
+          },
+          fx: () => {
+            Object.values(varBoxes).forEach(pop);
+            hot('state');
+            codeAt('set');
+          },
+        },
+        {
+          caption: `Flutter no se enteró: build() no corre y la pantalla sigue en ${showValue(model.painted[v])}. Sin error, sin aviso.`,
+          fx: () => {
+            hot();
+            codeAt('none');
+            activeLines([]);
+          },
+        },
+      ],
+    };
+  };
+
   const toggleSteps = () => {
+    if (forgot) return forgottenSteps();
     const before = { ...model.vars };
     const after = sc.next(before);
     const v = sc.vars[0].name;
@@ -1065,6 +1136,19 @@ const mountTree = (root, args = []) => {
   });
 
   const controls = el('div', { class: 'fs-controls' }, stepToggle.node, nextButton);
+  if (sc.forgetCode && args.includes('forget')) {
+    const forgetToggle = switchControl('Olvidar setState', (checked) => {
+      finishNow();
+      forgot = checked;
+      applyCode(checked ? sc.forgetCode : sc.code);
+      drawBar(toggleSteps().names, -1);
+      caption.textContent = checked
+        ? `Ahora ${sc.fn} no llama a setState. Pulsa ${sc.triggerName(model.painted)} varias veces.`
+        : sc.idle;
+      scheduleLines();
+    });
+    controls.prepend(forgetToggle.node);
+  }
   if (sc.rebuild) {
     controls.prepend(el('button', { class: 'fs-btn', text: `Reconstruir ${sc.app}`, onclick: () => start(rebuildSteps) }));
   }

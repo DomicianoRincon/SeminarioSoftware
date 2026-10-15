@@ -133,6 +133,24 @@ describe('state-tree', () => {
     expect(container.querySelector('[data-node="text"] b').textContent).toBe("Text('Encendido')");
   });
 
+  it('shows the forgotten setState: the state moves, the screen does not', () => {
+    const { container } = renderBlock('state-tree forget');
+    fireEvent.click(screen.getByLabelText('Olvidar setState'));
+    expect(container.textContent).not.toContain('setState(() {');
+    fireEvent.click(screen.getByLabelText('Incrementar'));
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    fireEvent.click(screen.getByLabelText('Incrementar'));
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    expect(screen.getByTestId('var-_counter').textContent).toBe('2');
+    expect(screen.getByTestId('tree-counter').textContent).toBe('0');
+    expect(screen.getByText('Flutter no se enteró')).toBeTruthy();
+    fireEvent.click(screen.getByLabelText('Olvidar setState'));
+    fireEvent.click(screen.getByLabelText('Incrementar'));
+    act(() => vi.advanceTimersByTime(STEP * 6));
+    expect(screen.getByTestId('tree-counter').textContent).toBe('3');
+    expect(screen.getByText('al día')).toBeTruthy();
+  });
+
   it('waits for Siguiente paso in step-by-step mode', () => {
     renderBlock('state-tree');
     fireEvent.click(screen.getByLabelText('Paso a paso'));

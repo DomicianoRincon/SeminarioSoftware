@@ -59,9 +59,9 @@ Total: 120 minutos. El bloque de la playlist incluye el arranque del taller en c
 | 10 | La idea de la sesión | `sectionSlideEGreen` | *La pantalla es lo que sale de pintar el estado.* | · |
 | 11 | setState: el contador | `sectionSlideEBlue` | Divisor | · |
 | 12 | El sumador de flutter create | `slideStandard` | `_counter`, `_incrementCounter`, `build` con `print` | Código del State |
-| 13 | **En vivo** · Pulsar + | `slideStandard` | Teléfono, objeto State, línea que corre y consola | Interactivo `state-counter` |
-| 14 | **En vivo** · Lo que pasa cuando se pulsa + | `slideStandard` | Los cinco pasos en el árbol, con *Paso a paso* para narrar cada uno; el resumen fijo (`ssCiclo`) va en las notas | Interactivo `state-tree` |
-| 15 | **En vivo** · Olvidar setState | `slideStandard` | Mismo simulador con el interruptor activado: el State sube, la pantalla no | Interactivo `state-counter` |
+| 13 | El print en build | `slideStandard` | Cada toque escribe `build() con _counter = n` en la consola: así se ve cuándo se reconstruye | Código con el `print` |
+| 14 | **En vivo** · Lo que pasa cuando se pulsa + | `slideStandard` | Los cinco pasos en el árbol, con *Paso a paso* para narrar cada uno; el resumen fijo (`ssCiclo`) va en las notas | Interactivo `state-tree forget` |
+| 15 | **En vivo** · Olvidar setState | `slideStandard` | El árbol con *Olvidar setState*: el Estado sube, la pantalla no, *Flutter no se enteró* | Interactivo `state-tree forget` |
 | 16 | **En vivo** · Hot reload frente a hot restart | `slideStandard` | Reload conserva el State; restart crea uno nuevo | Interactivo `hot-reload` |
 | 17 | Pasar una función al botón | `slideSidebarLeftOrange` | `onPressed: _increment` · `onPressed: () => _increment()` · el error de los paréntesis | Tres líneas de código |
 | 18 | Ciclo de vida | `sectionSlideEBlue` | Divisor | · |

@@ -4,6 +4,14 @@
 
 Cuando creas un proyecto con `flutter create`, la app que viene de ejemplo es un contador: un número en el centro y un botón `+` que lo sube. En la sesión 2 la borraste para empezar con tu propia `HomeScreen`. Ahora vale la pena volver a ella, porque es el ejemplo más corto de estado que existe.
 
+Empieza por usarlo. `_counter` vive en el bloque **Estado**, dentro de `_MyHomePageState`, y una línea la une con el widget que la usa: el `Text`. Pulsa `+` y sigue los cinco pasos. Con *Paso a paso* avanzas tú, uno a la vez.
+
+```interactive
+state-tree forget
+```
+
+Cambia a **Código** cuando quieras: el estado se conserva. Ahí se ilumina la línea que corre en cada paso, y la única línea que amarra `_counter` a un widget es `body: Text('$_counter')`, marcada en violeta y unida al bloque Estado.
+
 ## El contador, sin lo que sobra
 
 Este es el State del contador, con los comentarios del ejemplo original quitados y un `print` agregado en `build`:
@@ -35,13 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
 - `_incrementCounter` es la función que lo cambia.
 - `build` lee `_counter` y lo pone en un `Text`.
 
-Pulsa `+` y mira las cuatro cosas a la vez: el teléfono, el objeto State, la línea de código que corre y la consola.
-
-```interactive
-state-counter
-```
-
-Cada toque escribe una línea nueva en la consola: `build()` corrió otra vez. Ese `print` es la forma más directa de ver **cuándo** se vuelve a construir una pantalla. Ponlo en tus propias Screens mientras aprendes, y quítalo después.
+Cuando lo corras en tu proyecto, cada toque escribe una línea nueva en la consola de depuración: `build()` corrió otra vez. Ese `print` es la forma más directa de ver **cuándo** se vuelve a construir una pantalla. Ponlo en tus propias Screens mientras aprendes, y quítalo después.
 
 ## Qué hace setState
 
@@ -99,23 +101,15 @@ Cada toque escribe una línea nueva en la consola: `build()` corrió otra vez. E
 </svg>
 ```
 
-Ahora míralo en el árbol de widgets del contador. `_counter` vive en la sección **Estado**, dentro de `_MyHomePageState`, y una línea la une con el widget que la usa: el `Text`. Pulsa `+` y sigue los cinco pasos. Con *Paso a paso* avanzas tú, uno a la vez.
-
-```interactive
-state-tree
-```
-
-Cambia a **Código** cuando quieras: el estado se conserva. Ahí se ilumina la línea que corre en cada paso, y la única línea que amarra `_counter` a un widget es `body: Text('$_counter')`, marcada en violeta y unida al bloque Estado.
-
-Fíjate en el paso 2: `_counter` ya vale el número nuevo, pero la pantalla sigue mostrando el viejo. El estado cambia primero, y la pantalla solo se entera cuando `build()` vuelve a correr y el `Text` nuevo lee el valor, en los pasos 3 a 5. También mira los `#n`: en cada `build()` el `Scaffold`, el `Text` y el botón son objetos nuevos, y `_MyHomePageState` es siempre el mismo.
+Vuelve al diagrama del inicio y fíjate en el paso 2: `_counter` ya vale el número nuevo, pero la pantalla sigue mostrando el viejo. El estado cambia primero, y la pantalla solo se entera cuando `build()` vuelve a correr y el `Text` nuevo lee el valor, en los pasos 3 a 5. También mira los `#n`: en cada `build()` el `Scaffold`, el `Text` y el botón son objetos nuevos, y `_MyHomePageState` es siempre el mismo.
 
 Por eso `build()` tiene que poder correr muchas veces: no crea el estado, solo lo lee. Si en `build()` escribieras `int counter = 0;`, el contador volvería a 0 en cada reconstrucción.
 
 ## El error más común: olvidar setState
 
-Vuelve al diagrama de arriba y activa *Olvidar setState*. Ahora `_incrementCounter` solo hace `_counter++`. Pulsa `+` varias veces.
+Vuelve al diagrama del inicio y activa *Olvidar setState*. El código cambia: ahora `_incrementCounter` solo hace `_counter++`. Pulsa `+` varias veces.
 
-El panel del State sube, pero la pantalla se queda quieta: el dato cambió y nadie le avisó a Flutter. No sale ningún error, la app simplemente "no hace nada", y eso lo hace difícil de encontrar. Cuando una pantalla no refleja un cambio, lo primero que se revisa es si el cambio está dentro de un `setState`.
+El bloque Estado sube, pero la pantalla se queda quieta y la etiqueta dice *Flutter no se enteró*: el dato cambió y nadie le avisó a Flutter. Desactiva el interruptor y pulsa `+` una vez más: la pantalla salta de golpe al valor real, con todos los toques que se habían perdido. No sale ningún error, la app simplemente "no hace nada", y eso lo hace difícil de encontrar. Cuando una pantalla no refleja un cambio, lo primero que se revisa es si el cambio está dentro de un `setState`.
 
 ## Hot reload conserva el estado
 
