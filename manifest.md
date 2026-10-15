@@ -15,7 +15,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill · `S0033` Una skill para armar pantallas |
 | 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0039` Colaboración con GitHub MCP · `S0038` Taller · Servidores MCP |
-| 6 | 22 | 11 | 4 | Stateful widget y setState | ⬜ | |
+| 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard · `S0045` Taller · Playlist, parte 1 |
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | ⬜ | |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | ⬜ | |
@@ -131,6 +131,29 @@ Notas:
 - `S0033` **no lleva *Ejemplo completo***, aunque tiene bloques `dart`: son las plantillas de la skill, no código para ejecutar. Si el profesor lo quiere, falta crear el gist.
 - La sesión 5 queda para practicar con esa skill: generar pantallas de la app del equipo y auditarlas contra el `AGENTS.md`.
 
+### Sesión 6 · Stateful widget y setState
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion6/`). Su `plan.md` necesita la aprobación del profesor antes de armar las slides.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Stateless frente a Stateful: por qué el estado vive en el objeto State | `S0040`, con las figuras `ewComparar` y `ewAnatomia` y el interactivo `state-tree` (el widget cambia de número de objeto al reconstruir el padre; el State no) |
+| El árbol de widgets y su reconstrucción, con un print en build | `S0041`: el `print` en `build` del contador, la figura `ssCiclo` y el interactivo `state-counter`, con el interruptor *Olvidar setState* |
+| Ciclo de vida: initState y dispose, con el TextEditingController | `S0042`: figura `lcLinea`, interactivo `state-lifecycle` y el error `setState() called after dispose()` con `mounted`. Cierra lo que `S0014` dejó pendiente (leer un `TextField`) |
+| Contador hola mundo sobre estados | `S0041`: el sumador de `flutter create` línea a línea, hot reload frente a hot restart (interactivo `hot-reload`) |
+| Primera interacción de usuario: funciones | `S0041`, apartado *Pasar una función al botón* (`onPressed: () => _incrementCounter()`), y `S0043` con `_addSong` |
+| Taller de dos sesiones, parte 1 | **Creador de playlists** en vez de la agenda de contactos (decisión del profesor, 2026-10-15). `S0043` (lista en `Text`) y `S0044` (componente `SongCard`, entregado) lo explican con el interactivo `playlist`; `S0045` es el taller: proyecto `playlist_app` con cuatro mejoras (contador en la barra, aviso de datos faltantes, quitar una canción con un `Function()` en `SongCard`, lista vacía) |
+| *Fuera de clase:* dar estado a un formulario de la app del equipo | No se asigna: las sesiones del bloque son de clase y no dejan tarea (decisión del profesor, 2026-10-15) |
+
+Notas:
+
+- **Diagramas interactivos**: bloque nuevo ` ```interactive ` del visor (`classnotesapp/src/components/interactive/`). Los simuladores son JavaScript plano en `flutterStateSims.js`, sin React, para que el mismo archivo sirva en la presentación. Cinco: `state-counter`, `hot-reload`, `state-tree`, `state-lifecycle` y `playlist` (con la opción `cards`).
+- **El modelo `Song` no lleva `copyWith`** aunque el estilo del curso lo pide: el planeador lo enseña en la sesión 7 (sesión 23), junto con la elevación de estado.
+- La mejora 3 del taller (quitar con `Function() onDelete`) adelanta a propósito el callback de la sesión 7: es la primera vez que un componente le avisa a la pantalla.
+- Los cinco *Ejemplo completo* pasaron el analizador de DartPad sin avisos y tienen su gist público en `Domiciano`. Todas las Screens con `SafeArea` en el `body`.
+- Las 9 figuras salen de `tools/sesion6_figuras.py`. `check.py` limpio.
+- **El taller se comprobó** el 2026-10-15 armando `playlist_app` resuelto (con las cuatro mejoras y la estructura del curso) en un proyecto de prueba: `flutter analyze` sin avisos. No se ejecutó en un dispositivo.
+
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
 Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archivo y el mismo id**. El 2026-09-29 eran idénticas byte a byte al original. Si se corrige una en Móviles, la copia de aquí no cambia sola.
@@ -193,3 +216,9 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS37.md` | `S0037` | Automatización con Playwright MCP | 5 |
 | `lessonS39.md` | `S0039` | Colaboración con GitHub MCP | 5 |
 | `lessonS38.md` | `S0038` | Taller · Servidores MCP | 5 |
+| `lessonS40.md` | `S0040` | Estado: Stateless frente a Stateful | 6 |
+| `lessonS41.md` | `S0041` | setState: el contador de flutter create | 6 |
+| `lessonS42.md` | `S0042` | Ciclo de vida: initState, dispose y TextEditingController | 6 |
+| `lessonS43.md` | `S0043` | Creador de playlists: la lista en texto | 6 |
+| `lessonS44.md` | `S0044` | Creador de playlists: el componente SongCard | 6 |
+| `lessonS45.md` | `S0045` | Taller · Playlist, parte 1 | 6 |

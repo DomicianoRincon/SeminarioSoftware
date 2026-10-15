@@ -216,7 +216,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py`, `tools/sesion3_figuras.py`, `tools/sesion4_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion6_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -226,6 +226,32 @@ El script de una sesión puede importar dibujos del de otra (`sesion3_figuras.py
 
 `check.py` marca como error la URL de ejemplo de `imNetwork` (`Image.network('https://…')`).
 Es un falso positivo: es texto del código mostrado, no un recurso que el SVG cargue.
+
+### Diagramas interactivos
+
+Desde la sesión 6 (2026-10-15), **lo que se entiende tocando va en un diagrama interactivo**, no en una
+figura: el estudiante pulsa, escribe y ve cambiar el estado. Pedido del profesor para enseñar estado.
+
+````markdown
+```interactive
+playlist cards
+```
+````
+
+- La primera palabra es el id del simulador y el resto son opciones. Un id desconocido muestra un aviso
+  visible, nunca un bloque vacío.
+- Código: `classnotesapp/src/components/interactive/`. `InteractiveBlock.jsx` busca el id en el registro
+  `SIMS` de `flutterStateSims.js` y le entrega un nodo del DOM.
+- **Los simuladores son JavaScript plano, sin React ni imports**, con la forma `mount(nodo, opciones) →
+  destroy`. Es a propósito: el mismo archivo se copia a la presentación de la sesión.
+- Mismas reglas de convivencia que los SVG: todo selector del CSS prefijado con `.fsim`, tarjeta clara
+  fija `#FBFBFD` que no sigue el tema, textos en español y código en inglés con el estilo del curso.
+- Los que hay: `state-counter` (el sumador de `flutter create`, con interruptor *Olvidar setState*),
+  `hot-reload`, `state-tree` (widget recreado frente a State que persiste), `state-lifecycle` (initState,
+  dispose y `setState() called after dispose()`) y `playlist` (con `cards`, alterna `Text` y `SongCard`).
+- Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
+- **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar
+  literal la carpeta `interactive/` y la línea de `LessonParser.jsx`.
 
 ## Presentaciones de las sesiones
 
@@ -346,6 +372,7 @@ Markdown estándar (CommonMark + GFM) para todo, más estos bloques cercados:
 | ` ```youtube ` | `<videoId> \| <título>` |
 | ` ```dartpad ` | Editor DartPad; el cuerpo es el id del Gist |
 | ` ```dart trycode=<gistId> ` | Bloque con pestañas *Código* / *Fire it up!* |
+| ` ```interactive ` | Diagrama interactivo; el cuerpo es `<id> [opciones]` (ver *Diagramas interactivos*) |
 
 Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a secas): sin
 él, el renderizador la confunde con código en línea.

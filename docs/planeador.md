@@ -164,7 +164,7 @@ Momentos evaluativos en clase:
 - El árbol de widgets y su reconstrucción: qué hace setState y qué subárbol se vuelve a construir (con un print en build para ver cuándo se reconstruye).
 - Ciclo de vida: initState y dispose, con el TextEditingController como caso típico.
 - Contador hola mundo sobre estados.
-- Taller de dos sesiones, parte 1: agenda de contactos no persistente, resuelta como una sola pantalla con todo el estado adentro. Se continúa en la sesión 23.
+- Taller de dos sesiones, parte 1: creador de playlists no persistente (nombre de la canción, artista y URL de la portada), resuelto como una sola pantalla con todo el estado adentro: primero la lista en texto y luego con un componente de canción. Se continúa en la sesión 23.
 - Primera interaccion de usuario: funciones
 
 `2 h` · RA4 · SO-1 · Formativa · Nivel 3 - Colaboración · IAG: Asistente de IA en consola
@@ -181,11 +181,11 @@ Momentos evaluativos en clase:
 
 ### En clase
 
-- Se retoma la agenda de la sesión 22, con todo el estado y toda la interfaz en un solo archivo, y de ahí sale la elevación de estado: el estado sube a la Screen anfitriona y los componentes lo reciben por constructor.
+- Se retoma la playlist de la sesión 22, con todo el estado y toda la interfaz en un solo archivo, y de ahí sale la elevación de estado: el estado sube a la Screen anfitriona y los componentes lo reciben por constructor.
 - Funciones como parámetro: el hijo reporta hacia arriba con un callback, sin conocer al padre.
 - Prop drilling: qué es, hasta dónde es aceptable y qué señal da cuando empieza a doler.
 - Modelos simples con copyWith para mover estado sin mutarlo.
-- Taller de dos sesiones, parte 2: refactorizar la agenda separando la lista y el formulario como componentes, con el estado en la Screen y la comunicación por callbacks.
+- Taller de dos sesiones, parte 2: refactorizar la playlist separando la lista y el formulario como componentes, con el estado en la Screen y la comunicación por callbacks.
 
 `2 h` · RA4 · SO-1, SO-2 · Formativa · Nivel 3 - Colaboración · IAG: Asistente de IA en consola
 
