@@ -741,26 +741,20 @@ const mountLifecycle = (root) => {
 const DEFAULT_IMAGE = 'https://picsum.photos/400';
 
 const PLAYLIST_ADD = `void _addSong() {
-  final title = _titleController.text;
-  final artist = _artistController.text;
-  if (title.isEmpty || artist.isEmpty) return;
   setState(() {
     _songs.add(Song(
-      title: title,
-      artist: artist,
+      title: _titleController.text,
+      artist: _artistController.text,
       imageUrl: _imageUrlController.text,
     ));
   });
-  _titleController.clear();
-  _artistController.clear();
 }`;
 
 const PLAYLIST_TEXT_VIEW = `
 
 Column(
   children: [
-    for (final song in _songs)
-      Text('\${song.title} · \${song.artist}'),
+    for (final song in _songs) Text('\${song.title} · \${song.artist}'),
   ],
 )`;
 
@@ -768,8 +762,7 @@ const PLAYLIST_CARD_VIEW = `
 
 Column(
   children: [
-    for (final song in _songs)
-      SongCard(song: song),
+    for (final song in _songs) SongCard(song: song),
   ],
 )`;
 
@@ -787,7 +780,7 @@ const mountPlaylist = (root, args = []) => {
 
   const titleField = el('input', { class: 'fs-field', placeholder: 'Nombre de la canción', 'aria-label': 'Nombre de la canción' });
   const artistField = el('input', { class: 'fs-field', placeholder: 'Artista', 'aria-label': 'Artista' });
-  const imageField = el('input', { class: 'fs-field', 'aria-label': 'URL de la imagen', value: DEFAULT_IMAGE });
+  const imageField = el('input', { class: 'fs-field', 'aria-label': 'URL de la imagen', placeholder: DEFAULT_IMAGE });
   const addButton = el('button', { class: 'fs-filled', text: 'Agregar' });
   const list = el('div', { 'data-testid': 'playlist-list' });
 
@@ -827,17 +820,12 @@ const mountPlaylist = (root, args = []) => {
   };
 
   const build = () => {
-    screen.setExtra(songs.length ? `${songs.length}` : '');
     list.replaceChildren();
-    if (songs.length === 0) {
-      list.appendChild(el('div', { class: 'fs-empty', text: 'Todavía no hay canciones' }));
-    } else {
-      songs.forEach((song) => {
-        list.appendChild(
-          view === 'cards' ? songCard(song) : el('div', { class: 'fs-text-item', text: `${song.title} · ${song.artist}` })
-        );
-      });
-    }
+    songs.forEach((song) => {
+      list.appendChild(
+        view === 'cards' ? songCard(song) : el('div', { class: 'fs-text-item', text: `${song.title} · ${song.artist}` })
+      );
+    });
     renderState();
   };
 
@@ -849,22 +837,18 @@ const mountPlaylist = (root, args = []) => {
   };
 
   const addSong = () => {
-    const title = titleField.value.trim();
-    const artist = artistField.value.trim();
-    if (!title || !artist) {
-      code.mark(3);
-      logs.print('_addSong(): falta el nombre o el artista, no se agrega nada.', 'err');
-      note.textContent = 'Escribe al menos el nombre de la canción y el artista.';
-      note.className = 'fs-note fs-warn';
-      return;
-    }
-    songs.push({ title, artist, imageUrl: imageField.value.trim() });
-    code.mark(4, 5);
+    const title = titleField.value;
+    const artist = artistField.value;
+    songs.push({ title, artist, imageUrl: imageField.value });
+    code.mark(1, 2);
     logs.print(`setState(): _songs.add(Song('${title}', '${artist}')) → build() con ${songs.length} canciones`);
-    titleField.value = '';
-    artistField.value = '';
-    note.textContent = 'La lista del estado creció y build() la volvió a pintar completa.';
-    note.className = 'fs-note';
+    if (!title && !artist) {
+      note.textContent = 'Con los campos vacíos también se agrega: una canción vacía. Se arregla en el taller.';
+      note.className = 'fs-note fs-warn';
+    } else {
+      note.textContent = 'La lista del estado creció y build() la volvió a pintar completa.';
+      note.className = 'fs-note';
+    }
     build();
     const last = list.lastChild;
     flash(last);
@@ -887,7 +871,6 @@ const mountPlaylist = (root, args = []) => {
     el('div', { class: 'fs-label', text: 'URL de la imagen' }),
     imageField,
     addButton,
-    el('div', { class: 'fs-list-title', text: 'Canciones' }),
     list
   );
 

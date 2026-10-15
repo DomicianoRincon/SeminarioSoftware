@@ -148,6 +148,7 @@ Notas:
 Notas:
 
 - **Diagramas interactivos**: bloque nuevo ` ```interactive ` del visor (`classnotesapp/src/components/interactive/`). Los simuladores son JavaScript plano en `flutterStateSims.js`, sin React, para que el mismo archivo sirva en la presentación. Cinco: `state-counter`, `hot-reload`, `state-tree`, `state-lifecycle` y `playlist` (con la opción `cards`).
+- **`S0043` usa el código mínimo que funciona** (pedido del profesor, 2026-10-15): controllers creados en la declaración, sin `initState`, sin validar, sin `clear()`, sin estilos. `S0044` parte de ese mismo código y solo cambia el `Text` por `SongCard`. Validar y limpiar el formulario pasó a la mejora 2 del taller. El simulador `playlist` hace exactamente lo mismo (agrega canciones vacías).
 - **El modelo `Song` no lleva `copyWith`** aunque el estilo del curso lo pide: el planeador lo enseña en la sesión 7 (sesión 23), junto con la elevación de estado.
 - La mejora 3 del taller (quitar con `Function() onDelete`) adelanta a propósito el callback de la sesión 7: es la primera vez que un componente le avisa a la pantalla.
 - Los cinco *Ejemplo completo* pasaron el analizador de DartPad sin avisos y tienen su gist público en `Domiciano`. Todas las Screens con `SafeArea` en el `body`.

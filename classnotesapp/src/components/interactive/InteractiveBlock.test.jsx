@@ -103,15 +103,19 @@ describe('state-lifecycle', () => {
 });
 
 describe('playlist', () => {
-  it('adds songs as Text, ignores incomplete ones and clears the fields', () => {
+  it('adds whatever the fields hold, like the minimal _addSong of the lesson', () => {
     renderBlock('playlist');
-    fireEvent.click(screen.getByText('Agregar'));
-    expect(screen.getByText('Todavía no hay canciones')).toBeTruthy();
+    expect(screen.getByTestId('playlist-list').childNodes).toHaveLength(0);
     type('Nombre de la canción', 'Bohemian Rhapsody');
     type('Artista', 'Queen');
     fireEvent.click(screen.getByText('Agregar'));
     expect(screen.getByTestId('playlist-list').textContent).toBe('Bohemian Rhapsody · Queen');
-    expect(screen.getByLabelText('Nombre de la canción').value).toBe('');
+    expect(screen.getByLabelText('Nombre de la canción').value).toBe('Bohemian Rhapsody');
+    type('Nombre de la canción', '');
+    type('Artista', '');
+    fireEvent.click(screen.getByText('Agregar'));
+    expect(screen.getByTestId('playlist-list').childNodes).toHaveLength(2);
+    expect(screen.getByText(/canción vacía/)).toBeTruthy();
   });
 
   it('switches the same state between Text and SongCard views', () => {

@@ -169,7 +169,10 @@ El `AppBar` muestra cuántas canciones hay, a la derecha del título: `3 cancion
 
 ## 2. Aviso cuando faltan datos
 
-Hoy, si falta el nombre o el artista, `_addSong` sale sin hacer nada y la persona no sabe por qué. Muestra un mensaje en rojo debajo del formulario: `Escribe el nombre y el artista`.
+Hoy `_addSong` agrega lo que haya, aunque los campos estén vacíos, y no los borra después. Arregla las dos cosas:
+
+- Si falta el nombre o el artista, no se agrega nada y aparece un mensaje en rojo debajo del formulario: `Escribe el nombre y el artista`.
+- Cuando la canción sí se agrega, se borran el nombre y el artista con `clear()`, para escribir la siguiente.
 
 - Necesitas un dato nuevo en el estado. Piensa de qué tipo: el mensaje aparece o no aparece.
 - Se activa cuando falta algo y se apaga cuando la canción sí se agrega. Las dos cosas pasan dentro de `_addSong`, y las dos dentro de un `setState`.
@@ -200,7 +203,7 @@ Cuando no hay canciones, en lugar de la lista se ve el texto `Todavía no hay ca
 ## Qué debes tener al terminar
 
 - El proyecto `playlist_app` con `main.dart`, `models/song.dart`, `components/song_card.dart` y `screens/playlist_screen.dart`.
-- Todo el estado en `_PlaylistScreenState`: la lista, los tres controllers y el aviso de la mejora 2. Los tres controllers creados en `initState` y liberados en `dispose`.
+- Todo el estado en `_PlaylistScreenState`: la lista, los tres controllers y el aviso de la mejora 2. Los tres controllers liberados en `dispose`.
 - Las cuatro mejoras funcionando: agrega cinco canciones, intenta agregar una sin artista, quita dos y luego quita las que quedan.
 - El proyecto sin errores en el editor.
 

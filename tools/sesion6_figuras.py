@@ -229,7 +229,7 @@ def pl_flujo():
     s = head(fid, 424, 'Del formulario a la lista', 'Del formulario a la lista',
              'El botón no pinta nada en la lista: agrega al estado, y build() vuelve a pintar todo.',
              'Cuatro etapas. El formulario con nombre, artista y URL de la imagen y el botón Agregar. La función '
-             '_addSong, que lee los controllers y dentro de setState agrega una Song a _songs. El estado _songs con '
+             '_addSong, que dentro de setState agrega a _songs una Song con el texto de los controllers. El estado _songs con '
              'tres canciones. Y build, que pinta un Text por cada canción.')
     titles = [('amber', 'Formulario'), ('violet', '_addSong()'), ('indigo', '_songs'), ('green', 'build()')]
     for i, (color, title) in enumerate(titles):
@@ -244,8 +244,7 @@ def pl_flujo():
     s += '  ' + field(64, 244, 164, 'picsum.photos/400') + '\n'
     s += '  <rect x="64" y="284" width="164" height="30" rx="15" fill="#6750A4"/>\n'
     s += '  ' + txt(146, 304, 'Agregar', 13, 600, '#FFFFFF', 'middle') + '\n'
-    code = ['final title =', '  _titleController.text;', '...', 'setState(() {', '  _songs.add(Song(', '    title: title,',
-            '    ...', '  ));', '});']
+    code = ['setState(() {', '  _songs.add(Song(', '    title: …,', '    artist: …,', '    imageUrl: …,', '  ));', '});']
     s += '  ' + lines(286, 186, code, 12, '#454C61', 17, 'mono', 160) + '\n'
     for j, (t, a) in enumerate(SONGS):
         y = 178 + j * 50

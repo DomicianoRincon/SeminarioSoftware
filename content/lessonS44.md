@@ -196,6 +196,8 @@ class SongCard extends StatelessWidget {
 
 Lo que vale la pena mirar:
 
+- **La imagen sale de la URL que se escribe.** Si el campo queda vacío, `Image.network` no tiene qué cargar y la tarjeta muestra un error en la portada. Usa `https://picsum.photos/400`.
+
 - **Recibe un modelo, no tres textos.** `SongCard(song: song)` en vez de `SongCard(title: …, artist: …, imageUrl: …)`. Si mañana `Song` tiene duración, la tarjeta la puede mostrar sin cambiar a quien la usa.
 - **La portada redondeada** es un `Container` con `borderRadius` y `clipBehavior: Clip.antiAlias`, que recorta la imagen con la forma del borde. No hace falta `ClipRRect`.
 - **`maxLines: 1` con `TextOverflow.ellipsis`** corta un título largo con `…` en vez de partirlo en dos renglones o desbordar la fila.
@@ -297,10 +299,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
       initialRoute: '/',
       routes: {
         '/': (context) => const PlaylistScreen(),
@@ -396,77 +394,45 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   final List<Song> _songs = [];
-  late TextEditingController _titleController;
-  late TextEditingController _artistController;
-  late TextEditingController _imageUrlController;
-
-  @override
-  void initState() {
-    super.initState();
-    _titleController = TextEditingController();
-    _artistController = TextEditingController();
-    _imageUrlController = TextEditingController(
-      text: 'https://picsum.photos/400',
-    );
-  }
+  final _titleController = TextEditingController();
+  final _artistController = TextEditingController();
+  final _imageUrlController = TextEditingController();
 
   void _addSong() {
-    final title = _titleController.text;
-    final artist = _artistController.text;
-    if (title.isEmpty || artist.isEmpty) return;
     setState(() {
       _songs.add(Song(
-        title: title,
-        artist: artist,
+        title: _titleController.text,
+        artist: _artistController.text,
         imageUrl: _imageUrlController.text,
       ));
     });
-    _titleController.clear();
-    _artistController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Mi playlist'),
-      ),
+      appBar: AppBar(title: const Text('Mi playlist')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextField(
                 controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre de la canción',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Canción'),
               ),
-              const SizedBox(height: 12),
               TextField(
                 controller: _artistController,
-                decoration: const InputDecoration(
-                  labelText: 'Artista',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Artista'),
               ),
-              const SizedBox(height: 12),
               TextField(
                 controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'URL de la imagen',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'URL de la imagen'),
               ),
-              const SizedBox(height: 12),
               FilledButton(
                 onPressed: () => _addSong(),
                 child: const Text('Agregar'),
               ),
-              const SizedBox(height: 24),
               for (final song in _songs) SongCard(song: song),
             ],
           ),
