@@ -72,17 +72,57 @@ describe('hot-reload', () => {
 });
 
 describe('state-tree', () => {
-  it('keeps the count across a parent rebuild only when it lives in State', () => {
+  const STEP = 1100;
+  const nodeId = (container, key) => container.querySelector(`[data-node="${key}"] .fs-id`).textContent;
+
+  it('changes the state first and the screen only at the last step', () => {
+    const { container } = renderBlock('state-tree');
+    fireEvent.click(screen.getByLabelText('Incrementar'));
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('var-_counter').textContent).toBe('1');
+    expect(screen.getByTestId('tree-counter').textContent).toBe('0');
+    expect(screen.getByText('sucio: pide build()')).toBeTruthy();
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(container.querySelector('[data-node="text"] b').textContent).toBe("Text('1')");
+    expect(screen.getByTestId('tree-counter').textContent).toBe('0');
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(screen.getByTestId('tree-counter').textContent).toBe('1');
+    expect(screen.getByText('al día')).toBeTruthy();
+    expect(nodeId(container, 'state')).toBe('#3');
+  });
+
+  it('never loses a tap made in the middle of an animation', () => {
     renderBlock('state-tree');
     fireEvent.click(screen.getByLabelText('Incrementar'));
-    fireEvent.click(screen.getByText('Reconstruir MyApp'));
-    expect(screen.getByTestId('tree-counter').textContent).toBe('1');
-
-    fireEvent.click(screen.getByLabelText('Guardar el contador en un StatelessWidget'));
     fireEvent.click(screen.getByLabelText('Incrementar'));
-    expect(screen.getByTestId('tree-counter').textContent).toBe('0');
-    fireEvent.click(screen.getByText('Reconstruir MyApp'));
-    expect(screen.getByText(/contador vuelve a 0/)).toBeTruthy();
+    act(() => vi.advanceTimersByTime(STEP * 6));
+    expect(screen.getByTestId('var-_counter').textContent).toBe('2');
+    expect(screen.getByTestId('tree-counter').textContent).toBe('2');
+  });
+
+  it('waits for Siguiente paso in step-by-step mode', () => {
+    renderBlock('state-tree');
+    fireEvent.click(screen.getByLabelText('Paso a paso'));
+    fireEvent.click(screen.getByLabelText('Incrementar'));
+    act(() => vi.advanceTimersByTime(STEP * 5));
+    expect(screen.getByTestId('var-_counter').textContent).toBe('0');
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente paso' }));
+    expect(screen.getByTestId('var-_counter').textContent).toBe('1');
+  });
+
+  it('keeps the State and _isOn when the parent rebuilds (bulb)', () => {
+    const { container } = renderBlock('state-tree bulb');
+    fireEvent.click(screen.getByRole('button', { name: 'Encender' }));
+    act(() => vi.advanceTimersByTime(STEP * 6));
+    expect(screen.getByTestId('bulb-text').textContent).toBe('Encendido');
+    const widgetBefore = nodeId(container, 'widget');
+    const stateBefore = nodeId(container, 'state');
+    fireEvent.click(screen.getByRole('button', { name: 'Reconstruir App' }));
+    act(() => vi.advanceTimersByTime(STEP * 6));
+    expect(nodeId(container, 'widget')).not.toBe(widgetBefore);
+    expect(nodeId(container, 'state')).toBe(stateBefore);
+    expect(screen.getByTestId('var-_isOn').textContent).toBe('true');
+    expect(container.querySelectorAll('.fs-lines .fs-read')).toHaveLength(3);
   });
 });
 

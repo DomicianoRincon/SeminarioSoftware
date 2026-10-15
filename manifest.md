@@ -137,8 +137,8 @@ Notas:
 
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|
-| Stateless frente a Stateful: por qué el estado vive en el objeto State | `S0040`, con las figuras `ewComparar` y `ewAnatomia` y el interactivo `state-tree` (el widget cambia de número de objeto al reconstruir el padre; el State no) |
-| El árbol de widgets y su reconstrucción, con un print en build | `S0041`: el `print` en `build` del contador, la figura `ssCiclo` y el interactivo `state-counter`, con el interruptor *Olvidar setState* |
+| Stateless frente a Stateful: por qué el estado vive en el objeto State | `S0040`, con las figuras `ewComparar` y `ewAnatomia` y el interactivo `state-tree bulb`: el bombillo de su ejemplo, con `_isOn` en la sección *Estado* unida a `Icon`, `Text` y `FilledButton`; *Reconstruir App* cambia el número del widget y conserva el State y `_isOn` |
+| El árbol de widgets y su reconstrucción, con un print en build | `S0041`: el `print` en `build` del contador, la figura `ssCiclo`, el interactivo `state-counter` (con *Olvidar setState*) y el interactivo `state-tree`: árbol del contador con `_counter` en la sección *Estado*, unida al `Text`, y cada toque animado en cinco pasos (toque, setState, build, leer el estado, pantalla). Se movió aquí desde `S0040` el 2026-10-15, porque es el ejemplo de esta lección |
 | Ciclo de vida: initState y dispose, con el TextEditingController | `S0042`: figura `lcLinea`, interactivo `state-lifecycle` y el error `setState() called after dispose()` con `mounted`. Cierra lo que `S0014` dejó pendiente (leer un `TextField`) |
 | Contador hola mundo sobre estados | `S0041`: el sumador de `flutter create` línea a línea, hot reload frente a hot restart (interactivo `hot-reload`) |
 | Primera interacción de usuario: funciones | `S0041`, apartado *Pasar una función al botón* (`onPressed: () => _incrementCounter()`), y `S0043` con `_addSong` |

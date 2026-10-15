@@ -172,13 +172,18 @@ No hace falta escribir las dos clases a mano. En VS Code escribe `stful` y pulsa
 
 Podría parecer más simple guardar el dato en el widget. El problema es que **Flutter crea widgets nuevos todo el tiempo**: cada vez que el padre se reconstruye, tu `HomeScreen` se descarta y se crea otro objeto. El State, en cambio, se conserva: Flutter se lo conecta al widget nuevo.
 
-Pruébalo. Pulsa `+` unas veces y luego *Reconstruir MyApp*: mira los números de objeto (`#n`) del widget y del State. Después activa *Guardar el contador en un StatelessWidget* y repite.
+Pruébalo con el bombillo del ejemplo de esta lección. A la derecha está el árbol de widgets y, debajo, la sección **Estado**: ahí vive `_isOn`, dentro del objeto `_HomeScreenState`. Las líneas la unen con los tres widgets que la usan: el `Icon`, el `Text` y el `FilledButton`.
+
+1. Pulsa *Encender* y sigue los pasos. Mira los números de objeto (`#n`): los widgets cambian de número en cada `build()`.
+2. Ahora pulsa *Reconstruir App*. `HomeScreen` cambia de número, pero `_HomeScreenState` conserva el suyo, y `_isOn` sigue en `true`.
 
 ```interactive
-state-tree
+state-tree bulb
 ```
 
-Con el contador en el State, el widget cambia de número pero el contador sobrevive. Con el contador en el widget pasan dos cosas malas: pulsar `+` no cambia la pantalla, porque un `StatelessWidget` no tiene cómo pedir que lo vuelvan a dibujar, y al reconstruir el padre el dato se pierde.
+Si `_isOn` fuera un campo del widget, se iría con el `HomeScreen` viejo cada vez que el padre se reconstruye, y el bombillo volvería a apagarse solo. Además, un `StatelessWidget` no tiene cómo pedir que lo vuelvan a dibujar. Por eso el estado vive en el State.
+
+Activa *Paso a paso* si quieres avanzar tú, con *Siguiente paso*. Qué hace `setState` en cada paso se ve con calma en la siguiente lección.
 
 ## Cuándo usar cada uno
 

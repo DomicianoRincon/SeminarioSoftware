@@ -247,7 +247,9 @@ playlist cards
 - Mismas reglas de convivencia que los SVG: todo selector del CSS prefijado con `.fsim`, tarjeta clara
   fija `#FBFBFD` que no sigue el tema, textos en español y código en inglés con el estilo del curso.
 - Los que hay: `state-counter` (el sumador de `flutter create`, con interruptor *Olvidar setState*),
-  `hot-reload`, `state-tree` (widget recreado frente a State que persiste), `state-lifecycle` (initState,
+  `hot-reload`, `state-tree` (árbol de widgets con una sección *Estado* unida por líneas a los widgets que
+  leen cada variable; cada toque se anima en cinco pasos, con modo *Paso a paso*; escenario por defecto el
+  contador, y `bulb` el bombillo de `S0040` con *Reconstruir App*), `state-lifecycle` (initState,
   dispose y `setState() called after dispose()`) y `playlist` (con `cards`, alterna `Text` y `SongCard`).
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar

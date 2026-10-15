@@ -1,6 +1,6 @@
 # setState: el contador de flutter create
 
-<!-- tags: setState, contador de flutter create, _incrementCounter, la pantalla no se actualiza, reconstrucción con build, print en build, hot reload conserva el estado, hot restart, onPressed recibe una función, FloatingActionButton -->
+<!-- tags: setState, contador de flutter create, árbol de widgets, _incrementCounter, la pantalla no se actualiza, reconstrucción con build, print en build, hot reload conserva el estado, hot restart, onPressed recibe una función, FloatingActionButton -->
 
 Cuando creas un proyecto con `flutter create`, la app que viene de ejemplo es un contador: un número en el centro y un botón `+` que lo sube. En la sesión 2 la borraste para empezar con tu propia `HomeScreen`. Ahora vale la pena volver a ella, porque es el ejemplo más corto de estado que existe.
 
@@ -98,6 +98,14 @@ Cada toque escribe una línea nueva en la consola: `build()` corrió otra vez. E
   <text x="68" y="331" font-size="13" font-weight="600" fill="#C2354F" text-anchor="start" data-fit="824">Sin setState el paso 2 solo cambia el dato: build() no corre y la pantalla se queda con el valor viejo.</text>
 </svg>
 ```
+
+Ahora míralo en el árbol de widgets del contador. `_counter` vive en la sección **Estado**, dentro de `_MyHomePageState`, y una línea la une con el widget que la usa: el `Text`. Pulsa `+` y sigue los cinco pasos. Con *Paso a paso* avanzas tú, uno a la vez.
+
+```interactive
+state-tree
+```
+
+Fíjate en el paso 2: `_counter` ya vale el número nuevo, pero la pantalla sigue mostrando el viejo. El estado cambia primero, y la pantalla solo se entera cuando `build()` vuelve a correr y el `Text` nuevo lee el valor, en los pasos 3 a 5. También mira los `#n`: en cada `build()` el `Scaffold`, el `Text` y el botón son objetos nuevos, y `_MyHomePageState` es siempre el mismo.
 
 Por eso `build()` tiene que poder correr muchas veces: no crea el estado, solo lo lee. Si en `build()` escribieras `int counter = 0;`, el contador volvería a 0 en cada reconstrucción.
 

@@ -55,12 +55,12 @@ Total: 120 minutos. El bloque de la playlist incluye el arranque del taller en c
 | 6 | Estado es lo que cambia con la pantalla abierta | `slideStandard` | Contador, bombillo, texto de un campo, canciones. La pregunta: *¿puede valer distinto en un minuto?* | Cuatro tarjetas |
 | 7 | Un widget sin estado y uno con estado | `slideStandard` | Una clase frente a dos | SVG `ewComparar` |
 | 8 | Las dos clases de un StatefulWidget | `slideStandard` | Widget, `createState`, campos del State, `build` | SVG `ewAnatomia` |
-| 9 | **En vivo** · El widget se recrea, el State no | `slideStandard` | Pulsar `+`, *Reconstruir MyApp*, luego el interruptor Stateless | Interactivo `state-tree` |
+| 9 | **En vivo** · El widget se recrea, el State no | `slideStandard` | Encender el bombillo y luego *Reconstruir App*: `_isOn` sigue en la sección Estado | Interactivo `state-tree bulb` |
 | 10 | La idea de la sesión | `sectionSlideEGreen` | *La pantalla es lo que sale de pintar el estado.* | · |
 | 11 | setState: el contador | `sectionSlideEBlue` | Divisor | · |
 | 12 | El sumador de flutter create | `slideStandard` | `_counter`, `_incrementCounter`, `build` con `print` | Código del State |
 | 13 | **En vivo** · Pulsar + | `slideStandard` | Teléfono, objeto State, línea que corre y consola | Interactivo `state-counter` |
-| 14 | Lo que pasa cuando se pulsa + | `slideStandard` | setState cambia el dato y pide build | SVG `ssCiclo` |
+| 14 | **En vivo** · Lo que pasa cuando se pulsa + | `slideStandard` | Los cinco pasos en el árbol, con *Paso a paso* para narrar cada uno; el resumen fijo (`ssCiclo`) va en las notas | Interactivo `state-tree` |
 | 15 | **En vivo** · Olvidar setState | `slideStandard` | Mismo simulador con el interruptor activado: el State sube, la pantalla no | Interactivo `state-counter` |
 | 16 | **En vivo** · Hot reload frente a hot restart | `slideStandard` | Reload conserva el State; restart crea uno nuevo | Interactivo `hot-reload` |
 | 17 | Pasar una función al botón | `slideSidebarLeftOrange` | `onPressed: _increment` · `onPressed: () => _increment()` · el error de los paréntesis | Tres líneas de código |

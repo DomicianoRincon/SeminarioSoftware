@@ -10,7 +10,6 @@ const CSS = `
   background:var(--fs-bg);color:var(--fs-ink);border:1px solid var(--fs-line);border-radius:16px;
   padding:16px;font-family:Roboto,Arial,sans-serif;font-size:14px;line-height:1.4;
   display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;box-sizing:border-box;max-width:960px;margin:0 auto;overflow:hidden}
-@media (max-width:480px){.fsim{padding:12px;gap:12px}}
 .fsim *{box-sizing:border-box}
 .fsim .fs-col{display:flex;flex-direction:column;gap:12px;align-items:center;flex:0 1 280px;min-width:0;max-width:100%;margin:0 auto}
 .fsim .fs-side{flex:1 1 300px;min-width:0;max-width:100%;display:flex;flex-direction:column;gap:12px}
@@ -85,6 +84,39 @@ const CSS = `
 .fsim .fs-node.fs-state .fs-id{background:var(--fs-accent)}
 .fsim .fs-pair{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .fsim .fs-link{font-size:11px;color:var(--fs-muted)}
+.fsim .fs-rel{position:relative}
+.fsim .fs-lines{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+.fsim .fs-lines .fs-read{fill:none;stroke:#7439B8;stroke-width:2;stroke-dasharray:5 5;opacity:.5;transition:opacity .3s}
+.fsim .fs-lines .fs-read.fs-active{stroke-dasharray:none;opacity:1;stroke-width:2.5}
+.fsim .fs-lines .fs-write{fill:none;stroke:#A96C05;stroke-width:2.5;opacity:0;transition:opacity .3s}
+.fsim .fs-lines .fs-write.fs-active{opacity:1}
+.fsim .fs-node.fs-reads{border-color:#7439B8;border-style:dashed}
+.fsim .fs-node.fs-hot{box-shadow:0 0 0 3px #F2C069;border-color:#A96C05}
+.fsim .fs-state-box{background:#F4EBFF;border-color:#C9A6EE}
+.fsim .fs-state-head{display:flex;align-items:center;gap:10px}
+.fsim .fs-state-head h4{margin:0;color:#7439B8}
+.fsim .fs-state-of{font-size:12px;color:var(--fs-muted);margin:2px 0 8px;font-family:'JetBrains Mono',Menlo,Consolas,monospace}
+.fsim .fs-var{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:14px;margin:4px 0}
+.fsim .fs-var-type{color:#7439B8}
+.fsim .fs-var-name{font-weight:600}
+.fsim .fs-var-val{min-width:64px;text-align:center;font-size:22px;font-weight:600;background:#fff;border:2px solid #7439B8;
+  border-radius:10px;padding:2px 12px;display:inline-block}
+.fsim .fs-pop{animation:fsimPop .7s ease-out}
+@keyframes fsimPop{0%{transform:scale(1)}35%{transform:scale(1.25);background:#FFE082}100%{transform:scale(1)}}
+.fsim .fs-press{animation:fsimPress .6s ease-out}
+@keyframes fsimPress{0%{box-shadow:0 0 0 0 rgba(169,108,5,.7)}100%{box-shadow:0 0 0 18px rgba(169,108,5,0)}}
+.fsim .fs-tag{font-size:12px;padding:2px 10px;border-radius:10px;background:#E8F6E3;color:#3A8235;font-weight:500}
+.fsim .fs-tag.fs-dirty{background:#FFF3DC;color:#A96C05}
+.fsim .fs-stepbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.fsim .fs-sp{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:3px 10px 3px 4px;border-radius:14px;
+  border:1px solid var(--fs-line);color:#79747E;background:#fff}
+.fsim .fs-sp b{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:9px;
+  background:#E7E0EC;color:#49454F;font-size:11px}
+.fsim .fs-sp.fs-past{color:var(--fs-ink);border-color:#C9A6EE}
+.fsim .fs-sp.fs-past b{background:#C9A6EE;color:#fff}
+.fsim .fs-sp.fs-cur{background:var(--fs-accent);border-color:var(--fs-accent);color:#fff}
+.fsim .fs-sp.fs-cur b{background:#fff;color:var(--fs-accent)}
+.fsim .fs-caption{font-size:14px;min-height:42px;color:var(--fs-ink)}
 .fsim .fs-steps{display:flex;flex-wrap:wrap;gap:6px}
 .fsim .fs-step{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12px;padding:3px 9px;border-radius:12px;
   border:1px solid var(--fs-line);color:#9E9AA7;background:#fff}
@@ -94,6 +126,7 @@ const CSS = `
 .fsim .fs-seg{display:inline-flex;border:1px solid var(--fs-accent);border-radius:20px;overflow:hidden}
 .fsim .fs-seg button{border:0;background:#fff;color:var(--fs-accent);padding:6px 14px;font:500 13px Roboto,Arial,sans-serif;cursor:pointer}
 .fsim .fs-seg button.fs-sel{background:var(--fs-accent);color:#fff}
+@media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}}
 `;
 
 const ensureStyle = () => {
@@ -400,146 +433,525 @@ const mountCounter = (root, args = []) => {
 
 // ───────────────────────────────── state-tree ─────────────────────────────────
 
-const mountTree = (root) => {
+// The widget tree next to the State's variables, joined by lines from each variable
+// to the widgets that read it. A tap plays the steps of setState one by one.
+
+const STEP_MS = 1100;
+const DOT_MS = 700;
+let treeUid = 0;
+
+const raf = (fn) => (typeof requestAnimationFrame === 'function' ? requestAnimationFrame(fn) : setTimeout(fn, 16));
+const cancelRaf = (id) => (typeof cancelAnimationFrame === 'function' ? cancelAnimationFrame(id) : clearTimeout(id));
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const svgEl = (tag, attrs = {}) => {
+  const node = document.createElementNS(SVG_NS, tag);
+  Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+  return node;
+};
+const showValue = (value) => (typeof value === 'string' ? `'${value}'` : String(value));
+
+const bulbIcon = (on) => {
+  const icon = svgEl('svg', { viewBox: '0 0 24 24', width: '96', height: '96' });
+  icon.appendChild(svgEl('path', {
+    d: 'M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26A7 7 0 0 0 12 2z',
+    fill: on ? '#F5B800' : 'none',
+    stroke: on ? '#B78900' : '#9E9AA7',
+    'stroke-width': '1.6',
+  }));
+  return icon;
+};
+
+const TREE_SCENARIOS = {
+  counter: {
+    app: 'MyApp',
+    widget: 'MyHomePage',
+    state: '_MyHomePageState',
+    vars: [{ name: '_counter', type: 'int', initial: 0 }],
+    fn: '_incrementCounter()',
+    next: (v) => ({ _counter: v._counter + 1 }),
+    nodes: [
+      { key: 'scaffold', depth: 0, label: () => 'Scaffold' },
+      { key: 'appbar', depth: 1, label: () => 'AppBar' },
+      { key: 'text', depth: 1, label: (v) => `Text('${v._counter}')`, reads: '_counter' },
+      { key: 'fab', depth: 1, label: () => 'FloatingActionButton', trigger: true },
+    ],
+    triggerName: () => '+',
+    idle: 'Pulsa + y sigue los pasos: primero cambia el estado y al final la pantalla.',
+    read: (v) => `Mientras construye, build() lee _counter: el Text nuevo recibe '${v._counter}'.`,
+    paint: (v) => `Flutter pinta los widgets nuevos: la pantalla por fin muestra ${v._counter}.`,
+    phone: (screen, onTrigger) => {
+      screen.setTitle('Contador');
+      const big = el('div', { class: 'fs-big', 'data-testid': 'tree-counter' });
+      const fab = el('button', { class: 'fs-fab', 'aria-label': 'Incrementar', text: '+', onclick: onTrigger });
+      screen.body.append(el('div', { class: 'fs-center' }, big), fab);
+      return {
+        trigger: fab,
+        paint: (v) => {
+          big.textContent = String(v._counter);
+          flash(big);
+        },
+      };
+    },
+  },
+  bulb: {
+    app: 'App',
+    widget: 'HomeScreen',
+    state: '_HomeScreenState',
+    vars: [{ name: '_isOn', type: 'bool', initial: false }],
+    fn: '_toggle()',
+    next: (v) => ({ _isOn: !v._isOn }),
+    rebuild: true,
+    nodes: [
+      { key: 'scaffold', depth: 0, label: () => 'Scaffold' },
+      { key: 'appbar', depth: 1, label: () => 'AppBar' },
+      { key: 'center', depth: 1, label: () => 'Center' },
+      { key: 'column', depth: 2, label: () => 'Column' },
+      { key: 'icon', depth: 3, label: (v) => (v._isOn ? 'Icon(lightbulb)' : 'Icon(lightbulb_outline)'), reads: '_isOn' },
+      { key: 'text', depth: 3, label: (v) => `Text('${v._isOn ? 'Encendido' : 'Apagado'}')`, reads: '_isOn' },
+      { key: 'button', depth: 3, label: (v) => `FilledButton('${v._isOn ? 'Apagar' : 'Encender'}')`, reads: '_isOn', trigger: true },
+    ],
+    triggerName: (v) => (v._isOn ? 'Apagar' : 'Encender'),
+    idle: 'Pulsa Encender y sigue los pasos. Después prueba Reconstruir App.',
+    read: () => 'Mientras construye, build() lee _isOn: el Icon, el Text y el FilledButton nuevos lo usan.',
+    paint: (v) => `Flutter pinta los widgets nuevos: el bombillo queda ${v._isOn ? 'encendido' : 'apagado'}.`,
+    phone: (screen, onTrigger) => {
+      screen.setTitle('Bombillo');
+      const iconBox = el('div');
+      const label = el('div', { 'data-testid': 'bulb-text' });
+      const button = el('button', { class: 'fs-btn fs-solid', onclick: onTrigger });
+      screen.body.append(el('div', { class: 'fs-center' }, iconBox, label, button));
+      return {
+        trigger: button,
+        paint: (v) => {
+          iconBox.replaceChildren(bulbIcon(v._isOn));
+          label.textContent = v._isOn ? 'Encendido' : 'Apagado';
+          button.textContent = v._isOn ? 'Apagar' : 'Encender';
+          flash(iconBox);
+        },
+      };
+    },
+  },
+};
+
+const mountTree = (root, args = []) => {
+  const sc = TREE_SCENARIOS[args.includes('bulb') ? 'bulb' : 'counter'];
+  const uid = ++treeUid;
   const container = card(root);
   const timers = [];
+  const frames = new Set();
   let nextId = 1;
   const newId = () => nextId++;
 
-  let stateless = false;
-  let counter = 0;
-  let shown = 0;
+  const initial = Object.fromEntries(sc.vars.map((v) => [v.name, v.initial]));
+  const model = { vars: { ...initial }, built: { ...initial }, painted: { ...initial }, dirty: false };
+  const appId = newId();
   let widgetId = newId();
   const stateId = newId();
-  const appId = newId();
-  const ids = { scaffold: 0, appbar: 0, text: 0, fab: 0 };
+  const ids = {};
+  const renewIds = () => sc.nodes.forEach((n) => {
+    ids[n.key] = newId();
+  });
+  renewIds();
 
-  const screen = phone('MyHomePage');
-  const big = el('div', { class: 'fs-big', 'data-testid': 'tree-counter', text: '0' });
-  screen.body.appendChild(el('div', { class: 'fs-center' }, el('div', { text: 'Contador' }), big));
-  const fab = el('button', { class: 'fs-fab', 'aria-label': 'Incrementar', text: '+' });
-  screen.body.appendChild(fab);
+  const screen = phone('');
+  const phoneView = sc.phone(screen, () => start(toggleSteps));
 
-  const note = el('div', { class: 'fs-note' });
-  const tree = el('div', { class: 'fs-panel' });
-  const logs = consolePanel('Qué pasó');
+  const treePanel = el('div', { class: 'fs-panel' });
+  const varBoxes = {};
+  const dirtyTag = el('span', { class: 'fs-tag' });
+  const stateTitle = el('div', { class: 'fs-state-of' });
+  const varRows = sc.vars.map((v) => {
+    varBoxes[v.name] = el('span', { class: 'fs-var-val', 'data-testid': `var-${v.name}` });
+    return el('div', { class: 'fs-var' },
+      el('span', { class: 'fs-var-type', text: v.type }),
+      el('span', { class: 'fs-var-name', text: v.name }),
+      varBoxes[v.name]);
+  });
+  const statePanel = el('div', { class: 'fs-panel fs-state-box' },
+    el('div', { class: 'fs-state-head' }, el('h4', { text: 'Estado' }), dirtyTag),
+    ...varRows,
+    stateTitle);
+  const stepBar = el('div', { class: 'fs-stepbar' });
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'tree-caption' });
+  const stepsPanel = el('div', { class: 'fs-panel' }, stepBar, caption);
 
-  const node = (label, id, kind) =>
-    el('span', { class: `fs-node ${kind || ''}` }, el('b', { text: label }), el('span', { class: 'fs-id', text: `#${id}` }));
+  const lines = svgEl('svg', { class: 'fs-lines', 'aria-hidden': 'true' });
+  const side = el('div', { class: 'fs-side fs-rel' }, treePanel, statePanel, stepsPanel);
+  side.appendChild(lines);
 
-  const drawTree = (rebuilt) => {
-    const app = node('MyApp', appId);
-    const page = node(stateless ? 'MyHomePage · Stateless' : 'MyHomePage', widgetId, 'fs-stateful');
-    const stateNode = stateless ? null : node('_MyHomePageState', stateId, 'fs-state');
-    const children = [
-      ['Scaffold', ids.scaffold],
-      ['AppBar', ids.appbar],
-      [`Text('${shown}')`, ids.text],
-      ['FloatingActionButton', ids.fab],
-    ];
-    const nested = el(
-      'ul',
-      { class: 'fs-tree' },
-      el(
-        'li',
-        {},
-        node(children[0][0], children[0][1]),
-        el(
-          'ul',
-          { class: 'fs-tree' },
-          children.slice(1).map(([label, id]) => el('li', {}, node(label, id)))
-        )
-      )
-    );
-    const pageRow = el(
-      'div',
-      { class: 'fs-pair' },
-      page,
-      stateNode ? el('span', { class: 'fs-link', text: 'createState() →' }) : null,
-      stateNode,
-      stateless ? el('span', { class: 'fs-link', text: `contador = ${counter}` }) : null
-    );
-    tree.replaceChildren(
+  const nodeEls = {};
+  const node = (key, label, id, kind) => {
+    const n = el('span', { class: `fs-node ${kind || ''}`, 'data-node': key },
+      el('b', { text: label }), el('span', { class: 'fs-id', text: `#${id}` }));
+    nodeEls[key] = n;
+    return n;
+  };
+
+  const nest = (items) => {
+    const rootList = el('ul', { class: 'fs-tree' });
+    const stack = [{ depth: -1, list: rootList }];
+    items.forEach(({ depth, content }) => {
+      while (stack[stack.length - 1].depth >= depth) stack.pop();
+      const item = el('li', {}, content);
+      stack[stack.length - 1].list.appendChild(item);
+      const sub = el('ul', { class: 'fs-tree' });
+      item.appendChild(sub);
+      stack.push({ depth, list: sub });
+    });
+    rootList.querySelectorAll('ul').forEach((u) => {
+      if (!u.childNodes.length) u.remove();
+    });
+    return rootList;
+  };
+
+  const renderTree = () => {
+    const pageRow = el('div', { class: 'fs-pair' },
+      node('widget', sc.widget, widgetId, 'fs-stateful'),
+      el('span', { class: 'fs-link', text: 'createState() →' }),
+      node('state', sc.state, stateId, 'fs-state'));
+    const children = nest(sc.nodes.map((n) => ({
+      depth: n.depth,
+      content: node(n.key, n.label(model.built), ids[n.key], n.reads ? 'fs-reads' : ''),
+    })));
+    treePanel.replaceChildren(
       el('h4', { text: 'Árbol de widgets · #n = número de objeto' }),
-      el('ul', { class: 'fs-tree fs-tree-root' }, el('li', {}, app, el('ul', { class: 'fs-tree' }, el('li', {}, pageRow, nested))))
-    );
-    if (rebuilt.includes('page')) flash(page);
-    if (rebuilt.includes('children')) nested.querySelectorAll('.fs-node').forEach(flash);
+      el('ul', { class: 'fs-tree fs-tree-root' },
+        el('li', {}, node('app', sc.app, appId), el('ul', { class: 'fs-tree' }, el('li', {}, pageRow, children)))));
+    scheduleLines();
   };
 
-  const rebuildChildren = () => {
-    ids.scaffold = newId();
-    ids.appbar = newId();
-    ids.text = newId();
-    ids.fab = newId();
+  const renderState = () => {
+    stateTitle.textContent = `vive en ${sc.state} #${stateId}`;
+    sc.vars.forEach((v) => {
+      varBoxes[v.name].textContent = showValue(model.vars[v.name]);
+    });
+    dirtyTag.textContent = model.dirty ? 'sucio: pide build()' : 'al día';
+    dirtyTag.className = model.dirty ? 'fs-tag fs-dirty' : 'fs-tag';
+    scheduleLines();
   };
 
-  const render = (rebuilt) => {
-    big.textContent = String(shown);
-    flash(big);
-    drawTree(rebuilt);
+  // Lines: each variable to every widget that reads it, plus the transient write path.
+  const paths = {};
+  const markerId = (name) => `fsim-tree${uid}-${name}`;
+  const defs = svgEl('defs');
+  [['read', '#7439B8'], ['write', '#A96C05']].forEach(([name, color]) => {
+    const marker = svgEl('marker', {
+      id: markerId(name), viewBox: '0 0 10 10', refX: '9', refY: '5',
+      markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse',
+    });
+    marker.appendChild(svgEl('path', { d: 'M0,0 L10,5 L0,10 L2.4,5 Z', fill: color }));
+    defs.appendChild(marker);
+  });
+  lines.appendChild(defs);
+  const readers = sc.nodes.filter((n) => n.reads);
+  readers.forEach((n) => {
+    paths[n.key] = svgEl('path', { class: 'fs-read', 'marker-end': `url(#${markerId('read')})` });
+    lines.appendChild(paths[n.key]);
+  });
+  const triggerNode = sc.nodes.find((n) => n.trigger);
+  paths.write = svgEl('path', { class: 'fs-write', 'marker-end': `url(#${markerId('write')})` });
+  lines.appendChild(paths.write);
+
+  const box = (target, base) => {
+    const r = target.getBoundingClientRect();
+    return { l: r.left - base.left, r: r.right - base.left, t: r.top - base.top, b: r.bottom - base.top,
+      cx: (r.left + r.right) / 2 - base.left, cy: (r.top + r.bottom) / 2 - base.top };
   };
 
-  fab.addEventListener('click', () => {
-    counter += 1;
-    if (stateless) {
-      logs.print(`contador = ${counter} dentro del widget, pero un StatelessWidget no puede pedir build().`);
-      note.textContent = 'El número cambió en el objeto widget y la pantalla no se enteró.';
-      note.className = 'fs-note fs-warn';
-      drawTree([]);
+  // Every reader of a variable hangs from one vertical trunk placed right of the widest
+  // node it passes by, so the branches never cross each other or a node.
+  const drawLines = () => {
+    const base = side.getBoundingClientRect();
+    const all = Object.values(nodeEls).map((n) => box(n, base));
+    sc.vars.forEach((v) => {
+      const from = box(varBoxes[v.name], base);
+      const mine = readers.filter((n) => n.reads === v.name);
+      if (!mine.length) return;
+      const targets = mine.map((n) => box(nodeEls[n.key], base));
+      const top = Math.min(...targets.map((t) => t.cy));
+      const passed = all.filter((b) => b.b >= top - 2 && b.t <= from.cy);
+      const room = base.width - 6;
+      const trunk = Math.min(room, Math.max(from.r, ...passed.map((b) => b.r)) + (room > 520 ? 36 : 14));
+      mine.forEach((n, i) => {
+        const to = targets[i];
+        const r = Math.min(10, Math.abs(from.cy - to.cy) / 2);
+        paths[n.key].setAttribute('d',
+          `M${from.r},${from.cy} H${trunk - r} Q${trunk},${from.cy} ${trunk},${from.cy - r} `
+          + `V${to.cy + r} Q${trunk},${to.cy} ${trunk - r},${to.cy} H${to.r + 4}`);
+      });
+    });
+    const from = box(nodeEls[triggerNode.key], base);
+    const to = box(varBoxes[sc.vars[0].name], base);
+    paths.write.setAttribute('d',
+      `M${from.cx},${from.b} C${from.cx},${from.b + 40} ${to.cx},${to.t - 40} ${to.cx},${to.t - 4}`);
+  };
+
+  let linesQueued = false;
+  const scheduleLines = () => {
+    if (linesQueued) return;
+    linesQueued = true;
+    const id = raf(() => {
+      frames.delete(id);
+      linesQueued = false;
+      drawLines();
+    });
+    frames.add(id);
+  };
+
+  const travel = (path, color) => {
+    if (typeof path.getTotalLength !== 'function') return;
+    const dot = svgEl('circle', { r: '6', fill: color, class: 'fs-dot' });
+    lines.appendChild(dot);
+    const total = path.getTotalLength();
+    const begin = performance.now();
+    const tick = (now) => {
+      const k = Math.min(1, (now - begin) / DOT_MS);
+      const p = path.getPointAtLength(total * k);
+      dot.setAttribute('cx', p.x);
+      dot.setAttribute('cy', p.y);
+      if (k < 1) {
+        const id = raf(tick);
+        frames.add(id);
+      } else {
+        dot.remove();
+      }
+    };
+    const id = raf(tick);
+    frames.add(id);
+  };
+
+  const hot = (...keys) => {
+    Object.values(nodeEls).forEach((n) => n.classList.remove('fs-hot'));
+    keys.forEach((k) => nodeEls[k]?.classList.add('fs-hot'));
+  };
+  const activeLines = (keys) => {
+    Object.entries(paths).forEach(([k, p]) => p.classList.toggle('fs-active', keys.includes(k)));
+  };
+  const pop = (target, kind = 'fs-pop') => {
+    target.classList.remove(kind);
+    void target.offsetWidth;
+    target.classList.add(kind);
+  };
+
+  const toggleSteps = () => {
+    const before = { ...model.vars };
+    const after = sc.next(before);
+    const v = sc.vars[0].name;
+    return {
+      names: ['Toque', 'setState', 'build()', 'Leer el estado', 'Pantalla'],
+      steps: [
+        {
+          caption: `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
+          fx: () => {
+            pop(phoneView.trigger, 'fs-press');
+            hot(triggerNode.key);
+            activeLines(['write']);
+            travel(paths.write, '#A96C05');
+          },
+        },
+        {
+          caption: `Dentro de setState, ${v} pasa de ${showValue(before[v])} a ${showValue(after[v])} y el State queda sucio. La pantalla todavía no cambia.`,
+          apply: () => {
+            model.vars = after;
+            model.dirty = true;
+            renderState();
+          },
+          fx: () => {
+            Object.values(varBoxes).forEach(pop);
+            hot('state');
+          },
+        },
+        {
+          caption: `Flutter llama build() de ${sc.state}: los widgets se crean otra vez, como objetos nuevos (mira los #). El State es el mismo, #${stateId}.`,
+          apply: () => {
+            renewIds();
+            renderTree();
+          },
+          fx: () => {
+            activeLines([]);
+            hot('state');
+            sc.nodes.forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
+          },
+        },
+        {
+          caption: sc.read(after),
+          apply: () => {
+            model.built = { ...model.vars };
+            renderTree();
+          },
+          fx: () => {
+            hot(...readers.map((n) => n.key));
+            activeLines(readers.map((n) => n.key));
+            readers.forEach((n) => travel(paths[n.key], '#7439B8'));
+          },
+        },
+        {
+          caption: sc.paint(after),
+          apply: () => {
+            model.painted = { ...model.built };
+            model.dirty = false;
+            phoneView.paint(model.painted);
+            renderState();
+          },
+          fx: () => {
+            hot();
+            activeLines([]);
+          },
+        },
+      ],
+    };
+  };
+
+  const rebuildSteps = () => ({
+    names: [`${sc.app}.build()`, 'Mismo State', 'build()', 'Leer el estado', 'Pantalla'],
+    steps: [
+      {
+        caption: `${sc.app} se reconstruye y crea un ${sc.widget} nuevo: el objeto viejo se descarta.`,
+        apply: () => {
+          widgetId = newId();
+          renderTree();
+        },
+        fx: () => {
+          hot('app', 'widget');
+          flash(nodeEls.widget);
+        },
+      },
+      {
+        caption: `Flutter le conecta al widget nuevo el mismo ${sc.state} #${stateId}, con el estado intacto.`,
+        fx: () => {
+          hot('widget', 'state');
+          Object.values(varBoxes).forEach(pop);
+        },
+      },
+      {
+        caption: `build() de ${sc.state} vuelve a correr y crea widgets nuevos.`,
+        apply: () => {
+          renewIds();
+          renderTree();
+        },
+        fx: () => {
+          hot('state');
+          sc.nodes.forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
+        },
+      },
+      {
+        caption: sc.read(model.vars),
+        fx: () => {
+          hot(...readers.map((n) => n.key));
+          activeLines(readers.map((n) => n.key));
+          readers.forEach((n) => travel(paths[n.key], '#7439B8'));
+        },
+      },
+      {
+        caption: 'La pantalla queda igual: el estado no se perdió con el widget viejo.',
+        apply: () => phoneView.paint(model.painted),
+        fx: () => {
+          hot();
+          activeLines([]);
+        },
+      },
+    ],
+  });
+
+  let run = null;
+  let stepMode = false;
+  const nextButton = el('button', { class: 'fs-btn', text: 'Siguiente paso', disabled: true });
+
+  const drawBar = (names, current) => {
+    stepBar.replaceChildren(...names.map((name, i) => {
+      const kind = i === current ? 'fs-cur' : i < current ? 'fs-past' : '';
+      return el('span', { class: `fs-sp ${kind}` }, el('b', { text: String(i + 1) }), name);
+    }));
+  };
+
+  const clearTimers = () => {
+    timers.splice(0).forEach(clearTimeout);
+    frames.forEach(cancelRaf);
+    frames.clear();
+    linesQueued = false;
+    lines.querySelectorAll('.fs-dot').forEach((d) => d.remove());
+  };
+
+  const settle = () => {
+    run = null;
+    nextButton.disabled = true;
+    hot();
+    activeLines([]);
+    phoneView.trigger.classList.remove('fs-press');
+    scheduleLines();
+  };
+
+  const finishNow = () => {
+    if (!run) return;
+    clearTimers();
+    run.plan.steps.slice(run.index + 1).forEach((s) => s.apply?.());
+    drawBar(run.plan.names, run.plan.names.length);
+    settle();
+  };
+
+  const play = (index) => {
+    run.index = index;
+    const step = run.plan.steps[index];
+    drawBar(run.plan.names, index);
+    caption.textContent = step.caption;
+    step.apply?.();
+    step.fx?.();
+    const last = index === run.plan.steps.length - 1;
+    if (last) {
+      timers.push(setTimeout(() => {
+        drawBar(run.plan.names, run.plan.names.length);
+        settle();
+      }, STEP_MS));
       return;
     }
-    shown = counter;
-    rebuildChildren();
-    logs.print(`setState → _MyHomePageState #${stateId}.build(): widgets hijos nuevos, el State es el mismo.`);
-    note.textContent = 'Los widgets hijos son objetos nuevos; el State #' + stateId + ' sigue siendo el mismo.';
-    note.className = 'fs-note';
-    render(['children']);
+    if (stepMode) {
+      nextButton.disabled = false;
+      return;
+    }
+    timers.push(setTimeout(() => play(index + 1), STEP_MS));
+  };
+
+  function start(makePlan) {
+    finishNow();
+    run = { plan: makePlan(), index: -1 };
+    play(0);
+  }
+
+  nextButton.addEventListener('click', () => {
+    if (!run || run.index >= run.plan.steps.length - 1) return;
+    nextButton.disabled = true;
+    play(run.index + 1);
   });
 
-  const parentButton = el('button', {
-    class: 'fs-btn',
-    text: 'Reconstruir MyApp',
-    onclick: () => {
-      widgetId = newId();
-      rebuildChildren();
-      if (stateless) {
-        counter = 0;
-        shown = 0;
-        logs.print(`MyApp.build() crea MyHomePage #${widgetId} nuevo: contador vuelve a 0.`, 'err');
-        note.textContent = 'El widget se descarta y se crea otro: lo que guardaba se perdió.';
-        note.className = 'fs-note fs-warn';
-      } else {
-        logs.print(`MyApp.build() crea MyHomePage #${widgetId} nuevo; Flutter le conecta el mismo State #${stateId}.`, 'ok');
-        note.textContent = `Widget nuevo (#${widgetId}), State de siempre (#${stateId}): el contador sobrevive.`;
-        note.className = 'fs-note';
-      }
-      render(['page', 'children']);
-    },
+  const stepToggle = switchControl('Paso a paso', (checked) => {
+    stepMode = checked;
+    if (!checked && run && !nextButton.disabled) {
+      nextButton.disabled = true;
+      play(run.index + 1);
+    }
   });
 
-  const toggle = switchControl('Guardar el contador en un StatelessWidget', (checked) => {
-    stateless = checked;
-    counter = 0;
-    shown = 0;
-    widgetId = newId();
-    rebuildChildren();
-    logs.clear();
-    logs.print(checked ? 'Ahora el contador es un campo del widget, no del State.' : 'Ahora el contador vive en _MyHomePageState.');
-    note.textContent = '';
-    render(['page', 'children']);
-  });
+  const controls = el('div', { class: 'fs-controls' }, stepToggle.node, nextButton);
+  if (sc.rebuild) {
+    controls.prepend(el('button', { class: 'fs-btn', text: `Reconstruir ${sc.app}`, onclick: () => start(rebuildSteps) }));
+  }
 
-  rebuildChildren();
-  container.append(
-    el('div', { class: 'fs-col' }, screen.frame, el('div', { class: 'fs-controls' }, parentButton, toggle.node), note),
-    el('div', { class: 'fs-side' }, tree, logs.box)
-  );
-  logs.print('Pulsa + varias veces y luego «Reconstruir MyApp».');
-  render(['page', 'children']);
+  container.append(el('div', { class: 'fs-col' }, screen.frame, controls), side);
+  phoneView.paint(model.painted);
+  renderTree();
+  renderState();
+  drawBar(toggleSteps().names, -1);
+  caption.textContent = sc.idle;
+
+  const onResize = () => scheduleLines();
+  window.addEventListener('resize', onResize);
+  const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(onResize) : null;
+  observer?.observe(side);
 
   return () => {
-    timers.forEach(clearTimeout);
+    clearTimers();
+    observer?.disconnect();
+    window.removeEventListener('resize', onResize);
     root.replaceChildren();
   };
 };
