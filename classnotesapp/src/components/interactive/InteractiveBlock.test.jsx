@@ -100,6 +100,21 @@ describe('state-tree', () => {
     expect(screen.getByTestId('tree-counter').textContent).toBe('2');
   });
 
+  it('lights the line that runs in each step and marks where the state is bound', () => {
+    const { container } = renderBlock('state-tree bulb');
+    const lit = () => [...container.querySelectorAll('.fs-code-line.fs-on')].map((l) => l.textContent.trim());
+    const bound = [...container.querySelectorAll('.fs-code-line.fs-bind')].map((l) => l.textContent.trim());
+    expect(bound).toContain("Text(_isOn ? 'Encendido' : 'Apagado'),");
+    expect(bound).toContain("child: Text(_isOn ? 'Apagar' : 'Encender'),");
+    expect(container.querySelectorAll('.fs-sv').length).toBeGreaterThan(4);
+    fireEvent.click(screen.getByRole('button', { name: 'Encender' }));
+    expect(lit()).toEqual(['onPressed: () => _toggle(),']);
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(lit()).toEqual(['setState(() {', '_isOn = !_isOn;']);
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(lit()).toEqual(bound);
+  });
+
   it('waits for Siguiente paso in step-by-step mode', () => {
     renderBlock('state-tree');
     fireEvent.click(screen.getByLabelText('Paso a paso'));

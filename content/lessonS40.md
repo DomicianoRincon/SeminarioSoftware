@@ -233,6 +233,8 @@ Pruébalo con el bombillo del ejemplo de esta lección. A la derecha está el á
 state-tree bulb
 ```
 
+Debajo está el código de `_HomeScreenState`. En cada paso se ilumina la línea que corre: primero `onPressed`, luego el `setState` que cambia `_isOn`. Las líneas marcadas en violeta son las que **amarran el estado a un widget**, como `Text(_isOn ? 'Encendido' : 'Apagado')`: son las que `build()` vuelve a leer en el paso 4.
+
 Si `_isOn` fuera un campo del widget, se iría con el `HomeScreen` viejo cada vez que el padre se reconstruye, y el bombillo volvería a apagarse solo. Además, un `StatelessWidget` no tiene cómo pedir que lo vuelvan a dibujar. Por eso el estado vive en el State.
 
 Activa *Paso a paso* si quieres avanzar tú, con *Siguiente paso*. Qué hace `setState` en cada paso se ve con calma en la siguiente lección.

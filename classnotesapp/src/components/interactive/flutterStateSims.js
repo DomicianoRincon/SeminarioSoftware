@@ -95,7 +95,8 @@ const CSS = `
 .fsim .fs-state-box{background:#F4EBFF;border-color:#C9A6EE}
 .fsim .fs-state-head{display:flex;align-items:center;gap:10px}
 .fsim .fs-state-head h4{margin:0;color:#7439B8}
-.fsim .fs-state-of{font-size:12px;color:var(--fs-muted);margin:2px 0 8px;font-family:'JetBrains Mono',Menlo,Consolas,monospace}
+.fsim .fs-state-foot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px}
+.fsim .fs-state-of{font-size:12px;color:var(--fs-muted);margin:0;font-family:'JetBrains Mono',Menlo,Consolas,monospace}
 .fsim .fs-var{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:14px;margin:4px 0}
 .fsim .fs-var-type{color:#7439B8}
 .fsim .fs-var-name{font-weight:600}
@@ -116,6 +117,12 @@ const CSS = `
 .fsim .fs-sp.fs-past b{background:#C9A6EE;color:#fff}
 .fsim .fs-sp.fs-cur{background:var(--fs-accent);border-color:var(--fs-accent);color:#fff}
 .fsim .fs-sp.fs-cur b{background:#fff;color:var(--fs-accent)}
+.fsim .fs-row2{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;min-width:0}
+.fsim .fs-row2 > .fs-dark{flex:1 1 420px;min-width:0}
+.fsim .fs-row2 > .fs-panel{flex:1 1 240px;min-width:0}
+.fsim .fs-sv{color:#E9D5FF;font-weight:700;background:rgba(201,166,238,.22);border-radius:3px;padding:0 2px}
+.fsim .fs-code-line.fs-bind{border-left-color:rgba(201,166,238,.7)}
+.fsim .fs-code-line.fs-bind.fs-on{border-left-color:#F9E2AF}
 .fsim .fs-caption{font-size:14px;min-height:42px;color:var(--fs-ink)}
 .fsim .fs-steps{display:flex;flex-wrap:wrap;gap:6px}
 .fsim .fs-step{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12px;padding:3px 9px;border-radius:12px;
@@ -196,7 +203,7 @@ const codePanel = (title) => {
   const mark = (...marked) => {
     lines.forEach((node, index) => node.classList.toggle('fs-on', marked.includes(index)));
   };
-  return { box, setCode, mark };
+  return { box, setCode, mark, lineNodes: () => lines };
 };
 
 const consolePanel = (title = 'Consola de depuración') => {
@@ -475,6 +482,28 @@ const TREE_SCENARIOS = {
       { key: 'text', depth: 1, label: (v) => `Text('${v._counter}')`, reads: '_counter' },
       { key: 'fab', depth: 1, label: () => 'FloatingActionButton', trigger: true },
     ],
+    code: `class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Contador')),
+      body: Text('$_counter'),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _incrementCounter(),
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}`,
+    file: 'lib/main.dart',
     triggerName: () => '+',
     idle: 'Pulsa + y sigue los pasos: primero cambia el estado y al final la pantalla.',
     read: (v) => `Mientras construye, build() lee _counter: el Text nuevo recibe '${v._counter}'.`,
@@ -510,6 +539,37 @@ const TREE_SCENARIOS = {
       { key: 'text', depth: 3, label: (v) => `Text('${v._isOn ? 'Encendido' : 'Apagado'}')`, reads: '_isOn' },
       { key: 'button', depth: 3, label: (v) => `FilledButton('${v._isOn ? 'Apagar' : 'Encender'}')`, reads: '_isOn', trigger: true },
     ],
+    code: `class _HomeScreenState extends State<HomeScreen> {
+  bool _isOn = false;
+
+  void _toggle() {
+    setState(() {
+      _isOn = !_isOn;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Bombillo')),
+      body: Center(
+        child: Column(
+          children: [
+            Icon(_isOn
+                ? Icons.lightbulb
+                : Icons.lightbulb_outline),
+            Text(_isOn ? 'Encendido' : 'Apagado'),
+            FilledButton(
+              onPressed: () => _toggle(),
+              child: Text(_isOn ? 'Apagar' : 'Encender'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}`,
+    file: 'lib/screens/home_screen.dart',
     triggerName: (v) => (v._isOn ? 'Apagar' : 'Encender'),
     idle: 'Pulsa Encender y sigue los pasos. Después prueba Reconstruir App.',
     read: () => 'Mientras construye, build() lee _isOn: el Icon, el Text y el FilledButton nuevos lo usan.',
@@ -568,12 +628,32 @@ const mountTree = (root, args = []) => {
       varBoxes[v.name]);
   });
   const statePanel = el('div', { class: 'fs-panel fs-state-box' },
-    el('div', { class: 'fs-state-head' }, el('h4', { text: 'Estado' }), dirtyTag),
+    el('div', { class: 'fs-state-head' }, el('h4', { text: 'Estado' })),
     ...varRows,
-    stateTitle);
+    el('div', { class: 'fs-state-foot' }, stateTitle, dirtyTag));
   const stepBar = el('div', { class: 'fs-stepbar' });
   const caption = el('div', { class: 'fs-caption', 'data-testid': 'tree-caption' });
   const stepsPanel = el('div', { class: 'fs-panel' }, stepBar, caption);
+
+  const code = codePanel(sc.file);
+  code.setCode(sc.code);
+  const source = sc.code.split('\n');
+  const varNames = sc.vars.map((v) => v.name);
+  const buildAt = source.findIndex((l) => l.includes('Widget build('));
+  const findLines = (test) => source.map((l, i) => (test(l, i) ? i : -1)).filter((i) => i >= 0);
+  const codeLines = {
+    trigger: findLines((l) => l.includes('onPressed')),
+    set: findLines((l, i) => i < buildAt && (l.includes('setState(') || varNames.some((n) => l.trim().startsWith(n)))),
+    build: [buildAt],
+    reads: findLines((l, i) => i > buildAt && varNames.some((n) => l.includes(n))),
+  };
+  code.lineNodes().forEach((line, i) => {
+    varNames.forEach((n) => {
+      line.innerHTML = line.innerHTML.replace(new RegExp(`\\b${n}\\b`, 'g'), `<span class="fs-sv">${n}</span>`);
+    });
+    if (codeLines.reads.includes(i)) line.classList.add('fs-bind');
+  });
+  const codeAt = (key) => code.mark(...(codeLines[key] || []));
 
   const lines = svgEl('svg', { class: 'fs-lines', 'aria-hidden': 'true' });
   const side = el('div', { class: 'fs-side fs-rel' }, treePanel, statePanel, stepsPanel);
@@ -745,6 +825,7 @@ const mountTree = (root, args = []) => {
           fx: () => {
             pop(phoneView.trigger, 'fs-press');
             hot(triggerNode.key);
+            codeAt('trigger');
             activeLines(['write']);
             travel(paths.write, '#A96C05');
           },
@@ -759,6 +840,7 @@ const mountTree = (root, args = []) => {
           fx: () => {
             Object.values(varBoxes).forEach(pop);
             hot('state');
+            codeAt('set');
           },
         },
         {
@@ -770,6 +852,7 @@ const mountTree = (root, args = []) => {
           fx: () => {
             activeLines([]);
             hot('state');
+            codeAt('build');
             sc.nodes.forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
           },
         },
@@ -781,6 +864,7 @@ const mountTree = (root, args = []) => {
           },
           fx: () => {
             hot(...readers.map((n) => n.key));
+            codeAt('reads');
             activeLines(readers.map((n) => n.key));
             readers.forEach((n) => travel(paths[n.key], '#7439B8'));
           },
@@ -795,6 +879,7 @@ const mountTree = (root, args = []) => {
           },
           fx: () => {
             hot();
+            codeAt('none');
             activeLines([]);
           },
         },
@@ -813,6 +898,7 @@ const mountTree = (root, args = []) => {
         },
         fx: () => {
           hot('app', 'widget');
+          codeAt('none');
           flash(nodeEls.widget);
         },
       },
@@ -820,6 +906,7 @@ const mountTree = (root, args = []) => {
         caption: `Flutter le conecta al widget nuevo el mismo ${sc.state} #${stateId}, con el estado intacto.`,
         fx: () => {
           hot('widget', 'state');
+          codeAt('none');
           Object.values(varBoxes).forEach(pop);
         },
       },
@@ -831,6 +918,7 @@ const mountTree = (root, args = []) => {
         },
         fx: () => {
           hot('state');
+          codeAt('build');
           sc.nodes.forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
         },
       },
@@ -838,6 +926,7 @@ const mountTree = (root, args = []) => {
         caption: sc.read(model.vars),
         fx: () => {
           hot(...readers.map((n) => n.key));
+          codeAt('reads');
           activeLines(readers.map((n) => n.key));
           readers.forEach((n) => travel(paths[n.key], '#7439B8'));
         },
@@ -847,6 +936,7 @@ const mountTree = (root, args = []) => {
         apply: () => phoneView.paint(model.painted),
         fx: () => {
           hot();
+          codeAt('none');
           activeLines([]);
         },
       },
@@ -876,6 +966,7 @@ const mountTree = (root, args = []) => {
     run = null;
     nextButton.disabled = true;
     hot();
+    codeAt('none');
     activeLines([]);
     phoneView.trigger.classList.remove('fs-press');
     scheduleLines();
@@ -936,7 +1027,9 @@ const mountTree = (root, args = []) => {
     controls.prepend(el('button', { class: 'fs-btn', text: `Reconstruir ${sc.app}`, onclick: () => start(rebuildSteps) }));
   }
 
-  container.append(el('div', { class: 'fs-col' }, screen.frame, controls), side);
+  side.removeChild(stepsPanel);
+  container.append(el('div', { class: 'fs-col' }, screen.frame, controls), side,
+    el('div', { class: 'fs-row2' }, code.box, stepsPanel));
   phoneView.paint(model.painted);
   renderTree();
   renderState();

@@ -105,6 +105,8 @@ Ahora míralo en el árbol de widgets del contador. `_counter` vive en la secci�
 state-tree
 ```
 
+En el código de abajo se ilumina la línea que corre en cada paso. La única línea que amarra `_counter` a un widget es `body: Text('$_counter')`, marcada en violeta.
+
 Fíjate en el paso 2: `_counter` ya vale el número nuevo, pero la pantalla sigue mostrando el viejo. El estado cambia primero, y la pantalla solo se entera cuando `build()` vuelve a correr y el `Text` nuevo lee el valor, en los pasos 3 a 5. También mira los `#n`: en cada `build()` el `Scaffold`, el `Text` y el botón son objetos nuevos, y `_MyHomePageState` es siempre el mismo.
 
 Por eso `build()` tiene que poder correr muchas veces: no crea el estado, solo lo lee. Si en `build()` escribieras `int counter = 0;`, el contador volvería a 0 en cada reconstrucción.
