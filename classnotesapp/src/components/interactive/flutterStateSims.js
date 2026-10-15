@@ -86,9 +86,9 @@ const CSS = `
 .fsim .fs-link{font-size:11px;color:var(--fs-muted)}
 .fsim .fs-rel{position:relative}
 .fsim .fs-lines{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
-.fsim .fs-lines .fs-read{fill:none;stroke:#7439B8;stroke-width:2;stroke-dasharray:5 5;opacity:.5;transition:opacity .3s}
+.fsim .fs-lines .fs-read{fill:none;stroke:#9061DB;stroke-width:2;stroke-dasharray:5 5;opacity:.5;transition:opacity .3s}
 .fsim .fs-lines .fs-read.fs-active{stroke-dasharray:none;opacity:1;stroke-width:2.5}
-.fsim .fs-lines .fs-write{fill:none;stroke:#A96C05;stroke-width:2.5;opacity:0;transition:opacity .3s}
+.fsim .fs-lines .fs-write{fill:none;stroke:#D08A12;stroke-width:2.5;opacity:0;transition:opacity .3s}
 .fsim .fs-lines .fs-write.fs-active{opacity:1}
 .fsim .fs-node.fs-reads{border-color:#7439B8;border-style:dashed}
 .fsim .fs-node.fs-hot{box-shadow:0 0 0 3px #F2C069;border-color:#A96C05}
@@ -117,6 +117,8 @@ const CSS = `
 .fsim .fs-sp.fs-past b{background:#C9A6EE;color:#fff}
 .fsim .fs-sp.fs-cur{background:var(--fs-accent);border-color:var(--fs-accent);color:#fff}
 .fsim .fs-sp.fs-cur b{background:#fff;color:var(--fs-accent)}
+.fsim .fs-view{align-self:flex-start}
+.fsim .fs-trig{background:rgba(242,192,105,.22);border-radius:3px;padding:0 2px}
 .fsim .fs-row2{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;min-width:0}
 .fsim .fs-row2 > .fs-dark{flex:1 1 420px;min-width:0}
 .fsim .fs-row2 > .fs-panel{flex:1 1 240px;min-width:0}
@@ -133,7 +135,7 @@ const CSS = `
 .fsim .fs-seg{display:inline-flex;border:1px solid var(--fs-accent);border-radius:20px;overflow:hidden}
 .fsim .fs-seg button{border:0;background:#fff;color:var(--fs-accent);padding:6px 14px;font:500 13px Roboto,Arial,sans-serif;cursor:pointer}
 .fsim .fs-seg button.fs-sel{background:var(--fs-accent);color:#fff}
-@media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}}
+@media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
 
 const ensureStyle = () => {
@@ -561,7 +563,9 @@ const TREE_SCENARIOS = {
             Text(_isOn ? 'Encendido' : 'Apagado'),
             FilledButton(
               onPressed: () => _toggle(),
-              child: Text(_isOn ? 'Apagar' : 'Encender'),
+              child: Text(
+                _isOn ? 'Apagar' : 'Encender',
+              ),
             ),
           ],
         ),
@@ -652,11 +656,30 @@ const mountTree = (root, args = []) => {
       line.innerHTML = line.innerHTML.replace(new RegExp(`\\b${n}\\b`, 'g'), `<span class="fs-sv">${n}</span>`);
     });
     if (codeLines.reads.includes(i)) line.classList.add('fs-bind');
+    if (codeLines.trigger.includes(i)) {
+      line.innerHTML = line.innerHTML.replace('onPressed', '<span class="fs-trig">onPressed</span>');
+    }
   });
+
   const codeAt = (key) => code.mark(...(codeLines[key] || []));
 
   const lines = svgEl('svg', { class: 'fs-lines', 'aria-hidden': 'true' });
-  const side = el('div', { class: 'fs-side fs-rel' }, treePanel, statePanel, stepsPanel);
+  let view = 'tree';
+  const treeTab = el('button', { text: 'Árbol de widgets', class: 'fs-sel' });
+  const codeTab = el('button', { text: 'Código' });
+  const showView = (next) => {
+    view = next;
+    treeTab.className = next === 'tree' ? 'fs-sel' : '';
+    codeTab.className = next === 'code' ? 'fs-sel' : '';
+    treePanel.hidden = next !== 'tree';
+    code.box.hidden = next !== 'code';
+    scheduleLines();
+  };
+  treeTab.addEventListener('click', () => showView('tree'));
+  codeTab.addEventListener('click', () => showView('code'));
+  const viewSwitch = el('div', { class: 'fs-seg fs-view', role: 'group', 'aria-label': 'Vista' }, treeTab, codeTab);
+  code.box.hidden = true;
+  const side = el('div', { class: 'fs-side fs-rel' }, viewSwitch, treePanel, code.box, statePanel, stepsPanel);
   side.appendChild(lines);
 
   const nodeEls = {};
@@ -714,7 +737,7 @@ const mountTree = (root, args = []) => {
   const paths = {};
   const markerId = (name) => `fsim-tree${uid}-${name}`;
   const defs = svgEl('defs');
-  [['read', '#7439B8'], ['write', '#A96C05']].forEach(([name, color]) => {
+  [['read', '#9061DB'], ['write', '#D08A12']].forEach(([name, color]) => {
     const marker = svgEl('marker', {
       id: markerId(name), viewBox: '0 0 10 10', refX: '9', refY: '5',
       markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse',
@@ -742,12 +765,24 @@ const mountTree = (root, args = []) => {
   // node it passes by, so the branches never cross each other or a node.
   const drawLines = () => {
     const base = side.getBoundingClientRect();
-    const all = Object.values(nodeEls).map((n) => box(n, base));
+    const inCode = view === 'code';
+    const textBox = (line) => {
+      const range = typeof document.createRange === 'function' ? document.createRange() : null;
+      if (!range || typeof range.getBoundingClientRect !== 'function') return box(line, base);
+      range.selectNodeContents(line);
+      const r = range.getBoundingClientRect();
+      const lineBox = box(line, base);
+      return { ...lineBox, l: r.left - base.left, r: r.right - base.left + 6 };
+    };
+    const all = inCode
+      ? code.lineNodes().map(textBox)
+      : Object.values(nodeEls).map((n) => box(n, base));
+    const bindLine = (n) => code.lineNodes()[codeLines.reads[readers.indexOf(n)] ?? codeLines.reads[0]];
     sc.vars.forEach((v) => {
       const from = box(varBoxes[v.name], base);
       const mine = readers.filter((n) => n.reads === v.name);
       if (!mine.length) return;
-      const targets = mine.map((n) => box(nodeEls[n.key], base));
+      const targets = mine.map((n) => (inCode ? textBox(bindLine(n)) : box(nodeEls[n.key], base)));
       const top = Math.min(...targets.map((t) => t.cy));
       const passed = all.filter((b) => b.b >= top - 2 && b.t <= from.cy);
       const room = base.width - 6;
@@ -760,8 +795,15 @@ const mountTree = (root, args = []) => {
           + `V${to.cy + r} Q${trunk},${to.cy} ${trunk - r},${to.cy} H${to.r + 4}`);
       });
     });
-    const from = box(nodeEls[triggerNode.key], base);
     const to = box(varBoxes[sc.vars[0].name], base);
+    if (inCode) {
+      const from = textBox(code.lineNodes()[codeLines.trigger[0]]);
+      const out = Math.min(base.width - 4, Math.max(...all.map((b) => b.r)) + 24);
+      paths.write.setAttribute('d',
+        `M${from.r},${from.cy} H${out} V${to.t - 22} H${to.cx} V${to.t - 4}`);
+      return;
+    }
+    const from = box(nodeEls[triggerNode.key], base);
     paths.write.setAttribute('d',
       `M${from.cx},${from.b} C${from.cx},${from.b + 40} ${to.cx},${to.t - 40} ${to.cx},${to.t - 4}`);
   };
@@ -827,7 +869,7 @@ const mountTree = (root, args = []) => {
             hot(triggerNode.key);
             codeAt('trigger');
             activeLines(['write']);
-            travel(paths.write, '#A96C05');
+            travel(paths.write, '#D08A12');
           },
         },
         {
@@ -866,7 +908,7 @@ const mountTree = (root, args = []) => {
             hot(...readers.map((n) => n.key));
             codeAt('reads');
             activeLines(readers.map((n) => n.key));
-            readers.forEach((n) => travel(paths[n.key], '#7439B8'));
+            readers.forEach((n) => travel(paths[n.key], '#9061DB'));
           },
         },
         {
@@ -928,7 +970,7 @@ const mountTree = (root, args = []) => {
           hot(...readers.map((n) => n.key));
           codeAt('reads');
           activeLines(readers.map((n) => n.key));
-          readers.forEach((n) => travel(paths[n.key], '#7439B8'));
+          readers.forEach((n) => travel(paths[n.key], '#9061DB'));
         },
       },
       {
@@ -1027,9 +1069,8 @@ const mountTree = (root, args = []) => {
     controls.prepend(el('button', { class: 'fs-btn', text: `Reconstruir ${sc.app}`, onclick: () => start(rebuildSteps) }));
   }
 
-  side.removeChild(stepsPanel);
-  container.append(el('div', { class: 'fs-col' }, screen.frame, controls), side,
-    el('div', { class: 'fs-row2' }, code.box, stepsPanel));
+  container.append(el('div', { class: 'fs-col' }, screen.frame, controls), side);
+  code.box.addEventListener('scroll', () => scheduleLines());
   phoneView.paint(model.painted);
   renderTree();
   renderState();

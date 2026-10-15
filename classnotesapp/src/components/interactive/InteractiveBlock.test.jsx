@@ -105,7 +105,7 @@ describe('state-tree', () => {
     const lit = () => [...container.querySelectorAll('.fs-code-line.fs-on')].map((l) => l.textContent.trim());
     const bound = [...container.querySelectorAll('.fs-code-line.fs-bind')].map((l) => l.textContent.trim());
     expect(bound).toContain("Text(_isOn ? 'Encendido' : 'Apagado'),");
-    expect(bound).toContain("child: Text(_isOn ? 'Apagar' : 'Encender'),");
+    expect(bound).toContain("_isOn ? 'Apagar' : 'Encender',");
     expect(container.querySelectorAll('.fs-sv').length).toBeGreaterThan(4);
     fireEvent.click(screen.getByRole('button', { name: 'Encender' }));
     expect(lit()).toEqual(['onPressed: () => _toggle(),']);
@@ -113,6 +113,24 @@ describe('state-tree', () => {
     expect(lit()).toEqual(['setState(() {', '_isOn = !_isOn;']);
     act(() => vi.advanceTimersByTime(STEP * 2));
     expect(lit()).toEqual(bound);
+  });
+
+  it('switches between the tree and the code without touching the state', () => {
+    const { container } = renderBlock('state-tree bulb');
+    const treeBox = () => container.querySelector('[data-node="app"]').closest('.fs-panel');
+    const codeBox = () => container.querySelector('.fs-code-line').closest('.fs-dark');
+    expect(treeBox().hidden).toBe(false);
+    expect(codeBox().hidden).toBe(true);
+    fireEvent.click(screen.getByRole('button', { name: 'Encender' }));
+    act(() => vi.advanceTimersByTime(STEP));
+    fireEvent.click(screen.getByRole('button', { name: 'Código' }));
+    expect(treeBox().hidden).toBe(true);
+    expect(codeBox().hidden).toBe(false);
+    expect(screen.getByTestId('var-_isOn').textContent).toBe('true');
+    act(() => vi.advanceTimersByTime(STEP * 5));
+    expect(screen.getByTestId('bulb-text').textContent).toBe('Encendido');
+    fireEvent.click(screen.getByRole('button', { name: 'Árbol de widgets' }));
+    expect(container.querySelector('[data-node="text"] b').textContent).toBe("Text('Encendido')");
   });
 
   it('waits for Siguiente paso in step-by-step mode', () => {
