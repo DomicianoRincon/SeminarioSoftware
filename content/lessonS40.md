@@ -68,8 +68,10 @@ Mira una app de música con sus datos cargados. A la derecha está su estado: la
   <rect x="118" y="503" width="32" height="32" rx="7" fill="url(#ewPantalla-cover)"/><circle cx="139.8" cy="513.2" r="3.8" fill="#FFFFFF" fill-opacity=".7"/><path d="M118,529.2 L129.5,519.0 L137.8,526.0 L143.0,522.2 L150,528.6 V528 A7,7 0 0 1 143,535 H125 A7,7 0 0 1 118,528 Z" fill="#FFFFFF" fill-opacity=".35"/>
   <text x="162" y="517" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Bohemian Rhapsody</text>
   <text x="162" y="533" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">Queen</text>
-  <text x="520" y="136" font-size="12" font-weight="700" fill="#7439B8" text-anchor="start" class="h">ESTADO</text>
-  <text x="584" y="136" font-size="12" font-weight="400" fill="#79809A" text-anchor="start" class="mono">vive en _PlayerScreenState</text>
+  <rect x="504" y="150" width="424" height="324" rx="16" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="2"/>
+  <text x="524" y="178" font-size="13" font-weight="700" fill="#7439B8" text-anchor="start" class="h">ESTADO</text>
+  <text x="596" y="178" font-size="12" font-weight="400" fill="#625B71" text-anchor="start" class="mono">vive en _PlayerScreenState</text>
+  <path d="M520,192 H912" stroke="#C9A6EE" stroke-width="1.5"/>
   <rect x="520" y="206" width="392" height="32" rx="8" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>
   <text x="534" y="227" font-size="13" font-weight="700" fill="#7439B8" text-anchor="start" class="mono">Song _current</text>
   <rect x="724" y="211" width="180" height="22" rx="6" fill="#FFFFFF" stroke="#C9A6EE"/>
@@ -96,10 +98,10 @@ Mira una app de música con sus datos cargados. A la derecha está su estado: la
   <circle cx="520" cy="442" r="3.5" fill="#0F8478"/>
   <path d="M402,380 H410 V542 H402" fill="none" stroke="#0F8478" stroke-width="2"/>
   <path d="M402,200 H408 V266 H402" fill="none" stroke="#7439B8" stroke-width="2"/>
-  <text x="520" y="172" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="start">No es estado: el título nunca cambia</text>
-  <path d="M512,168 H360 V144 H198" fill="none" stroke="#79809A" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#ewPantalla-slate)"/>
-  <text x="520" y="500" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Cada flecha va de un dato a la parte de la pantalla</text>
-  <text x="520" y="520" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">que lo muestra. Si el dato cambia, esa parte cambia.</text>
+  <text x="520" y="128" font-size="12.5" font-weight="400" fill="#79809A" text-anchor="start">No es estado: el título nunca cambia</text>
+  <path d="M512,124 H360 V144 H198" fill="none" stroke="#79809A" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#ewPantalla-slate)"/>
+  <text x="520" y="504" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Cada flecha va de un dato a la parte de la pantalla</text>
+  <text x="520" y="524" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">que lo muestra. Si el dato cambia, esa parte cambia.</text>
   <text x="48" y="612" font-size="13" font-weight="400" fill="#556074" text-anchor="start" data-fit="864">El estado vive en el objeto State de la pantalla. El build() lo lee para dibujar.</text>
 </svg>
 ```

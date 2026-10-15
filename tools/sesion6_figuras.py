@@ -95,8 +95,10 @@ def ew_pantalla():
         s += '  ' + txt(px + 66, y + 21, t, 13.5, 700) + '\n'
         s += '  ' + txt(px + 66, y + 37, a, 12, 400, '#625B71') + '\n'
 
-    s += '  ' + txt(520, 136, 'ESTADO', 12, 700, '#7439B8', cls='h') + '\n'
-    s += '  ' + txt(584, 136, 'vive en _PlayerScreenState', 12, 400, FAINT, cls='mono') + '\n'
+    s += '  <rect x="504" y="150" width="424" height="324" rx="16" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="2"/>\n'
+    s += '  ' + txt(524, 178, 'ESTADO', 13, 700, '#7439B8', cls='h') + '\n'
+    s += '  ' + txt(596, 178, 'vive en _PlayerScreenState', 12, 400, '#625B71', cls='mono') + '\n'
+    s += '  <path d="M520,192 H912" stroke="#C9A6EE" stroke-width="1.5"/>\n'
     rows = [
         ('violet', 222, 'Song _current', "Song('Levitating', …)", px + pw - 14),
         ('amber', 290, 'bool _isPlaying', 'true', px + pw / 2 + 24),
@@ -115,12 +117,12 @@ def ew_pantalla():
     s += f'  <path d="M{px + pw - 14},380 H{px + pw - 6} V{388 + 2 * 54 + 46} H{px + pw - 14}" fill="none" stroke="#0F8478" stroke-width="2"/>\n'
     s += f'  <path d="M{px + pw - 14},200 H{px + pw - 8} V266 H{px + pw - 14}" fill="none" stroke="#7439B8" stroke-width="2"/>\n'
 
-    s += '  ' + txt(520, 172, 'No es estado: el título nunca cambia', 12.5, 400, FAINT) + '\n'
-    s += (f'  <path d="M512,168 H360 V144 H198" fill="none" stroke="#79809A" stroke-width="1.5" stroke-dasharray="4 4" '
+    s += '  ' + txt(520, 128, 'No es estado: el título nunca cambia', 12.5, 400, FAINT) + '\n'
+    s += (f'  <path d="M512,124 H360 V144 H198" fill="none" stroke="#79809A" stroke-width="1.5" stroke-dasharray="4 4" '
           f'marker-end="url(#{fid}-slate)"/>\n')
 
-    s += '  ' + txt(520, 500, 'Cada flecha va de un dato a la parte de la pantalla', 13, 400, '#454C61', fit=392) + '\n'
-    s += '  ' + txt(520, 520, 'que lo muestra. Si el dato cambia, esa parte cambia.', 13, 400, '#454C61', fit=392) + '\n'
+    s += '  ' + txt(520, 504, 'Cada flecha va de un dato a la parte de la pantalla', 13, 400, '#454C61', fit=392) + '\n'
+    s += '  ' + txt(520, 524, 'que lo muestra. Si el dato cambia, esa parte cambia.', 13, 400, '#454C61', fit=392) + '\n'
     s += '  ' + txt(48, 612, 'El estado vive en el objeto State de la pantalla. El build() lo lee para dibujar.', 13, 400, MUTED, fit=864) + '\n'
     return s + '</svg>\n'
 
