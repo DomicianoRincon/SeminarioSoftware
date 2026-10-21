@@ -103,6 +103,13 @@ const CSS = `
 .fsim .fs-var-name{font-weight:600}
 .fsim .fs-var-val{min-width:64px;text-align:center;font-size:22px;font-weight:600;background:#fff;border:2px solid #7439B8;
   border-radius:10px;padding:2px 12px;display:inline-block}
+.fsim .fs-var.fs-wrap{flex-wrap:wrap}
+.fsim .fs-var-val.fs-small{font-size:13px;font-weight:500;padding:2px 8px;text-align:left;overflow-wrap:anywhere;max-width:100%}
+.fsim .fs-var-val.fs-list{font-size:12.5px;font-weight:500;padding:4px 8px;text-align:left;min-width:120px;max-width:100%}
+.fsim .fs-var-val.fs-list.fs-pop{animation:fsimFlash 1s ease-out}
+.fsim .fs-var-val.fs-list div{overflow-wrap:anywhere}
+.fsim .fs-var-val.fs-list .fs-more{color:var(--fs-muted)}
+.fsim .fs-var-hint{font-size:11px;color:var(--fs-muted);font-family:Roboto,Arial,sans-serif}
 .fsim .fs-pop{animation:fsimPop .7s ease-out}
 @keyframes fsimPop{0%{transform:scale(1)}35%{transform:scale(1.25);background:#FFE082}100%{transform:scale(1)}}
 .fsim .fs-press{animation:fsimPress .6s ease-out}
@@ -173,7 +180,7 @@ const flash = (node) => {
 };
 
 const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false']);
-const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen']);
+const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar']);
 const DART_TOKEN = /('[^']*')|(@\w+)|(\b\d+\b)|(\b[A-Za-z_]\w*\b)/g;
 
 const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -461,6 +468,38 @@ const svgEl = (tag, attrs = {}) => {
   return node;
 };
 const showValue = (value) => (typeof value === 'string' ? `'${value}'` : String(value));
+const shorten = (text, max) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
+
+const DEFAULT_IMAGE = 'https://picsum.photos/400';
+
+const songCard = (song) => {
+  const cover = el('div', { class: 'fs-cover' });
+  if (song.imageUrl) {
+    const img = el('img', { src: song.imageUrl, alt: '' });
+    img.addEventListener('error', () => img.remove());
+    cover.appendChild(img);
+  }
+  return el(
+    'div',
+    { class: 'fs-card' },
+    cover,
+    el(
+      'div',
+      { class: 'fs-card-text' },
+      el('div', { class: 'fs-card-title', text: song.title }),
+      el('div', { class: 'fs-card-artist', text: song.artist })
+    ),
+    el('span', { class: 'fs-card-icon', text: '♪' })
+  );
+};
+
+const songList = (songs) => {
+  if (!songs.length) return ['[ ]'];
+  const shown = songs.slice(-5);
+  const rows = shown.map((s) => el('div', { text: `Song('${shorten(s.title, 14)}', '${shorten(s.artist, 12)}')` }));
+  if (songs.length > shown.length) rows.unshift(el('div', { class: 'fs-more', text: `… ${songs.length - shown.length} más arriba` }));
+  return rows;
+};
 
 const bulbIcon = (on) => {
   const icon = svgEl('svg', { viewBox: '0 0 24 24', width: '96', height: '96' });
@@ -617,10 +656,130 @@ const TREE_SCENARIOS = {
       };
     },
   },
+  playlist: {
+    app: 'App',
+    widget: 'PlaylistScreen',
+    state: '_PlaylistScreenState',
+    main: '_songs',
+    vars: [
+      { name: '_songs', type: 'List<Song>', initial: [], show: (songs) => songList(songs) },
+      { name: '_titleController', label: '_titleController.text', type: 'String', initial: '', input: 'title' },
+      { name: '_artistController', label: '_artistController.text', type: 'String', initial: '', input: 'artist' },
+      { name: '_imageUrlController', label: '_imageUrlController.text', type: 'String', initial: '', input: 'imageUrl' },
+    ],
+    fn: '_addSong()',
+    next: (v) => ({
+      _songs: [...v._songs, { title: v._titleController, artist: v._artistController, imageUrl: v._imageUrlController }],
+    }),
+    nodes: (v, layout) => [
+      { key: 'scaffold', depth: 0, label: () => 'Scaffold' },
+      { key: 'appbar', depth: 1, label: () => 'AppBar' },
+      { key: 'scroll', depth: 1, label: () => 'SingleChildScrollView' },
+      { key: 'column', depth: 2, label: () => 'Column' },
+      { key: 'title', depth: 3, label: () => "TextField('Canción')" },
+      { key: 'artist', depth: 3, label: () => "TextField('Artista')" },
+      { key: 'imageUrl', depth: 3, label: () => "TextField('URL')" },
+      { key: 'button', depth: 3, label: () => 'FilledButton', trigger: true },
+      ...v._songs.map((song, i) => (layout === 'cards'
+        ? { key: `card-${i}`, depth: 3, label: () => `SongCard('${shorten(song.title, 16)}')`, reads: '_songs' }
+        : { key: `text-${i}`, depth: 3, label: () => `Text('${shorten(`${song.title} · ${song.artist}`, 20)}')`, reads: '_songs' })),
+    ],
+    source: (forgot, layout) => `class _PlaylistScreenState extends State<PlaylistScreen> {
+  final List<Song> _songs = [];
+  final _titleController = TextEditingController();
+  final _artistController = TextEditingController();
+  final _imageUrlController = TextEditingController();
+
+  void _addSong() {
+${forgot ? `    _songs.add(Song(
+      title: _titleController.text,
+      artist: _artistController.text,
+      imageUrl: _imageUrlController.text,
+    ));` : `    setState(() {
+      _songs.add(Song(
+        title: _titleController.text,
+        artist: _artistController.text,
+        imageUrl: _imageUrlController.text,
+      ));
+    });`}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Mi playlist')),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(controller: _titleController),
+            TextField(controller: _artistController),
+            TextField(controller: _imageUrlController),
+            FilledButton(
+              onPressed: () => _addSong(),
+              child: Text('Agregar'),
+            ),
+            for (final song in _songs)
+              ${layout === 'cards' ? 'SongCard(song: song),' : "Text('${song.title} · ${song.artist}'),"}
+          ],
+        ),
+      ),
+    );
+  }
+}`,
+    file: 'lib/screens/playlist_screen.dart',
+    triggerName: () => 'Agregar',
+    idle: 'Escribe una canción y su artista, pulsa Agregar y sigue los pasos: primero crece _songs y al final la pantalla.',
+    setCaption: (before, after) => {
+      const song = after._songs[after._songs.length - 1];
+      const empty = !song.title && !song.artist ? ' Con los campos vacíos entra una canción vacía: se arregla en el taller.' : '';
+      return `Dentro de setState, _songs.add(Song('${song.title}', '${song.artist}')) agrega una canción: _songs pasa de ${before._songs.length} a ${after._songs.length} y el State queda sucio. La pantalla todavía no cambia.${empty}`;
+    },
+    forgetCaption: (before, after) => `_addSong() agrega la canción a _songs (pasa de ${before._songs.length} a ${after._songs.length}), pero no llama a setState.`,
+    staleCaption: (painted) => `Flutter no se enteró: build() no corre y la lista sigue con ${painted._songs.length}. La canción aparecerá con el próximo setState.`,
+    read: (v, layout) => (v._songs.length
+      ? `Mientras construye, el for recorre _songs: un ${layout === 'cards' ? 'SongCard' : 'Text'} por cada canción, ${v._songs.length} en total.`
+      : 'Mientras construye, el for recorre _songs: está vacía, así que no crea ningún widget.'),
+    paint: (v) => `Flutter pinta los widgets nuevos: la pantalla muestra ${v._songs.length === 1 ? '1 canción' : `${v._songs.length} canciones`}.`,
+    typing: (name) => `Escribir cambia ${name}.text sin setState: el TextField se repinta solo y build() no corre.`,
+    phone: (screen, onTrigger, onInput) => {
+      screen.setTitle('Mi playlist');
+      const field = (label, input, placeholder) => {
+        const node = el('input', { class: 'fs-field', placeholder, 'aria-label': label });
+        node.addEventListener('input', () => onInput(input, node.value));
+        node.addEventListener('focus', () => onInput(input, node.value, true));
+        node.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') onTrigger();
+        });
+        return [el('div', { class: 'fs-label', text: label }), node];
+      };
+      const button = el('button', { class: 'fs-filled', text: 'Agregar', onclick: onTrigger });
+      const list = el('div', { 'data-testid': 'playlist-list' });
+      screen.body.append(
+        ...field('Nombre de la canción', 'title', 'Yellow'),
+        ...field('Artista', 'artist', 'Coldplay'),
+        ...field('URL de la imagen', 'imageUrl', DEFAULT_IMAGE),
+        button,
+        list
+      );
+      return {
+        trigger: button,
+        paint: (v, layout) => {
+          const before = list.childNodes.length;
+          list.replaceChildren(...v._songs.map((song) => (layout === 'cards'
+            ? songCard(song)
+            : el('div', { class: 'fs-text-item', text: `${song.title} · ${song.artist}` }))));
+          if (v._songs.length > before) {
+            flash(list.lastChild);
+            screen.body.scrollTop = screen.body.scrollHeight;
+          }
+        },
+      };
+    },
+  },
 };
 
 const mountTree = (root, args = []) => {
-  const sc = TREE_SCENARIOS[args.includes('bulb') ? 'bulb' : 'counter'];
+  const sc = TREE_SCENARIOS[['bulb', 'playlist'].find((name) => args.includes(name)) || 'counter'];
   const uid = ++treeUid;
   const container = card(root);
   const timers = [];
@@ -628,29 +787,38 @@ const mountTree = (root, args = []) => {
   let nextId = 1;
   const newId = () => nextId++;
 
+  const main = sc.main || sc.vars[0].name;
+  const bound = sc.vars.filter((v) => !v.input).map((v) => v.name);
+  const withCards = args.includes('cards');
   const initial = Object.fromEntries(sc.vars.map((v) => [v.name, v.initial]));
-  const model = { vars: { ...initial }, built: { ...initial }, painted: { ...initial }, dirty: false };
+  const startLayout = withCards ? 'cards' : 'text';
+  const model = {
+    vars: { ...initial }, built: { ...initial }, painted: { ...initial }, dirty: false,
+    layout: startLayout, builtLayout: startLayout, paintedLayout: startLayout,
+  };
   const appId = newId();
   let widgetId = newId();
   const stateId = newId();
   const ids = {};
-  const renewIds = () => sc.nodes.forEach((n) => {
+  const nodesNow = () => (typeof sc.nodes === 'function' ? sc.nodes(model.built, model.builtLayout) : sc.nodes);
+  const renewIds = () => nodesNow().forEach((n) => {
     ids[n.key] = newId();
   });
   renewIds();
 
   const screen = phone('');
-  const phoneView = sc.phone(screen, () => start(toggleSteps));
+  const phoneView = sc.phone(screen, () => start(toggleSteps), (input, value, focusOnly) => onInput(input, value, focusOnly));
 
   const treePanel = el('div', { class: 'fs-panel' });
   const varBoxes = {};
   const dirtyTag = el('span', { class: 'fs-tag' });
   const stateTitle = el('div', { class: 'fs-state-of' });
   const varRows = sc.vars.map((v) => {
-    varBoxes[v.name] = el('span', { class: 'fs-var-val', 'data-testid': `var-${v.name}` });
-    return el('div', { class: 'fs-var' },
+    const size = v.show ? ' fs-list' : v.input ? ' fs-small' : '';
+    varBoxes[v.name] = el('span', { class: `fs-var-val${size}`, 'data-testid': `var-${v.name}` });
+    return el('div', { class: `fs-var${v.input || v.show ? ' fs-wrap' : ''}` },
       el('span', { class: 'fs-var-type', text: v.type }),
-      el('span', { class: 'fs-var-name', text: v.name }),
+      el('span', { class: 'fs-var-name', text: v.label || v.name }),
       varBoxes[v.name]);
   });
   const statePanel = el('div', { class: 'fs-panel fs-state-box' },
@@ -661,6 +829,8 @@ const mountTree = (root, args = []) => {
   const caption = el('div', { class: 'fs-caption', 'data-testid': 'tree-caption' });
   const stepsPanel = el('div', { class: 'fs-panel' }, stepBar, caption);
 
+  let forgot = false;
+  const sourceOf = () => (sc.source ? sc.source(forgot, model.layout) : forgot ? sc.forgetCode : sc.code);
   const code = codePanel(sc.file);
   const varNames = sc.vars.map((v) => v.name);
   const codeLines = {};
@@ -671,9 +841,9 @@ const mountTree = (root, args = []) => {
     const findLines = (test) => source.map((l, i) => (test(l, i) ? i : -1)).filter((i) => i >= 0);
     Object.assign(codeLines, {
       trigger: findLines((l) => l.includes('onPressed')),
-      set: findLines((l, i) => i < buildAt && (l.includes('setState(') || varNames.some((n) => l.trim().startsWith(n)))),
+      set: findLines((l, i) => i < buildAt && (l.includes('setState(') || bound.some((n) => l.trim().startsWith(n)))),
       build: [buildAt],
-      reads: findLines((l, i) => i > buildAt && varNames.some((n) => l.includes(n))),
+      reads: findLines((l, i) => i > buildAt && bound.some((n) => new RegExp(`\\b${n}\\b`).test(l))),
     });
     decorateCode();
   };
@@ -686,7 +856,7 @@ const mountTree = (root, args = []) => {
       line.innerHTML = line.innerHTML.replace('onPressed', '<span class="fs-trig">onPressed</span>');
     }
   });
-  applyCode(sc.code);
+  applyCode(sourceOf());
 
   const codeAt = (key) => code.mark(...(codeLines[key] || []));
 
@@ -709,7 +879,7 @@ const mountTree = (root, args = []) => {
   const side = el('div', { class: 'fs-side fs-rel' }, viewSwitch, treePanel, code.box, statePanel, stepsPanel);
   side.appendChild(lines);
 
-  const nodeEls = {};
+  let nodeEls = {};
   const node = (key, label, id, kind) => {
     const n = el('span', { class: `fs-node ${kind || ''}`, 'data-node': key },
       el('b', { text: label }), el('span', { class: 'fs-id', text: `#${id}` }));
@@ -734,12 +904,49 @@ const mountTree = (root, args = []) => {
     return rootList;
   };
 
+  // Lines: each variable to every widget that reads it, plus the transient write path.
+  let paths = {};
+  let readers = [];
+  const markerId = (name) => `fsim-tree${uid}-${name}`;
+  const defs = svgEl('defs');
+  [['read', '#9061DB'], ['write', '#D08A12']].forEach(([name, color]) => {
+    const marker = svgEl('marker', {
+      id: markerId(name), viewBox: '0 0 10 10', refX: '9', refY: '5',
+      markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse',
+    });
+    marker.appendChild(svgEl('path', { d: 'M0,0 L10,5 L0,10 L2.4,5 Z', fill: color }));
+    defs.appendChild(marker);
+  });
+  lines.appendChild(defs);
+  const writePath = svgEl('path', { class: 'fs-write', 'marker-end': `url(#${markerId('write')})` });
+  lines.appendChild(writePath);
+  const triggerKey = () => nodesNow().find((n) => n.trigger).key;
+
+  const syncPaths = (nodes) => {
+    readers = nodes.filter((n) => n.reads);
+    const next = { write: writePath };
+    readers.forEach((n) => {
+      next[n.key] = paths[n.key] || svgEl('path', { class: 'fs-read', 'marker-end': `url(#${markerId('read')})` });
+      if (!next[n.key].parentNode) lines.appendChild(next[n.key]);
+    });
+    Object.entries(paths).forEach(([k, p]) => {
+      if (!next[k]) p.remove();
+    });
+    paths = next;
+  };
+
   const renderTree = () => {
+    nodeEls = {};
+    const nodes = nodesNow();
+    nodes.forEach((n) => {
+      if (!ids[n.key]) ids[n.key] = newId();
+    });
+    syncPaths(nodes);
     const pageRow = el('div', { class: 'fs-pair' },
       node('widget', sc.widget, widgetId, 'fs-stateful'),
       el('span', { class: 'fs-link', text: 'createState() →' }),
       node('state', sc.state, stateId, 'fs-state'));
-    const children = nest(sc.nodes.map((n) => ({
+    const children = nest(nodes.map((n) => ({
       depth: n.depth,
       content: node(n.key, n.label(model.built), ids[n.key], n.reads ? 'fs-reads' : ''),
     })));
@@ -753,35 +960,14 @@ const mountTree = (root, args = []) => {
   const renderState = () => {
     stateTitle.textContent = `vive en ${sc.state} #${stateId}`;
     sc.vars.forEach((v) => {
-      varBoxes[v.name].textContent = showValue(model.vars[v.name]);
+      const value = model.vars[v.name];
+      varBoxes[v.name].replaceChildren(...(v.show ? v.show(value) : [showValue(value)]));
     });
-    const stale = sc.vars.some((v) => model.vars[v.name] !== model.painted[v.name]);
+    const stale = bound.some((n) => model.vars[n] !== model.painted[n]);
     dirtyTag.textContent = model.dirty ? 'sucio: pide build()' : stale ? 'Flutter no se enteró' : 'al día';
     dirtyTag.className = model.dirty ? 'fs-tag fs-dirty' : stale ? 'fs-tag fs-lost' : 'fs-tag';
     scheduleLines();
   };
-
-  // Lines: each variable to every widget that reads it, plus the transient write path.
-  const paths = {};
-  const markerId = (name) => `fsim-tree${uid}-${name}`;
-  const defs = svgEl('defs');
-  [['read', '#9061DB'], ['write', '#D08A12']].forEach(([name, color]) => {
-    const marker = svgEl('marker', {
-      id: markerId(name), viewBox: '0 0 10 10', refX: '9', refY: '5',
-      markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse',
-    });
-    marker.appendChild(svgEl('path', { d: 'M0,0 L10,5 L0,10 L2.4,5 Z', fill: color }));
-    defs.appendChild(marker);
-  });
-  lines.appendChild(defs);
-  const readers = sc.nodes.filter((n) => n.reads);
-  readers.forEach((n) => {
-    paths[n.key] = svgEl('path', { class: 'fs-read', 'marker-end': `url(#${markerId('read')})` });
-    lines.appendChild(paths[n.key]);
-  });
-  const triggerNode = sc.nodes.find((n) => n.trigger);
-  paths.write = svgEl('path', { class: 'fs-write', 'marker-end': `url(#${markerId('write')})` });
-  lines.appendChild(paths.write);
 
   const box = (target, base) => {
     const r = target.getBoundingClientRect();
@@ -805,7 +991,12 @@ const mountTree = (root, args = []) => {
     const all = inCode
       ? code.lineNodes().map(textBox)
       : Object.values(nodeEls).map((n) => box(n, base));
-    const bindLine = (n) => code.lineNodes()[codeLines.reads[readers.indexOf(n)] ?? codeLines.reads[0]];
+    const source = sourceOf().split('\n');
+    const bindLine = (n) => {
+      const mine = codeLines.reads.filter((i) => new RegExp(`\\b${n.reads}\\b`).test(source[i]));
+      const index = readers.filter((r) => r.reads === n.reads).indexOf(n);
+      return code.lineNodes()[mine[Math.min(index, mine.length - 1)] ?? codeLines.reads[0]];
+    };
     sc.vars.forEach((v) => {
       const from = box(varBoxes[v.name], base);
       const mine = readers.filter((n) => n.reads === v.name);
@@ -823,16 +1014,16 @@ const mountTree = (root, args = []) => {
           + `V${to.cy + r} Q${trunk},${to.cy} ${trunk - r},${to.cy} H${to.r + 4}`);
       });
     });
-    const to = box(varBoxes[sc.vars[0].name], base);
+    const to = box(varBoxes[main], base);
     if (inCode) {
       const from = textBox(code.lineNodes()[codeLines.trigger[0]]);
       const out = Math.min(base.width - 4, Math.max(...all.map((b) => b.r)) + 24);
-      paths.write.setAttribute('d',
+      writePath.setAttribute('d',
         `M${from.r},${from.cy} H${out} V${to.t - 22} H${to.cx} V${to.t - 4}`);
       return;
     }
-    const from = box(nodeEls[triggerNode.key], base);
-    paths.write.setAttribute('d',
+    const from = box(nodeEls[triggerKey()], base);
+    writePath.setAttribute('d',
       `M${from.cx},${from.b} C${from.cx},${from.b + 40} ${to.cx},${to.t - 40} ${to.cx},${to.t - 4}`);
   };
 
@@ -882,39 +1073,52 @@ const mountTree = (root, args = []) => {
     void target.offsetWidth;
     target.classList.add(kind);
   };
+  const flashNodes = () => nodesNow().forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
+  const readLines = () => {
+    hot(...readers.map((n) => n.key));
+    codeAt('reads');
+    activeLines(readers.map((n) => n.key));
+    readers.forEach((n) => travel(paths[n.key], '#9061DB'));
+  };
+  const paint = () => phoneView.paint(model.painted, model.paintedLayout);
 
-  let forgot = false;
+  const tapStep = () => ({
+    caption: `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
+    fx: () => {
+      pop(phoneView.trigger, 'fs-press');
+      hot(triggerKey());
+      codeAt('trigger');
+      activeLines(['write']);
+      travel(writePath, '#D08A12');
+    },
+  });
+
   const forgottenSteps = () => {
     const before = { ...model.vars };
-    const after = sc.next(before);
-    const v = sc.vars[0].name;
+    const change = sc.next(before);
+    const after = { ...before, ...change };
     return {
-      names: ['Toque', `${v} cambia`, 'Sin build()'],
+      names: ['Toque', `${main} cambia`, 'Sin build()'],
       steps: [
+        tapStep(),
         {
-          caption: `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
-          fx: () => {
-            pop(phoneView.trigger, 'fs-press');
-            hot(triggerNode.key);
-            codeAt('trigger');
-            activeLines(['write']);
-            travel(paths.write, '#D08A12');
-          },
-        },
-        {
-          caption: `${sc.fn} cambia ${v} de ${showValue(before[v])} a ${showValue(after[v])}, pero no llama a setState.`,
+          caption: sc.forgetCaption
+            ? sc.forgetCaption(before, after)
+            : `${sc.fn} cambia ${main} de ${showValue(before[main])} a ${showValue(after[main])}, pero no llama a setState.`,
           apply: () => {
-            model.vars = after;
+            model.vars = { ...model.vars, ...change };
             renderState();
           },
           fx: () => {
-            Object.values(varBoxes).forEach(pop);
+            Object.values(varBoxes).forEach((b) => pop(b));
             hot('state');
             codeAt('set');
           },
         },
         {
-          caption: `Flutter no se enteró: build() no corre y la pantalla sigue en ${showValue(model.painted[v])}. Sin error, sin aviso.`,
+          caption: sc.staleCaption
+            ? sc.staleCaption(model.painted)
+            : `Flutter no se enteró: build() no corre y la pantalla sigue en ${showValue(model.painted[main])}. Sin error, sin aviso.`,
           fx: () => {
             hot();
             codeAt('none');
@@ -928,30 +1132,23 @@ const mountTree = (root, args = []) => {
   const toggleSteps = () => {
     if (forgot) return forgottenSteps();
     const before = { ...model.vars };
-    const after = sc.next(before);
-    const v = sc.vars[0].name;
+    const change = sc.next(before);
+    const after = { ...before, ...change };
     return {
       names: ['Toque', 'setState', 'build()', 'Leer el estado', 'Pantalla'],
       steps: [
+        tapStep(),
         {
-          caption: `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
-          fx: () => {
-            pop(phoneView.trigger, 'fs-press');
-            hot(triggerNode.key);
-            codeAt('trigger');
-            activeLines(['write']);
-            travel(paths.write, '#D08A12');
-          },
-        },
-        {
-          caption: `Dentro de setState, ${v} pasa de ${showValue(before[v])} a ${showValue(after[v])} y el State queda sucio. La pantalla todavía no cambia.`,
+          caption: sc.setCaption
+            ? sc.setCaption(before, after)
+            : `Dentro de setState, ${main} pasa de ${showValue(before[main])} a ${showValue(after[main])} y el State queda sucio. La pantalla todavía no cambia.`,
           apply: () => {
-            model.vars = after;
+            model.vars = { ...model.vars, ...change };
             model.dirty = true;
             renderState();
           },
           fx: () => {
-            Object.values(varBoxes).forEach(pop);
+            Object.values(varBoxes).forEach((b) => pop(b));
             hot('state');
             codeAt('set');
           },
@@ -966,28 +1163,23 @@ const mountTree = (root, args = []) => {
             activeLines([]);
             hot('state');
             codeAt('build');
-            sc.nodes.forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
+            flashNodes();
           },
         },
         {
-          caption: sc.read(after),
+          caption: sc.read(after, model.layout),
           apply: () => {
             model.built = { ...model.vars };
             renderTree();
           },
-          fx: () => {
-            hot(...readers.map((n) => n.key));
-            codeAt('reads');
-            activeLines(readers.map((n) => n.key));
-            readers.forEach((n) => travel(paths[n.key], '#9061DB'));
-          },
+          fx: readLines,
         },
         {
           caption: sc.paint(after),
           apply: () => {
             model.painted = { ...model.built };
             model.dirty = false;
-            phoneView.paint(model.painted);
+            paint();
             renderState();
           },
           fx: () => {
@@ -1020,7 +1212,7 @@ const mountTree = (root, args = []) => {
         fx: () => {
           hot('widget', 'state');
           codeAt('none');
-          Object.values(varBoxes).forEach(pop);
+          Object.values(varBoxes).forEach((b) => pop(b));
         },
       },
       {
@@ -1032,21 +1224,16 @@ const mountTree = (root, args = []) => {
         fx: () => {
           hot('state');
           codeAt('build');
-          sc.nodes.forEach((n, i) => timers.push(setTimeout(() => flash(nodeEls[n.key]), i * 90)));
+          flashNodes();
         },
       },
       {
-        caption: sc.read(model.vars),
-        fx: () => {
-          hot(...readers.map((n) => n.key));
-          codeAt('reads');
-          activeLines(readers.map((n) => n.key));
-          readers.forEach((n) => travel(paths[n.key], '#9061DB'));
-        },
+        caption: sc.read(model.vars, model.layout),
+        fx: readLines,
       },
       {
         caption: 'La pantalla queda igual: el estado no se perdió con el widget viejo.',
-        apply: () => phoneView.paint(model.painted),
+        apply: paint,
         fx: () => {
           hot();
           codeAt('none');
@@ -1055,6 +1242,62 @@ const mountTree = (root, args = []) => {
       },
     ],
   });
+
+  // Swapping Text for SongCard is a code change: hot reload runs build() with the
+  // same State, so the list keeps every song.
+  const layoutSteps = (next) => {
+    const widget = next === 'cards' ? 'SongCard' : 'Text';
+    const other = next === 'cards' ? 'Text' : 'SongCard';
+    const count = model.vars[main].length;
+    return {
+      names: ['Hot reload', 'build()', 'Leer el estado', 'Pantalla'],
+      steps: [
+        {
+          caption: `Cambiaste ${other} por ${widget} en el código y guardaste: hot reload. ${sc.state} #${stateId} y ${main} siguen iguales.`,
+          apply: () => {
+            model.layout = next;
+            applyCode(sourceOf());
+          },
+          fx: () => {
+            hot('state');
+            codeAt('reads');
+            pop(varBoxes[main]);
+          },
+        },
+        {
+          caption: `build() corre con el código nuevo: ahora crea un ${widget} por canción, todos objetos nuevos.`,
+          apply: () => {
+            model.builtLayout = next;
+            renewIds();
+            renderTree();
+          },
+          fx: () => {
+            hot('state');
+            codeAt('build');
+            flashNodes();
+          },
+        },
+        {
+          caption: count
+            ? `Cada ${widget} recibe su Song de ${main}: los datos son los mismos ${count === 1 ? '' : `${count} `}de antes.`
+            : `${main} sigue vacía: no hay ningún ${widget} que crear. Agrega canciones y vuelve a cambiar.`,
+          fx: readLines,
+        },
+        {
+          caption: `La pantalla muestra las mismas canciones, ahora con ${widget}. El estado no cambió.`,
+          apply: () => {
+            model.paintedLayout = next;
+            paint();
+          },
+          fx: () => {
+            hot();
+            codeAt('none');
+            activeLines([]);
+          },
+        },
+      ],
+    };
+  };
 
   let run = null;
   let stepMode = false;
@@ -1121,6 +1364,21 @@ const mountTree = (root, args = []) => {
     play(0);
   }
 
+  // Typing changes a controller's text without setState: the TextField repaints
+  // itself and build() does not run.
+  function onInput(input, value, focusOnly) {
+    const v = sc.vars.find((x) => x.input === input);
+    if (!focusOnly) {
+      model.vars = { ...model.vars, [v.name]: value };
+      model.built = { ...model.built, [v.name]: value };
+      model.painted = { ...model.painted, [v.name]: value };
+      renderState();
+    }
+    if (run) return;
+    hot(input);
+    caption.textContent = sc.typing(v.name);
+  }
+
   nextButton.addEventListener('click', () => {
     if (!run || run.index >= run.plan.steps.length - 1) return;
     nextButton.disabled = true;
@@ -1136,11 +1394,11 @@ const mountTree = (root, args = []) => {
   });
 
   const controls = el('div', { class: 'fs-controls' }, stepToggle.node, nextButton);
-  if (sc.forgetCode && args.includes('forget')) {
+  if ((sc.forgetCode || sc.source) && args.includes('forget')) {
     const forgetToggle = switchControl('Olvidar setState', (checked) => {
       finishNow();
       forgot = checked;
-      applyCode(checked ? sc.forgetCode : sc.code);
+      applyCode(sourceOf());
       drawBar(toggleSteps().names, -1);
       caption.textContent = checked
         ? `Ahora ${sc.fn} no llama a setState. Pulsa ${sc.triggerName(model.painted)} varias veces.`
@@ -1152,14 +1410,27 @@ const mountTree = (root, args = []) => {
   if (sc.rebuild) {
     controls.prepend(el('button', { class: 'fs-btn', text: `Reconstruir ${sc.app}`, onclick: () => start(rebuildSteps) }));
   }
+  if (withCards) {
+    const textButton = el('button', { text: 'Text' });
+    const cardsButton = el('button', { text: 'SongCard', class: 'fs-sel' });
+    const select = (next) => {
+      if (next === model.layout && !run) return;
+      textButton.className = next === 'text' ? 'fs-sel' : '';
+      cardsButton.className = next === 'cards' ? 'fs-sel' : '';
+      start(() => layoutSteps(next));
+    };
+    textButton.addEventListener('click', () => select('text'));
+    cardsButton.addEventListener('click', () => select('cards'));
+    controls.prepend(el('div', { class: 'fs-seg', role: 'group', 'aria-label': 'Widget de cada canción' }, textButton, cardsButton));
+  }
 
   container.append(el('div', { class: 'fs-col' }, screen.frame, controls), side);
   code.box.addEventListener('scroll', () => scheduleLines());
-  phoneView.paint(model.painted);
+  paint();
   renderTree();
   renderState();
   drawBar(toggleSteps().names, -1);
-  caption.textContent = sc.idle;
+  caption.textContent = withCards ? `${sc.idle} Después cambia entre Text y SongCard.` : sc.idle;
 
   const onResize = () => scheduleLines();
   window.addEventListener('resize', onResize);
@@ -1366,177 +1637,12 @@ const mountLifecycle = (root) => {
   };
 };
 
-// ───────────────────────────────── playlist ─────────────────────────────────
-
-const DEFAULT_IMAGE = 'https://picsum.photos/400';
-
-const PLAYLIST_ADD = `void _addSong() {
-  setState(() {
-    _songs.add(Song(
-      title: _titleController.text,
-      artist: _artistController.text,
-      imageUrl: _imageUrlController.text,
-    ));
-  });
-}`;
-
-const PLAYLIST_TEXT_VIEW = `
-
-Column(
-  children: [
-    for (final song in _songs) Text('\${song.title} · \${song.artist}'),
-  ],
-)`;
-
-const PLAYLIST_CARD_VIEW = `
-
-Column(
-  children: [
-    for (final song in _songs) SongCard(song: song),
-  ],
-)`;
-
-const mountPlaylist = (root, args = []) => {
-  const withCards = args.includes('cards');
-  let view = withCards ? 'cards' : 'text';
-  const container = card(root);
-  const songs = [];
-
-  const screen = phone('Mi playlist');
-  const note = el('div', { class: 'fs-note' });
-  const code = codePanel('lib/screens/playlist_screen.dart');
-  const state = statePanel('Objeto State · _PlaylistScreenState');
-  const logs = consolePanel();
-
-  const titleField = el('input', { class: 'fs-field', placeholder: 'Nombre de la canción', 'aria-label': 'Nombre de la canción' });
-  const artistField = el('input', { class: 'fs-field', placeholder: 'Artista', 'aria-label': 'Artista' });
-  const imageField = el('input', { class: 'fs-field', 'aria-label': 'URL de la imagen', placeholder: DEFAULT_IMAGE });
-  const addButton = el('button', { class: 'fs-filled', text: 'Agregar' });
-  const list = el('div', { 'data-testid': 'playlist-list' });
-
-  const songCard = (song) => {
-    const cover = el('div', { class: 'fs-cover' });
-    if (song.imageUrl) {
-      const img = el('img', { src: song.imageUrl, alt: '' });
-      img.addEventListener('error', () => img.remove());
-      cover.appendChild(img);
-    }
-    return el(
-      'div',
-      { class: 'fs-card' },
-      cover,
-      el(
-        'div',
-        { class: 'fs-card-text' },
-        el('div', { class: 'fs-card-title', text: song.title }),
-        el('div', { class: 'fs-card-artist', text: song.artist })
-      ),
-      el('span', { class: 'fs-card-icon', text: '♪' })
-    );
-  };
-
-  const renderState = () => {
-    const entries = [
-      ['_titleController.text', `'${titleField.value}'`],
-      ['_artistController.text', `'${artistField.value}'`],
-      ['_imageUrlController.text', `'${imageField.value}'`],
-      ['_songs.length', String(songs.length)],
-    ];
-    songs.slice(-4).forEach((song, index) => {
-      const position = songs.length - Math.min(4, songs.length) + index;
-      entries.push([`_songs[${position}]`, `Song('${song.title}', '${song.artist}')`]);
-    });
-    state.set(entries);
-  };
-
-  const build = () => {
-    list.replaceChildren();
-    songs.forEach((song) => {
-      list.appendChild(
-        view === 'cards' ? songCard(song) : el('div', { class: 'fs-text-item', text: `${song.title} · ${song.artist}` })
-      );
-    });
-    renderState();
-  };
-
-  const setView = (next) => {
-    view = next;
-    code.setCode(PLAYLIST_ADD + (view === 'cards' ? PLAYLIST_CARD_VIEW : PLAYLIST_TEXT_VIEW));
-    logs.print(`build() con la vista ${view === 'cards' ? 'SongCard' : 'Text'}: el estado (_songs) es el mismo.`);
-    build();
-  };
-
-  const addSong = () => {
-    const title = titleField.value;
-    const artist = artistField.value;
-    songs.push({ title, artist, imageUrl: imageField.value });
-    code.mark(1, 2);
-    logs.print(`setState(): _songs.add(Song('${title}', '${artist}')) → build() con ${songs.length} canciones`);
-    if (!title && !artist) {
-      note.textContent = 'Con los campos vacíos también se agrega: una canción vacía. Se arregla en el taller.';
-      note.className = 'fs-note fs-warn';
-    } else {
-      note.textContent = 'La lista del estado creció y build() la volvió a pintar completa.';
-      note.className = 'fs-note';
-    }
-    build();
-    const last = list.lastChild;
-    flash(last);
-    if (last && typeof last.scrollIntoView === 'function') last.scrollIntoView({ block: 'nearest' });
-  };
-
-  addButton.addEventListener('click', addSong);
-  [titleField, artistField, imageField].forEach((field) => {
-    field.addEventListener('input', renderState);
-    field.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') addSong();
-    });
-  });
-
-  screen.body.append(
-    el('div', { class: 'fs-label', text: 'Nombre de la canción' }),
-    titleField,
-    el('div', { class: 'fs-label', text: 'Artista' }),
-    artistField,
-    el('div', { class: 'fs-label', text: 'URL de la imagen' }),
-    imageField,
-    addButton,
-    list
-  );
-
-  const controls = el('div', { class: 'fs-controls' });
-  if (withCards) {
-    const textButton = el('button', { text: 'Text' });
-    const cardsButton = el('button', { text: 'SongCard', class: 'fs-sel' });
-    const select = (next) => {
-      textButton.className = next === 'text' ? 'fs-sel' : '';
-      cardsButton.className = next === 'cards' ? 'fs-sel' : '';
-      setView(next);
-    };
-    textButton.addEventListener('click', () => select('text'));
-    cardsButton.addEventListener('click', () => select('cards'));
-    controls.appendChild(el('div', { class: 'fs-seg', role: 'group', 'aria-label': 'Vista' }, textButton, cardsButton));
-  }
-
-  container.append(
-    el('div', { class: 'fs-col' }, screen.frame, controls, note),
-    el('div', { class: 'fs-side' }, state.box, code.box, logs.box)
-  );
-  code.setCode(PLAYLIST_ADD + (view === 'cards' ? PLAYLIST_CARD_VIEW : PLAYLIST_TEXT_VIEW));
-  note.textContent = 'Escribe una canción y su artista, y pulsa Agregar.';
-  build();
-
-  return () => {
-    root.replaceChildren();
-  };
-};
-
 export const SIMS = Object.freeze({
   'state-counter': mountCounter,
   'hot-reload': (root, args = []) => mountCounter(root, ['reload', ...args]),
   'state-tree': mountTree,
   'state-lifecycle': mountLifecycle,
-  playlist: mountPlaylist,
+  playlist: (root, args = []) => mountTree(root, ['playlist', ...args]),
 });
 
 export const parseSpec = (spec) => {

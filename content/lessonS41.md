@@ -1,6 +1,6 @@
 # setState: el contador de flutter create
 
-<!-- tags: setState, contador de flutter create, árbol de widgets, _incrementCounter, la pantalla no se actualiza, reconstrucción con build, print en build, hot reload conserva el estado, hot restart, onPressed recibe una función, FloatingActionButton -->
+<!-- tags: setState, contador de flutter create, árbol de widgets, _incrementCounter, la pantalla no se actualiza, reconstrucción con build, print en build, FloatingActionButton -->
 
 Cuando creas un proyecto con `flutter create`, la app que viene de ejemplo es un contador: un número en el centro y un botón `+` que lo sube. En la sesión 2 la borraste para empezar con tu propia `HomeScreen`. Ahora vale la pena volver a ella, porque es el ejemplo más corto de estado que existe.
 
@@ -110,34 +110,6 @@ Por eso `build()` tiene que poder correr muchas veces: no crea el estado, solo l
 Vuelve al diagrama del inicio y activa *Olvidar setState*. El código cambia: ahora `_incrementCounter` solo hace `_counter++`. Pulsa `+` varias veces.
 
 El bloque Estado sube, pero la pantalla se queda quieta y la etiqueta dice *Flutter no se enteró*: el dato cambió y nadie le avisó a Flutter. Desactiva el interruptor y pulsa `+` una vez más: la pantalla salta de golpe al valor real, con todos los toques que se habían perdido. No sale ningún error, la app simplemente "no hace nada", y eso lo hace difícil de encontrar. Cuando una pantalla no refleja un cambio, lo primero que se revisa es si el cambio está dentro de un `setState`.
-
-## Hot reload conserva el estado
-
-Hot reload vuelve a correr `build()` con el código nuevo, pero **con el mismo objeto State**: el contador no se pierde. Hot restart arranca la app desde cero, con un State nuevo, y el contador vuelve a 0.
-
-```interactive
-hot-reload
-```
-
-Si cambias el valor inicial (`int _counter = 5;`) y haces hot reload, el número no cambia, porque ese valor solo se usa cuando el State nace. Para verlo hace falta un hot restart.
-
-## Pasar una función al botón
-
-`onPressed` no recibe un valor, recibe **una función**: lo que hay que hacer cuando alguien toque el botón. El ejemplo de `flutter create` la pasa por su nombre:
-
-```dart
-onPressed: _incrementCounter,
-```
-
-En el curso la escribimos como una función que llama a la otra:
-
-```dart
-onPressed: () => _incrementCounter(),
-```
-
-Las dos funcionan igual. La segunda deja ver que es una función, y es la que vas a necesitar cuando haya que pasar datos, por ejemplo `() => _removeSong(song)`.
-
-Lo que **no** funciona es escribir `onPressed: _incrementCounter()`, con paréntesis. Eso llama a la función en el momento de construir el botón y le pasa lo que devuelve, que es nada. El analizador lo marca con `This expression has a type of 'void' so its value can't be used`.
 
 ## Ejemplo completo
 

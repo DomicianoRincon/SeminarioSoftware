@@ -249,8 +249,10 @@ playlist cards
 - Los que hay: `state-tree` (árbol de widgets o código, alternables, y un bloque *Estado* unido por líneas
   a lo que lee cada variable; cada toque se anima en cinco pasos, con modo *Paso a paso*; escenario por
   defecto el contador, `forget` le agrega el interruptor *Olvidar setState*, y `bulb` es el bombillo de
-  `S0040` con *Reconstruir App*), `hot-reload`, `state-counter` (ya no se usa en ninguna lección), `state-lifecycle` (initState,
-  dispose y `setState() called after dispose()`) y `playlist` (con `cards`, alterna `Text` y `SongCard`).
+  `S0040` con *Reconstruir App*), y `playlist`, que es otro escenario de `state-tree`: `_songs` y los tres controllers
+  en el bloque Estado, un nodo del árbol por canción, `forget` como en el contador y `cards`, que alterna `Text` y `SongCard`
+  como un hot reload animado (`S0043` y `S0044`). Escribir en un campo cambia el controller sin correr `build()`.
+  Sin uso en ninguna lección, pero registrados: `hot-reload`, `state-counter` y `state-lifecycle`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar
   literal la carpeta `interactive/` y la línea de `LessonParser.jsx`.

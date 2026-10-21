@@ -6,11 +6,13 @@ Ya tienes las piezas: un dato en el estado, `setState` para cambiarlo y un `Text
 
 En esta lección el código es **el mínimo que funciona**: sin validaciones, sin estilos y sin limpiar el formulario. La lista se muestra como texto simple. En la siguiente lección se ve con un componente, y en el taller se agrega lo que falta.
 
-Pruébala antes de leer el código. Agrega tres o cuatro canciones y mira cómo crece `_songs`:
+Pruébala antes de leer el código. `_songs` y los tres controllers viven en el bloque **Estado**, dentro de `_PlaylistScreenState`, y una línea une `_songs` con cada widget que se construye a partir de ella. Escribe una canción, pulsa *Agregar* y sigue los cinco pasos; con *Paso a paso* avanzas tú. Agrega tres o cuatro y mira cómo crecen `_songs` y el árbol.
 
 ```interactive
-playlist
+playlist forget
 ```
+
+Mientras escribes, cambia el `.text` del controller pero **no** corre `build()`: el `TextField` se repinta solo. La lista solo cambia cuando `_addSong` llama a `setState`. Cambia a **Código** cuando quieras: el estado se conserva, y la línea que corre en cada paso se ilumina.
 
 ## El modelo: Song
 
@@ -150,7 +152,7 @@ El botón nunca toca la lista de la pantalla. Solo agrega un dato al estado. La 
 
 ## Si la lista no cambia
 
-Si escribes `_songs.add(...)` fuera del `setState`, la canción sí entra a la lista, pero la pantalla no se entera: es el mismo error del contador. Lo confuso es que la canción aparece después, cuando cualquier otro `setState` reconstruye la pantalla, porque `build()` pinta todo lo que haya en `_songs`. Parece que la app va "un paso atrasada". Revisa siempre que el cambio esté **dentro** del `setState`.
+Vuelve al diagrama del inicio y activa *Olvidar setState*. Si escribes `_songs.add(...)` fuera del `setState`, la canción sí entra a la lista, pero la pantalla no se entera: es el mismo error del contador. Lo confuso es que la canción aparece después, cuando cualquier otro `setState` reconstruye la pantalla (desactiva el interruptor y agrega otra: salen todas de golpe), porque `build()` pinta todo lo que haya en `_songs`. Parece que la app va "un paso atrasada". Revisa siempre que el cambio esté **dentro** del `setState`.
 
 El `Column` va dentro de un `SingleChildScrollView`, como en la sesión 3. Sin él, cuando la lista crece y se sale de la pantalla, aparece `A RenderFlex overflowed by … pixels on the bottom`.
 

@@ -194,29 +194,71 @@ describe('state-lifecycle', () => {
 });
 
 describe('playlist', () => {
-  it('adds whatever the fields hold, like the minimal _addSong of the lesson', () => {
-    renderBlock('playlist');
-    expect(screen.getByTestId('playlist-list').childNodes).toHaveLength(0);
+  const STEP = 1100;
+  const list = () => screen.getByTestId('playlist-list');
+
+  it('adds the song to _songs first and paints the list only at the last step', () => {
+    const { container } = renderBlock('playlist');
+    expect(list().childNodes).toHaveLength(0);
     type('Nombre de la canción', 'Bohemian Rhapsody');
     type('Artista', 'Queen');
+    expect(screen.getByTestId('var-_titleController').textContent).toBe("'Bohemian Rhapsody'");
     fireEvent.click(screen.getByText('Agregar'));
-    expect(screen.getByTestId('playlist-list').textContent).toBe('Bohemian Rhapsody · Queen');
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('var-_songs').textContent).toContain("Song('Bohemian Rhap…', 'Queen')");
+    expect(list().childNodes).toHaveLength(0);
+    expect(screen.getByText('sucio: pide build()')).toBeTruthy();
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    expect(list().textContent).toBe('Bohemian Rhapsody · Queen');
+    expect(container.querySelector('[data-node="text-0"]')).toBeTruthy();
     expect(screen.getByLabelText('Nombre de la canción').value).toBe('Bohemian Rhapsody');
     type('Nombre de la canción', '');
     type('Artista', '');
     fireEvent.click(screen.getByText('Agregar'));
-    expect(screen.getByTestId('playlist-list').childNodes).toHaveLength(2);
-    expect(screen.getByText(/canción vacía/)).toBeTruthy();
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('tree-caption').textContent).toMatch(/canción vacía/);
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    expect(list().childNodes).toHaveLength(2);
   });
 
-  it('switches the same state between Text and SongCard views', () => {
+  it('types into the controllers without running build()', () => {
+    const { container } = renderBlock('playlist');
+    const before = container.querySelector('[data-node="title"] .fs-id').textContent;
+    type('Artista', 'Queen');
+    expect(screen.getByTestId('var-_artistController').textContent).toBe("'Queen'");
+    expect(screen.getByTestId('tree-caption').textContent).toMatch(/sin setState/);
+    expect(container.querySelector('[data-node="title"] .fs-id').textContent).toBe(before);
+  });
+
+  it('switches Text and SongCard with a hot reload that keeps _songs', () => {
     const { container } = renderBlock('playlist cards');
     type('Nombre de la canción', 'Yellow');
     type('Artista', 'Coldplay');
     fireEvent.click(screen.getByText('Agregar'));
+    act(() => vi.advanceTimersByTime(STEP * 6));
     expect(container.querySelectorAll('.fs-card')).toHaveLength(1);
+    const songs = screen.getByTestId('var-_songs').textContent;
     fireEvent.click(screen.getByRole('button', { name: 'Text' }));
+    expect(container.textContent).toContain("Text('${song.title} · ${song.artist}'),");
+    act(() => vi.advanceTimersByTime(STEP * 5));
     expect(container.querySelectorAll('.fs-card')).toHaveLength(0);
-    expect(screen.getByTestId('playlist-list').textContent).toBe('Yellow · Coldplay');
+    expect(list().textContent).toBe('Yellow · Coldplay');
+    expect(container.querySelector('[data-node="text-0"]')).toBeTruthy();
+    expect(screen.getByTestId('var-_songs').textContent).toBe(songs);
+  });
+
+  it('keeps the list one step behind when setState is forgotten', () => {
+    renderBlock('playlist forget');
+    fireEvent.click(screen.getByLabelText('Olvidar setState'));
+    type('Nombre de la canción', 'Yellow');
+    fireEvent.click(screen.getByText('Agregar'));
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    expect(screen.getByTestId('var-_songs').textContent).toContain('Yellow');
+    expect(list().childNodes).toHaveLength(0);
+    expect(screen.getByText('Flutter no se enteró')).toBeTruthy();
+    fireEvent.click(screen.getByLabelText('Olvidar setState'));
+    fireEvent.click(screen.getByText('Agregar'));
+    act(() => vi.advanceTimersByTime(STEP * 6));
+    expect(list().childNodes).toHaveLength(2);
   });
 });

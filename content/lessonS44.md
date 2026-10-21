@@ -4,13 +4,13 @@
 
 La playlist de la lección anterior funciona, pero una lista de `Text` no se parece a ninguna app de música. En el curso las piezas de una pantalla se hacen como **componentes**, y aquí hay uno claro: la tarjeta de cada canción. En esta lección te entregamos el código de `SongCard` y vemos cómo conectarlo con el estado.
 
-Agrega unas canciones y cambia entre *Text* y *SongCard*:
+Agrega unas canciones y luego cambia entre *Text* y *SongCard*:
 
 ```interactive
 playlist cards
 ```
 
-Fíjate en el panel del State: al cambiar de vista **no cambia nada en el estado**. Las canciones son las mismas; lo único que cambia es cómo las pinta `build()`.
+Cambiar entre *Text* y *SongCard* es cambiar una línea del código y hacer hot reload. Fíjate en el bloque **Estado**: `_songs` **no cambia**, y `_PlaylistScreenState` sigue siendo el mismo objeto. Lo que cambia es el árbol: `build()` vuelve a correr y crea un `SongCard` nuevo por cada canción, unido con su línea a `_songs`. En **Código** se ve la línea que cambió, dentro del `for`.
 
 ## El componente
 
