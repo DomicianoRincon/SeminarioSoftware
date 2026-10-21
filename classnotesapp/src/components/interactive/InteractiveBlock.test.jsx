@@ -181,13 +181,13 @@ describe('state-lifecycle', () => {
   const STEP = 1000;
   const count = (container, phase) => container.querySelector(`[data-phase="${phase}"] .fs-lc-count`).textContent;
 
-  it('walks createState, initState and build, rebuilds on setState and frees the controller on dispose', () => {
+  it('walks createState, initState and build, rebuilds on setState and runs dispose on Cerrar', () => {
     const { container } = renderBlock('state-lifecycle');
-    fireEvent.click(screen.getByText('Abrir saludo'));
+    fireEvent.click(screen.getByLabelText('Abrir Saludo'));
     expect(count(container, 'createState')).toBe('×1');
     expect(screen.queryByLabelText('Nombre')).toBeNull();
     act(() => vi.advanceTimersByTime(STEP * 2));
-    expect(screen.getByText('#1 vivo')).toBeTruthy();
+    expect(count(container, 'initState')).toBe('×1');
     type('Nombre', 'Ana');
     expect(screen.getByTestId('lc-greeting').textContent).toBe('Hola');
     expect(count(container, 'build')).toBe('×1');
@@ -197,12 +197,12 @@ describe('state-lifecycle', () => {
     act(() => vi.advanceTimersByTime(STEP));
     expect(screen.getByTestId('lc-greeting').textContent).toBe('Hola, Ana');
     expect(count(container, 'build')).toBe('×2');
-    fireEvent.click(screen.getByLabelText('Volver'));
-    expect(screen.getByText('#1 liberado')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar' }));
     expect(count(container, 'dispose')).toBe('×1');
-    fireEvent.click(screen.getByText('Abrir saludo'));
+    expect(screen.getByLabelText('Abrir Saludo')).toBeTruthy();
+    fireEvent.click(screen.getByLabelText('Abrir Saludo'));
+    expect(screen.getByTestId('lc-caption').textContent).toContain('#2');
     act(() => vi.advanceTimersByTime(STEP * 2));
-    expect(screen.getByText(/_GreetingScreenState #2/)).toBeTruthy();
     expect(count(container, 'build')).toBe('×1');
     expect(screen.getByLabelText('Nombre').value).toBe('');
   });

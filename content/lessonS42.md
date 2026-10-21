@@ -6,13 +6,13 @@ En la lección de `TextField` los campos se dejaban escribir, pero la app no pod
 
 ## La vida de un State
 
-Un objeto State nace una vez, se dibuja muchas veces y muere una vez. Pruébalo: abre la pantalla de saludo, escribe tu nombre, pulsa *Saludar* y vuelve con la flecha. A la derecha se enciende la fase por la que va el State, y cada bloque cuenta cuántas veces corrió.
+Un objeto State nace una vez, se dibuja muchas veces y muere una vez. Pruébalo: toca la app *Saludo* en el teléfono, escribe tu nombre, pulsa *Saludar* y luego *Cerrar*. A la derecha se enciende la fase por la que va el State, y cada bloque cuenta cuántas veces corrió.
 
 ```interactive
 state-lifecycle
 ```
 
-Fíjate en dos cosas. Escribir en el campo no enciende nada: cambia el texto del controller, pero no llama a `setState`. Y al volver y abrir otra vez, el State es otro (`#2`), con un controller nuevo.
+Fíjate en dos cosas. Escribir en el campo no enciende nada: cambia el texto del controller, pero no llama a `setState`. Y si cierras y abres otra vez, el State es otro (`#2`), con un controller nuevo.
 
 - **`initState`** corre una sola vez, antes del primer `build`. Ahí se crea lo que el State necesita.
 - **`build`** corre cada vez que algo pide reconstruir, como `setState`.
