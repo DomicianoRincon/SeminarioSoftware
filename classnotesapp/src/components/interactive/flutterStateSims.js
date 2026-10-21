@@ -135,15 +135,24 @@ const CSS = `
 .fsim .fs-code-line.fs-bind{border-left-color:rgba(201,166,238,.7)}
 .fsim .fs-code-line.fs-bind.fs-on{border-left-color:#F9E2AF}
 .fsim .fs-caption{font-size:14px;min-height:42px;color:var(--fs-ink)}
-.fsim .fs-steps{display:flex;flex-wrap:wrap;gap:6px}
-.fsim .fs-step{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12px;padding:3px 9px;border-radius:12px;
-  border:1px solid var(--fs-line);color:#9E9AA7;background:#fff}
-.fsim .fs-step.fs-done{color:var(--fs-ink);border-color:var(--fs-accent);background:var(--fs-accent-soft)}
-.fsim .fs-step.fs-dead{color:#fff;border-color:#625B71;background:#625B71}
 .fsim .fs-list-title{font-size:13px;font-weight:600;color:#49454F;margin:2px 0 6px}
 .fsim .fs-seg{display:inline-flex;border:1px solid var(--fs-accent);border-radius:20px;overflow:hidden}
 .fsim .fs-seg button{border:0;background:#fff;color:var(--fs-accent);padding:6px 14px;font:500 13px Roboto,Arial,sans-serif;cursor:pointer}
 .fsim .fs-seg button.fs-sel{background:var(--fs-accent);color:#fff}
+.fsim .fs-lc-svg{width:100%;height:auto;display:block}
+.fsim .fs-lc-block rect{fill:#fff;stroke:#E3E6EE;stroke-width:1.5;transition:fill .3s,stroke .3s}
+.fsim .fs-lc-block{opacity:.4;transition:opacity .3s}
+.fsim .fs-lc-block.fs-seen{opacity:1}
+.fsim .fs-lc-name{font:700 16px 'JetBrains Mono',Menlo,Consolas,monospace}
+.fsim .fs-lc-desc{font:13px Roboto,Arial,sans-serif;fill:#454C61}
+.fsim .fs-lc-count{font:700 13px 'JetBrains Mono',Menlo,Consolas,monospace}
+.fsim .fs-lc-arrow{fill:none;stroke:#C4CBD8;stroke-width:2;transition:stroke .3s}
+.fsim .fs-lc-arrow.fs-on{stroke-width:2.75;stroke-dasharray:7 5;animation:fsimDash .5s linear infinite}
+@keyframes fsimDash{to{stroke-dashoffset:-12}}
+.fsim .fs-lc-label{font:600 12px Roboto,Arial,sans-serif;fill:#79809A}
+.fsim .fs-back{border:0;background:none;font-size:28px;line-height:1;cursor:pointer;padding:0 8px 0 0;color:#1C1B1F}
+.fsim .fs-hello{font-size:22px;margin:6px 0 14px;color:var(--fs-ink)}
+.fsim .fs-faint{color:#9E9AA7;font-size:13px}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -1447,58 +1456,111 @@ const mountTree = (root, args = []) => {
 
 // ────────────────────────────── state-lifecycle ──────────────────────────────
 
-const LIFECYCLE_CODE = `class _GreetingScreenState extends State<GreetingScreen> {
-  late TextEditingController _nameController;
+// The greeting screen on the phone and, next to it, the phases of its State joined by
+// arrows. Opening, greeting and going back light the path the State goes through.
 
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _nameController,
-      onChanged: (value) => setState(() {}),
-    );
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
-  }
-}`;
-
-const LIFECYCLE_STEPS = ['createState', 'initState', 'build', 'setState', 'dispose'];
+const LC_STEP_MS = 1000;
+const LC_COLORS = {
+  amber: ['#FFF3DC', '#A96C05'],
+  green: ['#E8F6E3', '#3A8235'],
+  indigo: ['#EEF1FF', '#4453C9'],
+  violet: ['#F4EBFF', '#7439B8'],
+  rose: ['#FFEBEF', '#C2354F'],
+};
+const LC_BLOCKS = [
+  { key: 'createState', color: 'amber', x: 20, y: 12, w: 210, desc: 'Flutter crea el objeto State' },
+  { key: 'initState', color: 'green', x: 20, y: 100, w: 210, desc: 'Prepara lo que necesita' },
+  { key: 'build', color: 'indigo', x: 20, y: 188, w: 210, desc: 'Dibuja con los datos actuales' },
+  { key: 'setState', color: 'violet', x: 290, y: 188, w: 160, desc: 'Cambia un dato' },
+  { key: 'dispose', color: 'rose', x: 20, y: 296, w: 210, desc: 'Libera lo de initState' },
+];
+const LC_ARROWS = [
+  { key: 'open', to: 'initState', d: 'M125,68 V96' },
+  { key: 'first', to: 'build', d: 'M125,156 V184' },
+  { key: 'event', to: 'setState', d: 'M232,204 H286', label: 'Saludar', lx: 259, ly: 197 },
+  { key: 'rebuild', to: 'build', d: 'M288,228 H234', label: 'build()', lx: 261, ly: 244 },
+  { key: 'leave', to: 'dispose', d: 'M125,244 V292', label: 'Volver', lx: 135, ly: 273 },
+];
 
 const mountLifecycle = (root) => {
   const container = card(root);
   const timers = [];
-  let open = false;
+  let queue = [];
   let stateId = 0;
   let controllerId = 0;
-  let controllerAlive = false;
-  let builds = 0;
+  let alive = false;
+  let mounted = false;
   let text = '';
-  const done = new Set();
+  let greeting = 'Hola';
+  let counts = {};
+  let screenName = 'home';
 
   const screen = phone('Inicio');
-  const note = el('div', { class: 'fs-note' });
-  const code = codePanel('lib/screens/greeting_screen.dart');
-  const state = statePanel('Objeto State');
-  const logs = consolePanel();
-  const steps = el('div', { class: 'fs-steps' });
-  const stepsPanel = el('div', { class: 'fs-panel' }, el('h4', { text: 'Ciclo de vida' }), steps);
+  screen.appbar.style.justifyContent = 'flex-start';
+  const back = el('button', { class: 'fs-back', 'aria-label': 'Volver', text: '‹', onclick: () => leave() });
 
-  const drawSteps = () => {
-    steps.replaceChildren(
-      ...LIFECYCLE_STEPS.map((name) => {
-        const kind = name === 'dispose' && done.has(name) ? 'fs-dead' : done.has(name) ? 'fs-done' : '';
-        return el('span', { class: `fs-step ${kind}`, text: name });
-      })
+  const svg = svgEl('svg', { class: 'fs-lc-svg', viewBox: '0 0 462 360', role: 'img', 'aria-label': 'Fases del ciclo de vida' });
+  const defs = svgEl('defs');
+  svg.appendChild(defs);
+  const marker = (id, color) => {
+    const m = svgEl('marker', { id, viewBox: '0 0 10 10', refX: '9', refY: '5', markerWidth: '6', markerHeight: '6', orient: 'auto-start-reverse' });
+    m.appendChild(svgEl('path', { d: 'M0,0 L10,5 L0,10 L2.4,5 Z', fill: color }));
+    defs.appendChild(m);
+  };
+  const markerBase = `fsim-lc${++treeUid}`;
+  marker(`${markerBase}-off`, '#C4CBD8');
+  Object.entries(LC_COLORS).forEach(([name, [, strong]]) => marker(`${markerBase}-${name}`, strong));
+
+  const svgText = (attrs, content) => {
+    const t = svgEl('text', attrs);
+    t.textContent = content;
+    return t;
+  };
+
+  const arrows = {};
+  LC_ARROWS.forEach((a) => {
+    const path = svgEl('path', { class: 'fs-lc-arrow', d: a.d, 'marker-end': `url(#${markerBase}-off)` });
+    svg.appendChild(path);
+    if (a.label) svg.appendChild(svgText({ class: 'fs-lc-label', x: a.lx, y: a.ly, 'text-anchor': 'middle' }, a.label));
+    arrows[a.key] = { path, color: LC_BLOCKS.find((b) => b.key === a.to).color };
+  });
+
+  const blocks = {};
+  LC_BLOCKS.forEach((b) => {
+    const [soft, strong] = LC_COLORS[b.color];
+    const g = svgEl('g', { class: 'fs-lc-block', 'data-phase': b.key });
+    const rect = svgEl('rect', { x: b.x, y: b.y, width: b.w, height: 56, rx: 12 });
+    const count = svgText({ class: 'fs-lc-count', x: b.x + b.w - 12, y: b.y + 23, 'text-anchor': 'end', fill: strong }, '');
+    g.append(
+      rect,
+      svgEl('circle', { cx: b.x + 18, cy: b.y + 28, r: 8, fill: soft, stroke: strong, 'stroke-width': 2.5 }),
+      svgText({ class: 'fs-lc-name', x: b.x + 34, y: b.y + 24, fill: strong }, b.key),
+      svgText({ class: 'fs-lc-desc', x: b.x + 34, y: b.y + 43 }, b.desc),
+      count
     );
+    svg.appendChild(g);
+    blocks[b.key] = { g, rect, count, soft, strong };
+  });
+
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'lc-caption' });
+  const flowPanel = el('div', { class: 'fs-panel' }, el('h4', { text: 'Ciclo de vida del State' }), svg, caption);
+  const state = statePanel('Objeto State');
+
+  const light = (phase, arrow) => {
+    Object.entries(blocks).forEach(([key, b]) => {
+      const on = key === phase;
+      b.rect.style.fill = on ? b.soft : '';
+      b.rect.style.stroke = on ? b.strong : '';
+      b.rect.style.strokeWidth = on ? '2.5' : '';
+      b.g.classList.toggle('fs-seen', Boolean(counts[key]));
+      b.count.textContent = counts[key] ? `×${counts[key]}` : '';
+    });
+    Object.entries(arrows).forEach(([key, a]) => {
+      const on = key === arrow;
+      a.path.classList.toggle('fs-on', on);
+      a.path.style.stroke = on ? LC_COLORS[a.color][1] : '';
+      a.path.setAttribute('marker-end', `url(#${markerBase}-${on ? a.color : 'off'})`);
+    });
   };
 
   const renderState = () => {
@@ -1507,132 +1569,176 @@ const mountLifecycle = (root) => {
       state.set([['_nameController', '—']]);
       return;
     }
-    state.setTitle(`Objeto State · _GreetingScreenState #${stateId}${open ? '' : ' (desmontado)'}`);
+    state.setTitle(`Objeto State · _GreetingScreenState #${stateId}${mounted ? '' : ' (desmontado)'}`);
     state.set([
-      ['_nameController', controllerAlive ? `#${controllerId} activo` : `#${controllerId} liberado`],
-      ['_nameController.text', `'${text}'`],
-      ['mounted', String(open)],
-      ['veces que corrió build()', String(builds)],
+      ['_nameController', controllerId ? `#${controllerId} ${alive ? 'vivo' : 'liberado'}` : 'todavía no existe'],
+      ['_nameController.text', controllerId ? `'${text}'` : '—'],
+      ['_greeting', `'${greeting}'`],
+      ['mounted', String(mounted)],
     ]);
   };
 
-  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
-
   const drawHome = () => {
+    screenName = 'home';
     screen.setTitle('Inicio');
+    back.remove();
     screen.body.replaceChildren(
-      el(
-        'div',
-        { class: 'fs-center' },
+      el('div', { class: 'fs-center' },
         el('div', { text: 'Pantalla de inicio' }),
-        el('button', { class: 'fs-btn fs-solid', text: 'Abrir saludo', onclick: openScreen })
-      )
-    );
+        el('button', { class: 'fs-btn fs-solid', text: 'Abrir saludo', onclick: () => open() })));
   };
 
-  const greeting = el('div', { class: 'fs-big', style: 'font-size:22px' });
-  const field = el('input', { class: 'fs-field', placeholder: 'Escribe tu nombre', 'aria-label': 'Nombre' });
-
-  const build = () => {
-    builds += 1;
-    greeting.textContent = text ? `Hola, ${text}` : 'Hola';
-    done.add('build');
-    drawSteps();
-    renderState();
+  const drawBlank = () => {
+    screenName = 'blank';
+    screen.setTitle('Saludo');
+    screen.appbar.prepend(back);
+    screen.body.replaceChildren(
+      el('div', { class: 'fs-center' }, el('div', { class: 'fs-faint', text: 'build() todavía no ha corrido: no hay nada que mostrar' })));
   };
 
   const drawGreeting = () => {
-    screen.setTitle('Saludo');
-    field.value = '';
+    screenName = 'greeting';
+    const field = el('input', { class: 'fs-field', placeholder: 'Escribe tu nombre', 'aria-label': 'Nombre', value: text });
+    field.value = text;
+    field.addEventListener('input', () => type(field.value));
+    field.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') greet();
+    });
     screen.body.replaceChildren(
       el('div', { class: 'fs-label', text: 'Nombre' }),
       field,
-      greeting,
-      el('div', { style: 'height:16px' }),
-      el('button', { class: 'fs-btn', text: 'Guardar (tarda 2 s)', onclick: saveLater }),
-      el('div', { style: 'height:8px' }),
-      el('button', { class: 'fs-btn fs-solid', text: 'Volver', onclick: closeScreen })
-    );
+      el('div', { class: 'fs-hello', 'data-testid': 'lc-greeting', text: greeting }),
+      el('button', { class: 'fs-btn fs-solid', text: 'Saludar', onclick: () => greet() }));
   };
 
-  function openScreen() {
-    open = true;
-    stateId += 1;
-    text = '';
-    done.clear();
-    done.add('createState');
-    logs.print(`createState() → _GreetingScreenState #${stateId}`);
-    code.mark(0);
-    drawGreeting();
-    later(() => {
-      controllerId += 1;
-      controllerAlive = true;
-      done.add('initState');
-      code.mark(4, 6);
-      logs.print(`initState(): se crea TextEditingController #${controllerId}`);
-      renderState();
-      drawSteps();
-    }, 300);
-    later(() => {
-      code.mark(10, 11);
-      logs.print('build()');
-      build();
-      note.textContent = 'Escribe en el campo: cada letra llama a setState y vuelve a correr build().';
-    }, 700);
+  const clearTimers = () => timers.splice(0).forEach(clearTimeout);
+
+  const flush = () => {
+    clearTimers();
+    queue.splice(0).forEach((s) => s.apply?.());
+  };
+
+  const play = () => {
+    const step = queue.shift();
+    if (!step) return;
+    step.apply?.();
+    light(step.phase, step.arrow);
+    caption.textContent = step.caption;
     renderState();
-    drawSteps();
+    if (queue.length) timers.push(setTimeout(play, LC_STEP_MS));
+  };
+
+  const run = (steps) => {
+    flush();
+    queue = steps;
+    play();
+  };
+
+  const bump = (phase) => {
+    counts[phase] = (counts[phase] || 0) + 1;
+  };
+
+  function open() {
+    if (screenName !== 'home') return;
+    run([
+      {
+        phase: 'createState',
+        caption: `Navigator abre GreetingScreen y Flutter llama a createState(): nace _GreetingScreenState #${stateId + 1}.`,
+        apply: () => {
+          stateId += 1;
+          counts = {};
+          controllerId = 0;
+          alive = false;
+          text = '';
+          greeting = 'Hola';
+          mounted = true;
+          bump('createState');
+          drawBlank();
+        },
+      },
+      {
+        phase: 'initState',
+        arrow: 'open',
+        caption: 'initState() corre una sola vez, antes de dibujar nada. Aquí nace _nameController.',
+        apply: () => {
+          controllerId += 1;
+          alive = true;
+          bump('initState');
+        },
+      },
+      {
+        phase: 'build',
+        arrow: 'first',
+        caption: 'build() dibuja la pantalla con los datos actuales: el campo vacío y Hola. Escribe tu nombre y pulsa Saludar.',
+        apply: () => {
+          bump('build');
+          drawGreeting();
+        },
+      },
+    ]);
   }
 
-  function closeScreen() {
-    if (!open) return;
-    open = false;
-    controllerAlive = false;
-    done.add('dispose');
-    code.mark(18, 19);
-    logs.print(`dispose(): se libera TextEditingController #${controllerId}`, 'ok');
-    note.textContent = 'La pantalla se cerró: el State se descarta y el controller se libera en dispose().';
-    drawHome();
+  function type(value) {
+    flush();
+    text = value;
+    light(null, null);
+    caption.textContent = 'Escribir cambia _nameController.text. No es setState: build() no corre y el saludo no cambia.';
     renderState();
-    drawSteps();
   }
 
-  function saveLater() {
-    const savedFrom = stateId;
-    logs.print('Guardando… en 2 s se llama setState para mostrar «Guardado».');
-    later(() => {
-      if (open && stateId === savedFrom) {
-        code.mark(13);
-        logs.print('setState(): Guardado', 'ok');
-        build();
-        greeting.textContent = `${greeting.textContent} · Guardado`;
-        return;
-      }
-      logs.print(`setState() called after dispose(): _GreetingScreenState#${savedFrom}`, 'err');
-      note.textContent = 'El State ya no existe. Antes de llamar a setState tras una espera: if (!mounted) return;';
-      note.className = 'fs-note fs-warn';
-    }, 2000);
+  function greet() {
+    if (screenName !== 'greeting') return;
+    const next = `Hola, ${text}`;
+    run([
+      {
+        phase: 'setState',
+        arrow: 'event',
+        caption: `Pulsaste Saludar: _greet() cambia _greeting a '${next}' dentro de setState. El State queda sucio; la pantalla todavía no cambia.`,
+        apply: () => {
+          greeting = next;
+          bump('setState');
+        },
+      },
+      {
+        phase: 'build',
+        arrow: 'rebuild',
+        caption: `build() corre otra vez, con el mismo State #${stateId}: el Text muestra '${next}'.`,
+        apply: () => {
+          bump('build');
+          drawGreeting();
+        },
+      },
+    ]);
   }
 
-  field.addEventListener('input', () => {
-    text = field.value;
-    done.add('setState');
-    code.mark(13);
-    logs.print(`setState() → build() con text = '${text}'`);
-    build();
-  });
+  function leave() {
+    if (screenName === 'home') return;
+    run([
+      {
+        phase: 'dispose',
+        arrow: 'leave',
+        caption: `Volviste a Inicio: la pantalla sale del árbol y dispose() corre una vez. _nameController #${controllerId} se libera y el State #${stateId} no vuelve. Abre otra vez y nace uno nuevo.`,
+        apply: () => {
+          if (controllerId) alive = false;
+          mounted = false;
+          bump('dispose');
+          drawHome();
+        },
+      },
+    ]);
+  }
 
-  code.setCode(LIFECYCLE_CODE);
   drawHome();
-  drawSteps();
+  light(null, null);
   renderState();
+  caption.textContent = 'Pulsa Abrir saludo en el teléfono y mira por qué fases pasa el State.';
   container.append(
-    el('div', { class: 'fs-col' }, screen.frame, note),
-    el('div', { class: 'fs-side' }, stepsPanel, state.box, code.box, logs.box)
+    el('div', { class: 'fs-col' }, screen.frame),
+    el('div', { class: 'fs-side' }, flowPanel, state.box)
   );
-  note.textContent = 'Abre la pantalla de saludo, escribe y vuelve.';
 
   return () => {
-    timers.forEach(clearTimeout);
+    clearTimers();
     root.replaceChildren();
   };
 };

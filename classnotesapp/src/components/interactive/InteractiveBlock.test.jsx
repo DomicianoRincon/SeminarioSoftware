@@ -178,18 +178,33 @@ describe('state-tree', () => {
 });
 
 describe('state-lifecycle', () => {
-  it('creates the controller in initState, frees it in dispose and flags a late setState', () => {
-    renderBlock('state-lifecycle');
+  const STEP = 1000;
+  const count = (container, phase) => container.querySelector(`[data-phase="${phase}"] .fs-lc-count`).textContent;
+
+  it('walks createState, initState and build, rebuilds on setState and frees the controller on dispose', () => {
+    const { container } = renderBlock('state-lifecycle');
     fireEvent.click(screen.getByText('Abrir saludo'));
-    act(() => vi.advanceTimersByTime(800));
-    expect(screen.getByText('#1 activo')).toBeTruthy();
+    expect(count(container, 'createState')).toBe('×1');
+    expect(screen.queryByLabelText('Nombre')).toBeNull();
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(screen.getByText('#1 vivo')).toBeTruthy();
     type('Nombre', 'Ana');
-    expect(screen.getByText('Hola, Ana')).toBeTruthy();
-    fireEvent.click(screen.getByText('Guardar (tarda 2 s)'));
-    fireEvent.click(screen.getByText('Volver'));
+    expect(screen.getByTestId('lc-greeting').textContent).toBe('Hola');
+    expect(count(container, 'build')).toBe('×1');
+    fireEvent.click(screen.getByRole('button', { name: 'Saludar' }));
+    expect(count(container, 'setState')).toBe('×1');
+    expect(screen.getByTestId('lc-greeting').textContent).toBe('Hola');
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('lc-greeting').textContent).toBe('Hola, Ana');
+    expect(count(container, 'build')).toBe('×2');
+    fireEvent.click(screen.getByLabelText('Volver'));
     expect(screen.getByText('#1 liberado')).toBeTruthy();
-    act(() => vi.advanceTimersByTime(2100));
-    expect(screen.getByText(/setState\(\) called after dispose\(\)/)).toBeTruthy();
+    expect(count(container, 'dispose')).toBe('×1');
+    fireEvent.click(screen.getByText('Abrir saludo'));
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(screen.getByText(/_GreetingScreenState #2/)).toBeTruthy();
+    expect(count(container, 'build')).toBe('×1');
+    expect(screen.getByLabelText('Nombre').value).toBe('');
   });
 });
 

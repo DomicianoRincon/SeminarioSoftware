@@ -252,7 +252,10 @@ playlist cards
   `S0040` con *Reconstruir App*), y `playlist`, que es otro escenario de `state-tree`: `_songs` y los tres controllers
   en el bloque Estado, un nodo del árbol por canción, `forget` como en el contador y `cards`, que alterna `Text` y `SongCard`
   como un hot reload animado (`S0043` y `S0044`). Escribir en un campo cambia el controller sin correr `build()`.
-  Sin uso en ninguna lección, pero registrados: `hot-reload`, `state-counter` y `state-lifecycle`.
+  `state-lifecycle` (`S0042`): el teléfono con la pantalla de saludo (abrir, escribir, *Saludar*, volver) y, al lado,
+  las fases createState, initState, build, setState y dispose unidas por flechas; se enciende la fase y la flecha
+  por la que pasa el State, y cada bloque cuenta sus veces. Volver y abrir crea un State nuevo.
+  Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar
   literal la carpeta `interactive/` y la línea de `LessonParser.jsx`.
