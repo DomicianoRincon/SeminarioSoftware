@@ -174,16 +174,6 @@ SongForm(onAdd: (song) => _addSong(song)),
 
 Los tres controllers y su `dispose()` salieron de la Screen. Ahora su State solo tiene `_songs`.
 
-## Pruébalo
-
-Ahora hay dos dueños de estado. El de la Screen guarda `_songs` y el de `SongForm` guarda el borrador. Escribe y mira cuál cambia. Pulsa *Agregar* con un campo vacío y después agrega canciones y quita una. El paquete naranja es el evento que sube, y el azul, el dato que baja.
-
-```interactive
-lift events
-```
-
-Cuando quitas una canción, `onDelete()` va de la tarjeta **directo** a la Screen: la función la escribió la Screen, así que corre allá. `SongList` solo se la había entregado a la tarjeta: es el primer parámetro que recibe sin usarlo, el drilling de paso de la lección anterior.
-
 ## Ejemplo completo
 
 `App`, `Song`, `SongCard`, `SongList`, `SongForm` y `PlaylistScreen` en un archivo. En tu proyecto, `SongForm` va en `lib/components/song_form.dart`.
