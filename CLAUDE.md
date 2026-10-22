@@ -263,7 +263,7 @@ playlist cards
   `fav` agrega la favorita con `copyWith`, que cambia el número de la `Song`.
   `compose` (`S0046`): pestañas *Sin componentes* y *Con componentes* de la misma playlist, teléfono funcional a la
   izquierda y, a la derecha, el árbol con los grupos de estado debajo; cada variable sube por su propio carril y
-  entra en cada nodo al que está ligada.
+  entra en cada nodo al que está ligada. Las líneas son grises; al hacer clic en una variable, las suyas se iluminan con su color.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar

@@ -195,7 +195,14 @@ const CSS = `
 .fsim .fs-lift-node.fs-cmp-holder{background:#F4EBFF;border-color:#C9A6EE}
 .fsim .fs-lift-node.fs-cmp-part{background:#EEF1FF;border-color:#A9B4F2}
 .fsim .fs-cmp-group{margin:0}
-.fsim .fs-lines .fs-cmp-bind{fill:none;stroke-width:1.75;opacity:.85}
+.fsim .fs-lines .fs-cmp-bind{fill:none;stroke-width:1.5}
+.fsim .fs-lines .fs-cmp-bind.fs-on{stroke-width:2.75}
+.fsim .fs-cmp-var{cursor:pointer;border-radius:6px;padding:1px 4px;margin-left:-4px}
+.fsim .fs-cmp-var:hover{background:rgba(255,255,255,.7)}
+.fsim .fs-cmp-var.fs-sel{background:#fff;box-shadow:0 0 0 2px var(--fs-cmp-color)}
+.fsim .fs-cmp-var:focus{outline:none}
+.fsim .fs-cmp-var:focus-visible{outline:2px dashed var(--fs-cmp-color);outline-offset:2px}
+.fsim .fs-cmp-var.fs-sel .fs-var-name{color:var(--fs-cmp-color)}
 .fsim .fs-cmp-summary{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;margin:0 0 8px}
 .fsim .fs-cmp-stars{display:flex;gap:1px;margin-top:2px}
 .fsim .fs-cmp-star{border:0;background:none;padding:0 1px;cursor:pointer;font-size:15px;line-height:1;color:#D99A00}
@@ -1966,6 +1973,7 @@ const mountLift = (root, args = []) => {
 // touches its direct children, and SongForm holding its own draft.
 
 const COMPOSE_COLORS = ['#7439B8', '#0F8478', '#C2354F', '#A96C05', '#4453C9', '#3A8235'];
+const COMPOSE_GRAY = '#B8BDC9';
 
 const starRow = (rating, onRate) => el('span', { class: 'fs-cmp-stars' },
   ...[1, 2, 3, 4, 5].map((n) => el('button', {
@@ -1995,6 +2003,7 @@ const mountCompose = (root) => {
   let nodeEls = {};
   let varEls = {};
   let bindings = [];
+  let selected = null;
 
   // ── phone
   const field = (label, key, placeholder) => {
@@ -2156,13 +2165,35 @@ const mountCompose = (root) => {
 
   const variable = (name, type, value) => {
     const val = typeof value === 'string' ? el('span', { class: 'fs-lift-val', text: value }) : value;
-    const node = el('div', { class: 'fs-lift-var', 'data-var': name },
-      el('span', { class: 'fs-var-type', text: type }), el('span', { class: 'fs-var-name', text: name }), val);
+    const node = el('div', {
+      class: `fs-lift-var fs-cmp-var${selected === name ? ' fs-sel' : ''}`,
+      'data-var': name,
+      style: `--fs-cmp-color:${colorOf(name)}`,
+      role: 'button',
+      tabindex: '0',
+      'aria-pressed': String(selected === name),
+      title: 'Clic para iluminar sus líneas',
+      onclick: () => toggleSelected(name),
+      onkeydown: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleSelected(name);
+        }
+      },
+    }, el('span', { class: 'fs-var-type', text: type }), el('span', { class: 'fs-var-name', text: name }), val);
     varEls[name] = node;
     return node;
   };
   const group = (title, vars) => el('div', { class: 'fs-lift-holder fs-cmp-group' },
     el('div', { class: 'fs-lift-holder-head' }, el('span', { text: title })), ...vars);
+
+  const colorOf = (name) => COMPOSE_COLORS[Math.max(0, bindings.findIndex(([n]) => n === name)) % COMPOSE_COLORS.length];
+
+  const toggleSelected = (name) => {
+    selected = selected === name ? null : name;
+    renderState();
+    varEls[name]?.focus();
+  };
 
   const controllers = () => ['title', 'artist', 'imageUrl'].map((key) => variable(`_${key}Controller`, 'TextEditingController', `'${shorten(model.draft[key], 16)}'`));
 
@@ -2182,7 +2213,7 @@ const mountCompose = (root) => {
   // every node it is bound to.
   const markers = svgEl('defs');
   const uid = ++treeUid;
-  COMPOSE_COLORS.forEach((color, i) => {
+  [...COMPOSE_COLORS, COMPOSE_GRAY].forEach((color, i) => {
     const marker = svgEl('marker', {
       id: `fsim-cmp${uid}-${i}`, viewBox: '0 0 10 10', refX: '9', refY: '5',
       markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse',
@@ -2198,29 +2229,29 @@ const mountCompose = (root) => {
       const r = node.getBoundingClientRect();
       return { l: r.left - base.left, r: r.right - base.left, t: r.top - base.top, b: r.bottom - base.top, cy: (r.top + r.bottom) / 2 - base.top };
     };
-    const active = bindings.filter(([name, keys]) => varEls[name] && keys.some((k) => nodeEls[k]));
+    const active = bindings.map((b, i) => [...b, i]).filter(([name, keys]) => varEls[name] && keys.some((k) => nodeEls[k]));
     const arrivals = {};
-    active.forEach(([, keys]) => keys.forEach((k) => {
+    const slots = active.map(([, keys]) => Object.fromEntries(keys.map((k) => {
       arrivals[k] = (arrivals[k] || 0) + 1;
-    }));
-    const seen = {};
-    active.forEach(([name, keys], i) => {
-      const color = COMPOSE_COLORS[i % COMPOSE_COLORS.length];
+      return [k, arrivals[k] - 1];
+    })));
+    const ordered = active.map((b, j) => [...b, j]).sort((a, b) => (a[0] === selected) - (b[0] === selected));
+    ordered.forEach(([name, keys, i, j]) => {
+      const on = name === selected;
+      const color = on ? COMPOSE_COLORS[i % COMPOSE_COLORS.length] : COMPOSE_GRAY;
+      const marker = on ? i % COMPOSE_COLORS.length : COMPOSE_COLORS.length;
       const from = rect(varEls[name]);
-      const trunk = base.width - 10 - i * 11;
+      const trunk = base.width - 10 - j * 11;
       keys.filter((k) => nodeEls[k]).forEach((k) => {
         const to = rect(nodeEls[k]);
-        const slot = seen[k] || 0;
-        seen[k] = slot + 1;
-        const y = to.cy + (slot - (arrivals[k] - 1) / 2) * 7;
+        const y = to.cy + (slots[j][k] - (arrivals[k] - 1) / 2) * 7;
         lines.appendChild(svgEl('path', {
-          class: 'fs-cmp-bind',
+          class: `fs-cmp-bind${on ? ' fs-on' : ''}`,
           stroke: color,
           d: `M${from.r + 4},${from.cy} H${trunk} V${y} H${to.r + 6}`,
-          'marker-end': `url(#fsim-cmp${uid}-${i % COMPOSE_COLORS.length})`,
+          'marker-end': `url(#fsim-cmp${uid}-${marker})`,
         }));
       });
-      varEls[name].querySelector('.fs-var-name').style.color = color;
     });
   };
   let queued = false;

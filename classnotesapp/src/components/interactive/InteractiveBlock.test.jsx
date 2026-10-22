@@ -379,4 +379,16 @@ describe('compose', () => {
     fireEvent.click(screen.getByLabelText('Solo favoritas'));
     expect(screen.getByTestId('compose-list').querySelectorAll('.fs-card')).toHaveLength(1);
   });
+
+  it('lights the lines of the variable that is clicked', async () => {
+    const { container } = renderBlock('compose');
+    const songs = container.querySelector('[data-var="_songs"]');
+    fireEvent.click(songs);
+    const again = container.querySelector('[data-var="_songs"]');
+    expect(again.getAttribute('aria-pressed')).toBe('true');
+    await act(async () => vi.advanceTimersByTime(50));
+    expect(container.querySelector('[data-var="_songs"]').classList.contains('fs-sel')).toBe(true);
+    fireEvent.click(container.querySelector('[data-var="_songs"]'));
+    expect(container.querySelector('[data-var="_songs"]').getAttribute('aria-pressed')).toBe('false');
+  });
 });
