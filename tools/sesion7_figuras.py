@@ -13,7 +13,6 @@ import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from console_frame import frame as console  # noqa: E402
 from sesion2_figuras import FAM, head  # noqa: E402
 from sesion3_figuras import device, mark, txt  # noqa: E402
 
@@ -447,30 +446,6 @@ def ta_meta():
 
 
 FIGS['taMeta'] = ta_meta
-
-
-FIGS['ptCrear'] = lambda: console(dict(
-    id='ptCrear',
-    title='Crear el proyecto <tspan class="mono">playlist_app</tspan>',
-    title_plain='Crear el proyecto playlist_app',
-    desc='Terminal en la carpeta develop. Se ejecuta flutter create con la organización icesi.edu.co y el '
-         'nombre playlist_app, la salida termina en All done, y luego cd playlist_app.',
-    sub='El mismo comando de la sesión 1, con otro nombre. El nombre va en minúsculas y con guion bajo.',
-    term_title='Terminal · C:\\develop',
-    lines=[('P', 'flutter create --org icesi.edu.co playlist_app', 'develop'),
-           ('O', 'Creating project playlist_app...'),
-           ('D', 'Resolving dependencies in `playlist_app`...'),
-           ('D', 'Got dependencies in `playlist_app`.'),
-           ('D', 'Wrote 130 files.'),
-           ('B', ''),
-           ('K', 'All done!'),
-           ('B', ''),
-           ('P', 'cd playlist_app', 'develop'),
-           ('P', '', 'playlist_app')],
-    rings=[(0, 43, 12, 1), (8, 9, 15, 2)],
-    cards=[(1, 'El nombre del proyecto', ['Es también el nombre del paquete:', 'package:playlist_app/...'], False),
-           (2, 'Entrar a la carpeta', ['Abre esta carpeta en VS Code', 'antes de crear los archivos.'], False)],
-))
 
 
 def main():

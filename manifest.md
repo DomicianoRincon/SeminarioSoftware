@@ -158,7 +158,7 @@ Notas:
 
 **Presentación:** ⬜ pendiente (`presentaciones/sesion7/`). Su `plan.md` necesita la aprobación del profesor antes de armar las slides.
 
-**Punto de partida:** el *Ejemplo completo* de `S0044`, no el taller de la sesión 6 (decisión del profesor, 2026-10-22). Cada lección termina con un *Ejemplo completo* que es la continuación exacta del anterior.
+**Punto de partida:** el *Ejemplo completo* de `S0044`, no el taller de la sesión 6 (decisión del profesor, 2026-10-22). Cada lección termina con un *Ejemplo completo* que es la continuación exacta del anterior. El orden en el visor es `S0045` (el taller como meta), `S0046`, `S0049`, `S0047` y `S0048`.
 
 | Lo que pide el planeador | Dónde está en el visor |
 |---|---|
@@ -166,7 +166,7 @@ Notas:
 | Funciones como parámetro: el hijo reporta hacia arriba sin conocer al padre | `S0047`: `Function() onDelete` en `SongCard`, `Function(Song)` en `SongList` y `SongForm` como `StatefulWidget` dueño de su borrador (controllers, `_showError`, `clear()`) con `widget.onAdd(song)`. Figura `fpFlechas`. El apartado *Pruébalo* con `lift events` se quitó a pedido del profesor (2026-10-22) |
 | Prop drilling: qué es, hasta dónde se tolera y qué señal da | `S0049`, **segunda lección de la sesión** (pedido del profesor, 2026-10-22: el drilling ya se usa desde el primer corte, así que se presenta enseguida). Sigue el camino de una canción de `_songs` a `SongList` y a `SongCard` con el interactivo `lift` (sin opciones) y la figura `pdCamino` (los tres bloques de código unidos por flechas); luego `pdNiveles` (drilling de datos: una app con niveles que solo pasan `songs`) y tres señales. Nombra `InheritedWidget`, `Provider` y Bloc sin enseñarlos. Su *Ejemplo completo* es el de `S0046`. El primer callback que se pasa sin usarse (`onDelete` en `SongList`) aparece en `S0047`, que lo remite a esta lección |
 | Modelos simples con copyWith | `S0048`: la favorita (`isFavorite`), el error `can't be used as a setter because it's final`, `copyWith` a mano con `??` y `_songs[index] = song.copyWith(...)`. Figura `cwCopia` e interactivo `lift fav`, que numera cada `Song` para que se vea que la copia es otro objeto |
-| Taller de dos sesiones, parte 2 | `S0045`, **reescrito** con el mismo id: `playlist_app` con un archivo por clase (figura `taCarpetas`) y tres mejoras (figura `taMeta`): `PlaylistSummary` arriba del formulario con el contador y el corazón (no en el `AppBar`, para que coincida con `compose`), filtro de favoritas (`bool` en la Screen, `SongList` recibe la lista filtrada y `emptyMessage`) y calificación con estrellas (`rating` con `copyWith` y un callback con dato, `Function(int)` en la tarjeta y `Function(Song, int)` en la lista; reemplazó a un contador de reproducciones cuyo ▶ sugería un estado de reproducción que no existe, decisión del profesor del 2026-10-22). Cierra con un `print` en cada `build` para ver quién se reconstruye |
+| Taller de dos sesiones, parte 2 | `S0045`, **primera lección de la sesión** (pedido del profesor, 2026-10-22): presenta el taller en resumen como la meta de la sesión, sobre el **mismo repositorio** `playlist_app` de la sesión 6 (sin `flutter create` ni pasos de montaje). Figuras `taMeta` (la app final, con `PlaylistSummary` arriba del formulario) y `taCarpetas` (un archivo por clase). Tres mejoras en una línea cada una: el resumen, solo favoritas y calificación con estrellas (`copyWith(rating: n)`, `Function(int)` en la tarjeta), más la prueba de los `print` en `build`. Las pistas detalladas que tenía se quitaron |
 | *Fuera de clase:* reorganizar la app del equipo | No se asigna: las sesiones del bloque son de clase y no dejan tarea |
 
 Notas:
@@ -174,7 +174,7 @@ Notas:
 - **Interactivo `lift`** (`flutterStateSims.js`): simulador propio, no un escenario de `state-tree`, porque necesita dos dueños de estado (la Screen y el borrador de `SongForm`). Cada paso mueve **un** paquete entre dos widgets: azul si es un dato que baja por el constructor, naranja si es un evento que sube. Los nodos muestran sus parámetros (gris = solo lo pasa) y un contador `build ×n`. Opciones: sin nada (`S0049`) y `fav` (`S0048`). `events` queda registrado pero sin uso desde que `S0047` dejó de usarlo.
 - Los tres *Ejemplo completo* (`S0046`, `S0047` y `S0048`; `S0049` reutiliza el de `S0048`) pasaron `flutter analyze` y el analizador de DartPad sin avisos, y tienen gist público en `Domiciano`.
 - **La solución del taller se comprobó** el 2026-10-22 en un proyecto de prueba con la estructura del curso: `flutter analyze` solo marca los tres `avoid_print` que el taller pide a propósito. No se ejecutó en un dispositivo.
-- Las 7 figuras salen de `tools/sesion7_figuras.py` (incluye `ptCrear`, que pasó de la sesión 6 con el taller). `check.py` sin errores.
+- Las 6 figuras salen de `tools/sesion7_figuras.py`. `ptCrear` (crear el proyecto) se eliminó: el taller ya no crea un proyecto. `check.py` sin errores.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
