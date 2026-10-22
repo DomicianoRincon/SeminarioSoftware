@@ -160,6 +160,33 @@ const CSS = `
 .fsim .fs-app-off .fs-app-icon{box-shadow:0 3px 8px rgba(0,0,0,.2)}
 .fsim .fs-hello{font-size:22px;margin:6px 0 14px;color:var(--fs-ink)}
 .fsim .fs-faint{color:#9E9AA7;font-size:13px}
+.fsim .fs-lift-tree{overflow:hidden}
+.fsim .fs-lift-node{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:4px 0;padding:4px 8px;border-radius:8px;
+  border:1px solid var(--fs-line);background:#fff;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12.5px;width:fit-content;max-width:100%}
+.fsim .fs-lift-node b{font-weight:600}
+.fsim .fs-lift-node.fs-hot{box-shadow:0 0 0 3px #F2C069;border-color:#A96C05}
+.fsim .fs-lift-param{font-size:11px;padding:0 7px;border-radius:9px;border:1px solid}
+.fsim .fs-lift-param.fs-down{background:#E6F0FF;border-color:#7FA6E8;color:#1F4FA8}
+.fsim .fs-lift-param.fs-up{background:#FFF3DC;border-color:#E2B25C;color:#8A5600}
+.fsim .fs-lift-param.fs-pass{background:#F1F2F5;border-color:#B8BDC9;border-style:dashed;color:#79809A}
+.fsim .fs-lift-builds{font-size:11px;color:#fff;background:#625B71;border-radius:9px;padding:0 7px}
+.fsim .fs-lift-holder{margin:2px 0 8px 18px;padding:8px 10px;border-radius:10px;background:#F4EBFF;border:1px solid #C9A6EE}
+.fsim .fs-lift-holder-head{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12px;font-weight:600;color:#7439B8;margin-bottom:4px}
+.fsim .fs-lift-var{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12.5px;margin:3px 0}
+.fsim .fs-lift-val{background:#fff;border:1px solid #C9A6EE;border-radius:6px;padding:0 6px;overflow-wrap:anywhere}
+.fsim .fs-lift-songs{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 4px}
+.fsim .fs-lift-song{font-size:11.5px;padding:2px 8px;border-radius:8px;background:#E6F0FF;border:1px solid #7FA6E8;color:#1C2B4A}
+.fsim .fs-lift-song b{color:#1F4FA8}
+.fsim .fs-lift-song.fs-fav{background:#FFE4EC;border-color:#E58AA5}
+.fsim .fs-lift-legend{font-size:12px;color:var(--fs-muted);margin-top:8px}
+.fsim .fs-lift-packet{position:absolute;left:0;top:0;z-index:3;font:600 11.5px 'JetBrains Mono',Menlo,Consolas,monospace;
+  padding:3px 9px;border-radius:12px;color:#fff;opacity:0;pointer-events:none;transition:transform .9s ease-in-out,opacity .2s;white-space:nowrap}
+.fsim .fs-lift-packet.fs-down{opacity:1;background:#2F6FD6}
+.fsim .fs-lift-packet.fs-up{opacity:1;background:#D08A12}
+.fsim .fs-lift-error{color:var(--fs-err);font-size:12.5px;margin:-6px 0 10px}
+.fsim .fs-lift-actions{display:flex;gap:2px}
+.fsim .fs-lift-act{border:0;background:none;cursor:pointer;font-size:18px;color:var(--fs-accent);padding:2px 4px}
+.fsim .fs-lift-act.fs-on{color:#C2354F}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -747,7 +774,7 @@ ${forgot ? `    _songs.add(Song(
     idle: 'Escribe una canción y su artista, pulsa Agregar y sigue los pasos: primero crece _songs y al final la pantalla.',
     setCaption: (before, after) => {
       const song = after._songs[after._songs.length - 1];
-      const empty = !song.title && !song.artist ? ' Con los campos vacíos entra una canción vacía: se arregla en el taller.' : '';
+      const empty = !song.title && !song.artist ? ' Con los campos vacíos entra una canción vacía: se arregla en la sesión 7.' : '';
       return `Dentro de setState, _songs.add(Song('${song.title}', '${song.artist}')) agrega una canción: _songs pasa de ${before._songs.length} a ${after._songs.length} y el State queda sucio. La pantalla todavía no cambia.${empty}`;
     },
     forgetCaption: (before, after) => `_addSong() agrega la canción a _songs (pasa de ${before._songs.length} a ${after._songs.length}), pero no llama a setState.`,
@@ -1461,6 +1488,464 @@ const mountTree = (root, args = []) => {
   };
 };
 
+// ──────────────────────────────────── lift ────────────────────────────────────
+
+// The playlist after lifting state: PlaylistScreen keeps _songs, SongForm keeps only
+// its draft and the rest receive what they show through the constructor. Every step
+// moves one packet between two widgets: data goes down, events go up.
+// Stages: default = SongList extracted (form still in the Screen); `events` adds
+// SongForm with onAdd and onDelete on each card; `fav` adds the favorite and copyWith.
+
+const LIFT_STEP_MS = 1300;
+
+const mountLift = (root, args = []) => {
+  const stage = args.includes('fav') ? 2 : args.includes('events') ? 1 : 0;
+  const container = card(root);
+  const timers = [];
+  let nextSongId = 1;
+  const draftOwner = stage ? 'form' : 'screen';
+
+  const model = {
+    songs: [],
+    painted: [],
+    draft: { title: '', artist: '', imageUrl: DEFAULT_IMAGE },
+    showError: false,
+    dirty: false,
+    builds: { screen: 1, form: 1, list: 1 },
+  };
+
+  // ── phone
+  const screen = phone('Mi playlist');
+  const fields = {};
+  const field = (label, key, placeholder) => {
+    const node = el('input', { class: 'fs-field', placeholder, 'aria-label': label });
+    node.value = model.draft[key];
+    node.addEventListener('input', () => onType(key, node.value));
+    node.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+    });
+    fields[key] = node;
+    return [el('div', { class: 'fs-label', text: label }), node];
+  };
+  const addButton = el('button', { class: 'fs-filled', text: 'Agregar', onclick: () => submit() });
+  const errorText = el('div', { class: 'fs-lift-error', text: 'Escribe el nombre y el artista' });
+  errorText.hidden = true;
+  const listBox = el('div', { 'data-testid': 'lift-list' });
+  screen.body.append(
+    ...field('Nombre de la canción', 'title', 'Yellow'),
+    ...field('Artista', 'artist', 'Coldplay'),
+    ...field('URL de la imagen', 'imageUrl', DEFAULT_IMAGE),
+    addButton,
+    errorText,
+    listBox
+  );
+
+  const phoneCard = (song) => {
+    const node = songCard(song);
+    const icon = node.querySelector('.fs-card-icon');
+    const actions = el('span', { class: 'fs-lift-actions' });
+    if (stage >= 2) {
+      actions.appendChild(el('button', {
+        class: `fs-lift-act${song.isFavorite ? ' fs-on' : ''}`,
+        'aria-label': `Favorita ${song.title}`,
+        text: song.isFavorite ? '♥' : '♡',
+        onclick: () => toggleFavorite(song.id),
+      }));
+    }
+    if (stage >= 1) {
+      actions.appendChild(el('button', {
+        class: 'fs-lift-act',
+        'aria-label': `Quitar ${song.title}`,
+        text: '🗑',
+        onclick: () => remove(song.id),
+      }));
+    }
+    if (stage >= 1) icon.replaceWith(actions);
+    return node;
+  };
+
+  const paintPhone = () => {
+    const before = listBox.querySelectorAll('.fs-card').length;
+    const songs = model.painted;
+    listBox.replaceChildren(...(songs.length
+      ? songs.map(phoneCard)
+      : [el('div', { class: 'fs-empty', text: 'Todavía no hay canciones' })]));
+    if (songs.length > before) {
+      flash(listBox.lastChild);
+      screen.body.scrollTop = screen.body.scrollHeight;
+    }
+  };
+  const paintDraft = () => {
+    Object.entries(fields).forEach(([key, node]) => {
+      if (node.value !== model.draft[key]) node.value = model.draft[key];
+    });
+    errorText.hidden = !model.showError;
+  };
+
+  // ── tree with the two state holders
+  const treePanel = el('div', { class: 'fs-panel fs-rel fs-lift-tree' });
+  const packet = el('div', { class: 'fs-lift-packet', 'aria-hidden': 'true' });
+  let nodeEls = {};
+  let paramEls = {};
+
+  const songBlock = (song) => el('span', { class: `fs-lift-song${song.isFavorite ? ' fs-fav' : ''}`, 'data-song': String(song.id) },
+    el('b', { text: `Song #${song.id}` }),
+    ` ${shorten(song.title || '—', 12)} · ${shorten(song.artist || '—', 10)}${song.isFavorite ? ' ♥' : ''}`);
+
+  const draftRows = () => [
+    ...['title', 'artist', 'imageUrl'].map((key) => el('div', { class: 'fs-lift-var' },
+      el('span', { class: 'fs-var-type', text: 'String' }),
+      el('span', { class: 'fs-var-name', text: `_${key}Controller.text` }),
+      el('span', { class: 'fs-lift-val', 'data-testid': `draft-${key}`, text: `'${shorten(model.draft[key], 18)}'` }))),
+    ...(stage ? [el('div', { class: 'fs-lift-var' },
+      el('span', { class: 'fs-var-type', text: 'bool' }),
+      el('span', { class: 'fs-var-name', text: '_showError' }),
+      el('span', { class: 'fs-lift-val', 'data-testid': 'draft-showError', text: String(model.showError) }))] : []),
+  ];
+
+  const holder = (title, testid, rows, tag) => el('div', { class: 'fs-lift-holder', 'data-testid': testid },
+    el('div', { class: 'fs-lift-holder-head' }, el('span', { text: title }), tag),
+    ...rows);
+
+  const screenHolder = () => {
+    const tag = el('span', {
+      class: `fs-tag${model.dirty ? ' fs-dirty' : ''}`,
+      text: model.dirty ? 'sucio: pide build()' : 'al día',
+    });
+    const songs = el('div', { class: 'fs-lift-songs', 'data-testid': 'lift-songs' },
+      ...(model.songs.length ? model.songs.map(songBlock) : [el('span', { class: 'fs-faint', text: '[ ] vacía' })]));
+    const rows = [el('div', { class: 'fs-lift-var' },
+      el('span', { class: 'fs-var-type', text: 'List<Song>' }),
+      el('span', { class: 'fs-var-name', text: '_songs' })), songs];
+    if (draftOwner === 'screen') rows.push(...draftRows());
+    return holder('Estado · _PlaylistScreenState', 'screen-state', rows, tag);
+  };
+
+  const param = (owner, name, kind) => {
+    const hint = kind === 'pass' ? 'solo lo pasa' : '';
+    const node = el('span', { class: `fs-lift-param fs-${kind}`, title: hint || undefined, text: name });
+    paramEls[`${owner}.${name}`] = node;
+    return node;
+  };
+
+  const nodeRow = (key, depth, name, params = [], builds) => {
+    const row = el('div', { class: 'fs-lift-node', 'data-node': key, style: `margin-left:${depth * 18}px` },
+      el('b', { text: name }),
+      ...params.map(([n, kind]) => param(key, n, kind)),
+      builds ? el('span', { class: 'fs-lift-builds', 'data-testid': `builds-${key}`, text: `build ×${model.builds[key]}` }) : null);
+    nodeEls[key] = row;
+    return row;
+  };
+
+  const callbacks = stage >= 2 ? ['onDelete', 'onToggleFavorite'] : stage >= 1 ? ['onDelete'] : [];
+
+  const renderTree = () => {
+    nodeEls = {};
+    paramEls = {};
+    const items = [
+      el('h4', { text: 'Árbol · datos ↓ por constructor · eventos ↑ por funciones' }),
+      nodeRow('screen', 0, 'PlaylistScreen', [], true),
+      screenHolder(),
+      nodeRow('appbar', 1, 'AppBar'),
+    ];
+    if (stage) {
+      items.push(nodeRow('form', 1, 'SongForm', [['onAdd', 'up']], true));
+      items.push(holder('Borrador · _SongFormState', 'form-state', draftRows()));
+    } else {
+      items.push(nodeRow('form', 1, 'TextField ×3 · FilledButton'));
+    }
+    items.push(nodeRow('list', 1, 'SongList', [['songs', 'down'], ...callbacks.map((c) => [c, 'pass'])], true));
+    if (model.built?.length) {
+      model.built.forEach((song) => items.push(nodeRow(`card-${song.id}`, 2, 'SongCard',
+        [[`song #${song.id}`, 'down'], ...callbacks.map((c) => [c, 'up'])])));
+    } else {
+      items.push(nodeRow('empty', 2, "Text('Todavía no hay canciones')"));
+    }
+    if (callbacks.length) {
+      items.push(el('div', { class: 'fs-lift-legend' },
+        el('span', { class: 'fs-lift-param fs-pass', text: 'gris' }),
+        ' SongList recibe las funciones solo para pasárselas a SongCard: prop drilling.'));
+    }
+    treePanel.replaceChildren(...items, packet);
+  };
+  model.built = [];
+
+  const hot = (...keys) => {
+    Object.values(nodeEls).forEach((n) => n.classList.remove('fs-hot'));
+    keys.forEach((k) => nodeEls[k]?.classList.add('fs-hot'));
+  };
+  const box = (node) => {
+    const base = treePanel.getBoundingClientRect();
+    const r = node.getBoundingClientRect();
+    return { x: r.left - base.left, y: r.top - base.top, w: r.width, h: r.height };
+  };
+  // One packet, one jump: it starts on the sender and slides to the receiver.
+  const send = (from, to, label, kind) => {
+    const a = nodeEls[from];
+    const b = nodeEls[to];
+    packet.textContent = label;
+    packet.className = `fs-lift-packet fs-${kind}`;
+    if (!a || !b) return;
+    const pa = box(a);
+    const pb = box(b);
+    packet.style.transition = 'none';
+    packet.style.transform = `translate(${pa.x + pa.w + 8}px, ${pa.y}px)`;
+    void packet.offsetWidth;
+    packet.style.transition = '';
+    packet.style.transform = `translate(${pb.x + pb.w + 8}px, ${pb.y}px)`;
+    hot(from, to);
+  };
+  const hidePacket = () => {
+    packet.className = 'fs-lift-packet';
+  };
+  const pop = (node, kind = 'fs-flash') => {
+    if (!node) return;
+    node.classList.remove(kind);
+    void node.offsetWidth;
+    node.classList.add(kind);
+  };
+
+  // ── steps panel
+  const stepBar = el('div', { class: 'fs-stepbar' });
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'lift-caption' });
+  const stepsPanel = el('div', { class: 'fs-panel' }, stepBar, caption);
+  const drawBar = (names, current) => {
+    stepBar.replaceChildren(...names.map((name, i) => {
+      const kind = i === current ? 'fs-cur' : i < current ? 'fs-past' : '';
+      return el('span', { class: `fs-sp ${kind}` }, el('b', { text: String(i + 1) }), name);
+    }));
+  };
+
+  let run = null;
+  let stepMode = false;
+  const nextButton = el('button', { class: 'fs-btn', text: 'Siguiente paso', disabled: true });
+  const clearTimers = () => timers.splice(0).forEach(clearTimeout);
+  const settle = () => {
+    run = null;
+    nextButton.disabled = true;
+    hot();
+    hidePacket();
+  };
+  const finishNow = () => {
+    if (!run) return;
+    clearTimers();
+    run.plan.steps.slice(run.index + 1).forEach((s) => s.apply?.());
+    drawBar(run.plan.names, run.plan.names.length);
+    settle();
+  };
+  const play = (index) => {
+    run.index = index;
+    const step = run.plan.steps[index];
+    drawBar(run.plan.names, index);
+    caption.textContent = step.caption();
+    step.apply?.();
+    step.fx?.();
+    if (index === run.plan.steps.length - 1) {
+      timers.push(setTimeout(() => {
+        drawBar(run.plan.names, run.plan.names.length);
+        settle();
+      }, LIFT_STEP_MS));
+      return;
+    }
+    if (stepMode) {
+      nextButton.disabled = false;
+      return;
+    }
+    timers.push(setTimeout(() => play(index + 1), LIFT_STEP_MS));
+  };
+  const start = (plan) => {
+    finishNow();
+    run = { plan, index: -1 };
+    play(0);
+  };
+  nextButton.addEventListener('click', () => {
+    if (!run || run.index >= run.plan.steps.length - 1) return;
+    nextButton.disabled = true;
+    play(run.index + 1);
+  });
+  const stepToggle = switchControl('Paso a paso', (checked) => {
+    stepMode = checked;
+    if (!checked && run && !nextButton.disabled) {
+      nextButton.disabled = true;
+      play(run.index + 1);
+    }
+  });
+
+  // The Screen changes its list inside setState; the three steps after it are always
+  // the same: the Screen builds, SongList builds, the phone paints.
+  const downSteps = (change) => [
+    {
+      name: 'setState',
+      caption: change.caption,
+      apply: () => {
+        change.apply();
+        model.dirty = true;
+        renderTree();
+      },
+      fx: () => {
+        hidePacket();
+        hot('screen');
+        flash(treePanel.querySelector('[data-testid="lift-songs"]'));
+      },
+    },
+    {
+      name: 'Baja a SongList',
+      caption: () => `build() de la Screen crea SongList y le pasa la lista por el constructor: songs, ${model.songs.length === 1 ? '1 canción' : `${model.songs.length} canciones`}.${callbacks.length ? ` También le pasa ${callbacks.join(' y ')}, que SongList no usa.` : ''}${stage ? ' SongForm también se reconstruye, pero su State es el mismo: el borrador no se pierde.' : ''}`,
+      apply: () => {
+        model.builds.screen += 1;
+        if (stage) model.builds.form += 1;
+        model.dirty = false;
+        renderTree();
+      },
+      fx: () => {
+        send('screen', 'list', `songs${callbacks.length ? ` · ${callbacks.join(' · ')}` : ''}`, 'down');
+        pop(paramEls['list.songs']);
+        callbacks.forEach((c) => pop(paramEls[`list.${c}`]));
+      },
+    },
+    {
+      name: 'Baja a SongCard',
+      caption: () => (model.songs.length
+        ? `build() de SongList recorre songs y crea una SongCard por canción. Cada una recibe su song${callbacks.length ? ` y ${callbacks.join(' y ')}` : ''}.`
+        : 'build() de SongList ve songs vacía: en lugar de tarjetas muestra «Todavía no hay canciones». Decide con lo que recibe.'),
+      apply: () => {
+        model.builds.list += 1;
+        model.built = [...model.songs];
+        renderTree();
+      },
+      fx: () => {
+        const first = model.built.length ? `card-${model.built[model.built.length - 1].id}` : 'empty';
+        send('list', first, model.built.length ? 'song' : 'songs.isEmpty', 'down');
+      },
+    },
+    {
+      name: 'Pantalla',
+      caption: () => `Flutter pinta: la pantalla muestra ${model.songs.length === 1 ? '1 canción' : `${model.songs.length} canciones`}. Nadie más que PlaylistScreen tocó _songs.`,
+      apply: () => {
+        model.painted = [...model.songs];
+        paintPhone();
+      },
+      fx: () => {
+        hidePacket();
+        hot();
+      },
+    },
+  ];
+  const plan = (first, change) => {
+    const steps = [first, ...downSteps(change)];
+    return { names: steps.map((s) => s.name), steps };
+  };
+
+  function submit() {
+    const { title, artist, imageUrl } = model.draft;
+    if (stage && (!title.trim() || !artist.trim())) {
+      finishNow();
+      model.showError = true;
+      model.builds.form += 1;
+      renderTree();
+      paintDraft();
+      hot('form');
+      drawBar(['setState en SongForm'], 0);
+      caption.textContent = 'Falta el nombre o el artista: SongForm no llama a onAdd. Su setState prende _showError y solo se reconstruye SongForm. PlaylistScreen ni se entera.';
+      timers.push(setTimeout(() => {
+        drawBar(['setState en SongForm'], 1);
+        hot();
+      }, LIFT_STEP_MS));
+      return;
+    }
+    const song = { id: nextSongId++, title, artist, imageUrl: imageUrl || DEFAULT_IMAGE, isFavorite: false };
+    const first = stage
+      ? {
+        name: 'Sube onAdd',
+        caption: () => `SongForm arma Song #${song.id} con su borrador y llama widget.onAdd(song): el evento sube a la Screen. SongForm no sabe quién lo recibe. Después limpia su borrador con clear().`,
+        apply: () => {
+          model.draft = { ...model.draft, title: '', artist: '' };
+          model.showError = false;
+          model.builds.form += 1;
+          renderTree();
+          paintDraft();
+        },
+        fx: () => {
+          pop(addButton, 'fs-press');
+          send('form', 'screen', 'onAdd(song)', 'up');
+        },
+      }
+      : {
+        name: 'Toque',
+        caption: () => 'Pulsaste Agregar: onPressed llama a _addSong(). El formulario todavía es parte de la Screen, así que todo pasa en el mismo State.',
+        fx: () => {
+          pop(addButton, 'fs-press');
+          hot('form', 'screen');
+        },
+      };
+    start(plan(first, {
+      caption: () => `_addSong(${stage ? 'song' : ''}) corre en la Screen: dentro de setState, Song #${song.id} entra a _songs y el State queda sucio. La pantalla todavía no cambia.`,
+      apply: () => {
+        model.songs = [...model.songs, song];
+      },
+    }));
+  }
+
+  function remove(id) {
+    const song = model.songs.find((s) => s.id === id);
+    if (!song) return;
+    start(plan({
+      name: 'Sube onDelete',
+      caption: () => `La SongCard de Song #${id} llama onDelete(). La función la escribió PlaylistScreen al crear la tarjeta, así que corre allá. La tarjeta no sabe qué hace.`,
+      fx: () => send(`card-${id}`, 'screen', 'onDelete()', 'up'),
+    }, {
+      caption: () => `_deleteSong(song) corre en la Screen: dentro de setState, Song #${id} sale de _songs.`,
+      apply: () => {
+        model.songs = model.songs.filter((s) => s.id !== id);
+      },
+    }));
+  }
+
+  function toggleFavorite(id) {
+    const old = model.songs.find((s) => s.id === id);
+    if (!old) return;
+    const fresh = { ...old, id: nextSongId++, isFavorite: !old.isFavorite };
+    start(plan({
+      name: 'Sube onToggleFavorite',
+      caption: () => `La SongCard de Song #${id} llama onToggleFavorite(): el evento sube a la Screen.`,
+      fx: () => send(`card-${id}`, 'screen', 'onToggleFavorite()', 'up'),
+    }, {
+      caption: () => `Dentro de setState, la Screen no toca Song #${id}: copyWith(isFavorite: ${fresh.isFavorite}) crea Song #${fresh.id}, una copia con un solo campo cambiado, y la pone en su lugar.`,
+      apply: () => {
+        model.songs = model.songs.map((s) => (s.id === id ? fresh : s));
+      },
+    }));
+  }
+
+  function onType(key, value) {
+    model.draft = { ...model.draft, [key]: value };
+    renderTree();
+    if (run) return;
+    hot('form');
+    caption.textContent = draftOwner === 'screen'
+      ? `Escribir cambia _${key}Controller.text, que vive en el State de la Screen, sin setState: build() no corre.`
+      : `Escribir cambia el borrador de SongForm, sin setState. PlaylistScreen no se entera: lo que todavía no se envía no es asunto suyo.`;
+  }
+
+  container.append(
+    el('div', { class: 'fs-col' }, screen.frame, el('div', { class: 'fs-controls' }, stepToggle.node, nextButton)),
+    el('div', { class: 'fs-side' }, treePanel, stepsPanel)
+  );
+  paintPhone();
+  renderTree();
+  drawBar(plan({ name: stage ? 'Sube onAdd' : 'Toque' }, {}).names, -1);
+  caption.textContent = [
+    'Agrega dos o tres canciones y sigue el paquete: la lista vive en la Screen y baja por el constructor, primero a SongList y luego a cada SongCard.',
+    'Agrega canciones y quita una. Los datos bajan (azul) y los eventos suben (naranja): ningún componente toca _songs.',
+    'Agrega canciones y marca una como favorita: mira el número de la Song antes y después de copyWith.',
+  ][stage];
+
+  return () => {
+    clearTimers();
+    root.replaceChildren();
+  };
+};
+
 // ────────────────────────────── state-lifecycle ──────────────────────────────
 
 // The greeting screen on the phone and, next to it, the phases of its State joined by
@@ -1735,6 +2220,7 @@ export const SIMS = Object.freeze({
   'state-tree': mountTree,
   'state-lifecycle': mountLifecycle,
   playlist: (root, args = []) => mountTree(root, ['playlist', ...args]),
+  lift: mountLift,
 });
 
 export const parseSpec = (spec) => {

@@ -216,7 +216,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion6_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion7_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -256,6 +256,11 @@ playlist cards
   *Saludar* (setState) y *Cerrar* (dispose, de vuelta al launcher), porque navegación aún no se ha visto. Al lado, solo
   el flujograma: createState, initState, build, setState y dispose unidos por flechas; se enciende la fase y la flecha
   por la que pasa el State, y cada bloque cuenta sus veces. Cerrar y abrir crea un State nuevo. Sin código.
+  `lift` (`S0046` a `S0048`): la playlist con el estado elevado. Árbol con dos dueños de estado, el State de la Screen
+  (`_songs`, cada `Song` numerada) y el borrador de `SongForm`; cada paso mueve un solo paquete entre dos widgets, azul si
+  baja por el constructor y naranja si sube por una función. Los nodos muestran sus parámetros (gris = solo lo pasa: prop
+  drilling) y un contador `build ×n`. Sin opciones, el formulario sigue en la Screen; `events` agrega `SongForm` y quitar;
+  `fav` agrega la favorita con `copyWith`, que cambia el número de la `Song`.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar

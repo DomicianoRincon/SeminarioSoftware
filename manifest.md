@@ -15,8 +15,8 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
 | 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill · `S0033` Una skill para armar pantallas |
 | 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0039` Colaboración con GitHub MCP · `S0038` Taller · Servidores MCP |
-| 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard · `S0045` Taller · Playlist, parte 1 |
-| 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | ⬜ | |
+| 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard |
+| 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | 🟡 | `S0046` El estado entra como parámetro · `S0047` Funciones como parámetro · `S0048` Modelos con copyWith · `S0049` Prop drilling · `S0045` Taller · Playlist con estado elevado |
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | ⬜ | |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | ⬜ | |
 | 10 | 26 | 13 | 3 | Spec Driven Development | ⬜ | |
@@ -142,18 +142,39 @@ Notas:
 | Ciclo de vida: initState y dispose, con el TextEditingController | `S0042`: figura `lcLinea`, interactivo `state-lifecycle` y el error `setState() called after dispose()` con `mounted`. Cierra lo que `S0014` dejó pendiente (leer un `TextField`) |
 | Contador hola mundo sobre estados | `S0041`: el sumador de `flutter create` línea a línea, con el interactivo `state-tree forget` |
 | Primera interacción de usuario: funciones | `S0043` con `_addSong` (`onPressed: () => _addSong()`). El apartado *Pasar una función al botón* de `S0041` se quitó el 2026-10-21 (pedido del profesor) |
-| Taller de dos sesiones, parte 1 | **Creador de playlists** en vez de la agenda de contactos (decisión del profesor, 2026-10-15). `S0043` (lista en `Text`) y `S0044` (componente `SongCard`, entregado) lo explican con el interactivo `playlist`; `S0045` es el taller: proyecto `playlist_app` con cuatro mejoras (contador en la barra, aviso de datos faltantes, quitar una canción con un `Function()` en `SongCard`, lista vacía) |
+| Taller de dos sesiones, parte 1 | **Creador de playlists** en vez de la agenda de contactos (decisión del profesor, 2026-10-15). `S0043` (lista en `Text`) y `S0044` (componente `SongCard`, entregado) lo explican con el interactivo `playlist`. **El taller `S0045` se movió a la sesión 7 el 2026-10-22** (decisión del profesor: lo más probable es que los estudiantes no lo hagan, así que la sesión 7 arranca del *Ejemplo completo* de `S0044`). Sus cuatro mejoras se repartieron: la lista vacía en `S0046`, quitar con `Function()` y el aviso de datos faltantes en `S0047`, y el contador en el nuevo taller |
 | *Fuera de clase:* dar estado a un formulario de la app del equipo | No se asigna: las sesiones del bloque son de clase y no dejan tarea (decisión del profesor, 2026-10-15) |
 
 Notas:
 
 - **Diagramas interactivos**: bloque nuevo ` ```interactive ` del visor (`classnotesapp/src/components/interactive/`). Los simuladores son JavaScript plano en `flutterStateSims.js`, sin React, para que el mismo archivo sirva en la presentación. Cinco: `state-counter`, `hot-reload`, `state-tree`, `state-lifecycle` y `playlist` (con las opciones `cards` y `forget`). Desde el 2026-10-21 `playlist` es un escenario de `state-tree` (árbol, código, bloque Estado y pasos), y `state-lifecycle` se rehízo para `S0042`: teléfono interactivo y fases del ciclo de vida unidas por flechas.
 - **`S0043` usa el código mínimo que funciona** (pedido del profesor, 2026-10-15): controllers creados en la declaración, sin `initState`, sin validar, sin `clear()`, sin estilos. `S0044` parte de ese mismo código y solo cambia el `Text` por `SongCard`. Validar y limpiar el formulario pasó a la mejora 2 del taller. El simulador `playlist` hace exactamente lo mismo (agrega canciones vacías).
-- **El modelo `Song` no lleva `copyWith`** aunque el estilo del curso lo pide: el planeador lo enseña en la sesión 7 (sesión 23), junto con la elevación de estado.
-- La mejora 3 del taller (quitar con `Function() onDelete`) adelanta a propósito el callback de la sesión 7: es la primera vez que un componente le avisa a la pantalla.
+- **El modelo `Song` no lleva `copyWith`** en la sesión 6: llega en `S0048`, en la sesión 7.
 - Los cinco *Ejemplo completo* pasaron el analizador de DartPad sin avisos y tienen su gist público en `Domiciano`. Todas las Screens con `SafeArea` en el `body`.
 - Las 9 figuras salen de `tools/sesion6_figuras.py`. `check.py` limpio.
 - **El taller se comprobó** el 2026-10-15 armando `playlist_app` resuelto (con las cuatro mejoras y la estructura del curso) en un proyecto de prueba: `flutter analyze` sin avisos. No se ejecutó en un dispositivo.
+
+### Sesión 7 · Elevación de estado y funciones como parámetro
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion7/`). Su `plan.md` necesita la aprobación del profesor antes de armar las slides.
+
+**Punto de partida:** el *Ejemplo completo* de `S0044`, no el taller de la sesión 6 (decisión del profesor, 2026-10-22). Cada lección termina con un *Ejemplo completo* que es la continuación exacta del anterior.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Se retoma la playlist con todo en un archivo; el estado sube a la Screen y los componentes lo reciben por constructor | `S0046`: figura `leQuien` y la **regla de los tres stateholders** (decisión del profesor, 2026-10-22: solo la Screen, la Page y el formulario son `StatefulWidget`; no se enseña "el ancestro común más bajo"). Primer corte: `SongList(songs)`, con la lista vacía resuelta adentro. Interactivo `lift` |
+| Funciones como parámetro: el hijo reporta hacia arriba sin conocer al padre | `S0047`: `Function() onDelete` en `SongCard`, `Function(Song)` en `SongList` y `SongForm` como `StatefulWidget` dueño de su borrador (controllers, `_showError`, `clear()`) con `widget.onAdd(song)`. Figura `fpFlechas` e interactivo `lift events` |
+| Prop drilling: qué es, hasta dónde se tolera y qué señal da | `S0049`: figura `pdNiveles` y tres señales (parámetros que no se usan, un cambio en tres archivos, cinco callbacks). Nombra `InheritedWidget`, `Provider` y Bloc sin enseñarlos. **Va después de `copyWith`**, al revés que en el planeador: el segundo callback, el de la favorita, es el que hace visible el drilling |
+| Modelos simples con copyWith | `S0048`: la favorita (`isFavorite`), el error `can't be used as a setter because it's final`, `copyWith` a mano con `??` y `_songs[index] = song.copyWith(...)`. Figura `cwCopia` e interactivo `lift fav`, que numera cada `Song` para que se vea que la copia es otro objeto |
+| Taller de dos sesiones, parte 2 | `S0045`, **reescrito** con el mismo id: `playlist_app` con un archivo por clase (figura `taCarpetas`) y tres mejoras (figura `taMeta`): contador en la barra, filtro de favoritas (`bool` en la Screen, `SongList` recibe la lista filtrada y `emptyMessage`) y reproducciones (`plays` con `copyWith` y un tercer callback). Cierra con un `print` en cada `build` para ver quién se reconstruye |
+| *Fuera de clase:* reorganizar la app del equipo | No se asigna: las sesiones del bloque son de clase y no dejan tarea |
+
+Notas:
+
+- **Interactivo `lift`** (`flutterStateSims.js`): simulador propio, no un escenario de `state-tree`, porque necesita dos dueños de estado (la Screen y el borrador de `SongForm`). Cada paso mueve **un** paquete entre dos widgets: azul si es un dato que baja por el constructor, naranja si es un evento que sube. Los nodos muestran sus parámetros (gris = solo lo pasa) y un contador `build ×n`. Opciones: sin nada (`S0046`), `events` (`S0047`) y `fav` (`S0048`).
+- Los tres *Ejemplo completo* (`S0046`, `S0047` y `S0048`; `S0049` reutiliza el de `S0048`) pasaron `flutter analyze` y el analizador de DartPad sin avisos, y tienen gist público en `Domiciano`.
+- **La solución del taller se comprobó** el 2026-10-22 en un proyecto de prueba con la estructura del curso: `flutter analyze` solo marca los tres `avoid_print` que el taller pide a propósito. No se ejecutó en un dispositivo.
+- Las 7 figuras salen de `tools/sesion7_figuras.py` (incluye `ptCrear`, que pasó de la sesión 6 con el taller). `check.py` sin errores.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 

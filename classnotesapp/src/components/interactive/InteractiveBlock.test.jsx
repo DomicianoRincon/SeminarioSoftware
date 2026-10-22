@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, within } from '@testing-library/react';
 import { ThemeProvider } from '@/theme/ThemeContext';
 import InteractiveBlock from './InteractiveBlock';
 import { SIMS, parseSpec } from './flutterStateSims';
@@ -275,5 +275,69 @@ describe('playlist', () => {
     fireEvent.click(screen.getByText('Agregar'));
     act(() => vi.advanceTimersByTime(STEP * 6));
     expect(list().childNodes).toHaveLength(2);
+  });
+});
+
+describe('lift', () => {
+  const STEP = 1300;
+  const list = () => screen.getByTestId('lift-list');
+  const songs = () => screen.getByTestId('lift-songs').textContent;
+  const add = (title, artist) => {
+    type('Nombre de la canción', title);
+    type('Artista', artist);
+    fireEvent.click(screen.getByText('Agregar'));
+  };
+
+  it('keeps _songs in the Screen and passes it down one widget per step', () => {
+    const { container } = renderBlock('lift');
+    expect(list().textContent).toBe('Todavía no hay canciones');
+    type('Artista', 'Queen');
+    expect(within(screen.getByTestId('screen-state')).getByTestId('draft-artist').textContent).toBe("'Queen'");
+    type('Nombre de la canción', 'Bohemian Rhapsody');
+    fireEvent.click(screen.getByText('Agregar'));
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(songs()).toContain('Song #1');
+    expect(screen.getByText('sucio: pide build()')).toBeTruthy();
+    expect(container.querySelector('[data-node="card-1"]')).toBeNull();
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('builds-screen').textContent).toBe('build ×2');
+    expect(container.querySelector('[data-node="card-1"]')).toBeNull();
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(container.querySelector('[data-node="card-1"]')).toBeTruthy();
+    expect(list().querySelectorAll('.fs-card')).toHaveLength(0);
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(list().querySelectorAll('.fs-card')).toHaveLength(1);
+  });
+
+  it('sends onAdd up from SongForm, which keeps only the draft', () => {
+    const { container } = renderBlock('lift events');
+    fireEvent.click(screen.getByText('Agregar'));
+    expect(screen.getByTestId('lift-caption').textContent).toMatch(/no llama a onAdd/);
+    expect(screen.getByTestId('builds-form').textContent).toBe('build ×2');
+    expect(screen.getByTestId('builds-screen').textContent).toBe('build ×1');
+    add('Yellow', 'Coldplay');
+    expect(within(screen.getByTestId('form-state')).getByTestId('draft-title').textContent).toBe("''");
+    expect(container.querySelector('.fs-lift-packet.fs-up').textContent).toBe('onAdd(song)');
+    act(() => vi.advanceTimersByTime(STEP * 5));
+    expect(list().querySelectorAll('.fs-card')).toHaveLength(1);
+    expect(container.querySelectorAll('[data-node="list"] .fs-pass')).toHaveLength(1);
+    fireEvent.click(screen.getByLabelText('Quitar Yellow'));
+    expect(container.querySelector('.fs-lift-packet.fs-up').textContent).toBe('onDelete()');
+    act(() => vi.advanceTimersByTime(STEP * 5));
+    expect(list().textContent).toBe('Todavía no hay canciones');
+    expect(songs()).toContain('vacía');
+  });
+
+  it('replaces the song with a copy when it becomes a favorite', () => {
+    renderBlock('lift fav');
+    add('Yellow', 'Coldplay');
+    act(() => vi.advanceTimersByTime(STEP * 5));
+    fireEvent.click(screen.getByLabelText('Favorita Yellow'));
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('lift-caption').textContent).toMatch(/copyWith/);
+    expect(songs()).toContain('Song #2');
+    expect(songs()).not.toContain('Song #1');
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    expect(screen.getByLabelText('Favorita Yellow').textContent).toBe('♥');
   });
 });

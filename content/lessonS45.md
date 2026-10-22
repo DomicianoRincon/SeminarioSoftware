@@ -1,91 +1,50 @@
-# Taller · Playlist, parte 1
+# Taller · Playlist con estado elevado
 
-<!-- tags: taller playlist, setState con listas, quitar de una lista, removeAt, _songs.length, mensaje de error en un formulario, lista vacía, if dentro de children, StatefulWidget con formulario, la lista no se actualiza -->
+<!-- tags: taller playlist, elevar el estado, SongForm, SongList, callbacks, copyWith, contador en el AppBar, filtrar favoritas, where y toList, print en build, prop drilling -->
+
+En este taller armas la playlist de la sesión en un proyecto con la estructura del curso, y le agregas tres mejoras. Cada una pone a prueba una idea de las lecciones: **el estado vive en la Screen, los datos bajan por el constructor, los eventos suben con funciones y las canciones se cambian con `copyWith`**.
 
 ```svg
-<svg id="ptMeta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 668" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="ptMeta-ttl ptMeta-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="ptMeta-ttl">La playlist que vas a construir</title>
-  <desc id="ptMeta-dsc">Maqueta de la app terminada: barra con el título Mi playlist y la cantidad de canciones, el formulario con un mensaje de error en rojo, y la lista de tarjetas, cada una con un ícono de quitar. Cuatro tarjetas numeradas explican las mejoras: contador en la barra, mensaje cuando faltan datos, quitar una canción y mensaje cuando la lista está vacía.</desc>
+<svg id="taMeta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="taMeta-ttl taMeta-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="taMeta-ttl">Lo que vas a agregar</title>
+  <desc id="taMeta-dsc">Un celular con la playlist: en la barra, un corazón para filtrar favoritas y el texto 3 canciones; debajo, el formulario y tres tarjetas con un botón de reproducir, el número de reproducciones, el corazón y la papelera. Tres marcas numeradas señalan el contador, el filtro y las reproducciones, cada una con su tarjeta a la derecha.</desc>
   <defs>
     <style>
-      #ptMeta .title{fill:#161A26;font-size:22px;font-weight:700}
-      #ptMeta .sub{fill:#79809A;font-size:13.5px}
-      #ptMeta .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
-      #ptMeta .nt{font-size:15px;font-weight:700;fill:#161A26}
-      #ptMeta .nb{fill:#454C61;font-size:13px}
-      #ptMeta .lbl{fill:#556074;font-size:12px;font-weight:600}
-      #ptMeta .foot{fill:#79809A;font-size:12px}
-      #ptMeta .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
-      #ptMeta .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#ptMeta-arrow)}
+      #taMeta .title{fill:#161A26;font-size:22px;font-weight:700}
+      #taMeta .sub{fill:#79809A;font-size:13.5px}
+      #taMeta .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #taMeta .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #taMeta .nb{fill:#454C61;font-size:13px}
+      #taMeta .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #taMeta .foot{fill:#79809A;font-size:12px}
+      #taMeta .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #taMeta .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#taMeta-arrow)}
     </style>
-    <marker id="ptMeta-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+    <marker id="taMeta-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
     </marker>
-    <linearGradient id="ptMeta-cover" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B69DF8"/><stop offset="1" stop-color="#6750A4"/></linearGradient>
+    <marker id="taMeta-down" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#2F6FD6"/></marker><marker id="taMeta-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#C27A0E"/></marker><marker id="taMeta-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#9AA1B2"/></marker>
   </defs>
-  <rect width="960" height="668" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">La playlist que vas a construir</text>
-  <text class="sub" x="48" y="80" data-fit="860">La app de las dos lecciones anteriores, con cuatro mejoras. Todo el estado sigue en PlaylistScreen.</text>
-  <rect x="86" y="102" width="340" height="548" rx="36" fill="#1F2430"/>
-  <rect x="96" y="112" width="320" height="528" rx="26" fill="#FEF7FF"/>
-  <path d="M96,138 A26,26 0 0 1 122,112 H390 A26,26 0 0 1 416,138 V172 H96 Z" fill="#D0BCFF"/>
-  <text x="114" y="156" font-size="17" font-weight="500" fill="#161A26" text-anchor="start">Mi playlist</text>
-  <rect x="300" y="140" width="100" height="24" rx="12" fill="#FFFFFF" fill-opacity=".7"/>
-  <text x="350" y="157" font-size="12" font-weight="600" fill="#4F378B" text-anchor="middle">3 canciones</text>
-  <rect x="112" y="188" width="288" height="26" rx="5" fill="#FFFFFF" stroke="#8D93A5" stroke-width="1.2"/><text x="120" y="205" font-size="12" font-weight="400" fill="#79809A" text-anchor="start" data-fit="272">Nombre de la canción</text>
-  <rect x="112" y="222" width="288" height="26" rx="5" fill="#FFFFFF" stroke="#8D93A5" stroke-width="1.2"/><text x="120" y="239" font-size="12" font-weight="400" fill="#79809A" text-anchor="start" data-fit="272">Artista</text>
-  <rect x="112" y="256" width="288" height="26" rx="5" fill="#FFFFFF" stroke="#8D93A5" stroke-width="1.2"/><text x="120" y="273" font-size="12" font-weight="400" fill="#161A26" text-anchor="start" data-fit="272">picsum.photos/400</text>
-  <text x="114" y="302" font-size="12.5" font-weight="600" fill="#C2354F" text-anchor="start">Escribe el nombre y el artista</text>
-  <rect x="112" y="314" width="288" height="34" rx="17" fill="#6750A4"/>
-  <text x="256.0" y="336" font-size="13.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">Agregar</text>
-  <rect x="112" y="371" width="288" height="72" rx="14" fill="#6750A4" fill-opacity=".1"/>
-  <rect x="112" y="368" width="288" height="72" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>
-  <rect x="122" y="378" width="52" height="52" rx="10" fill="url(#ptMeta-cover)"/><circle cx="157.4" cy="394.6" r="6.2" fill="#FFFFFF" fill-opacity=".7"/><path d="M122,420.6 L140.7,404.0 L154.2,415.4 L162.6,409.2 L174,419.6 V420 A10,10 0 0 1 164,430 H132 A10,10 0 0 1 122,420 Z" fill="#FFFFFF" fill-opacity=".35"/>
-  <text x="186" y="400" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="150">Imagine</text>
-  <text x="186" y="420" font-size="12.5" font-weight="400" fill="#625B71" text-anchor="start">John Lennon</text>
-  <path d="M367,398 H381 M371,398 V395 H377 V398 M369,398 L370,412 H378 L379,398" fill="none" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-  <rect x="112" y="455" width="288" height="72" rx="14" fill="#6750A4" fill-opacity=".1"/>
-  <rect x="112" y="452" width="288" height="72" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>
-  <rect x="122" y="462" width="52" height="52" rx="10" fill="url(#ptMeta-cover)"/><circle cx="157.4" cy="478.6" r="6.2" fill="#FFFFFF" fill-opacity=".7"/><path d="M122,504.6 L140.7,488.0 L154.2,499.4 L162.6,493.2 L174,503.6 V504 A10,10 0 0 1 164,514 H132 A10,10 0 0 1 122,504 Z" fill="#FFFFFF" fill-opacity=".35"/>
-  <text x="186" y="484" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="150">Yellow</text>
-  <text x="186" y="504" font-size="12.5" font-weight="400" fill="#625B71" text-anchor="start">Coldplay</text>
-  <path d="M367,482 H381 M371,482 V479 H377 V482 M369,482 L370,496 H378 L379,482" fill="none" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-  <rect x="112" y="539" width="288" height="72" rx="14" fill="#6750A4" fill-opacity=".1"/>
-  <rect x="112" y="536" width="288" height="72" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>
-  <rect x="122" y="546" width="52" height="52" rx="10" fill="url(#ptMeta-cover)"/><circle cx="157.4" cy="562.6" r="6.2" fill="#FFFFFF" fill-opacity=".7"/><path d="M122,588.6 L140.7,572.0 L154.2,583.4 L162.6,577.2 L174,587.6 V588 A10,10 0 0 1 164,598 H132 A10,10 0 0 1 122,588 Z" fill="#FFFFFF" fill-opacity=".35"/>
-  <text x="186" y="568" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" data-fit="150">Levitating</text>
-  <text x="186" y="588" font-size="12.5" font-weight="400" fill="#625B71" text-anchor="start">Dua Lipa</text>
-  <path d="M367,566 H381 M371,566 V563 H377 V566 M369,566 L370,580 H378 L379,566" fill="none" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-  <rect x="294" y="134" width="112" height="36" rx="18" fill="#A96C05" fill-opacity=".08" stroke="#A96C05" stroke-width="2"/>
-  <rect x="106" y="284" width="210" height="26" rx="8" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/>
-  <rect x="356" y="382" width="36" height="40" rx="8" fill="#7439B8" fill-opacity=".08" stroke="#7439B8" stroke-width="2"/>
-  <circle cx="294" cy="134" r="13" fill="#FFFFFF" stroke="#A96C05" stroke-width="2"/><text x="294" y="138.5" font-size="13" font-weight="700" fill="#A96C05" text-anchor="middle">1</text>
-  <circle cx="316" cy="284" r="13" fill="#FFFFFF" stroke="#C2354F" stroke-width="2"/><text x="316" y="288.5" font-size="13" font-weight="700" fill="#C2354F" text-anchor="middle">2</text>
-  <circle cx="392" cy="382" r="13" fill="#FFFFFF" stroke="#7439B8" stroke-width="2"/><text x="392" y="386.5" font-size="13" font-weight="700" fill="#7439B8" text-anchor="middle">3</text>
-  <rect x="480" y="112" width="432" height="112" rx="12" fill="#FFFFFF" stroke="#F0C572" stroke-width="1.5"/>
-  <circle cx="508" cy="142" r="13" fill="#FFFFFF" stroke="#A96C05" stroke-width="2"/><text x="508" y="146.5" font-size="13" font-weight="700" fill="#A96C05" text-anchor="middle">1</text>
-  <text x="532" y="147" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" data-fit="360">Contador en la barra</text>
-  <text x="504" y="180" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">El AppBar muestra cuántas canciones hay.</text><text x="504" y="200" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Sale de _songs.length.</text>
-  <rect x="480" y="244" width="432" height="112" rx="12" fill="#FFFFFF" stroke="#F3A3B2" stroke-width="1.5"/>
-  <circle cx="508" cy="274" r="13" fill="#FFFFFF" stroke="#C2354F" stroke-width="2"/><text x="508" y="278.5" font-size="13" font-weight="700" fill="#C2354F" text-anchor="middle">2</text>
-  <text x="532" y="279" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" data-fit="360">Aviso cuando faltan datos</text>
-  <text x="504" y="312" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Si falta el nombre o el artista, no se agrega</text><text x="504" y="332" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">y aparece un mensaje en rojo.</text>
-  <rect x="480" y="376" width="432" height="112" rx="12" fill="#FFFFFF" stroke="#C9A6EE" stroke-width="1.5"/>
-  <circle cx="508" cy="406" r="13" fill="#FFFFFF" stroke="#7439B8" stroke-width="2"/><text x="508" y="410.5" font-size="13" font-weight="700" fill="#7439B8" text-anchor="middle">3</text>
-  <text x="532" y="411" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" data-fit="360">Quitar una canción</text>
-  <text x="504" y="444" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Cada tarjeta tiene un botón que la saca</text><text x="504" y="464" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">de _songs dentro de setState.</text>
-  <rect x="480" y="508" width="432" height="112" rx="12" fill="#FFFFFF" stroke="#9FD68D" stroke-width="1.5"/>
-  <circle cx="508" cy="538" r="13" fill="#FFFFFF" stroke="#3A8235" stroke-width="2"/><text x="508" y="542.5" font-size="13" font-weight="700" fill="#3A8235" text-anchor="middle">4</text>
-  <text x="532" y="543" font-size="15" font-weight="700" fill="#161A26" text-anchor="start" data-fit="360">Lista vacía</text>
-  <text x="504" y="576" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Sin canciones, en lugar de la lista se ve</text><text x="504" y="596" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="392">Todavía no hay canciones.</text>
+  <rect width="960" height="600" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Lo que vas a agregar</text>
+  <text class="sub" x="48" y="80" data-fit="860">La playlist de las lecciones, con tres mejoras más. Cada una sale de la Screen o vuelve a ella.</text>
+  <clipPath id="taMeta-clip"><rect width="300" height="470" rx="20"/></clipPath><rect x="73" y="97" width="314" height="484" rx="27" fill="#1F2430"/><g transform="translate(80,104)"><g clip-path="url(#taMeta-clip)"><rect width="300" height="470" rx="20" fill="#FEF7FF"/><rect width="300" height="56" fill="#D0BCFF"/><text x="16" y="34" font-size="17" font-weight="500" fill="#161A26" text-anchor="start">Mi playlist</text><path d="M190,30 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="none" stroke="#1C1B1F" stroke-width="1.8" stroke-linejoin="round"/><text x="284" y="33" font-size="12.5" font-weight="500" fill="#1C1B1F" text-anchor="end">3 canciones</text><rect x="16" y="72" width="268" height="34" rx="4" fill="none" stroke="#79747E"/><text x="28" y="94" font-size="12.5" font-weight="400" fill="#79747E" text-anchor="start">Canción</text><rect x="16" y="116" width="268" height="34" rx="4" fill="none" stroke="#79747E"/><text x="28" y="138" font-size="12.5" font-weight="400" fill="#79747E" text-anchor="start">Artista</text><rect x="16" y="164" width="268" height="34" rx="17" fill="#6750A4"/><text x="150.0" y="186" font-size="13" font-weight="600" fill="#FFFFFF" text-anchor="middle">Agregar</text><rect x="12" y="214" width="276" height="68" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/><rect x="22" y="224" width="48" height="48" rx="10" fill="#9C7FE0"/><text x="80" y="240" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Imagine</text><text x="80" y="256" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">John Lennon</text><text x="80" y="271" font-size="11" font-weight="400" fill="#79809A" text-anchor="start">4 reproducciones</text><path d="M208,240 v16 l13,-8 Z" fill="#49454F"/><path d="M242,254 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="none" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round"/><path d="M266,242 H278 M268,242 L269,256 H275 L276,242" fill="none" stroke="#49454F" stroke-width="1.6" stroke-linejoin="round"/><rect x="12" y="292" width="276" height="68" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/><rect x="22" y="302" width="48" height="48" rx="10" fill="#9C7FE0"/><text x="80" y="318" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Yellow</text><text x="80" y="334" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">Coldplay</text><text x="80" y="349" font-size="11" font-weight="400" fill="#79809A" text-anchor="start">12 reproducciones</text><path d="M208,318 v16 l13,-8 Z" fill="#49454F"/><path d="M242,332 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="#C2354F" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round"/><path d="M266,320 H278 M268,320 L269,334 H275 L276,320" fill="none" stroke="#49454F" stroke-width="1.6" stroke-linejoin="round"/><rect x="12" y="370" width="276" height="68" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/><rect x="22" y="380" width="48" height="48" rx="10" fill="#9C7FE0"/><text x="80" y="396" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start">Levitating</text><text x="80" y="412" font-size="12" font-weight="400" fill="#625B71" text-anchor="start">Dua Lipa</text><text x="80" y="427" font-size="11" font-weight="400" fill="#79809A" text-anchor="start">0 reproducciones</text><path d="M208,396 v16 l13,-8 Z" fill="#49454F"/><path d="M242,410 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="none" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round"/><path d="M266,398 H278 M268,398 L269,412 H275 L276,398" fill="none" stroke="#49454F" stroke-width="1.6" stroke-linejoin="round"/></g></g>
+  <rect x="286" y="116" width="86" height="32" rx="10" fill="#A96C05" fill-opacity=".08" stroke="#A96C05" stroke-width="2"/>
+  <rect x="254" y="116" width="30" height="32" rx="8" fill="#C2354F" fill-opacity=".08" stroke="#C2354F" stroke-width="2"/>
+  <rect x="154" y="338" width="150" height="44" rx="8" fill="#7439B8" fill-opacity=".08" stroke="#7439B8" stroke-width="2"/>
+  <rect x="480" y="112" width="432" height="124" rx="12" fill="#FFFFFF" stroke="#F0C572" stroke-width="1.5"/><circle cx="508" cy="138" r="13" fill="#FFFFFF" stroke="#A96C05" stroke-width="2"/><text x="508" y="142.5" font-size="13" font-weight="700" fill="#A96C05" text-anchor="middle">1</text><text x="530" y="143" font-size="14.5" font-weight="700" fill="#161A26" text-anchor="start" data-fit="370">Contador en la barra</text><text x="496" y="170" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="400">El AppBar dice cuántas canciones hay.</text><text x="496" y="189" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="400">Sale de _songs.length, en la Screen.</text>
+  <rect x="480" y="260" width="432" height="124" rx="12" fill="#FFFFFF" stroke="#F3A3B2" stroke-width="1.5"/><circle cx="508" cy="286" r="13" fill="#FFFFFF" stroke="#C2354F" stroke-width="2"/><text x="508" y="290.5" font-size="13" font-weight="700" fill="#C2354F" text-anchor="middle">2</text><text x="530" y="291" font-size="14.5" font-weight="700" fill="#161A26" text-anchor="start" data-fit="370">Solo favoritas</text><text x="496" y="318" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="400">Un bool en la Screen. SongList recibe la</text><text x="496" y="337" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="400">lista ya filtrada y el aviso a mostrar.</text>
+  <rect x="480" y="408" width="432" height="124" rx="12" fill="#FFFFFF" stroke="#C9A6EE" stroke-width="1.5"/><circle cx="508" cy="434" r="13" fill="#FFFFFF" stroke="#7439B8" stroke-width="2"/><text x="508" y="438.5" font-size="13" font-weight="700" fill="#7439B8" text-anchor="middle">3</text><text x="530" y="439" font-size="14.5" font-weight="700" fill="#161A26" text-anchor="start" data-fit="370">Reproducciones</text><text x="496" y="466" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="400">Un campo plays en Song, un botón que</text><text x="496" y="485" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="400">sube con onPlay y copyWith.</text>
+  <circle cx="329" cy="162" r="13" fill="#FFFFFF" stroke="#A96C05" stroke-width="2"/><text x="329" y="166.5" font-size="13" font-weight="700" fill="#A96C05" text-anchor="middle">1</text>
+  <circle cx="269" cy="162" r="13" fill="#FFFFFF" stroke="#C2354F" stroke-width="2"/><text x="269" y="166.5" font-size="13" font-weight="700" fill="#C2354F" text-anchor="middle">2</text>
+  <circle cx="304" cy="338" r="13" fill="#FFFFFF" stroke="#7439B8" stroke-width="2"/><text x="304" y="342.5" font-size="13" font-weight="700" fill="#7439B8" text-anchor="middle">3</text>
+  <text x="480" y="572" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="432">Y una prueba: un print en cada build para ver quién se reconstruye.</text>
 </svg>
 ```
 
-En este taller construyes la playlist de las dos lecciones anteriores en un proyecto nuevo y le agregas cuatro mejoras. **Todo el estado vive en una sola pantalla**, `PlaylistScreen`: la lista, los controllers y las funciones que los cambian. Es la parte 1 de un taller de dos sesiones; en la sesión 7 se parte en componentes y ahí se ve por qué.
-
 ## Antes de empezar
 
-1. Crea el proyecto desde tu carpeta `develop`, como en la sesión 1:
+Si hiciste el taller de la sesión 6, abre tu `playlist_app` y salta al paso 3. Si no, créalo desde tu carpeta `develop`:
 
 ```svg
 <svg id="ptCrear" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 590" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="ptCrear-ttl ptCrear-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -151,62 +110,104 @@ flutter create --org icesi.edu.co playlist_app
 cd playlist_app
 ```
 
-2. Arma la estructura del curso: `lib/models/`, `lib/components/` y `lib/screens/`.
-3. `main.dart` con `App` y su tabla de rutas, con `'/'` apuntando a `PlaylistScreen`. Sin `home:`.
-4. `Song` en `lib/models/song.dart`, como en *La lista en texto*.
-5. `SongCard` en `lib/components/song_card.dart`, como te lo entregamos en *El componente SongCard*.
-6. `PlaylistScreen` en `lib/screens/playlist_screen.dart`, con el `SafeArea` en el `body`, el formulario, `_addSong` y la lista de `SongCard`.
+1. Arma la estructura del curso: `lib/models/`, `lib/components/` y `lib/screens/`.
+2. `main.dart` con `App` y su tabla de rutas, con `'/'` apuntando a `PlaylistScreen`. Sin `home:`.
+3. Lleva el código de *Modelos con copyWith* a los archivos de la figura, uno por clase. Todos los imports del proyecto van con `package:playlist_app/...`.
 
-Cuando agregues una canción y aparezca su tarjeta, empieza con las mejoras. Recuerda: todos los imports del proyecto con `package:playlist_app/...`.
+```svg
+<svg id="taCarpetas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 452" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="taCarpetas-ttl taCarpetas-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="taCarpetas-ttl">Los archivos de playlist_app</title>
+  <desc id="taCarpetas-dsc">La carpeta lib con main.dart y tres carpetas: models con song.dart, components con song_card.dart, song_form.dart y song_list.dart, y screens con playlist_screen.dart. Al lado de cada archivo, una etiqueta: playlist_screen y song_form son StatefulWidget y guardan estado; los demás son Stateless.</desc>
+  <defs>
+    <style>
+      #taCarpetas .title{fill:#161A26;font-size:22px;font-weight:700}
+      #taCarpetas .sub{fill:#79809A;font-size:13.5px}
+      #taCarpetas .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
+      #taCarpetas .nt{font-size:15px;font-weight:700;fill:#161A26}
+      #taCarpetas .nb{fill:#454C61;font-size:13px}
+      #taCarpetas .lbl{fill:#556074;font-size:12px;font-weight:600}
+      #taCarpetas .foot{fill:#79809A;font-size:12px}
+      #taCarpetas .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #taCarpetas .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#taCarpetas-arrow)}
+    </style>
+    <marker id="taCarpetas-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
+    </marker>
+    <marker id="taCarpetas-down" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#2F6FD6"/></marker><marker id="taCarpetas-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#C27A0E"/></marker><marker id="taCarpetas-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#9AA1B2"/></marker>
+  </defs>
+  <rect width="960" height="452" rx="16" fill="#FBFBFD"/>
+  <text class="title" x="48" y="56">Los archivos de <tspan class="mono">playlist_app</tspan></text>
+  <text class="sub" x="48" y="80" data-fit="860">Un archivo por clase. Solo dos guardan estado: la Screen y el formulario.</text>
+  <rect x="48" y="104" width="864" height="316" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
+  <path d="M72,127 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="100" y="140" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">lib/</text>
+  <rect x="102" y="154" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="128" y="169" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">main.dart</text><rect x="420" y="154" width="185.6" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="512.8" y="169" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">App y la tabla de rutas</text>
+  <path d="M100,185 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="128" y="198" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">models/</text>
+  <rect x="130" y="212" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="227" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song.dart</text><rect x="420" y="212" width="142.4" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="491.2" y="227" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Song con copyWith</text>
+  <path d="M100,243 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="128" y="256" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">components/</text>
+  <rect x="130" y="270" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="285" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song_card.dart</text><rect x="420" y="270" width="84.8" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="462.4" y="285" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless</text>
+  <rect x="130" y="299" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="314" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song_form.dart</text><rect x="420" y="299" width="272.0" height="22" rx="11" fill="#F4EBFF" stroke="#C9A6EE"/><text x="556.0" y="314" font-size="12" font-weight="600" fill="#7439B8" text-anchor="middle">StatefulWidget · guarda el borrador</text>
+  <rect x="130" y="328" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="343" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song_list.dart</text><rect x="420" y="328" width="84.8" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="462.4" y="343" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless</text>
+  <path d="M100,359 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="128" y="372" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">screens/</text>
+  <rect x="130" y="386" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="401" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">playlist_screen.dart</text><rect x="420" y="386" width="236.0" height="22" rx="11" fill="#F4EBFF" stroke="#C9A6EE"/><text x="538.0" y="401" font-size="12" font-weight="600" fill="#7439B8" text-anchor="middle">StatefulWidget · guarda _songs</text>
+</svg>
+```
+
+Antes de seguir, comprueba que agregar, quitar y marcar favoritas funciona igual que en el ejemplo.
 
 ## 1. Contador en la barra
 
 El `AppBar` muestra cuántas canciones hay, a la derecha del título: `3 canciones`.
 
-- El número sale de `_songs.length`. No hace falta un campo nuevo en el estado: si la lista ya lo sabe, se le pregunta a la lista.
-- Ponlo en `actions` del `AppBar`, dentro de un `Padding` para que no quede pegado al borde.
+- El dato ya existe: `_songs.length`. No hace falta un campo nuevo en el estado.
+- El `AppBar` lo arma la Screen, así que el número sale de ahí. Ponlo en `actions`, dentro de un `Padding` para que no quede pegado al borde.
 - Con una sola canción debe decir `1 canción`, no `1 canciones`.
 
-## 2. Aviso cuando faltan datos
+## 2. Solo favoritas
 
-Hoy `_addSong` agrega lo que haya, aunque los campos estén vacíos, y no los borra después. Arregla las dos cosas:
+Un botón con un corazón en el `AppBar` alterna entre ver todas las canciones y ver solo las favoritas.
 
-- Si falta el nombre o el artista, no se agrega nada y aparece un mensaje en rojo debajo del formulario: `Escribe el nombre y el artista`.
-- Cuando la canción sí se agrega, se borran el nombre y el artista con `clear()`, para escribir la siguiente.
-
-- Necesitas un dato nuevo en el estado. Piensa de qué tipo: el mensaje aparece o no aparece.
-- Se activa cuando falta algo y se apaga cuando la canción sí se agrega. Las dos cosas pasan dentro de `_addSong`, y las dos dentro de un `setState`.
-- Para mostrarlo solo a veces, dentro de `children` se puede escribir un `if` igual que el `for`:
+- **Dónde vive.** Ver o no las favoritas es estado de la pantalla: un `bool _onlyFavorites` en `_PlaylistScreenState`, que cambia dentro de `setState` al pulsar el botón.
+- **Qué recibe `SongList`.** No le pases el `bool`: pásale **la lista ya filtrada**. `SongList` no tiene por qué saber que existe un filtro, y así no cambia su forma de trabajar. En el `build` de la Screen:
 
   ```dart
-  if (_showError)
-    const Text('Escribe el nombre y el artista'),
+  final visible = _onlyFavorites
+      ? _songs.where((song) => song.isFavorite).toList()
+      : _songs;
   ```
 
-## 3. Quitar una canción
+- **El aviso.** Con el filtro activo y ninguna favorita, `Todavía no hay canciones` es mentira. Haz que `SongList` reciba también el texto del aviso por el constructor (`emptyMessage`), y que la Screen le pase `No tienes favoritas` cuando el filtro está activo.
+- Quitar o marcar una canción con el filtro activo debe seguir funcionando. `_toggleFavorite` busca la canción en `_songs` con `indexOf`, no en la lista filtrada: piensa por qué igual la encuentra.
 
-Cada tarjeta tiene un botón con el ícono `Icons.delete_outline` que saca esa canción de la lista.
+## 3. Reproducciones
 
-- El botón va en la `SongCard`, pero la lista vive en `PlaylistScreen`. La tarjeta no puede tocar `_songs`.
-- La salida es que `SongCard` reciba **una función**: un parámetro `final Function() onDelete;` que la tarjeta llama cuando se pulsa su botón (`onPressed: () => onDelete()`).
-- La pantalla decide qué hace esa función al crear cada tarjeta. Quitar la canción es cambiar el estado, así que va dentro de `setState`.
+Cada tarjeta tiene un botón con el ícono `Icons.play_arrow` y, debajo del artista, el texto `4 reproducciones`. Cada vez que se pulsa el botón, el número sube en uno.
 
-Esta es la primera vez que un componente le avisa algo a la pantalla. En la sesión 7 se vuelve la forma normal de trabajar.
+- `Song` gana un campo `final int plays`, con valor por defecto `0`, y `copyWith` un parámetro más.
+- El botón está en la tarjeta y la lista en la Screen: el mismo camino que la favorita. `SongCard` recibe `onPlay`, `SongList` se lo pasa y la Screen hace `song.copyWith(plays: song.plays + 1)` dentro de `setState`.
+- Cuando termines, cuenta los parámetros de `SongList` que solo reenvía y los archivos que tocaste. Compáralo con las señales de *Prop drilling*.
 
-## 4. Lista vacía
+## 4. Quién se reconstruye
 
-Cuando no hay canciones, en lugar de la lista se ve el texto `Todavía no hay canciones`, centrado y en gris. Debe aparecer al abrir la app y otra vez si se quitan todas las canciones.
+Pon un `print` al principio del `build` de `PlaylistScreen`, `SongForm`, `SongList` y `SongCard`:
 
-- Pregúntale a la lista: `_songs.isEmpty`.
-- Puedes usar `if` dentro de `children`, igual que en la mejora 2.
+```dart
+print('build SongList');
+```
+
+El editor subraya el `print` con un aviso azul (`avoid_print`). Es solo una sugerencia y aquí lo usamos a propósito. Con la consola de depuración abierta:
+
+- Escribe en el formulario. ¿Se imprime algo?
+- Pulsa *Agregar* con el nombre vacío. ¿Cuál `build` corre?
+- Agrega una canción y después reproduce una. ¿Cuáles corren?
+
+Anota lo que ves. La respuesta al segundo punto es la razón de que el formulario sea un componente con su propio estado.
 
 ## Qué debes tener al terminar
 
-- El proyecto `playlist_app` con `main.dart`, `models/song.dart`, `components/song_card.dart` y `screens/playlist_screen.dart`.
-- Todo el estado en `_PlaylistScreenState`: la lista, los tres controllers y el aviso de la mejora 2. Los tres controllers liberados en `dispose`.
-- Las cuatro mejoras funcionando: agrega cinco canciones, intenta agregar una sin artista, quita dos y luego quita las que quedan.
-- El proyecto sin errores en el editor.
+- `playlist_app` con un archivo por clase: `main.dart`, `models/song.dart`, `components/song_card.dart`, `components/song_form.dart`, `components/song_list.dart` y `screens/playlist_screen.dart`.
+- Solo dos `StatefulWidget`: `PlaylistScreen`, con `_songs` y `_onlyFavorites`, y `SongForm`, con su borrador. Los demás, `StatelessWidget`.
+- Ningún componente toca `_songs`: todo cambio pasa por una función de la Screen, dentro de `setState`.
+- Las tres mejoras funcionando. Agrega cinco canciones, marca dos, filtra, reproduce una varias veces y quita las que no sean favoritas.
+- El proyecto sin errores en el editor. Los avisos de los `print` no cuentan.
 
-Pon un `print` en el `build` de `PlaylistScreen` y otro en el de `SongCard`. Cada vez que agregas o quitas una canción, mira en la consola cuántas veces corre cada uno. Es una buena pista de lo que viene en la parte 2.
-
-Guarda el proyecto: la sesión 7 empieza desde aquí.
+Guarda el proyecto: la sesión 8 le agrega una segunda pantalla.

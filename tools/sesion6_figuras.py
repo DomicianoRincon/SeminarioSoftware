@@ -1,7 +1,7 @@
-"""Figuras SVG de las lecciones de la sesión 6 (S0040 a S0045).
+"""Figuras SVG de las lecciones de la sesión 6 (S0040 a S0044; el taller S0045 pasó a la sesión 7).
 
     python3 tools/sesion6_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
-    python3 tools/sesion6_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS4[0-5].md
+    python3 tools/sesion6_figuras.py --inject      reemplaza cada bloque ```svg de content/lessonS4[0-4].md
                                                    por la figura con el mismo id
 
 Lo que se aprende tocando (el contador, el árbol, el ciclo de vida y la playlist) va en
@@ -14,7 +14,6 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from code_frame import frame  # noqa: E402
-from console_frame import frame as console  # noqa: E402
 from sesion2_figuras import FAM, head, note  # noqa: E402
 from sesion3_figuras import mark, txt  # noqa: E402
 
@@ -405,95 +404,10 @@ def sg_datos():
 FIGS['sgDatos'] = sg_datos
 
 
-# ───────────────────────────── S0045 · Taller
-
-
-def pt_meta():
-    fid = 'ptMeta'
-    s = head(fid, 668, 'La playlist que vas a construir', 'La playlist que vas a construir',
-             'La app de las dos lecciones anteriores, con cuatro mejoras. Todo el estado sigue en PlaylistScreen.',
-             'Maqueta de la app terminada: barra con el título Mi playlist y la cantidad de canciones, el '
-             'formulario con un mensaje de error en rojo, y la lista de tarjetas, cada una con un ícono de quitar. '
-             'Cuatro tarjetas numeradas explican las mejoras: contador en la barra, mensaje cuando faltan datos, '
-             'quitar una canción y mensaje cuando la lista está vacía.')
-    s = s.replace('  </defs>', '    ' + GRAD.format('ptMeta-cover') + '\n  </defs>', 1)
-    px, py, pw, ph = 96, 112, 320, 528
-    s += f'  <rect x="{px - 10}" y="{py - 10}" width="{pw + 20}" height="{ph + 20}" rx="36" fill="#1F2430"/>\n'
-    s += f'  <rect x="{px}" y="{py}" width="{pw}" height="{ph}" rx="26" fill="#FEF7FF"/>\n'
-    s += f'  <path d="M{px},{py + 26} A26,26 0 0 1 {px + 26},{py} H{px + pw - 26} A26,26 0 0 1 {px + pw},{py + 26} V{py + 60} H{px} Z" fill="#D0BCFF"/>\n'
-    s += '  ' + txt(px + 18, py + 44, 'Mi playlist', 17, 500) + '\n'
-    s += f'  <rect x="{px + 204}" y="{py + 28}" width="100" height="24" rx="12" fill="#FFFFFF" fill-opacity=".7"/>\n'
-    s += '  ' + txt(px + 254, py + 45, '3 canciones', 12, 600, '#4F378B', 'middle') + '\n'
-    s += '  ' + field(px + 16, py + 76, pw - 32, 'Nombre de la canción', True) + '\n'
-    s += '  ' + field(px + 16, py + 110, pw - 32, 'Artista', True) + '\n'
-    s += '  ' + field(px + 16, py + 144, pw - 32, 'picsum.photos/400') + '\n'
-    s += '  ' + txt(px + 18, py + 190, 'Escribe el nombre y el artista', 12.5, 600, '#C2354F') + '\n'
-    s += f'  <rect x="{px + 16}" y="{py + 202}" width="{pw - 32}" height="34" rx="17" fill="#6750A4"/>\n'
-    s += '  ' + txt(px + pw / 2, py + 224, 'Agregar', 13.5, 600, '#FFFFFF', 'middle') + '\n'
-    for j, (t, a) in enumerate(SONGS):
-        y = py + 256 + j * 84
-        s += f'  <rect x="{px + 16}" y="{y + 3}" width="{pw - 32}" height="72" rx="14" fill="#6750A4" fill-opacity=".1"/>\n'
-        s += f'  <rect x="{px + 16}" y="{y}" width="{pw - 32}" height="72" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>\n'
-        s += '  ' + cover(px + 26, y + 10, 52, 10, 'ptMeta-cover') + '\n'
-        s += '  ' + txt(px + 90, y + 32, t, 14, 700, INK, fit=150) + '\n'
-        s += '  ' + txt(px + 90, y + 52, a, 12.5, 400, '#625B71') + '\n'
-        tx, ty = px + pw - 42, y + 36
-        s += (f'  <path d="M{tx - 7},{ty - 6} H{tx + 7} M{tx - 3},{ty - 6} V{ty - 9} H{tx + 3} V{ty - 6} '
-              f'M{tx - 5},{ty - 6} L{tx - 4},{ty + 8} H{tx + 4} L{tx + 5},{ty - 6}" fill="none" stroke="#C2354F" '
-              f'stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>\n')
-    s += '  ' + mark(px + 198, py + 22, 112, 36, 'amber', 18) + '\n'
-    s += '  ' + mark(px + 10, py + 172, 210, 26, 'rose', 8) + '\n'
-    s += '  ' + mark(px + pw - 60, py + 270, 36, 40, 'violet', 8) + '\n'
-    s += '  ' + chip(px + 198, py + 22, 1, 'amber') + '\n'
-    s += '  ' + chip(px + 220, py + 172, 2, 'rose') + '\n'
-    s += '  ' + chip(px + pw - 24, py + 270, 3, 'violet') + '\n'
-    cards = [
-        ('amber', 'Contador en la barra', ['El AppBar muestra cuántas canciones hay.', 'Sale de _songs.length.']),
-        ('rose', 'Aviso cuando faltan datos', ['Si falta el nombre o el artista, no se agrega', 'y aparece un mensaje en rojo.']),
-        ('violet', 'Quitar una canción', ['Cada tarjeta tiene un botón que la saca', 'de _songs dentro de setState.']),
-        ('green', 'Lista vacía', ['Sin canciones, en lugar de la lista se ve', 'Todavía no hay canciones.']),
-    ]
-    for k, (color, title, body) in enumerate(cards):
-        y = 112 + k * 132
-        soft, border, strong = FAM[color]
-        s += f'  <rect x="480" y="{y}" width="432" height="112" rx="12" fill="#FFFFFF" stroke="{border}" stroke-width="1.5"/>\n'
-        s += '  ' + chip(508, y + 30, k + 1, color) + '\n'
-        s += '  ' + txt(532, y + 35, title, 15, 700, INK, fit=360) + '\n'
-        s += '  ' + lines(504, y + 68, body, 13, '#454C61', 20, fit=392) + '\n'
-    return s + '</svg>\n'
-
-
-FIGS['ptMeta'] = pt_meta
-
-
-FIGS['ptCrear'] = lambda: console(dict(
-    id='ptCrear',
-    title='Crear el proyecto <tspan class="mono">playlist_app</tspan>',
-    title_plain='Crear el proyecto playlist_app',
-    desc='Terminal en la carpeta develop. Se ejecuta flutter create con la organización icesi.edu.co y el '
-         'nombre playlist_app, la salida termina en All done, y luego cd playlist_app.',
-    sub='El mismo comando de la sesión 1, con otro nombre. El nombre va en minúsculas y con guion bajo.',
-    term_title='Terminal · C:\\develop',
-    lines=[('P', 'flutter create --org icesi.edu.co playlist_app', 'develop'),
-           ('O', 'Creating project playlist_app...'),
-           ('D', 'Resolving dependencies in `playlist_app`...'),
-           ('D', 'Got dependencies in `playlist_app`.'),
-           ('D', 'Wrote 130 files.'),
-           ('B', ''),
-           ('K', 'All done!'),
-           ('B', ''),
-           ('P', 'cd playlist_app', 'develop'),
-           ('P', '', 'playlist_app')],
-    rings=[(0, 43, 12, 1), (8, 9, 15, 2)],
-    cards=[(1, 'El nombre del proyecto', ['Es también el nombre del paquete:', 'package:playlist_app/...'], False),
-           (2, 'Entrar a la carpeta', ['Abre esta carpeta en VS Code', 'antes de crear los archivos.'], False)],
-))
-
-
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '--inject':
         done = set()
-        for path in sorted((ROOT / 'content').glob('lessonS4[0-5].md')):
+        for path in sorted((ROOT / 'content').glob('lessonS4[0-4].md')):
             text = path.read_text(encoding='utf-8')
 
             def swap(m):

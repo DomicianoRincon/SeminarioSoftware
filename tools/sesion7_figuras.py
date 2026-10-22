@@ -1,0 +1,473 @@
+"""Figuras SVG de las lecciones de la sesión 7 (S0046 a S0049 y el taller S0045).
+
+    python3 tools/sesion7_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
+    python3 tools/sesion7_figuras.py --inject      reemplaza cada bloque ```svg de las lecciones
+                                                   de la sesión por la figura con el mismo id
+
+Lo que se aprende tocando (el paquete que baja y sube entre widgets) va en el bloque
+```interactive lift; estas figuras son las vistas fijas que lo acompañan.
+"""
+
+import pathlib
+import re
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+from console_frame import frame as console  # noqa: E402
+from sesion2_figuras import FAM, head  # noqa: E402
+from sesion3_figuras import device, mark, txt  # noqa: E402
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+LESSONS = ['lessonS45.md', 'lessonS46.md', 'lessonS47.md', 'lessonS48.md', 'lessonS49.md']
+INK, MUTED, FAINT = '#161A26', '#556074', '#79809A'
+DOWN, UP = '#2F6FD6', '#C27A0E'
+
+FIGS = {}
+
+
+def markers(fid):
+    out = ''
+    for name, color in (('down', DOWN), ('up', UP), ('gray', '#9AA1B2')):
+        out += (f'<marker id="{fid}-{name}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" '
+                f'markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">'
+                f'<path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="{color}"/></marker>')
+    return out
+
+
+def start(fid, h, title, plain, sub, desc):
+    s = head(fid, h, title, plain, sub, desc)
+    return s.replace('  </defs>', '    ' + markers(fid) + '\n  </defs>', 1)
+
+
+def flow(fid, d, kind, dashed=False):
+    color = {'down': DOWN, 'up': UP, 'gray': '#9AA1B2'}[kind]
+    dash = ' stroke-dasharray="6 5"' if dashed else ''
+    return (f'<path d="{d}" fill="none" stroke="{color}" stroke-width="2.25"{dash} '
+            f'marker-end="url(#{fid}-{kind})"/>')
+
+
+def widget(x, y, w, name, color='slate', tag='', h=44, sub=''):
+    soft, border, strong = FAM[color]
+    o = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="10" fill="{soft}" stroke="{border}" stroke-width="1.5"/>'
+    o += txt(x + 14, y + (26 if not sub else 22), name, 14, 700, INK, cls='mono', fit=w - 28)
+    if sub:
+        o += txt(x + 14, y + 40, sub, 12, 400, MUTED, fit=w - 28)
+    if tag:
+        o += txt(x + w - 12, y + 26, tag, 12, 600, strong, 'end')
+    return o
+
+
+def param(x, y, label, kind):
+    """A constructor parameter: blue = data that comes down, orange = event that goes up,
+    gray = received only to hand it to a child."""
+    fill, border, ink = {
+        'down': ('#E6F0FF', '#7FA6E8', '#1F4FA8'),
+        'up': ('#FFF3DC', '#E2B25C', '#8A5600'),
+        'gray': ('#F1F2F5', '#B8BDC9', '#79809A'),
+    }[kind]
+    w = round(len(label) * 7.4 + 18)
+    dash = ' stroke-dasharray="4 3"' if kind == 'gray' else ''
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="22" rx="11" fill="{fill}" stroke="{border}"{dash}/>'
+            + txt(x + w / 2, y + 15.5, label, 12, 600, ink, 'middle', 'mono')), w
+
+
+def params(x, y, items):
+    o = ''
+    for label, kind in items:
+        chip, w = param(x, y, label, kind)
+        o += chip
+        x += w + 6
+    return o
+
+
+def card(x, y, w, h, color, title, rows, num=None):
+    soft, border, strong = FAM[color]
+    o = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="#FFFFFF" stroke="{border}" stroke-width="1.5"/>'
+    tx = x + 16
+    if num is not None:
+        o += (f'<circle cx="{x + 28}" cy="{y + 26}" r="13" fill="#FFFFFF" stroke="{strong}" stroke-width="2"/>'
+              + txt(x + 28, y + 30.5, str(num), 13, 700, strong, 'middle'))
+        tx = x + 50
+    o += txt(tx, y + 31, title, 14.5, 700, INK, fit=x + w - tx - 12)
+    for i, row in enumerate(rows):
+        o += txt(x + 16, y + 58 + i * 19, row, 13, 400, '#454C61', fit=w - 32)
+    return o
+
+
+# ───────────────────────────── S0046 · El estado entra como parámetro
+
+
+def le_quien():
+    fid = 'leQuien'
+    s = start(fid, 584, '¿Quién guarda datos y quién solo los muestra?',
+              '¿Quién guarda datos y quién solo los muestra?',
+              'Después del primer corte: la Screen guarda la lista y SongList la recibe por el constructor.',
+              'El árbol de la playlist. Arriba, PlaylistScreen, con su bloque de estado: la lista _songs y los tres '
+              'controllers. Debajo cuelgan AppBar, los campos del formulario, SongList y, dentro de SongList, una '
+              'SongCard por canción. Una flecha azul lleva songs del estado a SongList y otra lleva song de '
+              'SongList a cada SongCard. A la derecha, la regla del curso: solo la Screen, la Page y el formulario '
+              'guardan estado; todo lo demás es Stateless y recibe por constructor.')
+    s += '  ' + widget(48, 112, 320, 'PlaylistScreen', 'violet', 'StatefulWidget') + '\n'
+    s += '  <rect x="72" y="164" width="296" height="104" rx="10" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>\n'
+    s += '  ' + txt(88, 186, 'ESTADO · _PlaylistScreenState', 12, 700, '#7439B8', cls='h') + '\n'
+    s += '  <rect x="88" y="198" width="264" height="26" rx="6" fill="#E6F0FF" stroke="#7FA6E8"/>\n'
+    s += '  ' + txt(100, 215.5, 'List&lt;Song&gt; _songs', 13, 700, '#1F4FA8', cls='mono') + '\n'
+    s += '  ' + txt(100, 250, '3 × TextEditingController', 13, 400, '#454C61', cls='mono') + '\n'
+    s += '  <path d="M72,156 V490 M72,322 H96 M72,378 H96 M72,434 H96 M120,456 V490 H144" fill="none" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="4 4"/>\n'
+    s += '  ' + widget(96, 300, 260, 'AppBar') + '\n'
+    s += '  ' + widget(96, 356, 260, 'TextField ×3 · FilledButton') + '\n'
+    s += '  ' + widget(96, 412, 260, 'SongList', 'indigo', 'nuevo') + '\n'
+    s += '  ' + widget(144, 468, 212, 'SongCard ×n', 'indigo') + '\n'
+    s += '  ' + flow(fid, 'M352,211 H424 V424 H362', 'down') + '\n'
+    s += '  ' + txt(432, 320, 'songs: _songs', 13, 700, DOWN, cls='mono') + '\n'
+    s += '  ' + flow(fid, 'M356,442 H396 V490 H362', 'down') + '\n'
+    s += '  ' + txt(404, 478, 'song', 13, 700, DOWN, cls='mono') + '\n'
+
+    s += '  <rect x="560" y="112" width="352" height="232" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    s += '  ' + txt(580, 140, 'LA REGLA DEL CURSO', 12, 700, MUTED, cls='h') + '\n'
+    s += '  ' + txt(580, 172, 'Solo tres guardan estado:', 14, 700) + '\n'
+    x = 580
+    for name in ('Screen', 'Page', 'Formulario'):
+        w = len(name) * 8.4 + 28
+        s += f'  <rect x="{x}" y="186" width="{w}" height="28" rx="14" fill="#F4EBFF" stroke="#C9A6EE"/>\n'
+        s += '  ' + txt(x + w / 2, 205, name, 13, 700, '#7439B8', 'middle') + '\n'
+        x += w + 8
+    s += '  ' + txt(580, 240, 'Son StatefulWidget. Todo lo demás es', 13, 400, '#454C61') + '\n'
+    s += '  ' + txt(580, 259, 'StatelessWidget: recibe los datos por', 13, 400, '#454C61') + '\n'
+    s += '  ' + txt(580, 278, 'el constructor y no sabe de dónde vienen.', 13, 400, '#454C61') + '\n'
+    s += '  ' + txt(580, 316, 'El formulario guarda solo el borrador.', 13, 600, '#7439B8') + '\n'
+    s += '  ' + card(560, 368, 352, 120, 'indigo', 'SongCard ya cumplía la regla',
+                     ['Desde la sesión 6 recibe una Song y la dibuja.', 'SongList hace lo mismo con la lista entera:',
+                      'si está vacía, muestra el aviso.']) + '\n'
+    s += '  ' + txt(48, 552, 'El dato vive arriba y baja por el constructor. Ningún componente toca _songs.',
+                    13, 400, MUTED, fit=864) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['leQuien'] = le_quien
+
+
+# ───────────────────────────── S0047 · Funciones como parámetro
+
+
+def fp_flechas():
+    fid = 'fpFlechas'
+    s = start(fid, 548, 'Los datos bajan, los eventos suben', 'Los datos bajan, los eventos suben',
+              'La Screen le pasa datos a sus hijos por el constructor. Los hijos le avisan llamando una función.',
+              'Arriba, PlaylistScreen con su estado _songs. Abajo a la izquierda, SongForm, con su borrador. A la '
+              'derecha, SongList y debajo SongCard. Flechas azules bajan de la Screen a SongList con songs y de '
+              'SongList a SongCard con song. Flechas naranjas suben: de SongForm a la Screen con onAdd(song) y de '
+              'SongCard a la Screen con onDelete(). La función de borrar la escribió la Screen, así que corre allá.')
+    s += '  ' + widget(300, 112, 360, 'PlaylistScreen', 'violet', 'StatefulWidget', h=104) + '\n'
+    s += '  <rect x="316" y="160" width="328" height="40" rx="8" fill="#FFFFFF" stroke="#C9A6EE"/>\n'
+    s += '  ' + txt(330, 185, 'List&lt;Song&gt; _songs', 13, 700, '#1F4FA8', cls='mono') + '\n'
+    s += '  ' + txt(630, 185, '_addSong · _deleteSong', 12, 400, MUTED, 'end', 'mono') + '\n'
+
+    s += '  ' + widget(64, 320, 300, 'SongForm', 'violet', 'StatefulWidget', h=104) + '\n'
+    s += '  <rect x="80" y="368" width="268" height="40" rx="8" fill="#FFFFFF" stroke="#C9A6EE"/>\n'
+    s += '  ' + txt(94, 393, 'Borrador: 3 controllers, _showError', 12.5, 400, '#454C61', fit=244) + '\n'
+
+    s += '  ' + widget(596, 288, 300, 'SongList', 'slate', 'Stateless') + '\n'
+    s += '  ' + widget(596, 400, 300, 'SongCard', 'slate', 'Stateless') + '\n'
+
+    s += '  ' + flow(fid, 'M620,216 V282', 'down') + '\n'
+    s += '  ' + txt(630, 254, 'songs', 13, 700, DOWN, cls='mono') + '\n'
+    s += '  ' + flow(fid, 'M660,332 V394', 'down') + '\n'
+    s += '  ' + txt(670, 368, 'song', 13, 700, DOWN, cls='mono') + '\n'
+
+    s += '  ' + flow(fid, 'M214,320 V164 H294', 'up') + '\n'
+    s += '  ' + txt(110, 250, 'onAdd(song)', 13, 700, UP, cls='mono') + '\n'
+    s += '  ' + flow(fid, 'M896,422 H928 V164 H666', 'up') + '\n'
+    s += '  ' + txt(700, 150, 'onDelete()', 13, 700, UP, cls='mono') + '\n'
+
+    s += '  ' + txt(596, 472, 'onDelete corre en la Screen: la tarjeta', 12.5, 400, MUTED) + '\n'
+    s += '  ' + txt(596, 490, 'solo la llama, no sabe qué hace.', 12.5, 400, MUTED) + '\n'
+    s += f'  <path d="M48,520 H80" stroke="{DOWN}" stroke-width="3"/>\n'
+    s += '  ' + txt(88, 524, 'Datos: bajan por el constructor', 13, 600, INK) + '\n'
+    s += f'  <path d="M340,520 H372" stroke="{UP}" stroke-width="3"/>\n'
+    s += '  ' + txt(380, 524, 'Eventos: suben llamando una función', 13, 600, INK) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['fpFlechas'] = fp_flechas
+
+
+# ───────────────────────────── S0048 · Modelos con copyWith
+
+
+def song_object(x, y, num, rows, color):
+    soft, border, strong = FAM[color]
+    o = f'<rect x="{x}" y="{y}" width="300" height="196" rx="12" fill="#FFFFFF" stroke="{border}" stroke-width="1.5"/>'
+    o += f'<path d="M{x},{y + 12} A12,12 0 0 1 {x + 12},{y} H{x + 288} A12,12 0 0 1 {x + 300},{y + 12} V{y + 40} H{x} Z" fill="{soft}"/>'
+    o += txt(x + 16, y + 26, f'Song #{num}', 14, 700, strong, cls='mono')
+    for i, (name, value, note, hl) in enumerate(rows):
+        ry = y + 52 + i * 34
+        if hl:
+            o += f'<rect x="{x + 8}" y="{ry}" width="284" height="28" rx="6" fill="{FAM[hl][0]}" stroke="{FAM[hl][1]}"/>'
+        o += txt(x + 18, ry + 19, name, 13, 600, INK, cls='mono')
+        o += txt(x + 120, ry + 19, value, 13, 400, '#454C61', cls='mono', fit=118)
+        if note:
+            o += txt(x + 286, ry + 19, note, 11.5, 600, FAM[hl][2] if hl else FAINT, 'end')
+    return o
+
+
+def cw_copia():
+    fid = 'cwCopia'
+    s = start(fid, 520, '<tspan class="mono">copyWith</tspan>: una copia con un campo cambiado',
+              'copyWith: una copia con un campo cambiado',
+              'Song tiene sus campos final: no se puede cambiar. Se crea otra Song igual, salvo lo que cambia.',
+              'A la izquierda, Song número 1 con título Yellow, artista Coldplay, la URL de la imagen e isFavorite en '
+              'false. Una flecha con song.copyWith(isFavorite: true) lleva a Song número 2, con los tres primeros '
+              'campos copiados e isFavorite en true. Debajo, el intento song.isFavorite = true marcado como error '
+              'porque el campo es final, y la lista _songs, cuya posición 1 ahora apunta a la Song nueva.')
+    old = [('title', "'Yellow'", '', None), ('artist', "'Coldplay'", '', None),
+           ('imageUrl', "'…/400'", '', None), ('isFavorite', 'false', '', 'rose')]
+    new = [('title', "'Yellow'", 'copiado', None), ('artist', "'Coldplay'", 'copiado', None),
+           ('imageUrl', "'…/400'", 'copiado', None), ('isFavorite', 'true', 'cambia', 'green')]
+    s += '  ' + song_object(48, 112, 1, old, 'slate') + '\n'
+    s += '  ' + song_object(612, 112, 2, new, 'green') + '\n'
+    s += '  ' + flow(fid, 'M356,210 H604', 'down') + '\n'
+    s += '  <rect x="364" y="166" width="232" height="30" rx="8" fill="#1F2430"/>\n'
+    s += '  ' + txt(480, 186, 'song.copyWith(', 13, 400, '#C9CFDA', 'middle', 'mono') + '\n'
+    s += '  <rect x="364" y="218" width="232" height="28" rx="8" fill="#1F2430"/>\n'
+    s += '  ' + txt(480, 237, 'isFavorite: true)', 13, 400, '#A8D8A0', 'middle', 'mono') + '\n'
+
+    s += '  <rect x="48" y="332" width="300" height="56" rx="10" fill="#FFEBEF" stroke="#F3A3B2" stroke-width="1.5"/>\n'
+    s += '  ' + txt(64, 356, 'song.isFavorite = true;', 13, 700, '#C2354F', cls='mono') + '\n'
+    s += '  ' + txt(64, 376, 'No compila: isFavorite es final.', 12.5, 400, '#454C61') + '\n'
+
+    s += '  ' + txt(48, 428, 'LA LISTA DE LA SCREEN', 12, 700, MUTED, cls='h') + '\n'
+    labels = [('[0]', 'Song #3 · Imagine', 'slate'), ('[1]', 'Song #2 · Yellow ♥', 'green'), ('[2]', 'Song #4 · Levitating', 'slate')]
+    for i, (idx, label, color) in enumerate(labels):
+        x = 48 + i * 288
+        soft, border, strong = FAM[color]
+        s += f'  <rect x="{x}" y="440" width="272" height="36" rx="8" fill="{soft}" stroke="{border}" stroke-width="1.5"/>\n'
+        s += '  ' + txt(x + 14, 463, idx, 13, 700, strong, cls='mono') + '\n'
+        s += '  ' + txt(x + 48, 463, label, 13, 600, INK, fit=212) + '\n'
+    s += '  ' + flow(fid, 'M700,308 V372 H472 V434', 'down', dashed=True) + '\n'
+    s += '  ' + txt(712, 352, '_songs[1] = la copia', 12.5, 600, DOWN, cls='mono') + '\n'
+    s += '  ' + txt(48, 504, 'Song #1 no se tocó: ya nadie la usa y Dart la recoge. La Screen cambió su lista dentro de setState.',
+                    12.5, 400, MUTED, fit=864) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['cwCopia'] = cw_copia
+
+
+# ───────────────────────────── S0049 · Prop drilling
+
+
+def drill_column(x, y, title, color, rows):
+    soft, border, strong = FAM[color]
+    o = f'<rect x="{x}" y="{y}" width="420" height="344" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>'
+    o += f'<path d="M{x},{y + 14} A14,14 0 0 1 {x + 14},{y} H{x + 406} A14,14 0 0 1 {x + 420},{y + 14} V{y + 40} H{x} Z" fill="{soft}"/>'
+    o += txt(x + 18, y + 26, title, 14, 700, strong, fit=384)
+    cy = y + 60
+    step = (344 - 76) // len(rows)
+    for i, (name, chips, used) in enumerate(rows):
+        ny = cy + i * step
+        if i:
+            o += f'<path d="M{x + 40},{ny - step + 44} V{ny}" stroke="#C4CBD8" stroke-width="1.5"/>'
+        fill = '#FFFFFF' if used else '#F6F7F9'
+        o += f'<rect x="{x + 18}" y="{ny}" width="384" height="44" rx="10" fill="{fill}" stroke="{"#C9A6EE" if i == 0 else "#D9DEE8"}" stroke-width="1.5"/>'
+        o += txt(x + 32, ny + 27, name, 13.5, 700, INK if used else FAINT, cls='mono', fit=150)
+        o += params(x + 176, ny + 11, chips)
+    return o
+
+
+def pd_niveles():
+    fid = 'pdNiveles'
+    s = start(fid, 640, 'Prop drilling: pasar algo que no se usa', 'Prop drilling: pasar algo que no se usa',
+              'Un widget recibe un parámetro solo para entregárselo a su hijo. Un nivel se tolera; varios duelen.',
+              'Dos columnas. A la izquierda, la playlist: PlaylistScreen, SongList con songs en azul y onDelete en '
+              'gris porque solo lo pasa, y SongCard, que sí usa onDelete. A la derecha, una app más grande: la Screen, '
+              'una Page, una sección y una lista que reciben onDelete en gris sin usarlo, hasta la tarjeta que lo usa. '
+              'Debajo, tres señales de que el drilling empieza a doler.')
+    s += '  ' + drill_column(48, 112, 'La playlist: un nivel, se tolera', 'green', [
+        ('PlaylistScreen', [], True),
+        ('SongList', [('songs', 'down'), ('onDelete', 'gray')], True),
+        ('SongCard', [('song', 'down'), ('onDelete', 'up')], True),
+    ]) + '\n'
+    s += '  ' + drill_column(492, 112, 'Una app más grande: cuatro niveles', 'rose', [
+        ('HomeScreen', [], True),
+        ('LibraryPage', [('onDelete', 'gray')], False),
+        ('RecentSection', [('onDelete', 'gray')], False),
+        ('SongList', [('onDelete', 'gray')], False),
+        ('SongCard', [('onDelete', 'up')], True),
+    ]) + '\n'
+    signals = [
+        ('Recibe lo que no usa', ['Un widget tiene en su', 'constructor algo que solo pasa.']),
+        ('Un cambio, tres archivos', ['Agregar un evento obliga a', 'tocar tres archivos o más.']),
+        ('Cinco callbacks o más', ['El constructor ya no se lee', 'de un vistazo.']),
+    ]
+    for i, (title, rows) in enumerate(signals):
+        s += '  ' + card(48 + i * 296, 480, 272, 104, 'amber', title, rows, num=i + 1) + '\n'
+    s += '  ' + txt(48, 616, 'En este curso el drilling corto es lo correcto: es explícito y se sigue con los ojos.',
+                    12.5, 400, MUTED, fit=864) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['pdNiveles'] = pd_niveles
+
+
+# ───────────────────────────── S0045 · Taller
+
+
+def folder(x, y, name, depth, kind='dir', tag=None):
+    ix = x + depth * 28
+    if kind == 'dir':
+        icon = (f'<path d="M{ix},{y - 9} h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" '
+                f'stroke-linejoin="round"/>')
+    else:
+        icon = f'<rect x="{ix + 2}" y="{y - 11}" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/>'
+    o = icon + txt(ix + 28, y + 4, name, 13.5, 700 if kind == 'dir' else 400, INK, cls='mono')
+    if tag:
+        label, color = tag
+        soft, border, strong = FAM[color]
+        w = len(label) * 7.2 + 20
+        o += f'<rect x="420" y="{y - 11}" width="{w}" height="22" rx="11" fill="{soft}" stroke="{border}"/>'
+        o += txt(420 + w / 2, y + 4, label, 12, 600, strong, 'middle')
+    return o
+
+
+def ta_carpetas():
+    fid = 'taCarpetas'
+    s = start(fid, 452, 'Los archivos de <tspan class="mono">playlist_app</tspan>',
+              'Los archivos de playlist_app',
+              'Un archivo por clase. Solo dos guardan estado: la Screen y el formulario.',
+              'La carpeta lib con main.dart y tres carpetas: models con song.dart, components con song_card.dart, '
+              'song_form.dart y song_list.dart, y screens con playlist_screen.dart. Al lado de cada archivo, una '
+              'etiqueta: playlist_screen y song_form son StatefulWidget y guardan estado; los demás son Stateless.')
+    rows = [
+        ('lib/', 0, 'dir', None),
+        ('main.dart', 1, 'file', ('App y la tabla de rutas', 'slate')),
+        ('models/', 1, 'dir', None),
+        ('song.dart', 2, 'file', ('Song con copyWith', 'slate')),
+        ('components/', 1, 'dir', None),
+        ('song_card.dart', 2, 'file', ('Stateless', 'slate')),
+        ('song_form.dart', 2, 'file', ('StatefulWidget · guarda el borrador', 'violet')),
+        ('song_list.dart', 2, 'file', ('Stateless', 'slate')),
+        ('screens/', 1, 'dir', None),
+        ('playlist_screen.dart', 2, 'file', ('StatefulWidget · guarda _songs', 'violet')),
+    ]
+    s += '  <rect x="48" y="104" width="864" height="316" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    for i, (name, depth, kind, tag) in enumerate(rows):
+        s += '  ' + folder(72, 136 + i * 29, name, depth, kind, tag) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['taCarpetas'] = ta_carpetas
+
+
+def ta_meta():
+    fid = 'taMeta'
+    s = start(fid, 600, 'Lo que vas a agregar', 'Lo que vas a agregar',
+              'La playlist de las lecciones, con tres mejoras más. Cada una sale de la Screen o vuelve a ella.',
+              'Un celular con la playlist: en la barra, un corazón para filtrar favoritas y el texto 3 canciones; '
+              'debajo, el formulario y tres tarjetas con un botón de reproducir, el número de reproducciones, el '
+              'corazón y la papelera. Tres marcas numeradas señalan el contador, el filtro y las reproducciones, '
+              'cada una con su tarjeta a la derecha.')
+    w, h = 300, 470
+    inner = f'<rect width="{w}" height="56" fill="#D0BCFF"/>'
+    inner += txt(16, 34, 'Mi playlist', 17, 500)
+    inner += (f'<path d="M190,30 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="none" stroke="#1C1B1F" '
+              f'stroke-width="1.8" stroke-linejoin="round"/>')
+    inner += txt(284, 33, '3 canciones', 12.5, 500, '#1C1B1F', 'end')
+    for i, label in enumerate(('Canción', 'Artista')):
+        inner += f'<rect x="16" y="{72 + i * 44}" width="{w - 32}" height="34" rx="4" fill="none" stroke="#79747E"/>'
+        inner += txt(28, 94 + i * 44, label, 12.5, 400, '#79747E')
+    inner += f'<rect x="16" y="164" width="{w - 32}" height="34" rx="17" fill="#6750A4"/>'
+    inner += txt(w / 2, 186, 'Agregar', 13, 600, '#FFFFFF', 'middle')
+    songs = [('Imagine', 'John Lennon', 4, False), ('Yellow', 'Coldplay', 12, True), ('Levitating', 'Dua Lipa', 0, False)]
+    for i, (t, a, plays, fav) in enumerate(songs):
+        y = 214 + i * 78
+        inner += f'<rect x="12" y="{y}" width="{w - 24}" height="68" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>'
+        inner += f'<rect x="22" y="{y + 10}" width="48" height="48" rx="10" fill="#9C7FE0"/>'
+        inner += txt(80, y + 26, t, 13.5, 700)
+        inner += txt(80, y + 42, a, 12, 400, '#625B71')
+        inner += txt(80, y + 57, f'{plays} reproducciones', 11, 400, '#79809A')
+        inner += f'<path d="M{w - 92},{y + 26} v16 l13,-8 Z" fill="#49454F"/>'
+        hx, hy = w - 58, y + 40
+        inner += (f'<path d="M{hx},{hy} l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" '
+                  f'fill="{"#C2354F" if fav else "none"}" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round"/>')
+        tx = w - 28
+        inner += (f'<path d="M{tx - 6},{y + 28} H{tx + 6} M{tx - 4},{y + 28} L{tx - 3},{y + 42} H{tx + 3} L{tx + 4},{y + 28}" '
+                  f'fill="none" stroke="#49454F" stroke-width="1.6" stroke-linejoin="round"/>')
+    px, py = 80, 104
+    s += '  ' + device(px, py, w, h, inner, '#FEF7FF', f'{fid}-clip') + '\n'
+    s += '  ' + mark(px + 206, py + 12, 86, 32, 'amber', 10) + '\n'
+    s += '  ' + mark(px + 174, py + 12, 30, 32, 'rose', 8) + '\n'
+    s += '  ' + mark(px + 74, py + 234, 150, 44, 'violet', 8) + '\n'
+    cards = [
+        ('amber', 'Contador en la barra', ['El AppBar dice cuántas canciones hay.', 'Sale de _songs.length, en la Screen.']),
+        ('rose', 'Solo favoritas', ['Un bool en la Screen. SongList recibe la', 'lista ya filtrada y el aviso a mostrar.']),
+        ('violet', 'Reproducciones', ['Un campo plays en Song, un botón que', 'sube con onPlay y copyWith.']),
+    ]
+    for k, (color, title, body) in enumerate(cards):
+        y = 112 + k * 148
+        s += '  ' + card(480, y, 432, 124, color, title, body, num=k + 1) + '\n'
+    chips = [(px + 249, py + 58, 1, 'amber'), (px + 189, py + 58, 2, 'rose'), (px + 224, py + 234, 3, 'violet')]
+    for cx, cy, n, color in chips:
+        strong = FAM[color][2]
+        s += (f'  <circle cx="{cx}" cy="{cy}" r="13" fill="#FFFFFF" stroke="{strong}" stroke-width="2"/>'
+              + txt(cx, cy + 4.5, str(n), 13, 700, strong, 'middle') + '\n')
+    s += '  ' + txt(480, 572, 'Y una prueba: un print en cada build para ver quién se reconstruye.', 12.5, 400, MUTED, fit=432) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['taMeta'] = ta_meta
+
+
+FIGS['ptCrear'] = lambda: console(dict(
+    id='ptCrear',
+    title='Crear el proyecto <tspan class="mono">playlist_app</tspan>',
+    title_plain='Crear el proyecto playlist_app',
+    desc='Terminal en la carpeta develop. Se ejecuta flutter create con la organización icesi.edu.co y el '
+         'nombre playlist_app, la salida termina en All done, y luego cd playlist_app.',
+    sub='El mismo comando de la sesión 1, con otro nombre. El nombre va en minúsculas y con guion bajo.',
+    term_title='Terminal · C:\\develop',
+    lines=[('P', 'flutter create --org icesi.edu.co playlist_app', 'develop'),
+           ('O', 'Creating project playlist_app...'),
+           ('D', 'Resolving dependencies in `playlist_app`...'),
+           ('D', 'Got dependencies in `playlist_app`.'),
+           ('D', 'Wrote 130 files.'),
+           ('B', ''),
+           ('K', 'All done!'),
+           ('B', ''),
+           ('P', 'cd playlist_app', 'develop'),
+           ('P', '', 'playlist_app')],
+    rings=[(0, 43, 12, 1), (8, 9, 15, 2)],
+    cards=[(1, 'El nombre del proyecto', ['Es también el nombre del paquete:', 'package:playlist_app/...'], False),
+           (2, 'Entrar a la carpeta', ['Abre esta carpeta en VS Code', 'antes de crear los archivos.'], False)],
+))
+
+
+def main():
+    if len(sys.argv) > 1 and sys.argv[1] == '--inject':
+        done = set()
+        for name in LESSONS:
+            path = ROOT / 'content' / name
+            text = path.read_text(encoding='utf-8')
+
+            def swap(m):
+                if m.group(1) not in FIGS:
+                    return m.group(0)
+                done.add(m.group(1))
+                return '```svg\n' + FIGS[m.group(1)]() + '```'
+            new = re.sub(r'```svg\n<svg id="(\w+)".*?```', swap, text, flags=re.S)
+            path.write_text(new, encoding='utf-8')
+        missing = set(FIGS) - done
+        print('inyectadas:', len(done), '· sin usar:', sorted(missing) or 'ninguna')
+        return
+    out = pathlib.Path(sys.argv[1])
+    out.mkdir(parents=True, exist_ok=True)
+    only = sys.argv[2:]
+    for fid, fn in FIGS.items():
+        if only and fid not in only:
+            continue
+        (out / f'{fid}.svg').write_text(fn(), encoding='utf-8')
+    print(len(FIGS), 'figuras en', out)
+
+
+if __name__ == '__main__':
+    main()

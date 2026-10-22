@@ -4,7 +4,7 @@
 
 Ya tienes las piezas: un dato en el estado, `setState` para cambiarlo y un `TextEditingController` para leer un campo. Ahora se juntan en una app pequeña: **un creador de playlists**. Un formulario con el nombre de la canción, el artista y la URL de la portada; al pulsar *Agregar*, la canción entra a la lista.
 
-En esta lección el código es **el mínimo que funciona**: sin validaciones, sin estilos y sin limpiar el formulario. La lista se muestra como texto simple. En la siguiente lección se ve con un componente, y en el taller se agrega lo que falta.
+En esta lección el código es **el mínimo que funciona**: sin validaciones, sin estilos y sin limpiar el formulario. La lista se muestra como texto simple. En la siguiente lección se ve con un componente, y en la sesión 7 se agrega lo que falta.
 
 Pruébala antes de leer el código. `_songs` y los tres controllers viven en el bloque **Estado**, dentro de `_PlaylistScreenState`, y una línea une `_songs` con cada widget que se construye a partir de ella. Escribe una canción, pulsa *Agregar* y sigue los cinco pasos; con *Paso a paso* avanzas tú. Agrega tres o cuatro y mira cómo crecen `_songs` y el árbol.
 
@@ -73,7 +73,7 @@ FilledButton(
 ),
 ```
 
-Eso es todo. Si pulsas *Agregar* con los campos vacíos, entra una canción vacía; y los campos no se borran después de agregar. Las dos cosas se arreglan en el taller.
+Eso es todo. Si pulsas *Agregar* con los campos vacíos, entra una canción vacía; y los campos no se borran después de agregar. Las dos cosas se arreglan en la sesión 7, cuando el formulario se vuelve un componente.
 
 ## Pintar la lista
 

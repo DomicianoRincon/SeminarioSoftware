@@ -4,8 +4,8 @@
 **Sesión:** 6 del bloque de Domiciano (sesión 22 del planeador), semana 11 · *Stateful widget y setState*  
 **Duración:** 2 horas en clase  
 **Público:** estudiantes de Ingeniería de Sistemas que ya hicieron componentes `StatelessWidget` (sesión 2) y pantallas estáticas (sesión 3).  
-**Fuente:** las seis lecciones de la sección *Sesión 6 · Stateful widget y setState* del visor (`S0040` a `S0045`). El plan sigue su orden y su contenido.  
-**Sin entregables:** es una sesión de clase. El cierre anuncia la parte 2 del taller, no deja tarea.
+**Fuente:** las cinco lecciones de la sección *Sesión 6 · Stateful widget y setState* del visor (`S0040` a `S0044`; el taller `S0045` pasó a la sesión 7 el 2026-10-22). El plan sigue su orden y su contenido.  
+**Sin entregables:** es una sesión de clase. El cierre anuncia la sesión 7, que arranca del ejemplo completo de `S0044`. No deja tarea.
 
 **Estado:** borrador, pendiente de aprobación del profesor.
 
@@ -16,7 +16,6 @@
 3. Que vean, con el contador de `flutter create`, que `setState` cambia el dato y pide un `build()`, y qué pasa si se olvida.
 4. Que ubiquen `initState` y `dispose`, y creen y liberen un `TextEditingController`.
 5. Que armen el creador de playlists: formulario, lista en el estado, primero pintada con `Text` y luego con el componente `SongCard`.
-6. Que salgan con la parte 1 del taller hecha o empezada (`S0045`).
 
 ## Lo nuevo de esta presentación: diagramas interactivos en vivo
 
@@ -76,19 +75,17 @@ Total: 120 minutos. El bloque de la playlist incluye el arranque del taller en c
 | 27 | El componente SongCard | `slideStandard` | Recibe una Song; portada con `clipBehavior` | SVG `sgCodigo` |
 | 28 | **En vivo** · Text o SongCard | `slideStandard` | Misma lista de estado, otra vista | Interactivo `playlist cards` |
 | 29 | Del estado a las tarjetas | `slideStandard` | La Screen es la dueña; la tarjeta solo muestra | SVG `sgDatos` |
-| 30 | Taller · Playlist, parte 1 | `slideSidebarLeftOrange` | Proyecto `playlist_app` y las cuatro mejoras | SVG `ptMeta` |
-| 31 | Lo que te llevas | `slideStandard` | Estado en el State · setState · initState/dispose · la lista se pinta desde el estado | Resumen |
-| 32 | Para la próxima sesión | `slideSidebarLeftOrange` | La playlist se parte en componentes y el estado sube a la Screen: elevación de estado y funciones como parámetro | · |
+| 30 | Lo que te llevas | `slideStandard` | Estado en el State · setState · initState/dispose · la lista se pinta desde el estado | Resumen |
+| 31 | Para la próxima sesión | `slideSidebarLeftOrange` | La playlist se parte en componentes y el estado sube a la Screen: elevación de estado y funciones como parámetro | · |
 
-**32 slides**, cinco de ellas con simulador en vivo. Cada slide de contenido lleva sus notas de orador
-(tecla `S`), sacadas de las lecciones `S0040` a `S0045`.
+**31 slides**, cinco de ellas con simulador en vivo. Cada slide de contenido lleva sus notas de orador
+(tecla `S`), sacadas de las lecciones `S0040` a `S0044`.
 
 ## Cómo se reutilizan las figuras
 
-- `figuras.py` copia a `slides/00-figuras.js` las 8 figuras de las lecciones de la sesión (sin `ptCrear`,
-  que es de consola), les quita el título y las escala al lienzo, como en la sesión 5.
+- `figuras.py` copia a `slides/00-figuras.js` las 7 figuras de las lecciones de la sesión, les quita el título y las escala al lienzo, como en la sesión 5.
 - Fondo `#FBFBFD` de las figuras sobre blanco en las slides con marco institucional.
 
 ## Pendiente de decidir con el profesor
 
-- Si el deck se enlaza al inicio de `S0040` (como en las sesiones 1, 2 y 5) o en el taller `S0045` (como en la 3).
+- Si el deck se enlaza al inicio de `S0040` (como en las sesiones 1, 2 y 5) o en `S0044`, la última de la sesión.
