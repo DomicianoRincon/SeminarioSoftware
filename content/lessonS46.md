@@ -11,7 +11,7 @@ compose
 ```
 
 - **Sin componentes** es el *Ejemplo completo* de *El componente SongCard*, de donde parte esta sesión. A la derecha está el árbol de widgets y, debajo, el estado. Cada variable tiene una línea hasta el widget que la usa, y todas salen del mismo `_PlaylistScreenState`. Agrega canciones y mira cómo el árbol crece colgado de la Screen.
-- **Con componentes** es la app a la que vas a llegar en el taller: un resumen con el número de canciones y un filtro de favoritas, el formulario, y tarjetas con estrellas, favorita y papelera. El árbol ahora tiene piezas con nombre: `PlaylistSummary`, `SongForm`, `SongList` y `SongCard`. Fíjate en las líneas. El estado de la Screen ya no llega a cada tarjeta: solo a `PlaylistSummary` y `SongList`, que lo reciben por el constructor. Los controllers ya no están en la Screen, sino en `SongForm`, que tiene **su propio** estado.
+- **Con componentes** es la app a la que vas a llegar en el taller: un resumen con el número de canciones y un filtro de favoritas, el formulario, y tarjetas con favorita y papelera. El árbol ahora tiene piezas con nombre: `PlaylistSummary`, `SongForm`, `SongList` y `SongCard`. Fíjate en las líneas. El estado de la Screen ya no llega a cada tarjeta: solo a `PlaylistSummary` y `SongList`, que lo reciben por el constructor. Los controllers ya no están en la Screen, sino en `SongForm`, que tiene **su propio** estado.
 
 Pasar de una versión a la otra es el trabajo de esta sesión. Esta lección da el primer paso.
 

@@ -370,8 +370,9 @@ describe('compose', () => {
     type('Artista', '');
     fireEvent.click(screen.getByText('Agregar'));
     expect(nodes(container)).toContain('error');
-    fireEvent.click(screen.getByLabelText('3 estrellas'));
-    expect(container.querySelector('[data-var="_songs"]').textContent).toContain('★★★');
+    fireEvent.click(screen.getByLabelText('Favorita Yellow'));
+    expect(container.querySelector('[data-var="_songs"] .fs-fav')).toBeTruthy();
+    fireEvent.click(screen.getByLabelText('Favorita Yellow'));
     fireEvent.click(screen.getByLabelText('Solo favoritas'));
     expect(screen.getByTestId('compose-list').textContent).toBe('No tienes favoritas');
     fireEvent.click(screen.getByLabelText('Solo favoritas'));

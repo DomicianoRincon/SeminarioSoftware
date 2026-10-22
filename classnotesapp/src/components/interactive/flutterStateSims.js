@@ -204,8 +204,6 @@ const CSS = `
 .fsim .fs-cmp-var:focus-visible{outline:2px dashed var(--fs-cmp-color);outline-offset:2px}
 .fsim .fs-cmp-var.fs-sel .fs-var-name{color:var(--fs-cmp-color)}
 .fsim .fs-cmp-summary{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;margin:0 0 8px}
-.fsim .fs-cmp-stars{display:flex;gap:1px;margin-top:2px}
-.fsim .fs-cmp-star{border:0;background:none;padding:0 1px;cursor:pointer;font-size:15px;line-height:1;color:#D99A00}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -1975,14 +1973,6 @@ const mountLift = (root, args = []) => {
 const COMPOSE_COLORS = ['#7439B8', '#0F8478', '#C2354F', '#A96C05', '#4453C9', '#3A8235'];
 const COMPOSE_GRAY = '#B8BDC9';
 
-const starRow = (rating, onRate) => el('span', { class: 'fs-cmp-stars' },
-  ...[1, 2, 3, 4, 5].map((n) => el('button', {
-    class: `fs-cmp-star${n <= rating ? ' fs-on' : ''}`,
-    'aria-label': `${n} estrellas`,
-    text: n <= rating ? '★' : '☆',
-    onclick: () => onRate(n),
-  })));
-
 const mountCompose = (root) => {
   const container = card(root);
   let nextId = 1;
@@ -2023,7 +2013,7 @@ const mountCompose = (root) => {
       render();
       return;
     }
-    model.songs = [...model.songs, { id: nextId++, title, artist, imageUrl: imageUrl || DEFAULT_IMAGE, isFavorite: false, rating: 0 }];
+    model.songs = [...model.songs, { id: nextId++, title, artist, imageUrl: imageUrl || DEFAULT_IMAGE, isFavorite: false }];
     if (tab === 'parts') {
       model.draft = { ...model.draft, title: '', artist: '' };
       model.showError = false;
@@ -2039,7 +2029,6 @@ const mountCompose = (root) => {
 
   const partsCard = (song) => {
     const node = songCard(song);
-    node.querySelector('.fs-card-text').appendChild(starRow(song.rating, (n) => update(song.id, { rating: n })));
     node.querySelector('.fs-card-icon').replaceWith(el('span', { class: 'fs-lift-actions' },
       el('button', {
         class: `fs-lift-act${song.isFavorite ? ' fs-on' : ''}`,
@@ -2160,7 +2149,7 @@ const mountCompose = (root) => {
   const songBlocks = () => el('span', { class: 'fs-lift-songs' },
     ...(model.songs.length
       ? model.songs.map((s) => el('span', { class: `fs-lift-song${s.isFavorite ? ' fs-fav' : ''}` },
-        el('b', { text: `#${s.id}` }), ` ${shorten(s.title || '—', 10)}${tab === 'parts' ? ` ${'★'.repeat(s.rating)}` : ''}`))
+        el('b', { text: `#${s.id}` }), ` ${shorten(s.title || '—', 10)}`))
       : [el('span', { class: 'fs-faint', text: '[ ] vacía' })]));
 
   const variable = (name, type, value) => {
@@ -2269,7 +2258,7 @@ const mountCompose = (root) => {
 
   const CAPTIONS = {
     flat: 'Así quedó la sesión 6: un solo State con todas las variables, y un árbol donde todo cuelga de la misma Screen. Agrega canciones y mira cuántas líneas salen del mismo bloque.',
-    parts: 'A esto se llega: piezas con nombre. El estado de la Screen solo llega a PlaylistSummary y SongList; el borrador vive dentro de SongForm. Califica, marca favoritas y filtra.',
+    parts: 'A esto se llega: piezas con nombre. El estado de la Screen solo llega a PlaylistSummary y SongList; el borrador vive dentro de SongForm. Marca favoritas, filtra y quita canciones.',
   };
 
   const render = () => {

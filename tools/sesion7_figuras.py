@@ -379,23 +379,12 @@ FIGS['taCarpetas'] = ta_carpetas
 def ta_meta():
     fid = 'taMeta'
     s = start(fid, 600, 'Lo que vas a agregar', 'Lo que vas a agregar',
-              'La playlist de las lecciones, con tres mejoras más. Cada una sale de la Screen o vuelve a ella.',
+              'La playlist de las lecciones, con dos mejoras más. Las dos salen de la Screen y vuelven a ella.',
               'Un celular con la playlist: arriba del formulario, una fila con el texto 3 canciones y un corazón para '
-              'filtrar favoritas; debajo, el formulario de tres campos y tres tarjetas con cinco estrellas, el '
-              'corazón y la papelera. Tres marcas numeradas señalan el contador, el filtro y las estrellas, '
+              'filtrar favoritas; debajo, el formulario de tres campos y tres tarjetas con el corazón y la '
+              'papelera. Dos marcas numeradas señalan el contador y el filtro, '
               'cada una con su tarjeta a la derecha.')
     w, h = 300, 470
-
-    def star(cx, cy, r, full):
-        import math
-        pts = []
-        for k in range(10):
-            rr = r if k % 2 == 0 else r * 0.45
-            ang = -math.pi / 2 + k * math.pi / 5
-            pts.append(f'{cx + rr * math.cos(ang):.1f},{cy + rr * math.sin(ang):.1f}')
-        fill = '#F2B300' if full else 'none'
-        return (f'<polygon points="{" ".join(pts)}" fill="{fill}" stroke="#D99A00" '
-                f'stroke-width="1.2" stroke-linejoin="round"/>')
 
     def heart(hx, hy, full, color='#C2354F'):
         return (f'<path d="M{hx},{hy} l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" '
@@ -410,15 +399,13 @@ def ta_meta():
         inner += txt(28, 125 + i * 40, label, 12.5, 400, '#79747E')
     inner += f'<rect x="16" y="226" width="{w - 32}" height="32" rx="16" fill="#6750A4"/>'
     inner += txt(w / 2, 247, 'Agregar', 13, 600, '#FFFFFF', 'middle')
-    songs = [('Imagine', 'John Lennon', 3, False), ('Yellow', 'Coldplay', 5, True), ('Levitating', 'Dua Lipa', 0, False)]
-    for i, (t, a, rating, fav) in enumerate(songs):
+    songs = [('Imagine', 'John Lennon', False), ('Yellow', 'Coldplay', True), ('Levitating', 'Dua Lipa', False)]
+    for i, (t, a, fav) in enumerate(songs):
         y = 268 + i * 66
         inner += f'<rect x="12" y="{y}" width="{w - 24}" height="60" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>'
         inner += f'<rect x="22" y="{y + 8}" width="44" height="44" rx="10" fill="#9C7FE0"/>'
-        inner += txt(80, y + 23, t, 13.5, 700)
-        inner += txt(80, y + 38, a, 12, 400, '#625B71')
-        for k in range(5):
-            inner += star(86 + k * 15, y + 50, 5.5, k < rating)
+        inner += txt(80, y + 27, t, 13.5, 700)
+        inner += txt(80, y + 44, a, 12, 400, '#625B71')
         inner += heart(w - 58, y + 36, fav)
         tx = w - 28
         inner += (f'<path d="M{tx - 6},{y + 24} H{tx + 6} M{tx - 4},{y + 24} L{tx - 3},{y + 38} H{tx + 3} L{tx + 4},{y + 24}" '
@@ -427,21 +414,19 @@ def ta_meta():
     s += '  ' + device(px, py, w, h, inner, '#FEF7FF', f'{fid}-clip') + '\n'
     s += '  ' + mark(px + 10, py + 68, 96, 26, 'amber', 8) + '\n'
     s += '  ' + mark(px + w - 42, py + 68, 32, 26, 'rose', 8) + '\n'
-    s += '  ' + mark(px + 74, py + 309, 84, 19, 'violet', 6) + '\n'
     cards = [
         ('amber', 'El resumen', ['PlaylistSummary, arriba del formulario: recibe', 'count desde _songs.length y el corazón.']),
         ('rose', 'Solo favoritas', ['El corazón avisa a la Screen, que guarda el bool.', 'SongList recibe la lista ya filtrada.']),
-        ('violet', 'Calificación', ['Cinco estrellas: la tocada sube con onRate(n)', 'y la Screen hace copyWith(rating: n).']),
     ]
     for k, (color, title, body) in enumerate(cards):
         y = 112 + k * 148
         s += '  ' + card(480, y, 432, 124, color, title, body, num=k + 1) + '\n'
-    chips = [(px + 120, py + 81, 1, 'amber'), (px + w - 58, py + 81, 2, 'rose'), (px + 174, py + 318, 3, 'violet')]
+    chips = [(px + 120, py + 81, 1, 'amber'), (px + w - 58, py + 81, 2, 'rose')]
     for cx, cy, n, color in chips:
         strong = FAM[color][2]
         s += (f'  <circle cx="{cx}" cy="{cy}" r="13" fill="#FFFFFF" stroke="{strong}" stroke-width="2"/>'
               + txt(cx, cy + 4.5, str(n), 13, 700, strong, 'middle') + '\n')
-    s += '  ' + txt(480, 572, 'Y una prueba: un print en cada build para ver quién se reconstruye.', 12.5, 400, MUTED, fit=432) + '\n'
+    s += '  ' + txt(480, 424, 'Y una prueba: un print en cada build para ver quién se reconstruye.', 12.5, 400, MUTED, fit=432) + '\n'
     return s + '</svg>\n'
 
 
