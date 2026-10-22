@@ -204,6 +204,76 @@ FIGS['cwCopia'] = cw_copia
 # ───────────────────────────── S0049 · Prop drilling
 
 
+def code_box(x, y, w, title, kind, rows, color):
+    """Dark editor box. `rows` are (text, highlight) pairs; highlight is a substring to box."""
+    soft, border, strong = FAM[color]
+    h = 56 + len(rows) * 22 + 12
+    o = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="#1F2430"/>'
+    o += f'<path d="M{x},{y + 12} A12,12 0 0 1 {x + 12},{y} H{x + w - 12} A12,12 0 0 1 {x + w},{y + 12} V{y + 36} H{x} Z" fill="{soft}"/>'
+    o += txt(x + 14, y + 24, title, 14, 700, INK, cls='mono')
+    o += txt(x + w - 12, y + 24, kind, 12, 600, strong, 'end')
+    spots = {}
+    for i, (line, hl) in enumerate(rows):
+        ly = y + 62 + i * 22
+        indent = len(line) - len(line.lstrip())
+        if hl:
+            start_col = line.index(hl)
+            hx = x + 14 + start_col * 7.5 - 3
+            hw = len(hl) * 7.5 + 6
+            o += f'<rect x="{hx}" y="{ly - 15}" width="{hw}" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/>'
+            spots.setdefault(hl, (hx, ly - 15, hw, 21))
+        o += (f'<text x="{x + 14 + indent * 7.5}" y="{ly}" font-size="12.5" fill="#C9CFDA" class="mono" '
+              f'textLength="{len(line.lstrip()) * 7.5}" lengthAdjust="spacingAndGlyphs">{line.lstrip()}</text>')
+    return o, h, spots
+
+
+def pd_camino():
+    fid = 'pdCamino'
+    s = start(fid, 500, 'El camino de una canción', 'El camino de una canción',
+              'De la Screen a la tarjeta, cada nivel recibe el dato por su constructor y se lo pasa al siguiente.',
+              'Tres bloques de código en fila. PlaylistScreen guarda _songs y crea SongList(songs: _songs). '
+              'SongList declara final List de Song songs y en su for crea SongCard(song: song). SongCard declara '
+              'final Song song y muestra Text(song.title). Flechas azules van de _songs al campo songs de SongList '
+              'y de song al campo song de SongCard.')
+    boxes = [
+        (48, 'PlaylistScreen', 'guarda', 'violet', [
+            ('final List&lt;Song&gt; _songs = [];', None), ('', None), ('Widget build(…) {', None),
+            ('  …', None), ('  SongList(songs: _songs),', '_songs')]),
+        (352, 'SongList', 'recibe y reparte', 'indigo', [
+            ('final List&lt;Song&gt; songs;', 'songs'), ('', None), ('Widget build(…) {', None),
+            ('  for (final song in songs)', None), ('    SongCard(song: song),', 'song)')]),
+        (656, 'SongCard', 'recibe y muestra', 'indigo', [
+            ('final Song song;', 'song'), ('', None), ('Widget build(…) {', None),
+            ('  …', None), ('  Text(song.title),', 'song')]),
+    ]
+    spots = []
+    for x, title, kind, color, rows in boxes:
+        clean = [(r.replace('&lt;', '<').replace('&gt;', '>'), h) for r, h in rows]
+        o, h, sp = code_box(x, 112, 256, title, kind, clean, color)
+        o = o.replace('List<Song>', 'List&lt;Song&gt;')
+        s += '  ' + o + '\n'
+        spots.append(sp)
+    a = spots[0]['_songs']
+    b = spots[1]['songs']
+    s += '  ' + flow(fid, f'M{a[0] + a[2]},{a[1] + 10} H328 V{b[1] + 10} H350', 'down') + '\n'
+    c = spots[1]['song)']
+    d = spots[2]['song']
+    s += '  ' + flow(fid, f'M{c[0] + c[2]},{c[1] + 10} H632 V{d[1] + 10} H654', 'down') + '\n'
+    notes = [
+        (48, 'violet', 'Guarda el dato', ['Es su estado. Lo entrega', 'al hijo por el constructor.']),
+        (352, 'indigo', 'Recibe y reparte', ['Usa la lista para el for y', 'a cada tarjeta le da una Song.']),
+        (656, 'indigo', 'Recibe y muestra', ['No sabe de dónde vino:', 'solo dibuja lo que le llegó.']),
+    ]
+    for x, color, title, rows in notes:
+        s += '  ' + card(x, 336, 256, 104, color, title, rows) + '\n'
+    s += '  ' + txt(48, 476, 'Nadie toma el dato del aire: si un widget lo necesita, alguien de arriba se lo pasó.',
+                    12.5, 400, MUTED, fit=864) + '\n'
+    return s + '</svg>\n'
+
+
+FIGS['pdCamino'] = pd_camino
+
+
 def drill_column(x, y, title, color, rows):
     soft, border, strong = FAM[color]
     o = f'<rect x="{x}" y="{y}" width="420" height="344" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>'
@@ -226,26 +296,26 @@ def pd_niveles():
     fid = 'pdNiveles'
     s = start(fid, 640, 'Prop drilling: pasar algo que no se usa', 'Prop drilling: pasar algo que no se usa',
               'Un widget recibe un parámetro solo para entregárselo a su hijo. Un nivel se tolera; varios duelen.',
-              'Dos columnas. A la izquierda, la playlist: PlaylistScreen, SongList con songs en azul y onDelete en '
-              'gris porque solo lo pasa, y SongCard, que sí usa onDelete. A la derecha, una app más grande: la Screen, '
-              'una Page, una sección y una lista que reciben onDelete en gris sin usarlo, hasta la tarjeta que lo usa. '
+              'Dos columnas. A la izquierda, la playlist: PlaylistScreen, SongList con songs y SongCard con song, todos '
+              'en azul porque cada uno usa lo que recibe. A la derecha, una app más grande: la Screen, una Page y una '
+              'sección reciben songs en gris sin usarlo, solo para pasarlo, hasta SongList y SongCard. '
               'Debajo, tres señales de que el drilling empieza a doler.')
-    s += '  ' + drill_column(48, 112, 'La playlist: un nivel, se tolera', 'green', [
+    s += '  ' + drill_column(48, 112, 'La playlist: cada nivel usa lo que recibe', 'green', [
         ('PlaylistScreen', [], True),
-        ('SongList', [('songs', 'down'), ('onDelete', 'gray')], True),
-        ('SongCard', [('song', 'down'), ('onDelete', 'up')], True),
+        ('SongList', [('songs', 'down')], True),
+        ('SongCard', [('song', 'down')], True),
     ]) + '\n'
     s += '  ' + drill_column(492, 112, 'Una app más grande: cuatro niveles', 'rose', [
         ('HomeScreen', [], True),
-        ('LibraryPage', [('onDelete', 'gray')], False),
-        ('RecentSection', [('onDelete', 'gray')], False),
-        ('SongList', [('onDelete', 'gray')], False),
-        ('SongCard', [('onDelete', 'up')], True),
+        ('LibraryPage', [('songs', 'gray')], False),
+        ('RecentSection', [('songs', 'gray')], False),
+        ('SongList', [('songs', 'down')], True),
+        ('SongCard', [('song', 'down')], True),
     ]) + '\n'
     signals = [
         ('Recibe lo que no usa', ['Un widget tiene en su', 'constructor algo que solo pasa.']),
-        ('Un cambio, tres archivos', ['Agregar un evento obliga a', 'tocar tres archivos o más.']),
-        ('Cinco callbacks o más', ['El constructor ya no se lee', 'de un vistazo.']),
+        ('Un cambio, tres archivos', ['Agregar un dato obliga a', 'tocar tres archivos o más.']),
+        ('Cinco parámetros o más', ['El constructor ya no se lee', 'de un vistazo.']),
     ]
     for i, (title, rows) in enumerate(signals):
         s += '  ' + card(48 + i * 296, 480, 272, 104, 'amber', title, rows, num=i + 1) + '\n'

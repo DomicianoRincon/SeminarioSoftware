@@ -182,7 +182,7 @@ Ahora hay dos dueños de estado. El de la Screen guarda `_songs` y el de `SongFo
 lift events
 ```
 
-Cuando quitas una canción, `onDelete()` va de la tarjeta **directo** a la Screen: la función la escribió la Screen, así que corre allá. `SongList` solo se la había entregado a la tarjeta. Esa entrega tiene nombre y es el tema de dos lecciones más adelante.
+Cuando quitas una canción, `onDelete()` va de la tarjeta **directo** a la Screen: la función la escribió la Screen, así que corre allá. `SongList` solo se la había entregado a la tarjeta: es el primer parámetro que recibe sin usarlo, el drilling de paso de la lección anterior.
 
 ## Ejemplo completo
 

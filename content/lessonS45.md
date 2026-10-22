@@ -1,6 +1,6 @@
 # Taller · Playlist con estado elevado
 
-<!-- tags: taller playlist, elevar el estado, SongForm, SongList, callbacks, copyWith, contador en el AppBar, filtrar favoritas, where y toList, print en build, prop drilling -->
+<!-- tags: taller playlist, elevar el estado, SongForm, SongList, callbacks, copyWith, contador de canciones, filtrar favoritas, where y toList, print en build, prop drilling -->
 
 En este taller armas la playlist de la sesión en un proyecto con la estructura del curso, y le agregas tres mejoras. Cada una pone a prueba una idea de las lecciones: **el estado vive en la Screen, los datos bajan por el constructor, los eventos suben con funciones y las canciones se cambian con `copyWith`**.
 
