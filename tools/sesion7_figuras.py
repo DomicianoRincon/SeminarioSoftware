@@ -332,7 +332,7 @@ def folder(x, y, name, depth, kind='dir', tag=None):
 
 def ta_carpetas():
     fid = 'taCarpetas'
-    s = start(fid, 452, 'Los archivos de <tspan class="mono">playlist_app</tspan>',
+    s = start(fid, 481, 'Los archivos de <tspan class="mono">playlist_app</tspan>',
               'Los archivos de playlist_app',
               'Un archivo por clase. Solo dos guardan estado: la Screen y el formulario.',
               'La carpeta lib con main.dart y tres carpetas: models con song.dart, components con song_card.dart, '
@@ -344,13 +344,14 @@ def ta_carpetas():
         ('models/', 1, 'dir', None),
         ('song.dart', 2, 'file', ('Song con copyWith', 'slate')),
         ('components/', 1, 'dir', None),
+        ('playlist_summary.dart', 2, 'file', ('Stateless', 'slate')),
         ('song_card.dart', 2, 'file', ('Stateless', 'slate')),
         ('song_form.dart', 2, 'file', ('StatefulWidget · guarda el borrador', 'violet')),
         ('song_list.dart', 2, 'file', ('Stateless', 'slate')),
         ('screens/', 1, 'dir', None),
         ('playlist_screen.dart', 2, 'file', ('StatefulWidget · guarda _songs', 'violet')),
     ]
-    s += '  <rect x="48" y="104" width="864" height="316" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    s += '  <rect x="48" y="104" width="864" height="345" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
     for i, (name, depth, kind, tag) in enumerate(rows):
         s += '  ' + folder(72, 136 + i * 29, name, depth, kind, tag) + '\n'
     return s + '</svg>\n'
@@ -363,9 +364,9 @@ def ta_meta():
     fid = 'taMeta'
     s = start(fid, 600, 'Lo que vas a agregar', 'Lo que vas a agregar',
               'La playlist de las lecciones, con tres mejoras más. Cada una sale de la Screen o vuelve a ella.',
-              'Un celular con la playlist: en la barra, un corazón para filtrar favoritas y el texto 3 canciones; '
-              'debajo, el formulario y tres tarjetas con un botón de reproducir, el número de reproducciones, el '
-              'corazón y la papelera. Tres marcas numeradas señalan el contador, el filtro y las reproducciones, '
+              'Un celular con la playlist: arriba del formulario, una fila con el texto 3 canciones y un corazón para '
+              'filtrar favoritas; debajo, el formulario de tres campos y tres tarjetas con cinco estrellas, el '
+              'corazón y la papelera. Tres marcas numeradas señalan el contador, el filtro y las estrellas, '
               'cada una con su tarjeta a la derecha.')
     w, h = 300, 470
 
@@ -380,45 +381,46 @@ def ta_meta():
         return (f'<polygon points="{" ".join(pts)}" fill="{fill}" stroke="#D99A00" '
                 f'stroke-width="1.2" stroke-linejoin="round"/>')
 
+    def heart(hx, hy, full, color='#C2354F'):
+        return (f'<path d="M{hx},{hy} l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" '
+                f'fill="{color if full else "none"}" stroke="{color}" stroke-width="1.8" stroke-linejoin="round"/>')
+
     inner = f'<rect width="{w}" height="56" fill="#D0BCFF"/>'
     inner += txt(16, 34, 'Mi playlist', 17, 500)
-    inner += (f'<path d="M190,30 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="none" stroke="#1C1B1F" '
-              f'stroke-width="1.8" stroke-linejoin="round"/>')
-    inner += txt(284, 33, '3 canciones', 12.5, 500, '#1C1B1F', 'end')
-    for i, label in enumerate(('Canción', 'Artista')):
-        inner += f'<rect x="16" y="{72 + i * 44}" width="{w - 32}" height="34" rx="4" fill="none" stroke="#79747E"/>'
-        inner += txt(28, 94 + i * 44, label, 12.5, 400, '#79747E')
-    inner += f'<rect x="16" y="164" width="{w - 32}" height="34" rx="17" fill="#6750A4"/>'
-    inner += txt(w / 2, 186, 'Agregar', 13, 600, '#FFFFFF', 'middle')
+    inner += txt(16, 86, '3 canciones', 13.5, 500, '#1C1B1F')
+    inner += heart(w - 26, 88, False)
+    for i, label in enumerate(('Canción', 'Artista', 'URL de la imagen')):
+        inner += f'<rect x="16" y="{104 + i * 40}" width="{w - 32}" height="32" rx="4" fill="none" stroke="#79747E"/>'
+        inner += txt(28, 125 + i * 40, label, 12.5, 400, '#79747E')
+    inner += f'<rect x="16" y="226" width="{w - 32}" height="32" rx="16" fill="#6750A4"/>'
+    inner += txt(w / 2, 247, 'Agregar', 13, 600, '#FFFFFF', 'middle')
     songs = [('Imagine', 'John Lennon', 3, False), ('Yellow', 'Coldplay', 5, True), ('Levitating', 'Dua Lipa', 0, False)]
     for i, (t, a, rating, fav) in enumerate(songs):
-        y = 214 + i * 78
-        inner += f'<rect x="12" y="{y}" width="{w - 24}" height="68" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>'
-        inner += f'<rect x="22" y="{y + 10}" width="48" height="48" rx="10" fill="#9C7FE0"/>'
-        inner += txt(80, y + 26, t, 13.5, 700)
-        inner += txt(80, y + 42, a, 12, 400, '#625B71')
+        y = 268 + i * 66
+        inner += f'<rect x="12" y="{y}" width="{w - 24}" height="60" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>'
+        inner += f'<rect x="22" y="{y + 8}" width="44" height="44" rx="10" fill="#9C7FE0"/>'
+        inner += txt(80, y + 23, t, 13.5, 700)
+        inner += txt(80, y + 38, a, 12, 400, '#625B71')
         for k in range(5):
-            inner += star(86 + k * 15, y + 54, 6, k < rating)
-        hx, hy = w - 58, y + 40
-        inner += (f'<path d="M{hx},{hy} l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" '
-                  f'fill="{"#C2354F" if fav else "none"}" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round"/>')
+            inner += star(86 + k * 15, y + 50, 5.5, k < rating)
+        inner += heart(w - 58, y + 36, fav)
         tx = w - 28
-        inner += (f'<path d="M{tx - 6},{y + 28} H{tx + 6} M{tx - 4},{y + 28} L{tx - 3},{y + 42} H{tx + 3} L{tx + 4},{y + 28}" '
+        inner += (f'<path d="M{tx - 6},{y + 24} H{tx + 6} M{tx - 4},{y + 24} L{tx - 3},{y + 38} H{tx + 3} L{tx + 4},{y + 24}" '
                   f'fill="none" stroke="#49454F" stroke-width="1.6" stroke-linejoin="round"/>')
     px, py = 80, 104
     s += '  ' + device(px, py, w, h, inner, '#FEF7FF', f'{fid}-clip') + '\n'
-    s += '  ' + mark(px + 206, py + 12, 86, 32, 'amber', 10) + '\n'
-    s += '  ' + mark(px + 174, py + 12, 30, 32, 'rose', 8) + '\n'
-    s += '  ' + mark(px + 74, py + 262, 80, 20, 'violet', 6) + '\n'
+    s += '  ' + mark(px + 10, py + 68, 96, 26, 'amber', 8) + '\n'
+    s += '  ' + mark(px + w - 42, py + 68, 32, 26, 'rose', 8) + '\n'
+    s += '  ' + mark(px + 74, py + 309, 84, 19, 'violet', 6) + '\n'
     cards = [
-        ('amber', 'Contador en la barra', ['El AppBar dice cuántas canciones hay.', 'Sale de _songs.length, en la Screen.']),
-        ('rose', 'Solo favoritas', ['Un bool en la Screen. SongList recibe la', 'lista ya filtrada y el aviso a mostrar.']),
+        ('amber', 'El resumen', ['PlaylistSummary, arriba del formulario: recibe', 'count desde _songs.length y el corazón.']),
+        ('rose', 'Solo favoritas', ['El corazón avisa a la Screen, que guarda el bool.', 'SongList recibe la lista ya filtrada.']),
         ('violet', 'Calificación', ['Cinco estrellas: la tocada sube con onRate(n)', 'y la Screen hace copyWith(rating: n).']),
     ]
     for k, (color, title, body) in enumerate(cards):
         y = 112 + k * 148
         s += '  ' + card(480, y, 432, 124, color, title, body, num=k + 1) + '\n'
-    chips = [(px + 292, py + 44, 1, 'amber'), (px + 158, py + 28, 2, 'rose'), (px + 172, py + 272, 3, 'violet')]
+    chips = [(px + 120, py + 81, 1, 'amber'), (px + w - 58, py + 81, 2, 'rose'), (px + 174, py + 318, 3, 'violet')]
     for cx, cy, n, color in chips:
         strong = FAM[color][2]
         s += (f'  <circle cx="{cx}" cy="{cy}" r="13" fill="#FFFFFF" stroke="{strong}" stroke-width="2"/>'

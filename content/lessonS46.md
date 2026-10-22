@@ -1,10 +1,19 @@
 # El estado entra como parámetro
 
-<!-- tags: elevar el estado, pasar datos por el constructor, quién guarda el estado, SongList, StatelessWidget que recibe una lista, Screen dueña del estado, lista vacía, if dentro de build, un archivo con todo, lifting state up -->
+<!-- tags: elevar el estado, componentizar una pantalla, pasar datos por el constructor, quién guarda el estado, SongList, StatelessWidget que recibe una lista, Screen dueña del estado, lista vacía, if dentro de build, un archivo con todo, lifting state up -->
 
-La playlist de la sesión 6 funciona, pero todo vive en un solo lugar: `_PlaylistScreenState` tiene la lista, los tres controllers, el formulario, el botón y el `for` que pinta las tarjetas. Mientras la app es pequeña no importa. Cuando crece, ese archivo se vuelve el único lugar donde se puede tocar algo, y cada cambio pasa por él.
+La playlist de la sesión 6 funciona, pero tiene un problema que todavía no se nota: **no está hecha de piezas**. `PlaylistScreen` es una sola clase que guarda todas las variables y arma todos los widgets: los tres campos, el botón y la lista. `SongCard` es la única pieza con nombre propio. Cada mejora que le hagas a la app pasa por ese mismo archivo, y cada variable nueva es una línea más desde el mismo bloque de estado.
 
-Esta sesión parte del **Ejemplo completo de *El componente SongCard***. Si hiciste el taller de la sesión 6, puedes partir de tu proyecto: lo que cambia es lo mismo.
+Las apps de verdad se arman al revés: **pantallas compuestas de piezas**, cada una con un nombre y un trabajo. Compara las dos versiones de la misma app:
+
+```interactive
+compose
+```
+
+- **Sin componentes** es el *Ejemplo completo* de *El componente SongCard*, de donde parte esta sesión. A la derecha está el árbol de widgets y, debajo, el estado. Cada variable tiene una línea hasta el widget que la usa, y todas salen del mismo `_PlaylistScreenState`. Agrega canciones y mira cómo el árbol crece colgado de la Screen.
+- **Con componentes** es la app a la que vas a llegar en el taller: un resumen con el número de canciones y un filtro de favoritas, el formulario, y tarjetas con estrellas, favorita y papelera. El árbol ahora tiene piezas con nombre: `PlaylistSummary`, `SongForm`, `SongList` y `SongCard`. Fíjate en las líneas. El estado de la Screen ya no llega a cada tarjeta: solo a `PlaylistSummary` y `SongList`, que lo reciben por el constructor. Los controllers ya no están en la Screen, sino en `SongForm`, que tiene **su propio** estado.
+
+Pasar de una versión a la otra es el trabajo de esta sesión. Esta lección da el primer paso.
 
 ## Quién guarda y quién muestra
 

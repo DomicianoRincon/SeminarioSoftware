@@ -187,6 +187,18 @@ const CSS = `
 .fsim .fs-lift-actions{display:flex;gap:2px}
 .fsim .fs-lift-act{border:0;background:none;cursor:pointer;font-size:18px;color:var(--fs-accent);padding:2px 4px}
 .fsim .fs-lift-act.fs-on{color:#C2354F}
+.fsim .fs-cmp-bar{flex:1 1 100%;display:flex}
+.fsim .fs-cmp-tall .fs-phone{height:600px}
+.fsim .fs-cmp-state{display:flex;flex-direction:column;gap:8px}
+.fsim .fs-cmp-panel{display:flex;flex-direction:column;gap:10px;padding-right:80px}
+.fsim .fs-cmp-tree .fs-lift-node{margin:3px 0}
+.fsim .fs-lift-node.fs-cmp-holder{background:#F4EBFF;border-color:#C9A6EE}
+.fsim .fs-lift-node.fs-cmp-part{background:#EEF1FF;border-color:#A9B4F2}
+.fsim .fs-cmp-group{margin:0}
+.fsim .fs-lines .fs-cmp-bind{fill:none;stroke-width:1.75;opacity:.85}
+.fsim .fs-cmp-summary{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;margin:0 0 8px}
+.fsim .fs-cmp-stars{display:flex;gap:1px;margin-top:2px}
+.fsim .fs-cmp-star{border:0;background:none;padding:0 1px;cursor:pointer;font-size:15px;line-height:1;color:#D99A00}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -1946,6 +1958,328 @@ const mountLift = (root, args = []) => {
   };
 };
 
+// ─────────────────────────────────── compose ──────────────────────────────────
+
+// Two tabs of the same playlist. "Sin componentes" is where the session starts: one
+// Screen that holds every variable and every widget, so state lines reach deep into
+// the tree. "Con componentes" is where it ends: named pieces, a Screen whose state only
+// touches its direct children, and SongForm holding its own draft.
+
+const COMPOSE_COLORS = ['#7439B8', '#0F8478', '#C2354F', '#A96C05', '#4453C9', '#3A8235'];
+
+const starRow = (rating, onRate) => el('span', { class: 'fs-cmp-stars' },
+  ...[1, 2, 3, 4, 5].map((n) => el('button', {
+    class: `fs-cmp-star${n <= rating ? ' fs-on' : ''}`,
+    'aria-label': `${n} estrellas`,
+    text: n <= rating ? '★' : '☆',
+    onclick: () => onRate(n),
+  })));
+
+const mountCompose = (root) => {
+  const container = card(root);
+  let nextId = 1;
+  const model = {
+    songs: [],
+    onlyFavorites: false,
+    draft: { title: '', artist: '', imageUrl: DEFAULT_IMAGE },
+    showError: false,
+  };
+  let tab = 'flat';
+
+  const screen = phone('Mi playlist');
+  const treeBox = el('div', { class: 'fs-cmp-tree' });
+  const stateBox = el('div', { class: 'fs-cmp-state' });
+  const lines = svgEl('svg', { class: 'fs-lines', 'aria-hidden': 'true' });
+  const panel = el('div', { class: 'fs-panel fs-rel fs-cmp-panel' }, treeBox, stateBox, lines);
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'compose-caption' });
+  let nodeEls = {};
+  let varEls = {};
+  let bindings = [];
+
+  // ── phone
+  const field = (label, key, placeholder) => {
+    const node = el('input', { class: 'fs-field', placeholder, 'aria-label': label });
+    node.value = model.draft[key];
+    node.addEventListener('input', () => {
+      model.draft = { ...model.draft, [key]: node.value };
+      renderState();
+    });
+    return [el('div', { class: 'fs-label', text: label }), node];
+  };
+
+  const add = () => {
+    const { title, artist, imageUrl } = model.draft;
+    if (tab === 'parts' && (!title.trim() || !artist.trim())) {
+      model.showError = true;
+      render();
+      return;
+    }
+    model.songs = [...model.songs, { id: nextId++, title, artist, imageUrl: imageUrl || DEFAULT_IMAGE, isFavorite: false, rating: 0 }];
+    if (tab === 'parts') {
+      model.draft = { ...model.draft, title: '', artist: '' };
+      model.showError = false;
+    }
+    render();
+  };
+  const update = (id, change) => {
+    model.songs = model.songs.map((s) => (s.id === id ? { ...s, ...change } : s));
+    render();
+  };
+
+  const visible = () => (tab === 'parts' && model.onlyFavorites ? model.songs.filter((s) => s.isFavorite) : model.songs);
+
+  const partsCard = (song) => {
+    const node = songCard(song);
+    node.querySelector('.fs-card-text').appendChild(starRow(song.rating, (n) => update(song.id, { rating: n })));
+    node.querySelector('.fs-card-icon').replaceWith(el('span', { class: 'fs-lift-actions' },
+      el('button', {
+        class: `fs-lift-act${song.isFavorite ? ' fs-on' : ''}`,
+        'aria-label': `Favorita ${song.title}`,
+        text: song.isFavorite ? '♥' : '♡',
+        onclick: () => update(song.id, { isFavorite: !song.isFavorite }),
+      }),
+      el('button', {
+        class: 'fs-lift-act',
+        'aria-label': `Quitar ${song.title}`,
+        text: '🗑',
+        onclick: () => {
+          model.songs = model.songs.filter((s) => s.id !== song.id);
+          render();
+        },
+      })));
+    return node;
+  };
+
+  const renderPhone = () => {
+    const top = screen.body.scrollTop;
+    const body = [];
+    if (tab === 'parts') {
+      const count = model.songs.length;
+      body.push(el('div', { class: 'fs-cmp-summary' },
+        el('span', { text: count === 1 ? '1 canción' : `${count} canciones` }),
+        el('button', {
+          class: `fs-lift-act${model.onlyFavorites ? ' fs-on' : ''}`,
+          'aria-label': 'Solo favoritas',
+          text: model.onlyFavorites ? '♥' : '♡',
+          onclick: () => {
+            model.onlyFavorites = !model.onlyFavorites;
+            render();
+          },
+        })));
+    }
+    body.push(
+      ...field('Nombre de la canción', 'title', 'Yellow'),
+      ...field('Artista', 'artist', 'Coldplay'),
+      ...field('URL de la imagen', 'imageUrl', DEFAULT_IMAGE),
+      el('button', { class: 'fs-filled', text: 'Agregar', onclick: add })
+    );
+    if (tab === 'parts' && model.showError) body.push(el('div', { class: 'fs-lift-error', text: 'Escribe el nombre y el artista' }));
+    const songs = visible();
+    const list = el('div', { 'data-testid': 'compose-list' },
+      ...(tab === 'parts' && !songs.length
+        ? [el('div', { class: 'fs-empty', text: model.onlyFavorites ? 'No tienes favoritas' : 'Todavía no hay canciones' })]
+        : songs.map((s) => (tab === 'parts' ? partsCard(s) : songCard(s)))));
+    body.push(list);
+    screen.body.replaceChildren(...body);
+    screen.body.scrollTop = top;
+  };
+
+  // ── tree
+  const row = (key, depth, name, kind = '') => {
+    const node = el('div', { class: `fs-lift-node fs-cmp-${kind || 'plain'}`, 'data-node': key, style: `margin-left:${depth * 16}px` },
+      el('b', { text: name }));
+    nodeEls[key] = node;
+    return node;
+  };
+
+  const flatTree = () => {
+    const nodes = [
+      row('screen', 0, 'PlaylistScreen', 'holder'),
+      row('scaffold', 1, 'Scaffold'),
+      row('appbar', 2, 'AppBar'),
+      row('scroll', 2, 'SingleChildScrollView'),
+      row('column', 3, 'Column'),
+      row('title', 4, "TextField('Canción')"),
+      row('artist', 4, "TextField('Artista')"),
+      row('imageUrl', 4, "TextField('URL')"),
+      row('button', 4, "FilledButton('Agregar')"),
+      ...model.songs.map((s) => row(`card-${s.id}`, 4, `SongCard('${shorten(s.title || '—', 12)}')`, 'part')),
+    ];
+    bindings = [
+      ['_titleController', ['title']],
+      ['_artistController', ['artist']],
+      ['_imageUrlController', ['imageUrl']],
+      ['_songs', model.songs.map((s) => `card-${s.id}`)],
+    ];
+    return nodes;
+  };
+
+  const partsTree = () => {
+    const nodes = [
+      row('screen', 0, 'PlaylistScreen', 'holder'),
+      row('scaffold', 1, 'Scaffold'),
+      row('appbar', 2, 'AppBar'),
+      row('scroll', 2, 'SingleChildScrollView · Column'),
+      row('summary', 3, 'PlaylistSummary', 'part'),
+      row('form', 3, 'SongForm', 'holder'),
+      row('title', 4, "TextField('Canción')"),
+      row('artist', 4, "TextField('Artista')"),
+      row('imageUrl', 4, "TextField('URL')"),
+      row('button', 4, "FilledButton('Agregar')"),
+    ];
+    if (model.showError) nodes.push(row('error', 4, "Text('Escribe el nombre…')"));
+    nodes.push(row('list', 3, 'SongList', 'part'));
+    visible().forEach((s) => nodes.push(row(`card-${s.id}`, 4, `SongCard('${shorten(s.title || '—', 12)}')`, 'part')));
+    bindings = [
+      ['_songs', ['summary', 'list']],
+      ['_onlyFavorites', ['summary', 'list']],
+      ['_titleController', ['title']],
+      ['_artistController', ['artist']],
+      ['_imageUrlController', ['imageUrl']],
+      ['_showError', model.showError ? ['error'] : []],
+    ];
+    return nodes;
+  };
+
+  const renderTree = () => {
+    nodeEls = {};
+    const nodes = tab === 'flat' ? flatTree() : partsTree();
+    treeBox.replaceChildren(el('h4', { text: tab === 'flat' ? 'Árbol de widgets' : 'Árbol de componentes' }), ...nodes);
+  };
+
+  // ── state groups, under the tree
+  const songBlocks = () => el('span', { class: 'fs-lift-songs' },
+    ...(model.songs.length
+      ? model.songs.map((s) => el('span', { class: `fs-lift-song${s.isFavorite ? ' fs-fav' : ''}` },
+        el('b', { text: `#${s.id}` }), ` ${shorten(s.title || '—', 10)}${tab === 'parts' ? ` ${'★'.repeat(s.rating)}` : ''}`))
+      : [el('span', { class: 'fs-faint', text: '[ ] vacía' })]));
+
+  const variable = (name, type, value) => {
+    const val = typeof value === 'string' ? el('span', { class: 'fs-lift-val', text: value }) : value;
+    const node = el('div', { class: 'fs-lift-var', 'data-var': name },
+      el('span', { class: 'fs-var-type', text: type }), el('span', { class: 'fs-var-name', text: name }), val);
+    varEls[name] = node;
+    return node;
+  };
+  const group = (title, vars) => el('div', { class: 'fs-lift-holder fs-cmp-group' },
+    el('div', { class: 'fs-lift-holder-head' }, el('span', { text: title })), ...vars);
+
+  const controllers = () => ['title', 'artist', 'imageUrl'].map((key) => variable(`_${key}Controller`, 'TextEditingController', `'${shorten(model.draft[key], 16)}'`));
+
+  const renderState = () => {
+    varEls = {};
+    const groups = tab === 'flat'
+      ? [group('Estado · _PlaylistScreenState', [variable('_songs', 'List<Song>', songBlocks()), ...controllers()])]
+      : [
+        group('Estado · _PlaylistScreenState', [variable('_songs', 'List<Song>', songBlocks()), variable('_onlyFavorites', 'bool', String(model.onlyFavorites))]),
+        group('Estado · _SongFormState', [...controllers(), variable('_showError', 'bool', String(model.showError))]),
+      ];
+    stateBox.replaceChildren(...groups);
+    scheduleLines();
+  };
+
+  // ── lines: each variable climbs its own trunk on the right and turns left into
+  // every node it is bound to.
+  const markers = svgEl('defs');
+  const uid = ++treeUid;
+  COMPOSE_COLORS.forEach((color, i) => {
+    const marker = svgEl('marker', {
+      id: `fsim-cmp${uid}-${i}`, viewBox: '0 0 10 10', refX: '9', refY: '5',
+      markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse',
+    });
+    marker.appendChild(svgEl('path', { d: 'M0,0 L10,5 L0,10 L2.4,5 Z', fill: color }));
+    markers.appendChild(marker);
+  });
+
+  const drawLines = () => {
+    lines.replaceChildren(markers);
+    const base = panel.getBoundingClientRect();
+    const rect = (node) => {
+      const r = node.getBoundingClientRect();
+      return { l: r.left - base.left, r: r.right - base.left, t: r.top - base.top, b: r.bottom - base.top, cy: (r.top + r.bottom) / 2 - base.top };
+    };
+    const active = bindings.filter(([name, keys]) => varEls[name] && keys.some((k) => nodeEls[k]));
+    const arrivals = {};
+    active.forEach(([, keys]) => keys.forEach((k) => {
+      arrivals[k] = (arrivals[k] || 0) + 1;
+    }));
+    const seen = {};
+    active.forEach(([name, keys], i) => {
+      const color = COMPOSE_COLORS[i % COMPOSE_COLORS.length];
+      const from = rect(varEls[name]);
+      const trunk = base.width - 10 - i * 11;
+      keys.filter((k) => nodeEls[k]).forEach((k) => {
+        const to = rect(nodeEls[k]);
+        const slot = seen[k] || 0;
+        seen[k] = slot + 1;
+        const y = to.cy + (slot - (arrivals[k] - 1) / 2) * 7;
+        lines.appendChild(svgEl('path', {
+          class: 'fs-cmp-bind',
+          stroke: color,
+          d: `M${from.r + 4},${from.cy} H${trunk} V${y} H${to.r + 6}`,
+          'marker-end': `url(#fsim-cmp${uid}-${i % COMPOSE_COLORS.length})`,
+        }));
+      });
+      varEls[name].querySelector('.fs-var-name').style.color = color;
+    });
+  };
+  let queued = false;
+  const frames = new Set();
+  const scheduleLines = () => {
+    if (queued) return;
+    queued = true;
+    const id = raf(() => {
+      frames.delete(id);
+      queued = false;
+      drawLines();
+    });
+    frames.add(id);
+  };
+
+  const CAPTIONS = {
+    flat: 'Así quedó la sesión 6: un solo State con todas las variables, y un árbol donde todo cuelga de la misma Screen. Agrega canciones y mira cuántas líneas salen del mismo bloque.',
+    parts: 'A esto se llega: piezas con nombre. El estado de la Screen solo llega a PlaylistSummary y SongList; el borrador vive dentro de SongForm. Califica, marca favoritas y filtra.',
+  };
+
+  const render = () => {
+    renderPhone();
+    renderTree();
+    renderState();
+  };
+
+  const flatTab = el('button', { text: 'Sin componentes', class: 'fs-sel' });
+  const partsTab = el('button', { text: 'Con componentes' });
+  const select = (next) => {
+    tab = next;
+    flatTab.className = next === 'flat' ? 'fs-sel' : '';
+    partsTab.className = next === 'parts' ? 'fs-sel' : '';
+    model.showError = false;
+    caption.textContent = CAPTIONS[next];
+    render();
+  };
+  flatTab.addEventListener('click', () => select('flat'));
+  partsTab.addEventListener('click', () => select('parts'));
+
+  container.append(
+    el('div', { class: 'fs-cmp-bar' }, el('div', { class: 'fs-seg', role: 'tablist', 'aria-label': 'Versión' }, flatTab, partsTab)),
+    el('div', { class: 'fs-col fs-cmp-tall' }, screen.frame),
+    el('div', { class: 'fs-side' }, panel, el('div', { class: 'fs-panel' }, caption))
+  );
+  select('flat');
+
+  const onResize = () => scheduleLines();
+  window.addEventListener('resize', onResize);
+  const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(onResize) : null;
+  observer?.observe(panel);
+
+  return () => {
+    frames.forEach(cancelRaf);
+    observer?.disconnect();
+    window.removeEventListener('resize', onResize);
+    root.replaceChildren();
+  };
+};
+
 // ────────────────────────────── state-lifecycle ──────────────────────────────
 
 // The greeting screen on the phone and, next to it, the phases of its State joined by
@@ -2221,6 +2555,7 @@ export const SIMS = Object.freeze({
   'state-lifecycle': mountLifecycle,
   playlist: (root, args = []) => mountTree(root, ['playlist', ...args]),
   lift: mountLift,
+  compose: mountCompose,
 });
 
 export const parseSpec = (spec) => {

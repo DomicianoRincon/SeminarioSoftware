@@ -261,6 +261,9 @@ playlist cards
   baja por el constructor y naranja si sube por una función. Los nodos muestran sus parámetros (gris = solo lo pasa: prop
   drilling) y un contador `build ×n`. Sin opciones, el formulario sigue en la Screen; `events` agrega `SongForm` y quitar;
   `fav` agrega la favorita con `copyWith`, que cambia el número de la `Song`.
+  `compose` (`S0046`): pestañas *Sin componentes* y *Con componentes* de la misma playlist, teléfono funcional a la
+  izquierda y, a la derecha, el árbol con los grupos de estado debajo; cada variable sube por su propio carril y
+  entra en cada nodo al que está ligada.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar

@@ -341,3 +341,42 @@ describe('lift', () => {
     expect(screen.getByLabelText('Favorita Yellow').textContent).toBe('♥');
   });
 });
+
+describe('compose', () => {
+  const add = (title, artist) => {
+    type('Nombre de la canción', title);
+    type('Artista', artist);
+    fireEvent.click(screen.getByText('Agregar'));
+  };
+  const nodes = (container) => [...container.querySelectorAll('[data-node]')].map((n) => n.dataset.node);
+
+  it('starts flat: one State with every variable and the cards hanging from the Screen', () => {
+    const { container } = renderBlock('compose');
+    add('Yellow', 'Coldplay');
+    expect(nodes(container)).toContain('card-1');
+    expect(nodes(container)).not.toContain('form');
+    expect(container.querySelectorAll('.fs-cmp-group')).toHaveLength(1);
+    expect(container.querySelector('[data-var="_titleController"]')).toBeTruthy();
+    expect(screen.getByTestId('compose-list').querySelectorAll('.fs-card')).toHaveLength(1);
+  });
+
+  it('shows the named components, two state holders and a working app', () => {
+    const { container } = renderBlock('compose');
+    add('Yellow', 'Coldplay');
+    fireEvent.click(screen.getByRole('button', { name: 'Con componentes' }));
+    expect(nodes(container)).toEqual(expect.arrayContaining(['summary', 'form', 'list', 'card-1']));
+    expect(container.querySelectorAll('.fs-cmp-group')).toHaveLength(2);
+    expect(screen.getByText('1 canción')).toBeTruthy();
+    type('Artista', '');
+    fireEvent.click(screen.getByText('Agregar'));
+    expect(nodes(container)).toContain('error');
+    fireEvent.click(screen.getByLabelText('3 estrellas'));
+    expect(container.querySelector('[data-var="_songs"]').textContent).toContain('★★★');
+    fireEvent.click(screen.getByLabelText('Solo favoritas'));
+    expect(screen.getByTestId('compose-list').textContent).toBe('No tienes favoritas');
+    fireEvent.click(screen.getByLabelText('Solo favoritas'));
+    fireEvent.click(screen.getByLabelText('Favorita Yellow'));
+    fireEvent.click(screen.getByLabelText('Solo favoritas'));
+    expect(screen.getByTestId('compose-list').querySelectorAll('.fs-card')).toHaveLength(1);
+  });
+});
