@@ -368,6 +368,18 @@ def ta_meta():
               'corazón y la papelera. Tres marcas numeradas señalan el contador, el filtro y las reproducciones, '
               'cada una con su tarjeta a la derecha.')
     w, h = 300, 470
+
+    def star(cx, cy, r, full):
+        import math
+        pts = []
+        for k in range(10):
+            rr = r if k % 2 == 0 else r * 0.45
+            ang = -math.pi / 2 + k * math.pi / 5
+            pts.append(f'{cx + rr * math.cos(ang):.1f},{cy + rr * math.sin(ang):.1f}')
+        fill = '#F2B300' if full else 'none'
+        return (f'<polygon points="{" ".join(pts)}" fill="{fill}" stroke="#D99A00" '
+                f'stroke-width="1.2" stroke-linejoin="round"/>')
+
     inner = f'<rect width="{w}" height="56" fill="#D0BCFF"/>'
     inner += txt(16, 34, 'Mi playlist', 17, 500)
     inner += (f'<path d="M190,30 l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" fill="none" stroke="#1C1B1F" '
@@ -378,15 +390,15 @@ def ta_meta():
         inner += txt(28, 94 + i * 44, label, 12.5, 400, '#79747E')
     inner += f'<rect x="16" y="164" width="{w - 32}" height="34" rx="17" fill="#6750A4"/>'
     inner += txt(w / 2, 186, 'Agregar', 13, 600, '#FFFFFF', 'middle')
-    songs = [('Imagine', 'John Lennon', 4, False), ('Yellow', 'Coldplay', 12, True), ('Levitating', 'Dua Lipa', 0, False)]
-    for i, (t, a, plays, fav) in enumerate(songs):
+    songs = [('Imagine', 'John Lennon', 3, False), ('Yellow', 'Coldplay', 5, True), ('Levitating', 'Dua Lipa', 0, False)]
+    for i, (t, a, rating, fav) in enumerate(songs):
         y = 214 + i * 78
         inner += f'<rect x="12" y="{y}" width="{w - 24}" height="68" rx="14" fill="#FFFFFF" stroke="#E6E0F2"/>'
         inner += f'<rect x="22" y="{y + 10}" width="48" height="48" rx="10" fill="#9C7FE0"/>'
         inner += txt(80, y + 26, t, 13.5, 700)
         inner += txt(80, y + 42, a, 12, 400, '#625B71')
-        inner += txt(80, y + 57, f'{plays} reproducciones', 11, 400, '#79809A')
-        inner += f'<path d="M{w - 92},{y + 26} v16 l13,-8 Z" fill="#49454F"/>'
+        for k in range(5):
+            inner += star(86 + k * 15, y + 54, 6, k < rating)
         hx, hy = w - 58, y + 40
         inner += (f'<path d="M{hx},{hy} l-7,-7 a4.2,4.2 0 0 1 7,-5 a4.2,4.2 0 0 1 7,5 Z" '
                   f'fill="{"#C2354F" if fav else "none"}" stroke="#C2354F" stroke-width="1.8" stroke-linejoin="round"/>')
@@ -397,16 +409,16 @@ def ta_meta():
     s += '  ' + device(px, py, w, h, inner, '#FEF7FF', f'{fid}-clip') + '\n'
     s += '  ' + mark(px + 206, py + 12, 86, 32, 'amber', 10) + '\n'
     s += '  ' + mark(px + 174, py + 12, 30, 32, 'rose', 8) + '\n'
-    s += '  ' + mark(px + 74, py + 234, 150, 44, 'violet', 8) + '\n'
+    s += '  ' + mark(px + 74, py + 262, 80, 20, 'violet', 6) + '\n'
     cards = [
         ('amber', 'Contador en la barra', ['El AppBar dice cuántas canciones hay.', 'Sale de _songs.length, en la Screen.']),
         ('rose', 'Solo favoritas', ['Un bool en la Screen. SongList recibe la', 'lista ya filtrada y el aviso a mostrar.']),
-        ('violet', 'Reproducciones', ['Un campo plays en Song, un botón que', 'sube con onPlay y copyWith.']),
+        ('violet', 'Calificación', ['Cinco estrellas: la tocada sube con onRate(n)', 'y la Screen hace copyWith(rating: n).']),
     ]
     for k, (color, title, body) in enumerate(cards):
         y = 112 + k * 148
         s += '  ' + card(480, y, 432, 124, color, title, body, num=k + 1) + '\n'
-    chips = [(px + 249, py + 58, 1, 'amber'), (px + 189, py + 58, 2, 'rose'), (px + 224, py + 234, 3, 'violet')]
+    chips = [(px + 292, py + 44, 1, 'amber'), (px + 158, py + 28, 2, 'rose'), (px + 172, py + 272, 3, 'violet')]
     for cx, cy, n, color in chips:
         strong = FAM[color][2]
         s += (f'  <circle cx="{cx}" cy="{cy}" r="13" fill="#FFFFFF" stroke="{strong}" stroke-width="2"/>'
