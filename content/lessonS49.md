@@ -6,13 +6,7 @@ En la lección anterior `_songs` salió de la Screen hacia `SongList`, y la Scre
 
 ## El camino de un dato
 
-Agrega dos o tres canciones y sigue el paquete azul. La lista cambia **solo** en el estado de la Screen. Después baja por el constructor, primero a `SongList` y luego a cada `SongCard`. Cada paso es un salto entre dos widgets.
-
-```interactive
-lift
-```
-
-En código, el mismo camino tiene tres paradas:
+La lista vive **solo** en el estado de la Screen. Desde ahí baja por los constructores, primero a `SongList` y luego a cada `SongCard`. En código, el camino tiene tres paradas:
 
 ```svg
 <svg id="pdCamino" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="pdCamino-ttl pdCamino-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -52,7 +46,7 @@ En código, el mismo camino tiene tres paradas:
 
 En cada nivel se repite lo mismo. El widget **declara un campo** (`final List<Song> songs;`, `final Song song;`), su constructor lo recibe, y su `build()` lo usa o se lo pasa al siguiente. Ningún widget toma el dato "del aire": si `SongCard` puede mostrar un título, es porque alguien de arriba le entregó la canción.
 
-Fíjate también en los contadores `build ×n` del diagrama. Cuando la Screen corre `build()`, crea un `SongList` nuevo con la lista nueva, y ese `SongList` crea sus tarjetas. Nada se actualiza solo: todo sale de volver a construir con el dato nuevo.
+Cuando la lista cambia, la Screen corre `build()` y crea un `SongList` nuevo con la lista nueva, y ese `SongList` crea sus tarjetas. Nada se actualiza solo: todo sale de volver a construir con el dato nuevo.
 
 ## Eso es prop drilling
 
