@@ -94,59 +94,6 @@ def card(x, y, w, h, color, title, rows, num=None):
     return o
 
 
-# ───────────────────────────── S0046 · El estado entra como parámetro
-
-
-def le_quien():
-    fid = 'leQuien'
-    s = start(fid, 584, '¿Quién guarda datos y quién solo los muestra?',
-              '¿Quién guarda datos y quién solo los muestra?',
-              'Después del primer corte: la Screen guarda la lista y SongList la recibe por el constructor.',
-              'El árbol de la playlist. Arriba, PlaylistScreen, con su bloque de estado: la lista _songs y los tres '
-              'controllers. Debajo cuelgan AppBar, los campos del formulario, SongList y, dentro de SongList, una '
-              'SongCard por canción. Una flecha azul lleva songs del estado a SongList y otra lleva song de '
-              'SongList a cada SongCard. A la derecha, la regla del curso: solo la Screen, la Page y el formulario '
-              'guardan estado; todo lo demás es Stateless y recibe por constructor.')
-    s += '  ' + widget(48, 112, 320, 'PlaylistScreen', 'violet', 'StatefulWidget') + '\n'
-    s += '  <rect x="72" y="164" width="296" height="104" rx="10" fill="#F4EBFF" stroke="#C9A6EE" stroke-width="1.5"/>\n'
-    s += '  ' + txt(88, 186, 'ESTADO · _PlaylistScreenState', 12, 700, '#7439B8', cls='h') + '\n'
-    s += '  <rect x="88" y="198" width="264" height="26" rx="6" fill="#E6F0FF" stroke="#7FA6E8"/>\n'
-    s += '  ' + txt(100, 215.5, 'List&lt;Song&gt; _songs', 13, 700, '#1F4FA8', cls='mono') + '\n'
-    s += '  ' + txt(100, 250, '3 × TextEditingController', 13, 400, '#454C61', cls='mono') + '\n'
-    s += '  <path d="M72,156 V490 M72,322 H96 M72,378 H96 M72,434 H96 M120,456 V490 H144" fill="none" stroke="#C4CBD8" stroke-width="1.5" stroke-dasharray="4 4"/>\n'
-    s += '  ' + widget(96, 300, 260, 'AppBar') + '\n'
-    s += '  ' + widget(96, 356, 260, 'TextField ×3 · FilledButton') + '\n'
-    s += '  ' + widget(96, 412, 260, 'SongList', 'indigo', 'nuevo') + '\n'
-    s += '  ' + widget(144, 468, 212, 'SongCard ×n', 'indigo') + '\n'
-    s += '  ' + flow(fid, 'M352,211 H424 V424 H362', 'down') + '\n'
-    s += '  ' + txt(432, 320, 'songs: _songs', 13, 700, DOWN, cls='mono') + '\n'
-    s += '  ' + flow(fid, 'M356,442 H396 V490 H362', 'down') + '\n'
-    s += '  ' + txt(404, 478, 'song', 13, 700, DOWN, cls='mono') + '\n'
-
-    s += '  <rect x="560" y="112" width="352" height="232" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
-    s += '  ' + txt(580, 140, 'LA REGLA DEL CURSO', 12, 700, MUTED, cls='h') + '\n'
-    s += '  ' + txt(580, 172, 'Solo tres guardan estado:', 14, 700) + '\n'
-    x = 580
-    for name in ('Screen', 'Page', 'Formulario'):
-        w = len(name) * 8.4 + 28
-        s += f'  <rect x="{x}" y="186" width="{w}" height="28" rx="14" fill="#F4EBFF" stroke="#C9A6EE"/>\n'
-        s += '  ' + txt(x + w / 2, 205, name, 13, 700, '#7439B8', 'middle') + '\n'
-        x += w + 8
-    s += '  ' + txt(580, 240, 'Son StatefulWidget. Todo lo demás es', 13, 400, '#454C61') + '\n'
-    s += '  ' + txt(580, 259, 'StatelessWidget: recibe los datos por', 13, 400, '#454C61') + '\n'
-    s += '  ' + txt(580, 278, 'el constructor y no sabe de dónde vienen.', 13, 400, '#454C61') + '\n'
-    s += '  ' + txt(580, 316, 'El formulario guarda solo el borrador.', 13, 600, '#7439B8') + '\n'
-    s += '  ' + card(560, 368, 352, 120, 'indigo', 'SongCard ya cumplía la regla',
-                     ['Desde la sesión 6 recibe una Song y la dibuja.', 'SongList hace lo mismo con la lista entera:',
-                      'si está vacía, muestra el aviso.']) + '\n'
-    s += '  ' + txt(48, 552, 'El dato vive arriba y baja por el constructor. Ningún componente toca _songs.',
-                    13, 400, MUTED, fit=864) + '\n'
-    return s + '</svg>\n'
-
-
-FIGS['leQuien'] = le_quien
-
-
 # ───────────────────────────── S0047 · Funciones como parámetro
 
 
