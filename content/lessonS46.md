@@ -60,18 +60,6 @@ En la Screen, donde estaba el `for`, queda una línea:
 SongList(songs: _songs),
 ```
 
-## Pruébalo
-
-Agrega dos o tres canciones y sigue el paquete azul. La lista cambia **solo** en el bloque de estado de la Screen. Después baja por el constructor, primero a `SongList` y luego a cada `SongCard`. Cada paso es un salto entre dos widgets.
-
-```interactive
-lift
-```
-
-Fíjate en los contadores `build ×n`: cuando la Screen corre `build()`, crea un `SongList` nuevo con la lista nueva, y ese `SongList` crea sus tarjetas. Nada se actualiza "solo": todo sale de volver a construir con el dato nuevo.
-
-El formulario todavía es parte de la Screen y sus tres controllers siguen en el mismo State. Ese es el siguiente corte, y para hacerlo falta algo nuevo: que un componente pueda **avisarle algo a la Screen**.
-
 ## Ejemplo completo
 
 El programa entero en un archivo: `App`, `Song`, `SongCard`, `SongList` y `PlaylistScreen`. En tu proyecto, `SongList` va en `lib/components/song_list.dart`.
