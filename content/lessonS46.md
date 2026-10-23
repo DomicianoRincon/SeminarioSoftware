@@ -17,7 +17,7 @@ Pasar de una versión a la otra es el trabajo de esta sesión. Esta lección da 
 
 ## El primer corte: SongList
 
-El `for` que pinta las tarjetas sale de la Screen y se va a un componente propio, `SongList`, en `lib/components/song_list.dart`. Recibe **la lista entera** por el constructor:
+Es el camino de *Prop drilling*, ahora en tu proyecto. El `for` que pinta las tarjetas sale de la Screen y se va a un componente propio, `SongList`, en `lib/components/song_list.dart`. Recibe **la lista entera** por el constructor:
 
 ```dart
 import 'package:flutter/material.dart';
