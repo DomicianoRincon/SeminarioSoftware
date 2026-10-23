@@ -266,10 +266,12 @@ def pd_camino():
     boxes = [
         (112, 'PlaylistScreen', 'guarda', 'violet', [
             ('final List<Song> _songs = […];', None), ('…', None), ('SongList(songs: _songs),', '_songs')]),
-        (288, 'SongList', 'recibe y reparte', 'indigo', [
-            ('final List<Song> songs;', 'songs'), ('for (final song in songs)', None), ('  SongCard(song: song),', 'song)')]),
-        (464, 'SongCard', 'recibe y muestra', 'indigo', [
-            ('final Song song;', 'song'), ('Text(song.title),', None), ('Text(song.artist),', None)]),
+        (280, 'SongList', 'recibe y reparte', 'indigo', [
+            ('final List<Song> songs;', None), ('const SongList({super.key, required this.songs});', 'this.songs'),
+            ('for (final song in songs)', None), ('  SongCard(song: song),', 'song)')]),
+        (470, 'SongCard', 'recibe y muestra', 'indigo', [
+            ('final Song song;', None), ('const SongCard({super.key, required this.song});', 'this.song'),
+            ('Text(song.title),', None), ('Text(song.artist),', None)]),
     ]
     glow = ['k2', 'k3', 'k456']
     spots = []
@@ -279,8 +281,8 @@ def pd_camino():
         s += (f'  <rect class="an glow {g}" x="436" y="{y - 4}" width="480" height="{bh + 8}" rx="15" fill="none" '
               f'stroke="#2F6FD6" stroke-width="3"/>\n')
         spots.append(sp)
-    for (a, b, cls) in ((spots[0]['_songs'], spots[1]['songs'], 'k3'), (spots[1]['song)'], spots[2]['song'], 'k456')):
-        d = f'M{a[0] + a[2]},{a[1] + 10} H932 V{b[1] + 10} H918'
+    for (a, b, cls) in ((spots[0]['_songs'], spots[1]['this.songs'], 'k3'), (spots[1]['song)'], spots[2]['this.song'], 'k456')):
+        d = f'M{a[0] + a[2]},{a[1] + 10} H932 V{b[1] + 10} H{b[0] + b[2] + 28}'
         s += f'  <path d="{d}" fill="none" stroke="#C4CBD8" stroke-width="2" marker-end="url(#{fid}-gray)"/>\n'
         s += '  ' + flow(fid, d, 'down').replace('<path ', f'<path class="an {cls}" ', 1) + '\n'
 
@@ -294,9 +296,9 @@ def pd_camino():
         ('6', 'Tercera vuelta: la lista está completa. Nadie tomó el dato del aire.'),
     ]
     for i, (n, text) in enumerate(caps, start=1):
-        s += (f'  <g class="an cap c{i}"><circle cx="454" cy="{646}" r="13" fill="#2F6FD6"/>'
-              + txt(454, 650.5, n, 13, 700, '#FFFFFF', 'middle')
-              + txt(476, 651, text, 14, 500, INK, fit=436) + '</g>\n')
+        s += (f'  <g class="an cap c{i}"><circle cx="454" cy="664" r="13" fill="#2F6FD6"/>'
+              + txt(454, 668.5, n, 13, 700, '#FFFFFF', 'middle')
+              + txt(476, 669, text, 14, 500, INK, fit=436) + '</g>\n')
 
     # ── left: the phone, built step by step
     w, ph = 300, 560
