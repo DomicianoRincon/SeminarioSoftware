@@ -1,17 +1,17 @@
 # Prop drilling
 
-<!-- tags: prop drilling, pasar el estado por constructores, de la Screen a SongCard, el dato baja nivel por nivel, parámetro que no se usa, pasar datos por varios niveles, cuándo duele pasar datos, constructor muy largo, InheritedWidget, Provider -->
+<!-- tags: prop drilling, pasar el estado por constructores, el dato baja nivel por nivel, de la Screen a SongCard, parámetro que no se usa, pasar datos por varios niveles, cuándo duele pasar datos, InheritedWidget, Provider -->
 
-El taller pide una app hecha de piezas. Antes de cortar la primera, conviene ver cómo se van a comunicar. Si el estado vive en la Screen, ¿cómo llega una canción desde ahí hasta el `Text` que muestra su título?
+El taller pide una app hecha de piezas. Antes de cortar la primera, una pregunta: si la lista de canciones vive en la Screen, ¿cómo le llega una canción a la tarjeta que la muestra?
 
-## El camino de un dato
+## Qué es
 
-En la app con componentes, la lista vive **solo** en el estado de la Screen. Desde ahí baja por los constructores, primero a `SongList` y luego a cada `SongCard`. En código, el camino tiene tres paradas. `SongList` todavía no existe: lo creas en la próxima lección.
+Por el constructor, nivel por nivel. La Screen le pasa la lista a `SongList`, y `SongList`, en su `for`, le pasa una canción a cada `SongCard`. A eso se le llama **prop drilling**: *prop* viene de *property*, los parámetros de un componente, y *drilling* es perforar, porque el dato atraviesa los niveles hasta llegar a quien lo usa.
 
 ```svg
-<svg id="pdCamino" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="pdCamino-ttl pdCamino-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+<svg id="pdCamino" data-steps="6" data-step-seconds="2.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="pdCamino-ttl pdCamino-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="pdCamino-ttl">El camino de una canción</title>
-  <desc id="pdCamino-dsc">Tres bloques de código en fila. PlaylistScreen guarda _songs y crea SongList(songs: _songs). SongList declara final List de Song songs y en su for crea SongCard(song: song). SongCard declara final Song song y muestra Text(song.title). Flechas azules van de _songs al campo songs de SongList y de song al campo song de SongCard.</desc>
+  <desc id="pdCamino-dsc">Animación en seis pasos. A la izquierda, un celular; a la derecha, el código de PlaylistScreen, SongList y SongCard, uno debajo del otro, con flechas que van de _songs al campo songs de SongList y de song al campo song de SongCard. Uno: la pantalla en blanco. Dos: PlaylistScreen construye la barra y guarda tres canciones en _songs. Tres: la lista baja a SongList, que dibuja un esqueleto de tres filas. Cuatro, cinco y seis: el for de SongList crea una SongCard por canción y cada una llena su fila.</desc>
   <defs>
     <style>
       #pdCamino .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -23,38 +23,70 @@ En la app con componentes, la lista vive **solo** en el estado de la Screen. Des
       #pdCamino .foot{fill:#79809A;font-size:12px}
       #pdCamino .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
       #pdCamino .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#pdCamino-arrow)}
+      #pdCamino .an{opacity:0;animation-duration:15.0s;animation-iteration-count:infinite;animation-timing-function:linear}
+      #pdCamino .k2{animation-name:pdCamino-k2}
+      @keyframes pdCamino-k2{0%{opacity:0} 16.67%{opacity:0} 18.17%{opacity:1} 31.83%{opacity:1} 33.33%{opacity:0} 100%{opacity:0}}
+      #pdCamino .k3{animation-name:pdCamino-k3}
+      @keyframes pdCamino-k3{0%{opacity:0} 33.33%{opacity:0} 34.83%{opacity:1} 48.5%{opacity:1} 50.0%{opacity:0} 100%{opacity:0}}
+      #pdCamino .k456{animation-name:pdCamino-k456}
+      @keyframes pdCamino-k456{0%{opacity:0} 50.0%{opacity:0} 51.5%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      #pdCamino .f2{animation-name:pdCamino-f2}
+      @keyframes pdCamino-f2{0%{opacity:0} 16.67%{opacity:0} 18.17%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      #pdCamino .f3{animation-name:pdCamino-f3}
+      @keyframes pdCamino-f3{0%{opacity:0} 33.33%{opacity:0} 34.83%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      #pdCamino .f4{animation-name:pdCamino-f4}
+      @keyframes pdCamino-f4{0%{opacity:0} 50.0%{opacity:0} 51.5%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      #pdCamino .f5{animation-name:pdCamino-f5}
+      @keyframes pdCamino-f5{0%{opacity:0} 66.67%{opacity:0} 68.17%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      #pdCamino .f6{animation-name:pdCamino-f6}
+      @keyframes pdCamino-f6{0%{opacity:0} 83.33%{opacity:0} 84.83%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      #pdCamino .c1{animation-name:pdCamino-c1}
+      @keyframes pdCamino-c1{0%{opacity:0} 1.5%{opacity:1} 15.17%{opacity:1} 16.67%{opacity:0} 100%{opacity:0}}
+      #pdCamino .c2{animation-name:pdCamino-c2}
+      @keyframes pdCamino-c2{0%{opacity:0} 16.67%{opacity:0} 18.17%{opacity:1} 31.83%{opacity:1} 33.33%{opacity:0} 100%{opacity:0}}
+      #pdCamino .c3{animation-name:pdCamino-c3}
+      @keyframes pdCamino-c3{0%{opacity:0} 33.33%{opacity:0} 34.83%{opacity:1} 48.5%{opacity:1} 50.0%{opacity:0} 100%{opacity:0}}
+      #pdCamino .c4{animation-name:pdCamino-c4}
+      @keyframes pdCamino-c4{0%{opacity:0} 50.0%{opacity:0} 51.5%{opacity:1} 65.17%{opacity:1} 66.67%{opacity:0} 100%{opacity:0}}
+      #pdCamino .c5{animation-name:pdCamino-c5}
+      @keyframes pdCamino-c5{0%{opacity:0} 66.67%{opacity:0} 68.17%{opacity:1} 81.83%{opacity:1} 83.33%{opacity:0} 100%{opacity:0}}
+      #pdCamino .c6{animation-name:pdCamino-c6}
+      @keyframes pdCamino-c6{0%{opacity:0} 83.33%{opacity:0} 84.83%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
+      @media (prefers-reduced-motion: reduce){#pdCamino .an{animation:none;opacity:1}#pdCamino .cap,#pdCamino .glow{opacity:0}#pdCamino .c6{opacity:1}}
     </style>
     <marker id="pdCamino-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
     </marker>
     <marker id="pdCamino-down" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#2F6FD6"/></marker><marker id="pdCamino-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#C27A0E"/></marker><marker id="pdCamino-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#9AA1B2"/></marker>
   </defs>
-  <rect width="960" height="500" rx="16" fill="#FBFBFD"/>
+  <rect width="960" height="720" rx="16" fill="#FBFBFD"/>
   <text class="title" x="48" y="56">El camino de una canción</text>
-  <text class="sub" x="48" y="80" data-fit="860">De la Screen a la tarjeta, cada nivel recibe el dato por su constructor y se lo pasa al siguiente.</text>
-  <rect x="48" y="112" width="256" height="178" rx="12" fill="#1F2430"/><path d="M48,124 A12,12 0 0 1 60,112 H292 A12,12 0 0 1 304,124 V148 H48 Z" fill="#F4EBFF"/><text x="62" y="136" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">PlaylistScreen</text><text x="292" y="136" font-size="12" font-weight="600" fill="#7439B8" text-anchor="end">guarda</text><text x="62.0" y="174" font-size="12.5" fill="#C9CFDA" class="mono" textLength="217.5" lengthAdjust="spacingAndGlyphs">final List&lt;Song&gt; _songs = [];</text><text x="62.0" y="196" font-size="12.5" fill="#C9CFDA" class="mono" textLength="0.0" lengthAdjust="spacingAndGlyphs"></text><text x="62.0" y="218" font-size="12.5" fill="#C9CFDA" class="mono" textLength="127.5" lengthAdjust="spacingAndGlyphs">Widget build(…) {</text><text x="77.0" y="240" font-size="12.5" fill="#C9CFDA" class="mono" textLength="7.5" lengthAdjust="spacingAndGlyphs">…</text><rect x="194.0" y="247" width="51.0" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="77.0" y="262" font-size="12.5" fill="#C9CFDA" class="mono" textLength="180.0" lengthAdjust="spacingAndGlyphs">SongList(songs: _songs),</text>
-  <rect x="352" y="112" width="256" height="178" rx="12" fill="#1F2430"/><path d="M352,124 A12,12 0 0 1 364,112 H596 A12,12 0 0 1 608,124 V148 H352 Z" fill="#EEF1FF"/><text x="366" y="136" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">SongList</text><text x="596" y="136" font-size="12" font-weight="600" fill="#4453C9" text-anchor="end">recibe y reparte</text><rect x="490.5" y="159" width="43.5" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="366.0" y="174" font-size="12.5" fill="#C9CFDA" class="mono" textLength="172.5" lengthAdjust="spacingAndGlyphs">final List&lt;Song&gt; songs;</text><text x="366.0" y="196" font-size="12.5" fill="#C9CFDA" class="mono" textLength="0.0" lengthAdjust="spacingAndGlyphs"></text><text x="366.0" y="218" font-size="12.5" fill="#C9CFDA" class="mono" textLength="127.5" lengthAdjust="spacingAndGlyphs">Widget build(…) {</text><text x="381.0" y="240" font-size="12.5" fill="#C9CFDA" class="mono" textLength="187.5" lengthAdjust="spacingAndGlyphs">for (final song in songs)</text><rect x="505.5" y="247" width="43.5" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="396.0" y="262" font-size="12.5" fill="#C9CFDA" class="mono" textLength="157.5" lengthAdjust="spacingAndGlyphs">SongCard(song: song),</text>
-  <rect x="656" y="112" width="256" height="178" rx="12" fill="#1F2430"/><path d="M656,124 A12,12 0 0 1 668,112 H900 A12,12 0 0 1 912,124 V148 H656 Z" fill="#EEF1FF"/><text x="670" y="136" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">SongCard</text><text x="900" y="136" font-size="12" font-weight="600" fill="#4453C9" text-anchor="end">recibe y muestra</text><rect x="749.5" y="159" width="36.0" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="670.0" y="174" font-size="12.5" fill="#C9CFDA" class="mono" textLength="120.0" lengthAdjust="spacingAndGlyphs">final Song song;</text><text x="670.0" y="196" font-size="12.5" fill="#C9CFDA" class="mono" textLength="0.0" lengthAdjust="spacingAndGlyphs"></text><text x="670.0" y="218" font-size="12.5" fill="#C9CFDA" class="mono" textLength="127.5" lengthAdjust="spacingAndGlyphs">Widget build(…) {</text><text x="685.0" y="240" font-size="12.5" fill="#C9CFDA" class="mono" textLength="7.5" lengthAdjust="spacingAndGlyphs">…</text><rect x="719.5" y="247" width="36.0" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="685.0" y="262" font-size="12.5" fill="#C9CFDA" class="mono" textLength="127.5" lengthAdjust="spacingAndGlyphs">Text(song.title),</text>
-  <path d="M245.0,257 H328 V169 H350" fill="none" stroke="#2F6FD6" stroke-width="2.25" marker-end="url(#pdCamino-down)"/>
-  <path d="M549.0,257 H632 V169 H654" fill="none" stroke="#2F6FD6" stroke-width="2.25" marker-end="url(#pdCamino-down)"/>
-  <rect x="48" y="336" width="256" height="104" rx="12" fill="#FFFFFF" stroke="#C9A6EE" stroke-width="1.5"/><text x="64" y="367" font-size="14.5" font-weight="700" fill="#161A26" text-anchor="start" data-fit="228">Guarda el dato</text><text x="64" y="394" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="224">Es su estado. Lo entrega</text><text x="64" y="413" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="224">al hijo por el constructor.</text>
-  <rect x="352" y="336" width="256" height="104" rx="12" fill="#FFFFFF" stroke="#A9B4F2" stroke-width="1.5"/><text x="368" y="367" font-size="14.5" font-weight="700" fill="#161A26" text-anchor="start" data-fit="228">Recibe y reparte</text><text x="368" y="394" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="224">Usa la lista para el for y</text><text x="368" y="413" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="224">a cada tarjeta le da una Song.</text>
-  <rect x="656" y="336" width="256" height="104" rx="12" fill="#FFFFFF" stroke="#A9B4F2" stroke-width="1.5"/><text x="672" y="367" font-size="14.5" font-weight="700" fill="#161A26" text-anchor="start" data-fit="228">Recibe y muestra</text><text x="672" y="394" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="224">No sabe de dónde vino:</text><text x="672" y="413" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="224">solo dibuja lo que le llegó.</text>
-  <text x="48" y="476" font-size="12.5" font-weight="400" fill="#556074" text-anchor="start" data-fit="864">Nadie toma el dato del aire: si un widget lo necesita, alguien de arriba se lo pasó.</text>
+  <text class="sub" x="48" y="80" data-fit="860">La pantalla se construye de arriba abajo: cada nivel recibe el dato por su constructor y se lo pasa al siguiente.</text>
+  <rect x="440" y="112" width="472" height="134" rx="12" fill="#1F2430"/><path d="M440,124 A12,12 0 0 1 452,112 H900 A12,12 0 0 1 912,124 V148 H440 Z" fill="#F4EBFF"/><text x="454" y="136" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">PlaylistScreen</text><text x="900" y="136" font-size="12" font-weight="600" fill="#7439B8" text-anchor="end">guarda</text><text x="454.0" y="174" font-size="12.5" fill="#C9CFDA" class="mono" textLength="225.0" lengthAdjust="spacingAndGlyphs">final List&lt;Song&gt; _songs = […];</text><text x="454.0" y="196" font-size="12.5" fill="#C9CFDA" class="mono" textLength="7.5" lengthAdjust="spacingAndGlyphs">…</text><rect x="571.0" y="203" width="51.0" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="454.0" y="218" font-size="12.5" fill="#C9CFDA" class="mono" textLength="180.0" lengthAdjust="spacingAndGlyphs">SongList(songs: _songs),</text>
+  <rect class="an glow k2" x="436" y="108" width="480" height="142" rx="15" fill="none" stroke="#2F6FD6" stroke-width="3"/>
+  <rect x="440" y="288" width="472" height="134" rx="12" fill="#1F2430"/><path d="M440,300 A12,12 0 0 1 452,288 H900 A12,12 0 0 1 912,300 V324 H440 Z" fill="#EEF1FF"/><text x="454" y="312" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">SongList</text><text x="900" y="312" font-size="12" font-weight="600" fill="#4453C9" text-anchor="end">recibe y reparte</text><rect x="578.5" y="335" width="43.5" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="454.0" y="350" font-size="12.5" fill="#C9CFDA" class="mono" textLength="172.5" lengthAdjust="spacingAndGlyphs">final List&lt;Song&gt; songs;</text><text x="454.0" y="372" font-size="12.5" fill="#C9CFDA" class="mono" textLength="187.5" lengthAdjust="spacingAndGlyphs">for (final song in songs)</text><rect x="578.5" y="379" width="43.5" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="469.0" y="394" font-size="12.5" fill="#C9CFDA" class="mono" textLength="157.5" lengthAdjust="spacingAndGlyphs">SongCard(song: song),</text>
+  <rect class="an glow k3" x="436" y="284" width="480" height="142" rx="15" fill="none" stroke="#2F6FD6" stroke-width="3"/>
+  <rect x="440" y="464" width="472" height="134" rx="12" fill="#1F2430"/><path d="M440,476 A12,12 0 0 1 452,464 H900 A12,12 0 0 1 912,476 V500 H440 Z" fill="#EEF1FF"/><text x="454" y="488" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono">SongCard</text><text x="900" y="488" font-size="12" font-weight="600" fill="#4453C9" text-anchor="end">recibe y muestra</text><rect x="533.5" y="511" width="36.0" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/><text x="454.0" y="526" font-size="12.5" fill="#C9CFDA" class="mono" textLength="120.0" lengthAdjust="spacingAndGlyphs">final Song song;</text><text x="454.0" y="548" font-size="12.5" fill="#C9CFDA" class="mono" textLength="127.5" lengthAdjust="spacingAndGlyphs">Text(song.title),</text><text x="454.0" y="570" font-size="12.5" fill="#C9CFDA" class="mono" textLength="135.0" lengthAdjust="spacingAndGlyphs">Text(song.artist),</text>
+  <rect class="an glow k456" x="436" y="460" width="480" height="142" rx="15" fill="none" stroke="#2F6FD6" stroke-width="3"/>
+  <path d="M622.0,213 H932 V345 H918" fill="none" stroke="#C4CBD8" stroke-width="2" marker-end="url(#pdCamino-gray)"/>
+  <path class="an k3" d="M622.0,213 H932 V345 H918" fill="none" stroke="#2F6FD6" stroke-width="2.25" marker-end="url(#pdCamino-down)"/>
+  <path d="M622.0,389 H932 V521 H918" fill="none" stroke="#C4CBD8" stroke-width="2" marker-end="url(#pdCamino-gray)"/>
+  <path class="an k456" d="M622.0,389 H932 V521 H918" fill="none" stroke="#2F6FD6" stroke-width="2.25" marker-end="url(#pdCamino-down)"/>
+  <g class="an cap c1"><circle cx="454" cy="646" r="13" fill="#2F6FD6"/><text x="454" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text><text x="476" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="436">La app arranca: todavía no hay nada que mostrar.</text></g>
+  <g class="an cap c2"><circle cx="454" cy="646" r="13" fill="#2F6FD6"/><text x="454" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text><text x="476" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="436">PlaylistScreen construye la barra y guarda tres canciones.</text></g>
+  <g class="an cap c3"><circle cx="454" cy="646" r="13" fill="#2F6FD6"/><text x="454" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text><text x="476" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="436">La lista baja a SongList, que arma una fila por canción.</text></g>
+  <g class="an cap c4"><circle cx="454" cy="646" r="13" fill="#2F6FD6"/><text x="454" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text><text x="476" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="436">El for de SongList crea la primera SongCard y le pasa su song.</text></g>
+  <g class="an cap c5"><circle cx="454" cy="646" r="13" fill="#2F6FD6"/><text x="454" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text><text x="476" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="436">Segunda vuelta del for: otra SongCard, otra song.</text></g>
+  <g class="an cap c6"><circle cx="454" cy="646" r="13" fill="#2F6FD6"/><text x="454" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text><text x="476" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="436">Tercera vuelta: la lista está completa. Nadie tomó el dato del aire.</text></g>
+  <clipPath id="pdCamino-clip"><rect width="300" height="560" rx="20"/></clipPath><rect x="65" y="113" width="314" height="574" rx="27" fill="#1F2430"/><g transform="translate(72,120)"><g clip-path="url(#pdCamino-clip)"><rect width="300" height="560" rx="20" fill="#FFFFFF"/><g class="an f2"><rect width="300" height="56" fill="#D0BCFF"/><text x="16" y="35" font-size="17" font-weight="500" fill="#161A26" text-anchor="start">Mi playlist</text></g><rect class="an k2" x="3" y="3" width="294" height="554" rx="18" fill="none" stroke="#7439B8" stroke-width="2" stroke-dasharray="6 5"/><g class="an k2"><text x="150.0" y="280.0" font-size="13" font-weight="700" fill="#7439B8" text-anchor="middle" class="mono">PlaylistScreen</text></g><g class="an f3"><rect x="10" y="70" width="280" height="272" rx="12" fill="none" stroke="#4453C9" stroke-width="1.5" stroke-dasharray="6 5"/><text x="282" y="88" font-size="12" font-weight="700" fill="#4453C9" text-anchor="end" class="mono">SongList</text></g><g class="an f3"><rect x="22" y="96" width="256" height="68" rx="12" fill="#EEF0F4"/><rect x="32" y="106" width="48" height="48" rx="10" fill="#DDE1E8"/><rect x="92" y="114" width="110" height="11" rx="5" fill="#DDE1E8"/><rect x="92" y="134" width="76" height="9" rx="4" fill="#DDE1E8"/></g><g class="an f4"><rect x="22" y="96" width="256" height="68" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/><rect x="32" y="106" width="48" height="48" rx="10" fill="#9C7FE0"/><text x="92" y="126" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Imagine</text><text x="92" y="145" font-size="12.5" font-weight="400" fill="#625B71" text-anchor="start">John Lennon</text></g><rect class="an c4" x="18" y="92" width="264" height="76" rx="14" fill="none" stroke="#2F6FD6" stroke-width="2.5"/><g class="an f3"><rect x="22" y="176" width="256" height="68" rx="12" fill="#EEF0F4"/><rect x="32" y="186" width="48" height="48" rx="10" fill="#DDE1E8"/><rect x="92" y="194" width="110" height="11" rx="5" fill="#DDE1E8"/><rect x="92" y="214" width="76" height="9" rx="4" fill="#DDE1E8"/></g><g class="an f5"><rect x="22" y="176" width="256" height="68" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/><rect x="32" y="186" width="48" height="48" rx="10" fill="#9C7FE0"/><text x="92" y="206" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Yellow</text><text x="92" y="225" font-size="12.5" font-weight="400" fill="#625B71" text-anchor="start">Coldplay</text></g><rect class="an c5" x="18" y="172" width="264" height="76" rx="14" fill="none" stroke="#2F6FD6" stroke-width="2.5"/><g class="an f3"><rect x="22" y="256" width="256" height="68" rx="12" fill="#EEF0F4"/><rect x="32" y="266" width="48" height="48" rx="10" fill="#DDE1E8"/><rect x="92" y="274" width="110" height="11" rx="5" fill="#DDE1E8"/><rect x="92" y="294" width="76" height="9" rx="4" fill="#DDE1E8"/></g><g class="an f6"><rect x="22" y="256" width="256" height="68" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/><rect x="32" y="266" width="48" height="48" rx="10" fill="#9C7FE0"/><text x="92" y="286" font-size="14" font-weight="700" fill="#161A26" text-anchor="start">Levitating</text><text x="92" y="305" font-size="12.5" font-weight="400" fill="#625B71" text-anchor="start">Dua Lipa</text></g><rect class="an c6" x="18" y="252" width="264" height="76" rx="14" fill="none" stroke="#2F6FD6" stroke-width="2.5"/></g></g>
 </svg>
 ```
 
-En cada nivel se repite lo mismo. El widget **declara un campo** (`final List<Song> songs;`, `final Song song;`), su constructor lo recibe, y su `build()` lo usa o se lo pasa al siguiente. Ningún widget toma el dato "del aire": si `SongCard` puede mostrar un título, es porque alguien de arriba le entregó la canción.
+En cada nivel se repite lo mismo: el widget declara un campo, su constructor lo recibe y su `build()` lo usa o se lo pasa al siguiente. Ningún widget toma el dato del aire. `SongList` todavía no existe: lo creas en la próxima lección.
 
-Cuando la lista cambia, la Screen corre `build()` y crea un `SongList` nuevo con la lista nueva, y ese `SongList` crea sus tarjetas. Nada se actualiza solo: todo sale de volver a construir con el dato nuevo.
+## Cuándo es un problema
 
-## Eso es prop drilling
-
-Pasar un dato **de nivel en nivel por los constructores**, hasta el widget que lo usa, se llama **prop drilling**. *Prop* viene de *property*: los parámetros de un componente. *Drilling* es perforar: el dato atraviesa los niveles del medio.
-
-En la playlist cada nivel **usa** lo que recibe. La Screen lo guarda, `SongList` recorre la lista y `SongCard` la dibuja. Ese drilling es sano, y es justo lo que el curso quiere: el dato vive arriba y baja por el constructor.
-
-El problema aparece cuando la app crece y entre la Screen y la tarjeta hay widgets que **no usan** el dato y lo reciben solo para pasarlo:
+En la playlist cada nivel **usa** lo que recibe: la Screen lo guarda, `SongList` lo recorre y `SongCard` lo dibuja. Así está bien. El problema aparece cuando la app crece y en el medio hay widgets que reciben el dato **solo para pasarlo**.
 
 ```svg
 <svg id="pdNiveles" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="pdNiveles-ttl pdNiveles-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -89,18 +121,8 @@ El problema aparece cuando la app crece y entre la Screen y la tarjeta hay widge
 </svg>
 ```
 
-## Hasta dónde se tolera
+Tres señales lo delatan: un widget recibe algo que no usa, un cambio obliga a tocar tres archivos o más, y los constructores se llenan de parámetros.
 
-Uno o dos niveles de paso se toleran, y en este curso es lo correcto. Tiene una ventaja que no se ve hasta que falta: es **explícito**. Si quieres saber de dónde sale la `song` de una tarjeta, subes por los constructores y llegas a la Screen. No hay nada escondido.
+## En este curso
 
-En las próximas lecciones el mismo camino va a llevar también **funciones**: para quitar una canción, `onDelete` baja de la Screen a la tarjeta pasando por `SongList`. Ahí aparece el primer parámetro que `SongList` recibe solo para entregarlo.
-
-## Las señales de que empieza a doler
-
-1. **Un widget recibe lo que no usa.** Si en el constructor hay parámetros que el `build()` solo reenvía, es drilling de paso. Uno se tolera. Si la mayoría del constructor es eso, el widget es un tubo.
-2. **Un cambio, tres archivos.** Agregar un dato nuevo obliga a tocar la Screen, cada intermediario y el componente final. Si sumar algo te hace editar tres archivos o más, el drilling ya cuesta.
-3. **Cinco parámetros o más.** Un constructor así ya no se lee de un vistazo, y es fácil pasar uno en el lugar de otro.
-
-## Las salidas, para después
-
-Cuando el drilling duele de verdad, Flutter tiene formas de que un widget lea algo de un ancestro **sin** que los del medio lo pasen: `InheritedWidget`, que viene en Flutter, y paquetes como `Provider` o Bloc que se apoyan en él. Funcionan, pero esconden de dónde sale cada dato, y ese precio solo vale la pena con apps grandes. En este curso el estado se maneja con `setState` y se pasa por el constructor. Lo importante es que sepas reconocer el momento en que esto deja de alcanzar.
+El drilling corto es lo correcto: es explícito, y para saber de dónde sale un dato basta con subir por los constructores. Cuando duele de verdad, Flutter tiene salidas como `InheritedWidget` o paquetes como `Provider` y Bloc, que dejan leer un dato de un ancestro sin que los del medio lo pasen. Aquí no se usan: el estado se maneja con `setState` y baja por el constructor.

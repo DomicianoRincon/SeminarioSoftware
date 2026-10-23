@@ -227,46 +227,97 @@ def code_box(x, y, w, title, kind, rows, color):
 
 
 def pd_camino():
-    fid = 'pdCamino'
-    s = start(fid, 500, 'El camino de una canción', 'El camino de una canción',
-              'De la Screen a la tarjeta, cada nivel recibe el dato por su constructor y se lo pasa al siguiente.',
-              'Tres bloques de código en fila. PlaylistScreen guarda _songs y crea SongList(songs: _songs). '
-              'SongList declara final List de Song songs y en su for crea SongCard(song: song). SongCard declara '
-              'final Song song y muestra Text(song.title). Flechas azules van de _songs al campo songs de SongList '
-              'y de song al campo song de SongCard.')
+    """Animada: seis pasos de 2,5 s. A la izquierda la pantalla se construye; a la derecha se
+    ilumina el código que la construye y la flecha por la que baja el dato."""
+    fid, h = 'pdCamino', 720
+    steps, secs = 6, 2.5
+    s = start(fid, h, 'El camino de una canción', 'El camino de una canción',
+              'La pantalla se construye de arriba abajo: cada nivel recibe el dato por su constructor y se lo pasa al siguiente.',
+              'Animación en seis pasos. A la izquierda, un celular; a la derecha, el código de PlaylistScreen, SongList y '
+              'SongCard, uno debajo del otro, con flechas que van de _songs al campo songs de SongList y de song al campo '
+              'song de SongCard. Uno: la pantalla en blanco. Dos: PlaylistScreen construye la barra y guarda tres canciones '
+              'en _songs. Tres: la lista baja a SongList, que dibuja un esqueleto de tres filas. Cuatro, cinco y seis: el for '
+              'de SongList crea una SongCard por canción y cada una llena su fila.')
+    pct = lambda k: round(k * 100 / steps, 2)
+    spans = {
+        'k2': [(pct(1), pct(2))], 'k3': [(pct(2), pct(3))], 'k456': [(pct(3), 100)],
+        'f2': [(pct(1), 100)], 'f3': [(pct(2), 100)],
+        'f4': [(pct(3), 100)], 'f5': [(pct(4), 100)], 'f6': [(pct(5), 100)],
+        'c1': [(0, pct(1))], 'c2': [(pct(1), pct(2))], 'c3': [(pct(2), pct(3))],
+        'c4': [(pct(3), pct(4))], 'c5': [(pct(4), pct(5))], 'c6': [(pct(5), 100)],
+    }
+
+    def keyframes(name, sp):
+        pts = {0: 0, 100: 0}
+        for a, b in sp:
+            pts.update({a: 0, round(a + 1.5, 2): 1, round(b - 1.5, 2): 1, b: 0})
+        body = ' '.join(f'{k}%{{opacity:{v}}}' for k, v in sorted(pts.items()))
+        return f'      #{fid} .{name}{{animation-name:{fid}-{name}}}\n      @keyframes {fid}-{name}{{{body}}}\n'
+
+    css = (f'      #{fid} .an{{opacity:0;animation-duration:{steps * secs}s;animation-iteration-count:infinite;'
+           f'animation-timing-function:linear}}\n')
+    css += ''.join(keyframes(k, v) for k, v in spans.items())
+    css += (f'      @media (prefers-reduced-motion: reduce){{#{fid} .an{{animation:none;opacity:1}}'
+            f'#{fid} .cap,#{fid} .glow{{opacity:0}}#{fid} .c6{{opacity:1}}}}\n')
+    s = s.replace('    </style>', css + '    </style>', 1)
+    s = s.replace(f'<svg id="{fid}"', f'<svg id="{fid}" data-steps="{steps}" data-step-seconds="{secs}"', 1)
+
+    # ── right: the three components, top to bottom
     boxes = [
-        (48, 'PlaylistScreen', 'guarda', 'violet', [
-            ('final List&lt;Song&gt; _songs = [];', None), ('', None), ('Widget build(…) {', None),
-            ('  …', None), ('  SongList(songs: _songs),', '_songs')]),
-        (352, 'SongList', 'recibe y reparte', 'indigo', [
-            ('final List&lt;Song&gt; songs;', 'songs'), ('', None), ('Widget build(…) {', None),
-            ('  for (final song in songs)', None), ('    SongCard(song: song),', 'song)')]),
-        (656, 'SongCard', 'recibe y muestra', 'indigo', [
-            ('final Song song;', 'song'), ('', None), ('Widget build(…) {', None),
-            ('  …', None), ('  Text(song.title),', 'song')]),
+        (112, 'PlaylistScreen', 'guarda', 'violet', [
+            ('final List<Song> _songs = […];', None), ('…', None), ('SongList(songs: _songs),', '_songs')]),
+        (288, 'SongList', 'recibe y reparte', 'indigo', [
+            ('final List<Song> songs;', 'songs'), ('for (final song in songs)', None), ('  SongCard(song: song),', 'song)')]),
+        (464, 'SongCard', 'recibe y muestra', 'indigo', [
+            ('final Song song;', 'song'), ('Text(song.title),', None), ('Text(song.artist),', None)]),
     ]
+    glow = ['k2', 'k3', 'k456']
     spots = []
-    for x, title, kind, color, rows in boxes:
-        clean = [(r.replace('&lt;', '<').replace('&gt;', '>'), h) for r, h in rows]
-        o, h, sp = code_box(x, 112, 256, title, kind, clean, color)
-        o = o.replace('List<Song>', 'List&lt;Song&gt;')
-        s += '  ' + o + '\n'
+    for (y, title, kind, color, rows), g in zip(boxes, glow):
+        o, bh, sp = code_box(440, y, 472, title, kind, rows, color)
+        s += '  ' + o.replace('List<Song>', 'List&lt;Song&gt;') + '\n'
+        s += (f'  <rect class="an glow {g}" x="436" y="{y - 4}" width="480" height="{bh + 8}" rx="15" fill="none" '
+              f'stroke="#2F6FD6" stroke-width="3"/>\n')
         spots.append(sp)
-    a = spots[0]['_songs']
-    b = spots[1]['songs']
-    s += '  ' + flow(fid, f'M{a[0] + a[2]},{a[1] + 10} H328 V{b[1] + 10} H350', 'down') + '\n'
-    c = spots[1]['song)']
-    d = spots[2]['song']
-    s += '  ' + flow(fid, f'M{c[0] + c[2]},{c[1] + 10} H632 V{d[1] + 10} H654', 'down') + '\n'
-    notes = [
-        (48, 'violet', 'Guarda el dato', ['Es su estado. Lo entrega', 'al hijo por el constructor.']),
-        (352, 'indigo', 'Recibe y reparte', ['Usa la lista para el for y', 'a cada tarjeta le da una Song.']),
-        (656, 'indigo', 'Recibe y muestra', ['No sabe de dónde vino:', 'solo dibuja lo que le llegó.']),
+    for (a, b, cls) in ((spots[0]['_songs'], spots[1]['songs'], 'k3'), (spots[1]['song)'], spots[2]['song'], 'k456')):
+        d = f'M{a[0] + a[2]},{a[1] + 10} H932 V{b[1] + 10} H918'
+        s += f'  <path d="{d}" fill="none" stroke="#C4CBD8" stroke-width="2" marker-end="url(#{fid}-gray)"/>\n'
+        s += '  ' + flow(fid, d, 'down').replace('<path ', f'<path class="an {cls}" ', 1) + '\n'
+
+    # ── captions under the code
+    caps = [
+        ('1', 'La app arranca: todavía no hay nada que mostrar.'),
+        ('2', 'PlaylistScreen construye la barra y guarda tres canciones.'),
+        ('3', 'La lista baja a SongList, que arma una fila por canción.'),
+        ('4', 'El for de SongList crea la primera SongCard y le pasa su song.'),
+        ('5', 'Segunda vuelta del for: otra SongCard, otra song.'),
+        ('6', 'Tercera vuelta: la lista está completa. Nadie tomó el dato del aire.'),
     ]
-    for x, color, title, rows in notes:
-        s += '  ' + card(x, 336, 256, 104, color, title, rows) + '\n'
-    s += '  ' + txt(48, 476, 'Nadie toma el dato del aire: si un widget lo necesita, alguien de arriba se lo pasó.',
-                    12.5, 400, MUTED, fit=864) + '\n'
+    for i, (n, text) in enumerate(caps, start=1):
+        s += (f'  <g class="an cap c{i}"><circle cx="454" cy="{646}" r="13" fill="#2F6FD6"/>'
+              + txt(454, 650.5, n, 13, 700, '#FFFFFF', 'middle')
+              + txt(476, 651, text, 14, 500, INK, fit=436) + '</g>\n')
+
+    # ── left: the phone, built step by step
+    w, ph = 300, 560
+    inner = f'<g class="an f2"><rect width="{w}" height="56" fill="#D0BCFF"/>' + txt(16, 35, 'Mi playlist', 17, 500) + '</g>'
+    inner += f'<rect class="an k2" x="3" y="3" width="{w - 6}" height="{ph - 6}" rx="18" fill="none" stroke="#7439B8" stroke-width="2" stroke-dasharray="6 5"/>'
+    inner += f'<g class="an k2">' + txt(w / 2, ph / 2, 'PlaylistScreen', 13, 700, '#7439B8', 'middle', 'mono') + '</g>'
+    inner += f'<g class="an f3"><rect x="10" y="70" width="{w - 20}" height="272" rx="12" fill="none" stroke="#4453C9" stroke-width="1.5" stroke-dasharray="6 5"/>'
+    inner += txt(w - 18, 88, 'SongList', 12, 700, '#4453C9', 'end', 'mono') + '</g>'
+    songs = [('Imagine', 'John Lennon'), ('Yellow', 'Coldplay'), ('Levitating', 'Dua Lipa')]
+    for i, (t, a) in enumerate(songs):
+        y = 96 + i * 80
+        inner += (f'<g class="an f3"><rect x="22" y="{y}" width="{w - 44}" height="68" rx="12" fill="#EEF0F4"/>'
+                  f'<rect x="32" y="{y + 10}" width="48" height="48" rx="10" fill="#DDE1E8"/>'
+                  f'<rect x="92" y="{y + 18}" width="110" height="11" rx="5" fill="#DDE1E8"/>'
+                  f'<rect x="92" y="{y + 38}" width="76" height="9" rx="4" fill="#DDE1E8"/></g>')
+        inner += (f'<g class="an f{4 + i}"><rect x="22" y="{y}" width="{w - 44}" height="68" rx="12" fill="#FFFFFF" stroke="#E6E0F2"/>'
+                  f'<rect x="32" y="{y + 10}" width="48" height="48" rx="10" fill="#9C7FE0"/>'
+                  + txt(92, y + 30, t, 14, 700) + txt(92, y + 49, a, 12.5, 400, '#625B71') + '</g>')
+        inner += (f'<rect class="an c{4 + i}" x="18" y="{y - 4}" width="{w - 36}" height="76" rx="14" fill="none" '
+                  f'stroke="#2F6FD6" stroke-width="2.5"/>')
+    s += '  ' + device(72, 120, w, ph, inner, '#FFFFFF', f'{fid}-clip') + '\n'
     return s + '</svg>\n'
 
 
