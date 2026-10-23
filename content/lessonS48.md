@@ -1,8 +1,8 @@
 # Modelos con copyWith
 
-<!-- tags: copyWith, modelo inmutable, campos final, cambiar un campo de un objeto, can't be used as a setter because it's final, favorita, isFavorite, reemplazar en la lista, _songs[index], parámetros opcionales con ?? -->
+<!-- tags: copyWith, botón de me gusta, modelo inmutable, campos final, can't be used as a setter because it's final, isFavorite, cambiar un campo de un objeto, _songs[index], parámetros opcionales con ?? -->
 
-La playlist va a marcar canciones como **favoritas**: un corazón en cada tarjeta que se llena al pulsarlo. Es un dato más de la canción, y el modelo lo guarda: `Song` gana un campo.
+Cada `SongCard` va a tener un corazón: tocarlo marca la canción como favorita. Es un dato más de la canción, así que `Song` gana un campo:
 
 ```dart
 final bool isFavorite;
@@ -17,23 +17,27 @@ const Song({
 });
 ```
 
-No es `required`: por defecto una canción no es favorita, así que `SongForm` sigue creando canciones igual que antes.
+## El corazón sube como la papelera
 
-## El intento que no compila
-
-Lo primero que se le ocurre a cualquiera es cambiar el campo:
+El botón está en `SongCard` y la lista en la Screen: es el mismo camino de `onDelete`. `SongCard` recibe `onToggleFavorite` y lo llama; el corazón se pinta lleno o vacío según el dato:
 
 ```dart
-song.isFavorite = true;
+IconButton(
+  onPressed: () => onToggleFavorite(),
+  icon: Icon(
+    song.isFavorite ? Icons.favorite : Icons.favorite_border,
+    color: Colors.pink,
+  ),
+),
 ```
 
-El editor lo marca de inmediato: `'isFavorite' can't be used as a setter because it's final.` Los campos de `Song` son `final` a propósito. Una `Song` no cambia nunca: si algo de la canción es distinto, **es otra `Song`**.
+`SongList` se la pasa a cada tarjeta con su canción, `onToggleFavorite: () => onToggleFavorite(song)`, y la llamada llega a la Screen. Ahí viene lo nuevo.
 
-Suena a capricho, pero tiene una razón práctica. Si cualquiera que tenga la canción pudiera cambiarla, `SongCard` podría tocar la favorita por su cuenta sin pasar por `setState`. Sería el error de "la lista no cambia", ahora escondido dentro de un objeto. Con campos `final`, el único camino es entregarle a la Screen una canción nueva.
+## No se cambia: se copia
 
-## copyWith
+Lo primero que se le ocurre a cualquiera en la Screen es `song.isFavorite = true;`. No compila: `'isFavorite' can't be used as a setter because it's final.` Los campos de `Song` son `final` a propósito: si cualquiera que tenga la canción pudiera cambiarla, `SongCard` podría tocarla sin pasar por `setState`, y la pantalla no se enteraría.
 
-Crear "la misma canción, pero favorita" a mano es repetir los cuatro campos cada vez. Para eso el modelo trae un método, `copyWith`, que copia todo y cambia solo lo que se le pase:
+La salida es crear **otra** `Song` igual, con un campo distinto. Para eso el modelo trae `copyWith`:
 
 ```dart
 Song copyWith({
@@ -51,11 +55,7 @@ Song copyWith({
 }
 ```
 
-- Cada parámetro es opcional y puede ser nulo (`String?`, `bool?`). Si no lo pasas, llega `null`.
-- `??` significa "si lo de la izquierda es nulo, usa lo de la derecha". `title ?? this.title` es "el título nuevo, o si no hay, el que ya tenía".
-- `this.title` es el campo del objeto. `title`, sin `this`, es el parámetro.
-
-`song.copyWith(isFavorite: true)` devuelve una `Song` nueva con los mismos tres datos y el corazón lleno. La original no se tocó.
+Cada parámetro es opcional. `title ?? this.title` quiere decir "el título nuevo, y si no viene, el que ya tenía".
 
 ```svg
 <svg id="cwCopia" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="cwCopia-ttl cwCopia-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
@@ -107,9 +107,7 @@ Song copyWith({
 </svg>
 ```
 
-## Cambiar la lista en la Screen
-
-El corazón está en la tarjeta, así que el evento sube como el de borrar: `SongCard` recibe `onToggleFavorite` y lo llama, y `SongList` se lo entrega con la canción. La Screen hace el cambio:
+En la Screen, la copia ocupa el lugar de la original, dentro de `setState`:
 
 ```dart
 void _toggleFavorite(Song song) {
@@ -119,32 +117,6 @@ void _toggleFavorite(Song song) {
   });
 }
 ```
-
-`indexOf` busca en qué posición está la canción, y en esa posición se pone la copia. `!song.isFavorite` es "lo contrario de lo que tenía": si era favorita deja de serlo. Como todo cambio de estado, va dentro de `setState`.
-
-En la tarjeta, el corazón lleno o vacío sale del dato:
-
-```dart
-IconButton(
-  onPressed: () => onToggleFavorite(),
-  icon: Icon(
-    song.isFavorite ? Icons.favorite : Icons.favorite_border,
-    color: Colors.pink,
-  ),
-),
-```
-
-## Pruébalo
-
-Agrega canciones y marca una como favorita. Mira el número de la `Song` en el estado antes y después: `copyWith` no cambia la canción, pone **otra** en su lugar.
-
-```interactive
-lift fav
-```
-
-## Lo mismo con la lista
-
-`_songs.add(...)` y `_songs[index] = ...` modifican la lista que ya existe, y en esta app está bien: solo la Screen la toca, y siempre dentro de `setState`. Hay quien aplica a la lista la misma idea que a `Song` y la reemplaza entera, `_songs = [..._songs, song]`. Es el mismo principio. En el curso basta con que los **modelos** no se cambien por dentro. El estado completo con `copyWith` se ve cuando la app crezca.
 
 ## Ejemplo completo
 

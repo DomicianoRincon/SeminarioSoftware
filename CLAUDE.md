@@ -256,7 +256,7 @@ playlist cards
   *Saludar* (setState) y *Cerrar* (dispose, de vuelta al launcher), porque navegación aún no se ha visto. Al lado, solo
   el flujograma: createState, initState, build, setState y dispose unidos por flechas; se enciende la fase y la flecha
   por la que pasa el State, y cada bloque cuenta sus veces. Cerrar y abrir crea un State nuevo. Sin código.
-  `lift` (`S0048`): la playlist con el estado elevado. Árbol con dos dueños de estado, el State de la Screen
+  `lift` (sin uso en lecciones desde el 2026-10-23): la playlist con el estado elevado. Árbol con dos dueños de estado, el State de la Screen
   (`_songs`, cada `Song` numerada) y el borrador de `SongForm`; cada paso mueve un solo paquete entre dos widgets, azul si
   baja por el constructor y naranja si sube por una función. Los nodos muestran sus parámetros (gris = solo lo pasa: prop
   drilling) y un contador `build ×n`. Sin opciones, el formulario sigue en la Screen (sin uso en lecciones); `events` agrega `SongForm` y quitar (sin uso en lecciones);
