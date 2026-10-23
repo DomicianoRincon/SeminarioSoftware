@@ -177,14 +177,15 @@ def code_box(x, y, w, title, kind, rows, color):
             o += f'<rect x="{hx}" y="{ly - 15}" width="{hw}" height="21" rx="5" fill="#2F6FD6" fill-opacity=".28" stroke="#7FA6E8"/>'
             spots.setdefault(hl, (hx, ly - 15, hw, 21))
         o += (f'<text x="{x + 14 + indent * 7.5}" y="{ly}" font-size="12.5" fill="#C9CFDA" class="mono" '
-              f'textLength="{len(line.lstrip()) * 7.5}" lengthAdjust="spacingAndGlyphs">{line.lstrip()}</text>')
+              f'textLength="{len(line.lstrip()) * 7.5}" lengthAdjust="spacingAndGlyphs">'
+              + line.lstrip().replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;') + '</text>')
     return o, h, spots
 
 
 def pd_camino():
     """Animada: seis pasos de 2,5 s. A la izquierda la pantalla se construye; a la derecha se
     ilumina el código que la construye y la flecha por la que baja el dato."""
-    fid, h = 'pdCamino', 720
+    fid, h = 'pdCamino', 800
     steps, secs = 6, 2.5
     s = start(fid, h, 'El camino de una canción', 'El camino de una canción',
               'La pantalla se construye de arriba abajo: cada nivel recibe el dato por su constructor y se lo pasa al siguiente.',
@@ -220,19 +221,23 @@ def pd_camino():
     # ── right: the three components, top to bottom
     boxes = [
         (112, 'PlaylistScreen', 'guarda', 'violet', [
-            ('final List<Song> _songs = […];', None), ('…', None), ('SongList(songs: _songs),', '_songs')]),
-        (280, 'SongList', 'recibe y reparte', 'indigo', [
-            ('final List<Song> songs;', None), ('const SongList({super.key, required this.songs});', 'this.songs'),
-            ('for (final song in songs)', None), ('  SongCard(song: song),', 'song)')]),
-        (470, 'SongCard', 'recibe y muestra', 'indigo', [
-            ('final Song song;', None), ('const SongCard({super.key, required this.song});', 'this.song'),
-            ('Text(song.title),', None), ('Text(song.artist),', None)]),
+            ('class _PlaylistScreenState extends State<PlaylistScreen> {', None),
+            ('  final List<Song> _songs = […];', None), ('  …', None),
+            ('  SongList(songs: _songs),', '_songs'), ('}', None)]),
+        (308, 'SongList', 'recibe y reparte', 'indigo', [
+            ('class SongList extends StatelessWidget {', None),
+            ('  final List<Song> songs;', None), ('  const SongList({super.key, required this.songs});', 'this.songs'),
+            ('  for (final song in songs)', None), ('    SongCard(song: song),', 'song)'), ('}', None)]),
+        (526, 'SongCard', 'recibe y muestra', 'indigo', [
+            ('class SongCard extends StatelessWidget {', None),
+            ('  final Song song;', None), ('  const SongCard({super.key, required this.song});', 'this.song'),
+            ('  Text(song.title),', None), ('  Text(song.artist),', None), ('}', None)]),
     ]
     glow = ['k2', 'k3', 'k456']
     spots = []
     for (y, title, kind, color, rows), g in zip(boxes, glow):
         o, bh, sp = code_box(440, y, 472, title, kind, rows, color)
-        s += '  ' + o.replace('List<Song>', 'List&lt;Song&gt;') + '\n'
+        s += '  ' + o + '\n'
         s += (f'  <rect class="an glow {g}" x="436" y="{y - 4}" width="480" height="{bh + 8}" rx="15" fill="none" '
               f'stroke="#2F6FD6" stroke-width="3"/>\n')
         spots.append(sp)
@@ -251,12 +256,12 @@ def pd_camino():
         ('6', 'Tercera vuelta: la lista está completa. Nadie tomó el dato del aire.'),
     ]
     for i, (n, text) in enumerate(caps, start=1):
-        s += (f'  <g class="an cap c{i}"><circle cx="454" cy="664" r="13" fill="#2F6FD6"/>'
-              + txt(454, 668.5, n, 13, 700, '#FFFFFF', 'middle')
-              + txt(476, 669, text, 14, 500, INK, fit=436) + '</g>\n')
+        s += (f'  <g class="an cap c{i}"><circle cx="454" cy="762" r="13" fill="#2F6FD6"/>'
+              + txt(454, 766.5, n, 13, 700, '#FFFFFF', 'middle')
+              + txt(476, 767, text, 14, 500, INK, fit=436) + '</g>\n')
 
     # ── left: the phone, built step by step
-    w, ph = 300, 560
+    w, ph = 300, 640
     inner = f'<g class="an f2"><rect width="{w}" height="56" fill="#D0BCFF"/>' + txt(16, 35, 'Mi playlist', 17, 500) + '</g>'
     inner += f'<rect class="an k2" x="3" y="3" width="{w - 6}" height="{ph - 6}" rx="18" fill="none" stroke="#7439B8" stroke-width="2" stroke-dasharray="6 5"/>'
     inner += f'<g class="an k2">' + txt(w / 2, ph / 2, 'PlaylistScreen', 13, 700, '#7439B8', 'middle', 'mono') + '</g>'
