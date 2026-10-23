@@ -204,6 +204,18 @@ const CSS = `
 .fsim .fs-cmp-var:focus-visible{outline:2px dashed var(--fs-cmp-color);outline-offset:2px}
 .fsim .fs-cmp-var.fs-sel .fs-var-name{color:var(--fs-cmp-color)}
 .fsim .fs-cmp-summary{display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;margin:0 0 8px}
+.fsim .fs-cb-levels{display:flex;flex-direction:column;gap:10px}
+.fsim .fs-cb-level{transition:box-shadow .3s,border-color .3s}
+.fsim .fs-cb-level.fs-hot{border-color:#2F6FD6;box-shadow:0 0 0 2px #2F6FD6}
+.fsim .fs-cb-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:8px;font-size:14px}
+.fsim .fs-cb-head b{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:13px}
+.fsim .fs-cb-tag{font-size:12px;font-weight:600;color:#4453C9}
+.fsim .fs-cb-statebox{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:8px;padding:6px 10px;border-radius:10px;background:#F4EBFF;border:1px solid #C9A6EE}
+.fsim .fs-cb-statelabel{font-size:12px;font-weight:600;color:#7439B8}
+.fsim .fs-cb-state{margin:0}
+.fsim .fs-cb-trash:disabled{opacity:.45;cursor:default}
+.fsim .fs-cb-trash.fs-cb-ask{opacity:1;animation:fsimCbAsk 1s ease-in-out infinite}
+@keyframes fsimCbAsk{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -2300,6 +2312,289 @@ const mountCompose = (root) => {
   };
 };
 
+// ────────────────────────────────── callback ──────────────────────────────────
+
+// Where the delete function is born and how it reaches the button. Three levels:
+// PlaylistScreen (state + the function), SongList (only hands it down) and SongCard
+// (the button). A guided tour builds the path; afterwards each tap on a trash can
+// climbs back up, one level per step, until setState removes the song.
+
+const CB_STEPS = [
+  {
+    name: 'El estado',
+    caption: 'Nivel 1: _songs vive en el State de PlaylistScreen. Solo este State puede cambiarla.',
+    hot: 'l1',
+  },
+  {
+    name: 'La función',
+    caption: 'La función que borra se define aquí, junto al estado: _deleteSong llama a setState y quita la canción de _songs.',
+    hot: 'l1',
+  },
+  {
+    name: '¿Y el botón?',
+    caption: 'Pero en este nivel no hay ningún botón. La papelera está dentro de cada SongCard, dos niveles más abajo, y todavía no sabe qué hacer.',
+    hot: 'l3',
+  },
+  {
+    name: 'Baja a SongList',
+    caption: 'La función baja por el constructor: SongList recibe onDelete. No la usa, solo la va a pasar. Es prop drilling.',
+    hot: 'l2',
+  },
+  {
+    name: 'Baja a SongCard',
+    caption: 'SongList se la entrega a cada SongCard, ya con su canción: onDelete: () => onDelete(song).',
+    hot: 'l3',
+  },
+  {
+    name: 'Al botón',
+    caption: 'SongCard la conecta al botón: onPressed: () => onDelete(). Listo. Toca la papelera de una canción.',
+    hot: 'l3',
+  },
+];
+
+const CB_CODE = {
+  l1: [
+    { t: 'final List<Song> _songs = […];', from: 1, key: 'state' },
+    { t: '', from: 2 },
+    { t: 'void _deleteSong(Song song) {', from: 2, key: 'fn' },
+    { t: '  setState(() {', from: 2, key: 'set' },
+    { t: '    _songs.remove(song);', from: 2, key: 'remove' },
+    { t: '  });', from: 2, key: 'set2' },
+    { t: '}', from: 2, key: 'fn2' },
+    { t: '', from: 1 },
+    { t: 'SongList(songs: _songs),', from: 1, until: 3 },
+    { t: 'SongList(', from: 4, key: 'list' },
+    { t: '  songs: _songs,', from: 4 },
+    { t: '  onDelete: (song) => _deleteSong(song),', from: 4, key: 'pass1' },
+    { t: '),', from: 4 },
+  ],
+  l2: [
+    { t: 'final List<Song> songs;', from: 1 },
+    { t: 'final Function(Song) onDelete;', from: 4, key: 'field2' },
+    { t: '', from: 1 },
+    { t: 'for (final song in songs)', from: 1 },
+    { t: '  SongCard(song: song),', from: 1, until: 4 },
+    { t: '  SongCard(', from: 5, key: 'card' },
+    { t: '    song: song,', from: 5 },
+    { t: '    onDelete: () => onDelete(song),', from: 5, key: 'pass2' },
+    { t: '  ),', from: 5 },
+  ],
+  l3: [
+    { t: 'final Song song;', from: 1 },
+    { t: 'final Function() onDelete;', from: 5, key: 'field3' },
+    { t: '', from: 1 },
+    { t: 'Text(song.title),', from: 1 },
+    { t: 'IconButton(onPressed: ¿?),', from: 3, until: 5, key: 'ask' },
+    { t: 'IconButton(', from: 6, key: 'btn' },
+    { t: '  onPressed: () => onDelete(),', from: 6, key: 'press' },
+    { t: '  icon: Icon(Icons.delete_outline),', from: 6 },
+    { t: '),', from: 6 },
+  ],
+};
+
+const CB_LEVELS = [
+  { id: 'l1', title: 'Nivel 1 · PlaylistScreen', tag: () => 'aquí vive el estado' },
+  { id: 'l2', title: 'Nivel 2 · SongList', tag: (step) => (step >= 4 ? 'solo pasa la función' : 'recibe la lista') },
+  { id: 'l3', title: 'Nivel 3 · SongCard', tag: (step) => (step >= 3 ? 'aquí está el botón' : 'muestra una canción') },
+];
+
+const CB_SONGS = [
+  { title: 'Imagine', artist: 'John Lennon' },
+  { title: 'Yellow', artist: 'Coldplay' },
+  { title: 'Levitating', artist: 'Dua Lipa' },
+];
+
+const mountCallback = (root) => {
+  const container = card(root);
+  const timers = [];
+  let nextId = 1;
+  const fresh = () => CB_SONGS.map((s) => ({ ...s, id: nextId++, imageUrl: DEFAULT_IMAGE }));
+  let songs = fresh();
+  let step = 1;
+  let running = false;
+
+  // ── phone
+  const screen = phone('Mi playlist');
+  const list = el('div', { 'data-testid': 'callback-list' });
+  screen.body.append(list);
+  const paintPhone = () => {
+    list.replaceChildren(...(songs.length
+      ? songs.map((song) => {
+        const node = songCard(song);
+        const trash = el('button', {
+          class: `fs-lift-act fs-cb-trash${step === 3 ? ' fs-cb-ask' : ''}`,
+          'aria-label': `Quitar ${song.title}`,
+          text: '🗑',
+          disabled: step < 6 || running,
+          onclick: () => remove(song.id),
+        });
+        node.querySelector('.fs-card-icon').replaceWith(trash);
+        return node;
+      })
+      : [el('div', { class: 'fs-empty', text: 'Todavía no hay canciones' })]));
+  };
+
+  // ── the three levels
+  const levels = {};
+  const chips = el('div', { class: 'fs-lift-songs fs-cb-state' });
+  CB_LEVELS.forEach((level) => {
+    const tag = el('span', { class: 'fs-cb-tag' });
+    const code = codePanel('');
+    code.box.querySelector('h4').remove();
+    const head = el('div', { class: 'fs-cb-head' }, el('b', { text: level.title }), tag);
+    const box = el('div', { class: 'fs-panel fs-cb-level', 'data-level': level.id }, head);
+    if (level.id === 'l1') box.append(el('div', { class: 'fs-cb-statebox' }, el('span', { class: 'fs-cb-statelabel', text: 'Estado · _songs' }), chips));
+    box.append(code.box);
+    levels[level.id] = { box, tag, code, keys: [] };
+  });
+  const packet = el('div', { class: 'fs-lift-packet', 'aria-hidden': 'true' });
+  const levelCol = el('div', { class: 'fs-rel fs-cb-levels' }, ...CB_LEVELS.map((l) => levels[l.id].box), packet);
+
+  const renderChips = () => {
+    chips.replaceChildren(...(songs.length
+      ? songs.map((s) => el('span', { class: 'fs-lift-song' }, el('b', { text: `#${s.id}` }), ` ${s.title}`))
+      : [el('span', { class: 'fs-faint', text: '[ ] vacía' })]));
+  };
+
+  const renderCode = (newFrom) => {
+    CB_LEVELS.forEach(({ id, tag }) => {
+      const lv = levels[id];
+      const shown = CB_CODE[id].filter((line) => line.from <= step && (line.until === undefined || step <= line.until));
+      lv.keys = shown.map((line) => line.key);
+      lv.code.setCode(shown.map((line) => line.t).join('\n'));
+      lv.code.mark(...shown.map((line, i) => (line.from === newFrom ? i : -1)).filter((i) => i >= 0));
+      lv.tag.textContent = tag(step);
+    });
+  };
+  const markKey = (id, ...keys) => {
+    CB_LEVELS.forEach(({ id: other }) => levels[other].code.mark());
+    if (id) levels[id].code.mark(...keys.map((k) => levels[id].keys.indexOf(k)).filter((i) => i >= 0));
+  };
+  const hot = (id) => CB_LEVELS.forEach(({ id: other }) => levels[other].box.classList.toggle('fs-hot', other === id));
+
+  // One packet, one jump, between two levels.
+  const send = (from, to, label, kind) => {
+    const base = levelCol.getBoundingClientRect();
+    packet.textContent = label;
+    packet.className = `fs-lift-packet fs-${kind}`;
+    const at = (id) => {
+      const r = levels[id].box.getBoundingClientRect();
+      return { x: r.left - base.left + (r.width - packet.offsetWidth) / 2, y: r.top - base.top - 16 };
+    };
+    const a = at(from);
+    const b = at(to);
+    packet.style.transition = 'none';
+    packet.style.transform = `translate(${a.x}px, ${a.y}px)`;
+    void packet.offsetWidth;
+    packet.style.transition = '';
+    packet.style.transform = `translate(${b.x}px, ${b.y}px)`;
+  };
+  const hidePacket = () => {
+    packet.className = 'fs-lift-packet';
+  };
+
+  // ── guided tour
+  const stepBar = el('div', { class: 'fs-stepbar' });
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'callback-caption' });
+  const drawBar = (names, current) => {
+    stepBar.replaceChildren(...names.map((name, i) => {
+      const kind = i === current ? 'fs-cur' : i < current ? 'fs-past' : '';
+      return el('span', { class: `fs-sp ${kind}` }, el('b', { text: String(i + 1) }), name);
+    }));
+  };
+  const prevButton = el('button', { class: 'fs-btn', text: 'Anterior' });
+  const nextButton = el('button', { class: 'fs-btn fs-solid', text: 'Siguiente' });
+  const resetButton = el('button', { class: 'fs-btn', text: 'Reiniciar' });
+
+  const showStep = (next) => {
+    step = next;
+    const info = CB_STEPS[step - 1];
+    renderCode(step);
+    hot(info.hot);
+    drawBar(CB_STEPS.map((s) => s.name), step - 1);
+    caption.textContent = info.caption;
+    prevButton.disabled = step === 1;
+    nextButton.disabled = step === CB_STEPS.length;
+    hidePacket();
+    if (step === 4) send('l1', 'l2', 'onDelete', 'up');
+    if (step === 5) send('l2', 'l3', 'onDelete', 'up');
+    paintPhone();
+  };
+  prevButton.addEventListener('click', () => !running && step > 1 && showStep(step - 1));
+  nextButton.addEventListener('click', () => !running && step < CB_STEPS.length && showStep(step + 1));
+  resetButton.addEventListener('click', () => {
+    timers.splice(0).forEach(clearTimeout);
+    running = false;
+    songs = fresh();
+    renderChips();
+    showStep(1);
+  });
+
+  // ── a tap climbs back up, one level per step
+  function remove(id) {
+    const song = songs.find((s) => s.id === id);
+    if (!song || running) return;
+    running = true;
+    paintPhone();
+    const names = ['Toque', 'Sube a SongList', 'Sube a la Screen', 'setState', 'Pantalla'];
+    const plan = [
+      () => {
+        hot('l3');
+        markKey('l3', 'press');
+        hidePacket();
+        caption.textContent = `Tocaste la papelera de ${song.title}: SongCard ejecuta onPressed, que llama onDelete(). SongCard no sabe qué hace esa función.`;
+      },
+      () => {
+        hot('l2');
+        markKey('l2', 'pass2');
+        send('l3', 'l2', 'onDelete()', 'up');
+        caption.textContent = `Esa función se la dio SongList: () => onDelete(song). Le agrega la canción, Song #${id}, y llama la que recibió.`;
+      },
+      () => {
+        hot('l1');
+        markKey('l1', 'pass1', 'fn');
+        send('l2', 'l1', `onDelete(#${id})`, 'up');
+        caption.textContent = 'Y esa la escribió PlaylistScreen: (song) => _deleteSong(song). La llamada llega al nivel donde vive el estado.';
+      },
+      () => {
+        hidePacket();
+        markKey('l1', 'set', 'remove', 'set2');
+        songs = songs.filter((s) => s.id !== id);
+        renderChips();
+        flash(chips);
+        caption.textContent = `_deleteSong corre en el State: dentro de setState, Song #${id} sale de _songs. Solo este nivel podía hacerlo.`;
+      },
+      () => {
+        hot(null);
+        markKey(null);
+        paintPhone();
+        caption.textContent = 'build() vuelve a correr y la lista baja otra vez, sin esa canción. Toca otra papelera o reinicia.';
+      },
+    ];
+    plan.forEach((fn, i) => timers.push(setTimeout(() => {
+      drawBar(names, i);
+      fn();
+      if (i === plan.length - 1) {
+        running = false;
+        paintPhone();
+      }
+    }, i * 1400)));
+  }
+
+  container.append(
+    el('div', { class: 'fs-col fs-cmp-tall' }, screen.frame,
+      el('div', { class: 'fs-controls' }, prevButton, nextButton, resetButton)),
+    el('div', { class: 'fs-side' }, el('div', { class: 'fs-panel' }, stepBar, caption), levelCol)
+  );
+  renderChips();
+  showStep(1);
+
+  return () => {
+    timers.splice(0).forEach(clearTimeout);
+    root.replaceChildren();
+  };
+};
+
 // ────────────────────────────── state-lifecycle ──────────────────────────────
 
 // The greeting screen on the phone and, next to it, the phases of its State joined by
@@ -2576,6 +2871,7 @@ export const SIMS = Object.freeze({
   playlist: (root, args = []) => mountTree(root, ['playlist', ...args]),
   lift: mountLift,
   compose: mountCompose,
+  callback: mountCallback,
 });
 
 export const parseSpec = (spec) => {

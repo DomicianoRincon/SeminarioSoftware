@@ -264,6 +264,9 @@ playlist cards
   `compose` (`S0046`): pestañas *Sin componentes* y *Con componentes* de la misma playlist, teléfono funcional a la
   izquierda y, a la derecha, el árbol con los grupos de estado debajo; cada variable sube por su propio carril y
   entra en cada nodo al que está ligada. Las líneas son grises; al hacer clic en una variable, las suyas se iluminan con su color.
+  `callback` (`S0047`): de dónde sale la función de borrar. Tres niveles apilados con su código (Screen con el estado y
+  `_deleteSong`, SongList que solo la pasa, SongCard con el botón) y un teléfono; recorrido guiado de 6 pasos y después
+  cada papelera sube la llamada un nivel por paso hasta el `setState`.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar

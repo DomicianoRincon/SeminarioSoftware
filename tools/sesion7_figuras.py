@@ -93,51 +93,6 @@ def card(x, y, w, h, color, title, rows, num=None):
     return o
 
 
-# ───────────────────────────── S0047 · Funciones como parámetro
-
-
-def fp_flechas():
-    fid = 'fpFlechas'
-    s = start(fid, 548, 'Los datos bajan, los eventos suben', 'Los datos bajan, los eventos suben',
-              'La Screen le pasa datos a sus hijos por el constructor. Los hijos le avisan llamando una función.',
-              'Arriba, PlaylistScreen con su estado _songs. Abajo a la izquierda, SongForm, con su borrador. A la '
-              'derecha, SongList y debajo SongCard. Flechas azules bajan de la Screen a SongList con songs y de '
-              'SongList a SongCard con song. Flechas naranjas suben: de SongForm a la Screen con onAdd(song) y de '
-              'SongCard a la Screen con onDelete(). La función de borrar la escribió la Screen, así que corre allá.')
-    s += '  ' + widget(300, 112, 360, 'PlaylistScreen', 'violet', 'StatefulWidget', h=104) + '\n'
-    s += '  <rect x="316" y="160" width="328" height="40" rx="8" fill="#FFFFFF" stroke="#C9A6EE"/>\n'
-    s += '  ' + txt(330, 185, 'List&lt;Song&gt; _songs', 13, 700, '#1F4FA8', cls='mono') + '\n'
-    s += '  ' + txt(630, 185, '_addSong · _deleteSong', 12, 400, MUTED, 'end', 'mono') + '\n'
-
-    s += '  ' + widget(64, 320, 300, 'SongForm', 'violet', 'StatefulWidget', h=104) + '\n'
-    s += '  <rect x="80" y="368" width="268" height="40" rx="8" fill="#FFFFFF" stroke="#C9A6EE"/>\n'
-    s += '  ' + txt(94, 393, 'Borrador: 3 controllers, _showError', 12.5, 400, '#454C61', fit=244) + '\n'
-
-    s += '  ' + widget(596, 288, 300, 'SongList', 'slate', 'Stateless') + '\n'
-    s += '  ' + widget(596, 400, 300, 'SongCard', 'slate', 'Stateless') + '\n'
-
-    s += '  ' + flow(fid, 'M620,216 V282', 'down') + '\n'
-    s += '  ' + txt(630, 254, 'songs', 13, 700, DOWN, cls='mono') + '\n'
-    s += '  ' + flow(fid, 'M660,332 V394', 'down') + '\n'
-    s += '  ' + txt(670, 368, 'song', 13, 700, DOWN, cls='mono') + '\n'
-
-    s += '  ' + flow(fid, 'M214,320 V164 H294', 'up') + '\n'
-    s += '  ' + txt(110, 250, 'onAdd(song)', 13, 700, UP, cls='mono') + '\n'
-    s += '  ' + flow(fid, 'M896,422 H928 V164 H666', 'up') + '\n'
-    s += '  ' + txt(700, 150, 'onDelete()', 13, 700, UP, cls='mono') + '\n'
-
-    s += '  ' + txt(596, 472, 'onDelete corre en la Screen: la tarjeta', 12.5, 400, MUTED) + '\n'
-    s += '  ' + txt(596, 490, 'solo la llama, no sabe qué hace.', 12.5, 400, MUTED) + '\n'
-    s += f'  <path d="M48,520 H80" stroke="{DOWN}" stroke-width="3"/>\n'
-    s += '  ' + txt(88, 524, 'Datos: bajan por el constructor', 13, 600, INK) + '\n'
-    s += f'  <path d="M340,520 H372" stroke="{UP}" stroke-width="3"/>\n'
-    s += '  ' + txt(380, 524, 'Eventos: suben llamando una función', 13, 600, INK) + '\n'
-    return s + '</svg>\n'
-
-
-FIGS['fpFlechas'] = fp_flechas
-
-
 # ───────────────────────────── S0048 · Modelos con copyWith
 
 

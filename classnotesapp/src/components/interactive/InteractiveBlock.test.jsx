@@ -393,3 +393,36 @@ describe('compose', () => {
     expect(container.querySelector('[data-var="_songs"]').getAttribute('aria-pressed')).toBe('false');
   });
 });
+
+describe('callback', () => {
+  const next = (n = 1) => {
+    for (let i = 0; i < n; i += 1) fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }));
+  };
+
+  it('builds the path step by step and only then enables the trash cans', () => {
+    const { container } = renderBlock('callback');
+    expect(screen.getByLabelText('Quitar Yellow').disabled).toBe(true);
+    next();
+    expect(container.querySelector('[data-level="l1"]').textContent).toContain('_deleteSong');
+    next();
+    expect(container.querySelector('[data-level="l3"]').textContent).toContain('¿?');
+    next();
+    expect(container.querySelector('[data-level="l2"]').textContent).toContain('final Function(Song) onDelete;');
+    next(2);
+    expect(container.querySelector('[data-level="l3"]').textContent).toContain('onPressed: () => onDelete(),');
+    expect(screen.getByLabelText('Quitar Yellow').disabled).toBe(false);
+  });
+
+  it('climbs back to the Screen and removes the song with setState', () => {
+    renderBlock('callback');
+    next(5);
+    fireEvent.click(screen.getByLabelText('Quitar Yellow'));
+    act(() => vi.advanceTimersByTime(1400 * 2));
+    expect(screen.getByTestId('callback-list').textContent).toContain('Yellow');
+    act(() => vi.advanceTimersByTime(1400));
+    expect(screen.getByTestId('callback-caption').textContent).toMatch(/setState/);
+    act(() => vi.advanceTimersByTime(1400));
+    expect(screen.getByTestId('callback-list').textContent).not.toContain('Yellow');
+    expect(screen.getByTestId('callback-list').querySelectorAll('.fs-card')).toHaveLength(2);
+  });
+});
