@@ -3,7 +3,10 @@ import React, { useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useThemeMode } from '@/theme/ThemeContext';
-import { SIMS, parseSpec } from '@/components/interactive/flutterStateSims';
+import { SIMS as FLUTTER_SIMS, parseSpec } from '@/components/interactive/flutterStateSims';
+import { SIMS as SKILL_SIMS } from '@/components/interactive/skillSims';
+
+const SIMS = { ...FLUTTER_SIMS, ...SKILL_SIMS };
 
 // ```interactive fences: the first word names the simulator, the rest are its options.
 // Simulators are plain DOM (shared with the session decks), so React only hands them a node.

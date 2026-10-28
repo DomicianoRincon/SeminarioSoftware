@@ -83,3 +83,5 @@
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonA6.md | Listas y mapas | 0010
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonA7.md | Métodos en Dart | 0011
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonA8.md | Clases y objetos en Dart | 0012
+[t] IA
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS63.md | Skills para tu proyecto | S0063

@@ -34,6 +34,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Curso | `S0002` Programa del curso · `S0019` Playground | Propias. El programa, hecho a partir de `docs/syllabus.md`. El Playground es un DartPad con la app mínima de `S0010` (el mismo gist de su *Ejemplo completo*) |
 | Entregables | `S0007`, `S0008`, `S0009`: las tres entregas del proyecto, **solo qué se entrega** | Propias, hechas a partir de la tabla *Entregas* de `docs/planeador.md`. Fechas, sesiones, uso de IA y pesos están ocultos en `docs/entregables.md` hasta que se confirmen |
 | Dart | `0001`, `0006` a `0012` | Sección *Dart basics* de Aplicaciones Móviles |
+| IA | `S0063` Skills para tu proyecto | Propia (2026-10-28, pedido del profesor). Cuatro skills en el interactivo `skill-files`, portado de `0047` de Computación 2: `disenador-bd` y `flutter-componentes`, nuevas, y `mer-svg` y `flutter-pantallas`, copiadas de `recursos/sesion4/` (a `flutter-pantallas` se le quitó «componente» de la description). Fuente en `tools/skills/`, se pasan al simulador con `python3 tools/skills_data.py`. Figura `iaSkillsMapa` en `tools/ia_figuras.py`. Las plantillas de `flutter-componentes` son de una lista de compras y no de la playlist, para no entregar la solución del taller de la sesión 8 |
 
 ## Detalle por sesión
 
