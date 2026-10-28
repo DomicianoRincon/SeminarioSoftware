@@ -105,9 +105,16 @@ En el mismo proyecto de las sesiones 6 y 7, `playlist_app`, o en el repositorio 
 1. **El saludo.** `LoginScreen` pide el nombre en un `TextField` y lo manda en `arguments` al entrar. La barra de la playlist dice `Hola, Ana`.
 2. **Quitar desde el detalle.** `SongDetailScreen` tiene un botón *Quitar de la playlist* que la cierra devolviendo `true`. La playlist espera ese resultado y, si llega, borra la canción con la misma función de la papelera.
 
-## Qué debes tener al terminar
+## Metas
 
-- Cuatro rutas en la tabla `routes:` de `MaterialApp`, sin `home:`, y cada Screen en su archivo de `screens/`.
-- Entrar y cerrar sesión con `pushNamedAndRemoveUntil` y `(route) => false`. Después de entrar, atrás no vuelve al login.
-- Solo las Screens llaman al `Navigator`. `SongCard` y `SongList` avisan con una función (`onTap`, `onOpen`), como la papelera.
-- Las dos mejoras funcionando y el proyecto sin errores en el editor.
+Para terminar el laboratorio, cumple estas metas en orden. Cada una dice qué lección leer para hacerla.
+
+1. Registra las cuatro rutas en `routes:` de `MaterialApp`, con cada Screen en su archivo de `screens/`. Lee: [Rutas nombradas: pushNamed y pop](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0052).
+2. Haz que *Entrar* en `LoginScreen` abra la playlist y que la playlist pueda volver. Lee: [La pila de pantallas](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0051) · [Rutas nombradas: pushNamed y pop](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0052).
+3. Haz que entrar y cerrar sesión rehagan la pila con `pushNamedAndRemoveUntil` y `(route) => false`. Lee: [pushNamedAndRemoveUntil: rehacer la pila](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0053).
+4. Abre `SongDetailScreen` al tocar una tarjeta, con la canción en `arguments`. Lee: [Pasar datos a la pantalla nueva](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0054).
+5. Muda el formulario a `AddSongScreen` y recibe la canción nueva con `await` y `pop`. Lee: [Devolver un resultado al cerrar](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0055).
+6. Muestra `Hola, <nombre>` en la barra de la playlist con el nombre que se escribió en el login. Lee: [Pasar datos a la pantalla nueva](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0054).
+7. Quita una canción desde su detalle cerrándolo con `pop(context, true)`. Lee: [Devolver un resultado al cerrar](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0055).
+
+Al final, el proyecto no debe tener errores en el editor, y solo las Screens llaman al `Navigator`: `SongCard` y `SongList` avisan con una función, como la papelera.
