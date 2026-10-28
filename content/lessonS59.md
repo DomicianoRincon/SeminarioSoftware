@@ -87,5 +87,6 @@ flutter run -d chrome
 
 - La app de la sesión 3: los componentes y `ProfileScreen`.
 - El archivo de contexto `AGENTS.md` en la raíz y el modelo de datos de la red profesional en `docs/modelo.md`.
+- Las dos skills de la sesión 4 en `.agents/skills/`: `mer-svg`, la del taller, y `flutter-pantallas`, con la que se trabaja en esta sesión.
 
 El paquete se llama `mi_app_1`, así que los `import` del proyecto empiezan con `package:mi_app_1/`.
