@@ -216,6 +216,46 @@ const CSS = `
 .fsim .fs-cb-trash:disabled{opacity:.45;cursor:default}
 .fsim .fs-cb-trash.fs-cb-ask{opacity:1;animation:fsimCbAsk 1s ease-in-out infinite}
 @keyframes fsimCbAsk{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.fsim .fs-ns-phone{height:510px}
+.fsim .fs-ns-screen{flex:1;display:flex;flex-direction:column;min-height:0;position:relative;background:#FEF7FF}
+.fsim .fs-ns-screen.fs-ns-closed{background:#1C1B1F;color:#E6E1E5}
+.fsim .fs-ns-closed .fs-center{color:#E6E1E5}
+.fsim .fs-ns-navbar{height:36px;flex:0 0 36px;display:flex;align-items:center;justify-content:space-around;background:#F3EDF7;color:#79747E;font-size:15px}
+.fsim .fs-ns-sysback{border:0;background:none;font-size:18px;color:#1C1B1F;cursor:pointer;padding:2px 16px;border-radius:14px}
+.fsim .fs-ns-sysback:hover{background:#E8DEF8}
+.fsim .fs-ns-sysback:disabled{opacity:.35;cursor:default;background:none}
+.fsim .fs-ns-appbar{justify-content:flex-start}
+.fsim .fs-ns-title{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fsim .fs-ns-icon{border:0;background:none;font-size:18px;line-height:1;cursor:pointer;color:#1C1B1F;padding:4px 6px;border-radius:14px}
+.fsim .fs-ns-icon:hover{background:rgba(255,255,255,.55)}
+.fsim .fs-ns-songbtn{display:block;width:100%;border:0;background:none;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit;border-radius:16px}
+.fsim .fs-ns-songbtn:hover .fs-card{box-shadow:0 0 0 2px var(--fs-accent-soft),0 2px 8px rgba(103,80,164,.16)}
+.fsim .fs-ns-logo{font-size:52px;color:var(--fs-accent);line-height:1}
+.fsim .fs-ns-detail{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.fsim .fs-ns-detail .fs-cover{width:150px;height:150px;flex:0 0 auto;border-radius:20px;margin:6px 0 4px}
+.fsim .fs-ns-detail .fs-hello{margin:6px 0 0}
+.fsim .fs-ns-btn{border:0;border-radius:20px;padding:9px 22px;background:var(--fs-accent);color:#fff;font:500 14px Roboto,Arial,sans-serif;cursor:pointer;margin-top:12px}
+.fsim .fs-ns-btn:disabled{opacity:.6;cursor:default}
+.fsim .fs-ns-stack{display:flex;flex-direction:column;gap:6px;min-height:44px}
+.fsim .fs-ns-card{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:8px 10px;border-radius:10px;border:1px solid #C9A6EE;
+  background:#F4EBFF;transition:opacity .4s,transform .4s}
+.fsim .fs-ns-card.fs-ns-top{background:#fff;border-color:var(--fs-accent);box-shadow:0 2px 8px rgba(103,80,164,.2)}
+.fsim .fs-ns-card.fs-ns-new{animation:fsimDrop .5s ease-out}
+@keyframes fsimDrop{0%{transform:translateY(-26px);opacity:0}100%{transform:none;opacity:1}}
+.fsim .fs-ns-card.fs-ns-out{opacity:.45;transform:translateX(28px)}
+.fsim .fs-ns-card.fs-ns-cross{opacity:.7;border-color:#F3A3B2;background:#FFEBEF}
+.fsim .fs-ns-card.fs-ns-cross .fs-ns-sname{text-decoration:line-through}
+.fsim .fs-ns-card.fs-ns-wait{border-color:#F0C572;background:#FFF8EA}
+.fsim .fs-ns-route{font:600 13px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-accent)}
+.fsim .fs-ns-sname{font:13px 'JetBrains Mono',Menlo,Consolas,monospace;flex:1 1 auto;white-space:nowrap}
+.fsim .fs-ns-icon svg{width:20px;height:20px;display:block}
+.fsim .fs-ns-arg{flex:1 1 100%;font:12px 'JetBrains Mono',Menlo,Consolas,monospace;color:#1F4FA8}
+.fsim .fs-ns-base{margin-top:8px;border-top:3px solid #C4CBD8;font-size:11px;color:var(--fs-muted);text-align:center;padding-top:2px}
+.fsim .fs-tag.fs-ns-alive{background:#EEF1FF;color:#4453C9}
+.fsim .fs-row.fs-ns-found{background:#EADDFF;font-weight:600}
+.fsim .fs-ns-err{flex:1;background:#B3261E;color:#fff;padding:16px;display:flex;flex-direction:column;gap:10px;
+  font:12.5px 'JetBrains Mono',Menlo,Consolas,monospace;overflow-wrap:anywhere}
+.fsim .fs-nr-wait{font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px;background:#FFF3DC;color:#A96C05}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -251,8 +291,8 @@ const flash = (node) => {
   node.classList.add('fs-flash');
 };
 
-const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false']);
-const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar']);
+const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false', 'async', 'await', 'is', 'as']);
+const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm']);
 const DART_TOKEN = /('[^']*')|(@\w+)|(\b\d+\b)|(\b[A-Za-z_]\w*\b)/g;
 
 const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -2863,6 +2903,896 @@ const mountLifecycle = (root) => {
   };
 };
 
+// ─────────────────────────── nav-stack / nav-result ───────────────────────────
+
+// The Navigator's stack next to a phone. A push drops a card on top, a pop takes it
+// away, and pushNamedAndRemoveUntil asks every card under the new one whether it stays.
+
+const NAV_STEP_MS = 1100;
+
+const NAV_ROUTES = [
+  { name: '/', screen: 'LoginScreen' },
+  { name: '/playlist', screen: 'PlaylistScreen' },
+  { name: '/song', screen: 'SongDetailScreen' },
+  { name: '/add-song', screen: 'AddSongScreen' },
+];
+
+const NAV_SONGS = [
+  { title: 'Imagine', artist: 'John Lennon' },
+  { title: 'Yellow', artist: 'Coldplay' },
+  { title: 'Levitating', artist: 'Dua Lipa' },
+];
+
+const navScreenOf = (route) => NAV_ROUTES.find((r) => r.name === route).screen;
+const navSong = (song) => `Song('${shorten(song.title, 16)}')`;
+
+// Plays a list of steps one after the other, or one per click in step-by-step mode.
+const navRunner = ({ stepBar, caption, nextButton, timers, onChange }) => {
+  let run = null;
+  let stepMode = false;
+  const drawBar = (names, current) => {
+    stepBar.replaceChildren(...names.map((name, i) => {
+      const kind = i === current ? 'fs-cur' : i < current ? 'fs-past' : '';
+      return el('span', { class: `fs-sp ${kind}` }, el('b', { text: String(i + 1) }), name);
+    }));
+  };
+  const play = (index) => {
+    run.index = index;
+    const step = run.steps[index];
+    drawBar(run.steps.map((s) => s.name), index);
+    caption.textContent = step.caption;
+    step.apply?.();
+    if (index === run.steps.length - 1) {
+      run = null;
+      nextButton.disabled = true;
+      onChange();
+      return;
+    }
+    if (stepMode) {
+      nextButton.disabled = false;
+      return;
+    }
+    timers.push(setTimeout(() => play(index + 1), NAV_STEP_MS));
+  };
+  nextButton.addEventListener('click', () => {
+    if (!run) return;
+    nextButton.disabled = true;
+    play(run.index + 1);
+  });
+  return {
+    busy: () => Boolean(run),
+    start: (steps) => {
+      if (run) return;
+      run = { steps, index: -1 };
+      onChange();
+      play(0);
+    },
+    setStepMode: (on) => {
+      stepMode = on;
+      if (!on && run && !nextButton.disabled) {
+        nextButton.disabled = true;
+        play(run.index + 1);
+      }
+    },
+    stop: () => {
+      timers.splice(0).forEach(clearTimeout);
+      run = null;
+      nextButton.disabled = true;
+      stepBar.replaceChildren();
+    },
+  };
+};
+
+const navPhone = () => {
+  const screenHost = el('div', { class: 'fs-ns-screen', 'data-testid': 'nav-phone' });
+  const back = el('button', { class: 'fs-ns-sysback', 'aria-label': 'Atrás del sistema', title: 'Atrás del sistema', text: '◁' });
+  const frame = el(
+    'div',
+    { class: 'fs-phone fs-ns-phone' },
+    el('div', { class: 'fs-status' }, el('span', { text: '9:41' }), el('span', { text: '5G' })),
+    screenHost,
+    el('div', { class: 'fs-ns-navbar' }, back, el('span', { text: '○' }), el('span', { text: '□' }))
+  );
+  return { frame, screenHost, back };
+};
+
+const navAppBar = (title, onBack, ...actions) => el(
+  'div',
+  { class: 'fs-appbar fs-ns-appbar' },
+  onBack ? el('button', { class: 'fs-ns-icon', 'aria-label': 'Atrás', title: 'Atrás', text: '←', onclick: onBack }) : null,
+  el('span', { class: 'fs-ns-title', text: title }),
+  ...actions
+);
+
+const navLogoutIcon = () => {
+  const icon = svgEl('svg', { viewBox: '0 0 24 24', 'aria-hidden': 'true' });
+  icon.appendChild(svgEl('path', {
+    d: 'M10 4H5v16h5M14 8l4 4-4 4M18 12H9',
+    fill: 'none',
+    stroke: 'currentColor',
+    'stroke-width': '2',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  }));
+  return icon;
+};
+
+const navTapCard = (song, label, onTap) => {
+  const button = el('button', { class: 'fs-ns-songbtn', 'aria-label': label, onclick: onTap });
+  button.appendChild(songCard(song));
+  return button;
+};
+
+const navDetail = (song, onBack) => {
+  const cover = el('div', { class: 'fs-cover' });
+  const img = el('img', { src: song.imageUrl, alt: '' });
+  img.addEventListener('error', () => img.remove());
+  cover.appendChild(img);
+  return el(
+    'div',
+    { class: 'fs-body fs-ns-detail' },
+    cover,
+    el('div', { class: 'fs-hello', text: song.title }),
+    el('div', { class: 'fs-card-artist', text: song.artist }),
+    el('button', { class: 'fs-ns-btn', text: 'Volver a la lista', onclick: onBack })
+  );
+};
+
+// Top of the stack first, the base at the bottom.
+const navStackPanel = () => {
+  const list = el('div', { class: 'fs-ns-stack', 'data-testid': 'nav-stack' });
+  const box = el(
+    'div',
+    { class: 'fs-panel' },
+    el('h4', { text: 'Pila del Navigator' }),
+    list,
+    el('div', { class: 'fs-ns-base', text: 'base de la pila' })
+  );
+  const TAGS = {
+    top: ['visible', ''],
+    alive: ['debajo · sigue viva', 'fs-ns-alive'],
+    wait: ['esperando en el await', 'fs-dirty'],
+    cross: ['(route) => false · sale', 'fs-lost'],
+    out: ['dispose()', 'fs-lost'],
+  };
+  const render = (stack, marks = {}) => {
+    if (!stack.length) {
+      list.replaceChildren(el('div', { class: 'fs-empty', text: 'Pila vacía: la app se cerró' }));
+      return;
+    }
+    list.replaceChildren(...[...stack].reverse().map((entry, i) => {
+      const mark = marks[entry.key];
+      const [text, cls] = TAGS[mark === 'new' || !mark ? (i === 0 ? 'top' : 'alive') : mark];
+      return el(
+        'div',
+        { class: `fs-ns-card${i === 0 ? ' fs-ns-top' : ''}${mark ? ` fs-ns-${mark}` : ''}`, 'data-route': entry.route },
+        el('span', { class: 'fs-ns-route', text: `'${entry.route}'` }),
+        el('span', { class: 'fs-ns-sname', text: entry.label }),
+        el('span', { class: `fs-tag ${cls}`, text }),
+        entry.arg ? el('span', { class: 'fs-ns-arg', text: `arguments: ${entry.arg}` }) : null
+      );
+    }));
+  };
+  return { box, render };
+};
+
+const navRoutesPanel = () => {
+  const rows = NAV_ROUTES.map((r) => el(
+    'div',
+    { class: 'fs-row fs-ns-rt', 'data-name': r.name },
+    el('span', { text: `'${r.name}'` }),
+    el('span', { text: `${r.screen}()` })
+  ));
+  const box = el('div', { class: 'fs-panel' }, el('h4', { text: 'routes: de MaterialApp' }), ...rows);
+  const mark = (name) => rows.forEach((row) => {
+    const on = row.dataset.name === name;
+    row.classList.toggle('fs-ns-found', on);
+    if (on) flash(row);
+  });
+  return { box, mark };
+};
+
+const navControls = (runner, onReset) => {
+  const stepToggle = switchControl('Paso a paso', (checked) => runner().setStepMode(checked));
+  const nextButton = el('button', { class: 'fs-btn', text: 'Siguiente paso', disabled: true });
+  const resetButton = el('button', { class: 'fs-btn', text: 'Reiniciar', onclick: onReset });
+  return { nextButton, node: el('div', { class: 'fs-controls' }, stepToggle.node, nextButton, resetButton) };
+};
+
+const mountNavStack = (root, args = []) => {
+  const resetMode = args.includes('reset');
+  const container = card(root);
+  const timers = [];
+  const songs = NAV_SONGS.map((s) => ({ ...s, imageUrl: DEFAULT_IMAGE }));
+  let uid = 1;
+  let stack = [];
+  let marks = {};
+
+  const entry = (route, song) => ({
+    key: uid++,
+    route,
+    label: song ? `${navScreenOf(route)} · ${song.title}` : navScreenOf(route),
+    song,
+  });
+  const top = () => stack[stack.length - 1];
+
+  const device = navPhone();
+  const stackPanel = navStackPanel();
+  const routes = navRoutesPanel();
+  const code = codePanel('Lo que se ejecutó');
+  const stepBar = el('div', { class: 'fs-stepbar' });
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'nav-caption' });
+  let runner = null;
+  const controls = navControls(() => runner, () => restart());
+  runner = navRunner({ stepBar, caption, nextButton: controls.nextButton, timers, onChange: () => paint() });
+
+  const showCode = (text, ...lines) => {
+    code.setCode(text);
+    code.mark(...(lines.length ? lines : text.split('\n').map((_, i) => i)));
+  };
+
+  const PUSH = (route) => `Navigator.pushNamed(context, '${route}')`;
+  const POP = 'Navigator.pop(context)';
+  const RESET = (route) => `Navigator.pushNamedAndRemoveUntil(\n  context,\n  '${route}',\n  (route) => false,\n)`;
+
+  function push(route, label, song) {
+    const below = top().label;
+    runner.start([
+      {
+        name: 'Toque',
+        caption: `Tocaste «${label}»: el botón ejecuta pushNamed con el nombre '${route}'.`,
+        apply: () => showCode(PUSH(route)),
+      },
+      {
+        name: 'Busca el nombre',
+        caption: `El Navigator busca '${route}' en la tabla routes: y encuentra ${navScreenOf(route)}.`,
+        apply: () => routes.mark(route),
+      },
+      {
+        name: 'Push',
+        caption: `Una ruta nueva cae encima de la pila. ${below} queda debajo: no se destruye y su State sigue vivo.`,
+        apply: () => {
+          const fresh = entry(route, song);
+          stack = [...stack, fresh];
+          marks = { [fresh.key]: 'new' };
+          paint();
+        },
+      },
+    ]);
+  }
+
+  function pop(label) {
+    const leaving = top();
+    if (stack.length === 1) {
+      runner.start([
+        {
+          name: 'Toque',
+          caption: `Tocaste ${label}: eso es un pop, aunque nadie lo haya escrito.`,
+          apply: () => showCode(POP),
+        },
+        {
+          name: 'Pila vacía',
+          caption: `${leaving.label} era la única ruta. Al sacarla no queda nada que mostrar y la app se cierra.`,
+          apply: () => {
+            stack = [];
+            marks = {};
+            paint();
+          },
+        },
+      ]);
+      return;
+    }
+    const below = stack[stack.length - 2].label;
+    runner.start([
+      {
+        name: 'Toque',
+        caption: `Tocaste ${label}: se ejecuta Navigator.pop(context).`,
+        apply: () => showCode(POP),
+      },
+      {
+        name: 'Pop',
+        caption: `La ruta de arriba sale de la pila y su State corre dispose(). ${leaving.label} deja de existir.`,
+        apply: () => {
+          marks = { [leaving.key]: 'out' };
+          paint();
+        },
+      },
+      {
+        name: 'La de abajo',
+        caption: `Se ve otra vez ${below}, tal como estaba: nunca se destruyó, así que no corre initState de nuevo.`,
+        apply: () => {
+          stack = stack.slice(0, -1);
+          marks = {};
+          paint();
+        },
+      },
+    ]);
+  }
+
+  function resetTo(route, label) {
+    const old = [...stack].reverse();
+    const steps = [
+      {
+        name: 'Toque',
+        caption: `Tocaste «${label}»: el botón ejecuta pushNamedAndRemoveUntil hacia '${route}'.`,
+        apply: () => showCode(RESET(route)),
+      },
+      {
+        name: 'Busca el nombre',
+        caption: `Igual que pushNamed: busca '${route}' en routes: y encuentra ${navScreenOf(route)}.`,
+        apply: () => {
+          routes.mark(route);
+          showCode(RESET(route), 2);
+        },
+      },
+      {
+        name: 'Push',
+        caption: `Primero empuja ${navScreenOf(route)} encima de todo, como un push normal.`,
+        apply: () => {
+          const fresh = entry(route);
+          stack = [...stack, fresh];
+          marks = { [fresh.key]: 'new' };
+          paint();
+        },
+      },
+    ];
+    old.forEach((item, i) => steps.push({
+      name: old.length > 1 ? `¿Se queda? ${i + 1}` : '¿Se queda?',
+      caption: `Luego le pregunta al predicado por la ruta de abajo, ${item.label}. (route) => false responde que no, así que sale.`,
+      apply: () => {
+        stack = stack.filter((s) => marks[s.key] !== 'cross');
+        marks = { [item.key]: 'cross' };
+        showCode(RESET(route), 3);
+        paint();
+      },
+    }));
+    steps.push({
+      name: 'Pila nueva',
+      caption: `Solo queda ${navScreenOf(route)}. Atrás ya no tiene a dónde volver: con una sola ruta, el AppBar ni siquiera muestra la flecha.`,
+      apply: () => {
+        stack = stack.filter((s) => marks[s.key] !== 'cross');
+        marks = {};
+        paint();
+      },
+    });
+    runner.start(steps);
+  }
+
+  const busy = () => runner.busy();
+  const tap = (fn) => () => {
+    if (!busy()) fn();
+  };
+
+  const screens = {
+    '/': () => [el('div', { class: 'fs-body' }, el(
+      'div',
+      { class: 'fs-center' },
+      el('div', { class: 'fs-ns-logo', text: '♫' }),
+      el('div', { class: 'fs-hello', text: 'Mi playlist' }),
+      el('button', {
+        class: 'fs-ns-btn',
+        text: 'Entrar',
+        disabled: busy(),
+        onclick: tap(() => (resetMode ? resetTo('/playlist', 'Entrar') : push('/playlist', 'Entrar'))),
+      })
+    ))],
+    '/playlist': (canPop) => [
+      navAppBar(
+        'Mi playlist',
+        canPop ? tap(() => pop('la flecha atrás del AppBar')) : null,
+        el('button', {
+          class: 'fs-ns-icon',
+          'aria-label': 'Cerrar sesión',
+          title: 'Cerrar sesión',
+          onclick: tap(() => (resetMode ? resetTo('/', 'Cerrar sesión') : pop('Cerrar sesión'))),
+        }, navLogoutIcon())
+      ),
+      el(
+        'div',
+        { class: 'fs-body' },
+        ...songs.map((song) => navTapCard(song, `Abrir ${song.title}`, tap(() => push('/song', song.title, song)))),
+        el('button', { class: 'fs-fab', 'aria-label': 'Agregar canción', text: '+', onclick: tap(() => push('/add-song', '+')) })
+      ),
+    ],
+    '/song': (canPop, item) => [
+      navAppBar(item.song.title, canPop ? tap(() => pop('la flecha atrás del AppBar')) : null),
+      navDetail(item.song, tap(() => pop('Volver a la lista'))),
+    ],
+    '/add-song': (canPop) => [
+      navAppBar('Nueva canción', canPop ? tap(() => pop('la flecha atrás del AppBar')) : null),
+      el(
+        'div',
+        { class: 'fs-body' },
+        ...['Canción', 'Artista', 'URL de la imagen'].map((label) => el('input', { class: 'fs-field', placeholder: label, 'aria-label': label, disabled: true })),
+        el('button', { class: 'fs-filled', text: 'Agregar', onclick: tap(() => pop('Agregar')) }),
+        el('div', { class: 'fs-faint', text: 'Por ahora Agregar solo cierra. Devolver la canción es otra lección.' })
+      ),
+    ],
+  };
+
+  const paint = () => {
+    const current = top();
+    if (current) {
+      device.screenHost.className = 'fs-ns-screen';
+      device.screenHost.replaceChildren(...screens[current.route](stack.length > 1, current));
+    } else {
+      device.screenHost.className = 'fs-ns-screen fs-ns-closed';
+      device.screenHost.replaceChildren(el(
+        'div',
+        { class: 'fs-center' },
+        el('div', { text: 'La app se cerró' }),
+        el('button', { class: 'fs-ns-btn', text: 'Abrir la app', disabled: busy(), onclick: tap(() => open()) })
+      ));
+    }
+    device.back.disabled = !current || busy();
+    stackPanel.render(stack, marks);
+  };
+
+  function open() {
+    stack = [entry('/')];
+    marks = {};
+    showCode("initialRoute: '/',");
+    routes.mark('/');
+    caption.textContent = 'La app arranca con una sola ruta en la pila: la de initialRoute, que en la tabla es LoginScreen.';
+    paint();
+  }
+
+  function restart() {
+    runner.stop();
+    open();
+    caption.textContent = resetMode
+      ? 'Entra y luego cierra sesión: mira qué pasa con la pila. Después prueba el botón atrás del sistema.'
+      : 'Toca Entrar, abre una canción y vuelve. A la derecha está la pila: la pantalla visible es siempre la de arriba.';
+  }
+
+  device.back.addEventListener('click', tap(() => top() && pop('el botón atrás del sistema')));
+
+  container.append(
+    el('div', { class: 'fs-col' }, device.frame, controls.node),
+    el(
+      'div',
+      { class: 'fs-side' },
+      el('div', { class: 'fs-panel' }, stepBar, caption),
+      stackPanel.box,
+      el('div', { class: 'fs-row2' }, code.box, routes.box)
+    )
+  );
+  restart();
+
+  return () => {
+    timers.splice(0).forEach(clearTimeout);
+    root.replaceChildren();
+  };
+};
+
+const NR_CODE = {
+  result: {
+    caller: [
+      'Future<void> _openAddSong() async {',
+      '  final result = await Navigator.pushNamed(',
+      '    context,',
+      "    '/add-song',",
+      '  );',
+      '  if (result is Song) {',
+      '    _addSong(result);',
+      '  }',
+      '}',
+    ],
+    callee: [
+      'SongForm(',
+      '  onAdd: (song) => Navigator.pop(context, song),',
+      '),',
+    ],
+  },
+  args: {
+    caller: [
+      'void _openSong(Song song) {',
+      '  Navigator.pushNamed(',
+      '    context,',
+      "    '/song',",
+      '    arguments: song,',
+      '  );',
+      '}',
+    ],
+    callee: [
+      'Widget build(BuildContext context) {',
+      '  final song = ModalRoute.of(context)!',
+      '      .settings.arguments as Song;',
+      '  return Scaffold(',
+      '    appBar: AppBar(title: Text(song.title)),',
+      '  );',
+      '}',
+    ],
+  },
+};
+
+const mountNavResult = (root, args = []) => {
+  const mode = args.includes('args') ? 'args' : 'result';
+  const container = card(root);
+  const timers = [];
+  let uid = 1;
+  let songs = [];
+  let stack = [];
+  let marks = {};
+  let waiting = false;
+  let forget = false;
+  let failed = false;
+  let built = false;
+  let draft = { title: '', artist: '' };
+  let showError = false;
+
+  const entry = (route, song, arg) => ({ key: uid++, route, label: navScreenOf(route), song, arg });
+  const top = () => stack[stack.length - 1];
+
+  const device = navPhone();
+  const stackPanel = navStackPanel();
+  const vars = statePanel('Variables');
+  const stepBar = el('div', { class: 'fs-stepbar' });
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'nav-caption' });
+  let runner = null;
+  const controls = navControls(() => runner, () => restart());
+  runner = navRunner({ stepBar, caption, nextButton: controls.nextButton, timers, onChange: () => paint() });
+
+  // ── the two pieces of code, with the packet that travels between them
+  const level = (title, tag) => {
+    const tagNode = el('span', { class: 'fs-cb-tag', text: tag });
+    const wait = el('span', { class: 'fs-nr-wait', text: '⏳ en pausa en el await' });
+    const code = codePanel('');
+    code.box.querySelector('h4').remove();
+    const box = el('div', { class: 'fs-panel fs-cb-level' }, el('div', { class: 'fs-cb-head' }, el('b', { text: title }), tagNode, wait), code.box);
+    return { box, code, wait };
+  };
+  const caller = level('PlaylistScreen', mode === 'args' ? 'envía la canción' : 'abre y espera');
+  const callee = mode === 'args' ? level('SongDetailScreen', 'la recibe') : level('AddSongScreen', 'devuelve la canción');
+  callee.wait.remove();
+  const packet = el('div', { class: 'fs-lift-packet', 'aria-hidden': 'true' });
+  const levelCol = el('div', { class: 'fs-rel fs-cb-levels' }, caller.box, callee.box, packet);
+
+  const callerCode = () => NR_CODE[mode].caller.filter((line) => !(forget && line.includes('arguments')));
+  const setCode = () => {
+    caller.code.setCode(callerCode().join('\n'));
+    callee.code.setCode(NR_CODE[mode].callee.join('\n'));
+  };
+  const markCode = (side, ...find) => {
+    caller.code.mark();
+    callee.code.mark();
+    if (!side) return;
+    const lines = side === caller ? callerCode() : NR_CODE[mode].callee;
+    const hit = (line, f) => (f.startsWith('=') ? line.trim() === f.slice(1) : line.includes(f));
+    side.code.mark(...lines.map((line, i) => (find.some((f) => hit(line, f)) ? i : -1)).filter((i) => i >= 0));
+    caller.box.classList.toggle('fs-hot', side === caller);
+    callee.box.classList.toggle('fs-hot', side === callee);
+  };
+  const send = (from, to, label, kind) => {
+    const base = levelCol.getBoundingClientRect();
+    packet.textContent = label;
+    packet.className = `fs-lift-packet fs-${kind}`;
+    const at = (lv) => {
+      const r = lv.box.getBoundingClientRect();
+      return { x: r.left - base.left + (r.width - packet.offsetWidth) / 2, y: r.top - base.top - 16 };
+    };
+    const a = at(from);
+    const b = at(to);
+    packet.style.transition = 'none';
+    packet.style.transform = `translate(${a.x}px, ${a.y}px)`;
+    void packet.offsetWidth;
+    packet.style.transition = '';
+    packet.style.transform = `translate(${b.x}px, ${b.y}px)`;
+  };
+  const hidePacket = () => {
+    packet.className = 'fs-lift-packet';
+  };
+
+  const showVars = (entries) => vars.set(entries);
+
+  // ── what the user does
+  function openAdd() {
+    runner.start([
+      {
+        name: 'Toque',
+        caption: 'Tocaste +: corre _openAddSong().',
+        apply: () => {
+          hidePacket();
+          markCode(caller, '_openAddSong');
+        },
+      },
+      {
+        name: 'Push y await',
+        caption: 'pushNamed abre AddSongScreen y devuelve un Future. El await deja a _openAddSong en pausa en esta línea: lo que sigue no corre hasta que esa pantalla se cierre.',
+        apply: () => {
+          markCode(caller, 'await', 'context,', "'/add-song'", '=);');
+          const fresh = entry('/add-song');
+          stack = [...stack, fresh];
+          marks = { [stack[0].key]: 'wait', [fresh.key]: 'new' };
+          waiting = true;
+          draft = { title: '', artist: '' };
+          showError = false;
+          showVars([['result', '… esperando']]);
+          paint();
+        },
+      },
+    ]);
+  }
+
+  function closeAdd(song) {
+    const value = song ? navSong(song) : 'null';
+    const leaving = top();
+    runner.start([
+      song
+        ? {
+          name: 'onAdd',
+          caption: 'SongForm arma la Song y llama onAdd. AddSongScreen la usa para cerrarse: Navigator.pop(context, song).',
+          apply: () => markCode(callee, 'Navigator.pop'),
+        }
+        : {
+          name: 'Atrás',
+          caption: 'Atrás también hace pop, pero sin resultado: es Navigator.pop(context), sin segundo argumento.',
+          apply: () => markCode(null),
+        },
+      {
+        name: 'Pop',
+        caption: `pop saca AddSongScreen de la pila y entrega ${value} como resultado del Future.`,
+        apply: () => {
+          send(callee, caller, value, 'up');
+          marks = { ...marks, [leaving.key]: 'out' };
+          paint();
+        },
+      },
+      {
+        name: 'Despierta el await',
+        caption: `El await termina y result vale ${value}. _openAddSong sigue desde la línea donde se quedó.`,
+        apply: () => {
+          hidePacket();
+          stack = stack.slice(0, -1);
+          marks = {};
+          waiting = false;
+          showVars([['result', value]]);
+          markCode(caller, 'await');
+          paint();
+        },
+      },
+      song
+        ? {
+          name: 'if',
+          caption: 'result is Song es true: llegó una canción.',
+          apply: () => markCode(caller, 'if (result is Song)'),
+        }
+        : {
+          name: 'if',
+          caption: 'result is Song es false: la persona volvió sin guardar y no llegó nada. El if evita agregar algo que no existe, y la lista queda igual.',
+          apply: () => markCode(caller, 'if (result is Song)'),
+        },
+      ...(song
+        ? [{
+          name: 'setState',
+          caption: '_addSong la agrega dentro de setState y la lista se dibuja con la canción nueva.',
+          apply: () => {
+            markCode(caller, '_addSong(result)');
+            songs = [...songs, song];
+            paint();
+          },
+        }]
+        : []),
+    ]);
+  }
+
+  function openSong(song) {
+    const value = forget ? 'null' : navSong(song);
+    runner.start([
+      {
+        name: 'Toque',
+        caption: `Tocaste ${song.title}: SongList avisa con onOpen y la Screen corre _openSong(song).`,
+        apply: () => {
+          failed = false;
+          hidePacket();
+          markCode(caller, '_openSong');
+        },
+      },
+      {
+        name: 'Empaca',
+        caption: forget
+          ? 'pushNamed abre /song, pero nadie le dio arguments: la ruta viaja vacía.'
+          : 'pushNamed lleva la canción en arguments. Viaja dentro de la ruta nueva, en settings.arguments.',
+        apply: () => {
+          markCode(caller, 'pushNamed', 'context,', "'/song'", 'arguments', '=);');
+          send(caller, callee, value, 'down');
+        },
+      },
+      {
+        name: 'Push',
+        caption: `SongDetailScreen cae encima de la pila con sus arguments: ${value}.`,
+        apply: () => {
+          const fresh = entry('/song', song, value);
+          built = false;
+          stack = [...stack, fresh];
+          marks = { [fresh.key]: 'new' };
+          paint();
+        },
+      },
+      {
+        name: 'Lee arguments',
+        caption: forget
+          ? 'build lee settings.arguments y encuentra null. El as Song falla: null no es una Song.'
+          : 'build lee settings.arguments con ModalRoute.of(context) y lo convierte en Song con as Song.',
+        apply: () => {
+          hidePacket();
+          markCode(callee, 'ModalRoute', '.settings');
+          showVars([['settings.arguments', value], ['song', forget ? '✕ error' : value]]);
+        },
+      },
+      {
+        name: 'build',
+        caption: forget
+          ? 'Flutter pinta la pantalla roja del error. Vuelve con atrás y apaga «Olvidar arguments».'
+          : `Con la canción en la mano, build dibuja ${song.title}. La pantalla no sabía cuál era hasta este momento.`,
+        apply: () => {
+          markCode(callee, forget ? '.settings' : 'song.title');
+          failed = forget;
+          built = true;
+          paint();
+        },
+      },
+    ]);
+  }
+
+  function closeSong(label) {
+    const leaving = top();
+    runner.start([
+      {
+        name: 'Toque',
+        caption: `Tocaste ${label}: Navigator.pop(context). Aquí no hace falta devolver nada.`,
+        apply: () => {
+          hidePacket();
+          markCode(null);
+        },
+      },
+      {
+        name: 'Pop',
+        caption: 'SongDetailScreen sale de la pila y se ve la lista otra vez. Toca otra canción: cada push lleva la suya.',
+        apply: () => {
+          stack = stack.filter((s) => s.key !== leaving.key);
+          marks = {};
+          failed = false;
+          showVars([]);
+          paint();
+        },
+      },
+    ]);
+  }
+
+  const busy = () => runner.busy();
+  const tap = (fn) => () => {
+    if (!busy()) fn();
+  };
+
+  function submit() {
+    if (!draft.title || !draft.artist) {
+      showError = true;
+      paint();
+      return;
+    }
+    closeAdd({ ...draft, imageUrl: DEFAULT_IMAGE });
+  }
+
+  const back = () => {
+    const current = top();
+    if (!current || stack.length === 1) return;
+    if (current.route === '/add-song') closeAdd(null);
+    else closeSong('atrás');
+  };
+
+  const playlistScreen = () => [
+    navAppBar('Mi playlist', null),
+    el(
+      'div',
+      { class: 'fs-body', 'data-testid': 'nav-list' },
+      ...(songs.length
+        ? songs.map((song) => (mode === 'args'
+          ? navTapCard(song, `Abrir ${song.title}`, tap(() => openSong(song)))
+          : songCard(song)))
+        : [el('div', { class: 'fs-empty', text: 'Todavía no hay canciones' })]),
+      mode === 'result' ? el('button', { class: 'fs-fab', 'aria-label': 'Agregar canción', text: '+', onclick: tap(() => openAdd()) }) : null
+    ),
+  ];
+
+  const addScreen = () => {
+    const field = (key, label) => el('input', {
+      class: 'fs-field',
+      placeholder: label,
+      'aria-label': label,
+      value: draft[key],
+      oninput: (e) => {
+        draft = { ...draft, [key]: e.target.value };
+      },
+    });
+    return [
+      navAppBar('Nueva canción', tap(back)),
+      el(
+        'div',
+        { class: 'fs-body' },
+        field('title', 'Canción'),
+        field('artist', 'Artista'),
+        showError ? el('div', { class: 'fs-lift-error', text: 'Escribe el nombre y el artista' }) : null,
+        el('button', { class: 'fs-filled', text: 'Agregar', onclick: tap(submit) })
+      ),
+    ];
+  };
+
+  const detailScreen = (item) => {
+    if (failed) {
+      return [el(
+        'div',
+        { class: 'fs-ns-err' },
+        el('b', { text: 'Exception caught by widgets library' }),
+        el('div', { text: "type 'Null' is not a subtype of type 'Song' in type cast" })
+      )];
+    }
+    if (!built) {
+      return [navAppBar('', tap(back)), el('div', { class: 'fs-body' })];
+    }
+    return [navAppBar(item.song.title, tap(back)), navDetail(item.song, tap(() => closeSong('Volver a la lista')))];
+  };
+
+  const paint = () => {
+    const current = top();
+    device.screenHost.className = 'fs-ns-screen';
+    const view = current.route === '/playlist' ? playlistScreen()
+      : current.route === '/add-song' ? addScreen() : detailScreen(current);
+    device.screenHost.replaceChildren(...view);
+    device.back.disabled = stack.length < 2 || busy();
+    caller.wait.style.display = waiting ? '' : 'none';
+    stackPanel.render(stack, marks);
+  };
+
+  function restart() {
+    runner.stop();
+    songs = NAV_SONGS.slice(0, 2).map((s) => ({ ...s, imageUrl: DEFAULT_IMAGE }));
+    stack = [entry('/playlist')];
+    marks = {};
+    waiting = false;
+    failed = false;
+    showError = false;
+    hidePacket();
+    setCode();
+    markCode(null);
+    caller.box.classList.remove('fs-hot');
+    callee.box.classList.remove('fs-hot');
+    showVars(mode === 'result' ? [['result', '—']] : []);
+    caption.textContent = mode === 'result'
+      ? 'Toca + para agregar una canción. Prueba también volver con atrás sin guardar.'
+      : 'Toca una canción para abrir su detalle. La pantalla nueva no sabe cuál es: hay que mandársela.';
+    paint();
+  }
+
+  device.back.addEventListener('click', tap(back));
+
+  const sideControls = [];
+  if (mode === 'args') {
+    const forgetToggle = switchControl('Olvidar arguments', (checked) => {
+      forget = checked;
+      restart();
+    });
+    sideControls.push(forgetToggle.node);
+  }
+
+  container.append(
+    el('div', { class: 'fs-col' }, device.frame, controls.node, ...sideControls),
+    el(
+      'div',
+      { class: 'fs-side' },
+      el('div', { class: 'fs-panel' }, stepBar, caption),
+      levelCol,
+      el('div', { class: 'fs-row2' }, stackPanel.box, vars.box)
+    )
+  );
+  restart();
+
+  return () => {
+    timers.splice(0).forEach(clearTimeout);
+    root.replaceChildren();
+  };
+};
+
 export const SIMS = Object.freeze({
   'state-counter': mountCounter,
   'hot-reload': (root, args = []) => mountCounter(root, ['reload', ...args]),
@@ -2872,6 +3802,8 @@ export const SIMS = Object.freeze({
   lift: mountLift,
   compose: mountCompose,
   callback: mountCallback,
+  'nav-stack': mountNavStack,
+  'nav-result': mountNavResult,
 });
 
 export const parseSpec = (spec) => {

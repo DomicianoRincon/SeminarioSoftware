@@ -216,7 +216,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion7_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion8_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -267,6 +267,14 @@ playlist cards
   `callback` (`S0047`): de dónde sale la función de borrar. Tres niveles apilados con su código (Screen con el estado y
   `_deleteSong`, SongList que solo la pasa, SongCard con el botón) y un teléfono; recorrido guiado de 6 pasos y después
   cada papelera sube la llamada un nivel por paso hasta el `setState`.
+  `nav-stack` (`S0051`, y con `reset` en `S0053`): la pila del Navigator junto a un teléfono funcional con botón atrás
+  del sistema. Cada push hace caer una tarjeta, cada pop la saca con `dispose()`, y las de abajo dicen que siguen vivas;
+  la tabla `routes:` ilumina el nombre encontrado. Con la pila vacía la app se cierra. Sin opciones, *Entrar* es
+  `pushNamed` y cerrar sesión `pop`; `reset` los cambia por `pushNamedAndRemoveUntil` y tacha cada ruta de abajo en su paso.
+  `nav-result` (`S0055`, y con `args` en `S0054`): el código de las dos pantallas con un paquete entre ellas (azul baja en
+  `arguments`, naranja sube en el `pop`), la pila y las variables. Sin opciones, `await` en pausa hasta el `pop(context, song)`
+  y `null` al volver con atrás; con `args`, la `Song` viaja al detalle, y *Olvidar arguments* muestra el error del `as Song`.
+  Los dos comparten `navRunner` (pasos con *Paso a paso*), `navPhone` y `navStackPanel`.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar

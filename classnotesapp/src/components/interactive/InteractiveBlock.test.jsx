@@ -426,3 +426,121 @@ describe('callback', () => {
     expect(screen.getByTestId('callback-list').querySelectorAll('.fs-card')).toHaveLength(2);
   });
 });
+
+describe('nav-stack', () => {
+  const step = (n = 1) => act(() => vi.advanceTimersByTime(1100 * n));
+  const routes = (container) => [...container.querySelectorAll('.fs-ns-card')].map((c) => c.dataset.route);
+
+  it('pushes a route on top and pops it back, keeping the one below', () => {
+    const { container } = renderBlock('nav-stack');
+    expect(routes(container)).toEqual(['/']);
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    step(2);
+    expect(routes(container)).toEqual(['/playlist', '/']);
+    expect(screen.getByTestId('nav-caption').textContent).toMatch(/sigue vivo/);
+    fireEvent.click(screen.getByLabelText('Abrir Yellow'));
+    step(2);
+    expect(routes(container)).toEqual(['/song', '/playlist', '/']);
+    expect(screen.getByTestId('nav-phone').textContent).toContain('Coldplay');
+    fireEvent.click(screen.getByRole('button', { name: 'Volver a la lista' }));
+    step(2);
+    expect(routes(container)).toEqual(['/playlist', '/']);
+    fireEvent.click(screen.getByLabelText('Cerrar sesión'));
+    step(2);
+    expect(routes(container)).toEqual(['/']);
+    expect(screen.getByTestId('nav-phone').textContent).toContain('Entrar');
+  });
+
+  it('closes the app when the last route is popped', () => {
+    renderBlock('nav-stack');
+    fireEvent.click(screen.getByLabelText('Atrás del sistema'));
+    step();
+    expect(screen.getByTestId('nav-phone').textContent).toContain('La app se cerró');
+    expect(screen.getByTestId('nav-stack').textContent).toContain('Pila vacía');
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir la app' }));
+    expect(screen.getByTestId('nav-phone').textContent).toContain('Entrar');
+  });
+
+  it('waits for Siguiente paso in step-by-step mode', () => {
+    const { container } = renderBlock('nav-stack');
+    fireEvent.click(screen.getByLabelText('Paso a paso'));
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    step(5);
+    expect(routes(container)).toEqual(['/']);
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente paso' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente paso' }));
+    expect(routes(container)).toEqual(['/playlist', '/']);
+  });
+
+  it('rebuilds the stack with pushNamedAndRemoveUntil (reset)', () => {
+    const { container } = renderBlock('nav-stack reset');
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    step(2);
+    expect(routes(container)).toEqual(['/playlist', '/']);
+    step();
+    expect(container.querySelector('.fs-ns-cross').dataset.route).toBe('/');
+    step();
+    expect(routes(container)).toEqual(['/playlist']);
+    expect(screen.queryByLabelText('Atrás')).toBeNull();
+    fireEvent.click(screen.getByLabelText('Abrir Imagine'));
+    step(2);
+    expect(screen.getByLabelText('Atrás')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Volver a la lista' }));
+    step(2);
+    fireEvent.click(screen.getByLabelText('Cerrar sesión'));
+    step(5);
+    expect(routes(container)).toEqual(['/']);
+    fireEvent.click(screen.getByLabelText('Atrás del sistema'));
+    step();
+    expect(screen.getByTestId('nav-phone').textContent).toContain('La app se cerró');
+  });
+});
+
+describe('nav-result', () => {
+  const step = (n = 1) => act(() => vi.advanceTimersByTime(1100 * n));
+  const cards = () => screen.getByTestId('nav-list').querySelectorAll('.fs-card');
+
+  it('waits in the await and adds the song that pop returns', () => {
+    const { container } = renderBlock('nav-result');
+    expect(cards()).toHaveLength(2);
+    fireEvent.click(screen.getByLabelText('Agregar canción'));
+    step();
+    expect(screen.getByTestId('nav-phone').textContent).toContain('Nueva canción');
+    expect(container.querySelector('.fs-ns-wait').dataset.route).toBe('/playlist');
+    fireEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+    expect(screen.getByTestId('nav-phone').textContent).toContain('Escribe el nombre y el artista');
+    type('Canción', 'Hey Jude');
+    type('Artista', 'The Beatles');
+    fireEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+    step(2);
+    expect(container.textContent).toContain("Song('Hey Jude')");
+    expect(cards()).toHaveLength(2);
+    step(2);
+    expect(cards()).toHaveLength(3);
+    expect(screen.getByTestId('nav-list').textContent).toContain('Hey Jude');
+  });
+
+  it('gets null when the user goes back without saving', () => {
+    const { container } = renderBlock('nav-result');
+    fireEvent.click(screen.getByLabelText('Agregar canción'));
+    step();
+    fireEvent.click(screen.getByLabelText('Atrás del sistema'));
+    step(3);
+    expect(screen.getByTestId('nav-caption').textContent).toMatch(/false/);
+    expect(container.querySelector('.fs-panel .fs-row').textContent).toContain('null');
+    expect(cards()).toHaveLength(2);
+  });
+
+  it('sends the song in arguments, or fails the cast when they are forgotten (args)', () => {
+    renderBlock('nav-result args');
+    fireEvent.click(screen.getByLabelText('Abrir Yellow'));
+    step(4);
+    expect(screen.getByTestId('nav-phone').textContent).toContain('Coldplay');
+    fireEvent.click(screen.getByRole('button', { name: 'Volver a la lista' }));
+    step();
+    fireEvent.click(screen.getByLabelText('Olvidar arguments'));
+    fireEvent.click(screen.getByLabelText('Abrir Yellow'));
+    step(4);
+    expect(screen.getByTestId('nav-phone').textContent).toContain("type 'Null' is not a subtype of type 'Song'");
+  });
+});

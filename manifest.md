@@ -17,7 +17,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0039` Colaboración con GitHub MCP · `S0038` Taller · Servidores MCP |
 | 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard |
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | 🟡 | `S0046` El estado entra como parámetro · `S0047` Funciones como parámetro · `S0048` Modelos con copyWith · `S0049` Prop drilling · `S0045` Taller · Playlist con estado elevado |
-| 8 | 24 | 12 | 4 | Navegación entre pantallas | ⬜ | |
+| 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | ⬜ | |
 | 10 | 26 | 13 | 3 | Spec Driven Development | ⬜ | |
 | 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | ⬜ | |
@@ -176,6 +176,30 @@ Notas:
 - Los tres *Ejemplo completo* (`S0046`, `S0047` y `S0048`; `S0049` reutiliza el de `S0048`) pasaron `flutter analyze` y el analizador de DartPad sin avisos, y tienen gist público en `Domiciano`.
 - **La solución del taller se comprobó** el 2026-10-22 en un proyecto de prueba con la estructura del curso: `flutter analyze` solo marca los tres `avoid_print` que el taller pide a propósito. No se ejecutó en un dispositivo.
 - Las 5 figuras salen de `tools/sesion7_figuras.py`. `ptCrear` (crear el proyecto) se eliminó: el taller ya no crea un proyecto. `check.py` sin errores.
+
+### Sesión 8 · Navegación entre pantallas
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion8/`).
+
+**Punto de partida:** el *Ejemplo completo* de `S0048`, que ya tenía `initialRoute: '/'` y `routes:` con una sola entrada. La sesión sigue en el mismo `playlist_app` y le suma tres pantallas: `LoginScreen` (`'/'`), `SongDetailScreen` (`'/song'`) y `AddSongScreen` (`'/add-song'`); la playlist se muda a `'/playlist'`. Se usa `'/'` para el login y no `initialRoute: '/login'`, porque un `initialRoute` con barra se trata como enlace profundo y Flutter apilaría `'/'` debajo. Las lecciones de navegación de Móviles (`0034`, `0035`) no se copiaron: son de puro texto y usan `MaterialPageRoute` y una clase `ScreenArguments`.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Navigator y tabla de rutas nombradas en MaterialApp | `S0051` (la pila: push, pop, la de abajo sigue viva, atrás es un pop, la app se cierra con la pila vacía) con el interactivo `nav-stack` y la figura `plPila`. `S0052` (la tabla `routes:`, `initialRoute`, sin `home:`) con la figura de código `rnTabla` y el error `Could not find a generator for route` |
+| pushNamed para abrir y pop para volver | `S0052`: *Entrar* abre la playlist con `pushNamed` y el ícono de logout hace `pop`. Cierra mostrando el problema: la flecha `←` del AppBar vuelve al login |
+| pushNamedAndRemoveUntil con `(route) => false` | `S0053`: el predicado explicado, entrar y cerrar sesión, por qué cerrar sesión ya no puede ser un pop y por qué no `pushReplacementNamed`. Figura `ruPila` (estática, tres columnas: con `pushNamed`, el predicado, la pila nueva) e interactivo `nav-stack reset` |
+| Paso de datos a la pantalla nueva | `S0054`: `SongCard` con `onTap` envuelta en `GestureDetector`, `SongList` con `onOpen`, `arguments: song` y `ModalRoute.of(context)!.settings.arguments as Song`. Interactivo `nav-result args` (con el interruptor *Olvidar arguments*, que muestra el error del cast) y figura `paArgs` |
+| Retorno de un resultado al cerrarla | `S0055`: el formulario se muda a `AddSongScreen`, que cierra con `Navigator.pop(context, song)`; la playlist hace `await Navigator.pushNamed` y filtra con `if (result is Song)`. Interactivo `nav-result` y figura `reAwait` |
+| *Fuera de clase:* dejar navegable el prototipo del equipo | No se asigna: las sesiones del bloque son de clase y no dejan tarea |
+
+Notas:
+
+- **`S0050` va primero**, como el taller de la sesión 7: la meta (figura `tnMeta`, las cuatro pantallas y cada flecha con su llamada al Navigator), los archivos al terminar (`tnCarpetas`) y dos mejoras: el saludo (el nombre viaja en `arguments` del `pushNamedAndRemoveUntil`) y *Quitar de la playlist* desde el detalle (`pop(context, true)` y `await` en `_openSong`).
+- **Interactivo `nav-stack`**: teléfono funcional con botón atrás del sistema, la pila de rutas como tarjetas (visible, debajo y viva, `dispose()`, tachada por el predicado), la línea que se ejecutó y la tabla `routes:` con la entrada encontrada. Un cambio de la pila por paso y modo *Paso a paso*. Sin opciones, *Entrar* es `pushNamed` y cerrar sesión es `pop`; con `reset`, los dos son `pushNamedAndRemoveUntil` y cada ruta de abajo se tacha en su propio paso.
+- **Interactivo `nav-result`**: el código de las dos pantallas, un paquete que viaja entre ellas (azul el que baja en `arguments`, naranja el que sube en el `pop`, la convención de `lift`), la pila y un panel de variables. Sin opciones enseña el retorno: el aviso *en pausa en el await*, la `Song` que sube, y `null` cuando se vuelve con atrás. Con `args`, el envío al detalle.
+- Los cuatro *Ejemplo completo* (`S0052` a `S0055`) pasaron `flutter analyze` y el analizador de DartPad sin avisos. **Los gists están pendientes**: los cuatro *Ejemplo completo* van como bloque ` ```dart ` simple, sin *Fire it up!*, hasta que se creen.
+- **La solución del taller se comprobó** el 2026-10-28 en un proyecto de prueba con un archivo por clase e imports `package:`: `flutter analyze` sin avisos. No se ejecutó en un dispositivo.
+- Las 7 figuras salen de `tools/sesion8_figuras.py`. `check.py` sin errores.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 

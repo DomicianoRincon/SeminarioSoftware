@@ -55,6 +55,13 @@
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS46.md | El estado entra como parámetro | S0046
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS47.md | Funciones como parámetro | S0047
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS48.md | Modelos con copyWith | S0048
+[t] Sesión 8 · Navegación entre pantallas
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS50.md | Taller · Playlist navegable | S0050
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS51.md | La pila de pantallas | S0051
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS52.md | Rutas nombradas: pushNamed y pop | S0052
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS53.md | pushNamedAndRemoveUntil: rehacer la pila | S0053
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS54.md | Pasar datos a la pantalla nueva | S0054
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS55.md | Devolver un resultado al cerrar | S0055
 [t] Instalación avanzada
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC1.md | Instalación de Flutter | 0019
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC2.md | Tu primera app Flutter | 0020
