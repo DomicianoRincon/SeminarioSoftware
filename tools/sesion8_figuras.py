@@ -198,11 +198,11 @@ FIGS['tnMeta'] = tn_meta
 
 def tn_carpetas():
     fid = 'tnCarpetas'
-    s = start(fid, 568, 'Los archivos de <tspan class="mono">playlist_app</tspan> al terminar',
+    s = start(fid, 539, 'Los archivos de <tspan class="mono">playlist_app</tspan> al terminar',
               'Los archivos de playlist_app al terminar',
               'Tres pantallas nuevas en screens/. Los componentes no cambian de carpeta ni saben que hay navegación.',
               'La carpeta lib con main.dart, que tiene la tabla de las cuatro rutas, y tres carpetas: models con '
-              'song.dart; components con playlist_summary.dart de la sesión 7, song_card.dart, song_form.dart y '
+              'song.dart; components con song_card.dart, song_form.dart y '
               'song_list.dart; y screens con login_screen.dart, playlist_screen.dart, song_detail_screen.dart y '
               'add_song_screen.dart. Las tres pantallas nuevas están marcadas como nuevas, y cada archivo dice si '
               'guarda estado.')
@@ -213,7 +213,6 @@ def tn_carpetas():
         ('models/', 1, 'dir', None, None),
         ('song.dart', 2, 'file', ('Song con copyWith', 'slate'), None),
         ('components/', 1, 'dir', None, None),
-        ('playlist_summary.dart', 2, 'file', ('de la sesión 7', 'slate'), None),
         ('song_card.dart', 2, 'file', ('Stateless · ahora con onTap', 'slate'), None),
         ('song_form.dart', 2, 'file', ('StatefulWidget · guarda el borrador', 'violet'), None),
         ('song_list.dart', 2, 'file', ('Stateless · ahora con onOpen', 'slate'), None),
@@ -223,7 +222,7 @@ def tn_carpetas():
         ('song_detail_screen.dart', 2, 'file', ('Stateless · lee arguments', 'slate'), new),
         ('add_song_screen.dart', 2, 'file', ('Stateless · hospeda el formulario', 'slate'), new),
     ]
-    s += '  <rect x="48" y="104" width="864" height="432" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
+    s += '  <rect x="48" y="104" width="864" height="403" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>\n'
     for i, (name, depth, kind, tag, extra) in enumerate(rows):
         y = 136 + i * 29
         s += '  ' + folder(72, y, name, depth, kind, tag) + '\n'

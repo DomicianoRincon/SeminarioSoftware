@@ -11,13 +11,13 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | Sesión | Planeador | Semana | Unidad | Tema | Estado | Lecciones en el visor |
 |---|---|---|---|---|---|---|
 | 1 | 17 | 9 | 4 | Entorno y primera aplicación | 🟡 | `S0003` ¿Qué es el frontend? · `S0004` Panorama del frontend · `S0005` Frontend y la nube · `S0006` Desarrollar con IA · `S0001` Instalación básica · sección *Instalación avanzada*: `0019`, `0020`, `0021`, `0022` |
-| 2 | 18 | 9 | 4 | Componentes | ✅ | `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `S0018` Taller · Componentes |
-| 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
-| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill · `S0033` Una skill para armar pantallas |
-| 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0039` Colaboración con GitHub MCP · `S0038` Taller · Servidores MCP |
-| 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard |
-| 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | 🟡 | `S0046` El estado entra como parámetro · `S0047` Funciones como parámetro · `S0048` Modelos con copyWith · `S0049` Prop drilling · `S0045` Taller · Playlist con estado elevado |
-| 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
+| 2 | 18 | 9 | 4 | Componentes | ✅ | `S0056` Repositorio de arranque · `S0010` El proyecto por dentro · `S0011` Text · `S0012` Image · `S0013` Button · `S0014` TextField · `S0016` Column · `S0017` Row · `S0015` StatelessWidget: tu primer componente · `S0018` Taller · Componentes |
+| 3 | 19 | 10 | 4 | Pantallas con componentes | 🟡 | `S0057` Repositorio de arranque · `S0020` Scaffold · `S0021` SafeArea · `S0022` Container y Padding · `S0023` Expanded · `S0024` SingleChildScrollView · `S0025` Armar una pantalla · `S0026` Taller · Pantallas |
+| 4 | 20 | 10 | 3 | El agente en consola y el archivo de contexto | 🟡 | `S0058` Repositorio de arranque · `S0029` El agente en consola · `S0030` El archivo de contexto · `S0031` Skills · `S0032` Taller · Tu primera skill · `S0033` Una skill para armar pantallas |
+| 5 | 21 | 11 | 3 | Servidores MCP | 🟡 | `S0059` Repositorio de arranque · `S0034` ¿Qué es MCP? · `S0035` Configurar MCP en Antigravity · `S0036` Prototipado con Stitch MCP · `S0037` Automatización con Playwright MCP · `S0039` Colaboración con GitHub MCP · `S0038` Taller · Servidores MCP |
+| 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0060` Repositorio de arranque · `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard |
+| 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | 🟡 | `S0061` Repositorio de arranque · `S0046` El estado entra como parámetro · `S0047` Funciones como parámetro · `S0048` Modelos con copyWith · `S0049` Prop drilling · `S0045` Taller · Playlist con estado elevado |
+| 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0062` Repositorio de arranque · `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | ⬜ | |
 | 10 | 26 | 13 | 3 | Spec Driven Development | ⬜ | |
 | 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | ⬜ | |
@@ -200,6 +200,17 @@ Notas:
 - Los cuatro *Ejemplo completo* (`S0052` a `S0055`) pasaron `flutter analyze` y el analizador de DartPad sin avisos. Tienen gist público en `Domiciano` y abren en *Fire it up!* (`tab=run`, pedido del profesor del 2026-10-28).
 - **La solución del taller se comprobó** el 2026-10-28 en un proyecto de prueba con un archivo por clase e imports `package:`: `flutter analyze` sin avisos. No se ejecutó en un dispositivo.
 - Las 7 figuras salen de `tools/sesion8_figuras.py`. `check.py` sin errores.
+
+## Repositorios de arranque
+
+Desde el 2026-10-28 (pedido del profesor) cada sesión de la 2 a la 8 abre con una lección **Repositorio de arranque** (`S0056` a `S0062`, siempre la primera de la sesión): el punto de partida de la sesión es lo que quedó al terminar la anterior, en un repositorio público `github.com/Domiciano/262SeminarioSesionN`, con un solo commit en `main`. La lección muestra cómo clonarlo (figura de consola `raClonarN`, de `tools/arranque_figuras.py`) y qué trae.
+
+- **Sesión 2**: `flutter create --org icesi.edu.co miapp1` limpio, lo que deja `S0001`. No se usó el commit «Sesion 2» de `262SeminarioApp1`: ya trae la `HomeScreen` con los ejercicios de `Column` y `Row` de la sesión 2.
+- **Sesiones 3 a 5**: el proyecto del profesor, `Domiciano/262SeminarioApp1` (paquete `mi_app_1`), en los commits `2d28b37` (componentes), `5a628f0` (`ProfileScreen`) y `2175ee4` (`AGENTS.md` y `docs/`). Se quitó `test/widget_test.dart`, que no compilaba (busca `MyApp`). Las secciones del taller `S0026` no están: el profesor no las sacó a componentes. La sesión 5 **no trae las skills** (`mer-svg`, `flutter-pantallas`), que están en `recursos/sesion4/.agents/skills/`.
+- **Sesión 6**: `flutter create --org icesi.edu.co playlist_app` limpio, con el contador que recorre `S0041`.
+- **Sesiones 7 y 8**: el *Ejemplo completo* de `S0044` y de `S0048`, separados en un archivo por clase con imports `package:playlist_app/`. Sin el taller de la sesión anterior.
+- Los siete pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
+- `check.py` marca como error la URL de las siete figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 

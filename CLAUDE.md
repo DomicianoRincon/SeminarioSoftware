@@ -108,7 +108,10 @@ primeras son de las unidades 1 y 2). En el visor y en el manifest se cuentan de 
    (*Instalación avanzada*, *Dart*). La primera sección es siempre **Curso**, con
    *Programa del curso* (`lessonS2.md`), igual que en Móviles: es la versión para el
    estudiante de `docs/syllabus.md`, y si cambia el syllabus hay que actualizarla.
-4. Actualizar `manifest.md`: estado de la sesión, ids y la tabla de lo que pide el
+4. Desde la sesión 2, la primera lección es **Repositorio de arranque**: un repo público
+   `github.com/Domiciano/262SeminarioSesionN` con lo que quedó al terminar la sesión anterior, y la
+   figura de consola para clonarlo (`tools/arranque_figuras.py`). Ver `manifest.md` → *Repositorios de arranque*.
+5. Actualizar `manifest.md`: estado de la sesión, ids y la tabla de lo que pide el
    planeador frente a dónde quedó.
 
 **`toc.md` se vació el 2026-09-29.** Las ~80 lecciones heredadas de Móviles siguen en
