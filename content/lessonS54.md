@@ -142,7 +142,7 @@ Pruébalo en el interactivo con *Olvidar arguments*.
 
 La playlist con la pantalla de detalle. Para probarlo, agrega una canción y tócala.
 
-```dart
+```dart trycode=174cc2628036882b423cef74f76bbc34 tab=run
 import 'package:flutter/material.dart';
 
 void main() {

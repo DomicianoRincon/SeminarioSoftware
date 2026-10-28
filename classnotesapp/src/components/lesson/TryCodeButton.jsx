@@ -8,8 +8,8 @@ import { markAttempt } from '@/ai/priorAttempt';
 import { useAnalytics } from '@/analytics/AnalyticsProvider';
 import { EVENTS, TRYCODE_TAB } from '@/analytics/events';
 
-const TryCodeButton = ({ gistId, codeBlock }) => {
-  const [showDartPad, setShowDartPad] = useState(false);
+const TryCodeButton = ({ gistId, codeBlock, startOnRun = false }) => {
+  const [showDartPad, setShowDartPad] = useState(startOnRun);
   const { theme } = useThemeMode();
   const { track } = useAnalytics();
   const { lesson } = useCurrentLesson();

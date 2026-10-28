@@ -399,6 +399,7 @@ Markdown estándar (CommonMark + GFM) para todo, más estos bloques cercados:
 | ` ```youtube ` | `<videoId> \| <título>` |
 | ` ```dartpad ` | Editor DartPad; el cuerpo es el id del Gist |
 | ` ```dart trycode=<gistId> ` | Bloque con pestañas *Código* / *Fire it up!* |
+| ` ```dart trycode=<gistId> tab=run ` | El mismo bloque, pero abre en *Fire it up!*. Lo llevan los *Ejemplo completo* desde la sesión 8 |
 | ` ```interactive ` | Diagrama interactivo; el cuerpo es `<id> [opciones]` (ver *Diagramas interactivos*) |
 
 Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a secas): sin
@@ -419,6 +420,9 @@ en varias líneas.
 Regla del profesor (2026-10-02): **toda lección que tenga código termina con un apartado
 `## Ejemplo completo`**, con un bloque ` ```dart trycode=<gistId> ` que corre en DartPad.
 
+- Desde la sesión 8 (pedido del profesor, 2026-10-28) el bloque lleva además **`tab=run`**, que lo abre en
+  *Fire it up!* en vez de en *Código*. Las lecciones anteriores siguen abriendo en el código.
+  Es código de plataforma (`LessonParser.jsx` y `TryCodeButton.jsx`), por ahora solo en este repo.
 - El ejemplo es **un programa entero en un solo archivo**: `main`, `App` con la tabla de rutas
   y `HomeScreen`, igual que el de `S0010`. La lección aclara que en el proyecto van separados.
 - El gist se crea **público en la cuenta `Domiciano`** (`gh gist create --public`), con el

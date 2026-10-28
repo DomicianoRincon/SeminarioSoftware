@@ -199,10 +199,17 @@ const LessonParser = ({ content }) => {
       const codeBlock = <CodeBlock language={lang}>{raw}</CodeBlock>;
       // Fence meta string (text after the language) carries `trycode=<gistId>`,
       // e.g. ```dart trycode=abc123 — pairs this block with a DartPad tab.
+      // `tab=run` opens it on the DartPad tab instead of the code.
       const meta = node?.data?.meta || node?.properties?.metastring || "";
       const trycodeMatch = /trycode=(\S+)/.exec(meta);
       if (trycodeMatch) {
-        return <TryCodeButton gistId={trycodeMatch[1]} codeBlock={codeBlock} />;
+        return (
+          <TryCodeButton
+            gistId={trycodeMatch[1]}
+            codeBlock={codeBlock}
+            startOnRun={/\btab=run\b/.test(meta)}
+          />
+        );
       }
       return codeBlock;
     },

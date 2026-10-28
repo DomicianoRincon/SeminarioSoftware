@@ -1,6 +1,6 @@
 # pushNamedAndRemoveUntil: rehacer la pila
 
-<!-- tags: pushNamedAndRemoveUntil, (route) => false, limpiar la pila, cerrar sesión, atrás vuelve al login, predicado, pushReplacementNamed, quitar la flecha atrás -->
+<!-- tags: pushNamedAndRemoveUntil, (route) => false, limpiar la pila, cerrar sesión, atrás vuelve al login, predicado, quitar la flecha atrás -->
 
 Con `pushNamed`, entrar deja el login debajo de la playlist. Atrás vuelve a él, y la flecha del `AppBar` invita a hacerlo. Al entrar se quiere otra cosa: que la playlist **reemplace** todo lo que había.
 
@@ -100,15 +100,11 @@ Pruébalo. Entra, cierra sesión y luego toca atrás en cada pantalla:
 nav-stack reset
 ```
 
-## ¿Y pushReplacementNamed?
-
-Flutter tiene también `Navigator.pushReplacementNamed(context, '/playlist')`, que cambia solo la ruta de arriba por la nueva. Al entrar da el mismo resultado, porque el login es la única ruta. Pero si se cierra sesión desde una pantalla que tiene otras debajo, esas otras se quedan. `pushNamedAndRemoveUntil` con `(route) => false` funciona en los dos casos, y por eso es el que se usa.
-
 ## Ejemplo completo
 
 Entrar y cerrar sesión rehacen la pila. La flecha `←` ya no aparece en la playlist.
 
-```dart
+```dart trycode=a1932b17a95580ccbf924329e770adef tab=run
 import 'package:flutter/material.dart';
 
 void main() {

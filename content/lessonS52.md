@@ -145,7 +145,7 @@ Al probarlo, fíjate en la barra de la playlist: apareció sola una flecha `←`
 
 La playlist con su pantalla de entrada. En el proyecto, `LoginScreen` va en `screens/login_screen.dart`; aquí todo está en un archivo para que corra en DartPad.
 
-```dart
+```dart trycode=84cee12d9d3ae54aa3808df07ee55488 tab=run
 import 'package:flutter/material.dart';
 
 void main() {

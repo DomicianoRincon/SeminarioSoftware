@@ -148,7 +148,7 @@ Y la tabla suma la cuarta ruta, `'/add-song': (context) => const AddSongScreen()
 
 La playlist navegable completa: entrar, ver el detalle, agregar desde otra pantalla y cerrar sesión. En el proyecto, cada Screen va en su archivo de `screens/`.
 
-```dart
+```dart trycode=5d3e59b421f1d81a3af8fb9c8a195d11 tab=run
 import 'package:flutter/material.dart';
 
 void main() {

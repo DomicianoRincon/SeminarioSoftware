@@ -170,6 +170,16 @@ describe('LessonParser — block constructs', () => {
     expect(screen.getByText('Fire it up!')).toBeTruthy();
   });
 
+  it('opens on the code tab, or on Fire it up! when the fence says tab=run', () => {
+    const first = renderElements(parse('```dart trycode=abc123\nint x = 1;\n```').elements);
+    expect(first.container.querySelector('iframe')).toBeNull();
+    expect(first.container.textContent).toContain('int x = 1;');
+    first.unmount();
+    const run = renderElements(parse('```dart trycode=abc123 tab=run\nint x = 1;\n```').elements);
+    expect(run.container.querySelector('iframe')).toBeTruthy();
+    expect(run.container.textContent).not.toContain('int x = 1;');
+  });
+
   it('does not throw for a standalone dartpad fence', () => {
     expect(() => parse('```dartpad\nabc123gistid\n```')).not.toThrow();
   });
