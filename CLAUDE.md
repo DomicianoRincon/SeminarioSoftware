@@ -404,6 +404,7 @@ Markdown estándar (CommonMark + GFM) para todo, más estos bloques cercados:
 | ` ```dart trycode=<gistId> ` | Bloque con pestañas *Código* / *Fire it up!* |
 | ` ```dart trycode=<gistId> tab=run ` | El mismo bloque, pero abre en *Fire it up!*. Lo llevan los *Ejemplo completo* desde la sesión 8 |
 | ` ```interactive ` | Diagrama interactivo; el cuerpo es `<id> [opciones]` (ver *Diagramas interactivos*) |
+| `- [ ] …` | Lista de tareas (GFM). El estudiante marca cada item y la marca se guarda en `localStorage` (`taskChecks:<id de la lección>`, llave = texto del item: reescribir una meta borra su marca). La usan las *Metas* de `S0050`. Código de plataforma (`TaskCheckbox.jsx`), por ahora solo en este repo |
 
 Toda valla cercada **debe declarar lenguaje** (` ```dart `, nunca ` ``` ` a secas): sin
 él, el renderizador la confunde con código en línea.

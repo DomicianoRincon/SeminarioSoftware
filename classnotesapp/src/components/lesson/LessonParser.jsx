@@ -16,6 +16,8 @@ import FramedImageBlock from "@/components/lesson/FramedImageBlock";
 import Link from "@/components/lesson/Link";
 import images from "@/assets";
 import TryCodeButton from "./TryCodeButton";
+import TaskCheckbox from "./TaskCheckbox";
+import { TaskItemContext, hastText } from "./taskItem";
 import Typography from "@mui/material/Typography";
 import BeanVisualizer from "@/components/BeanVisualizer/BeanVisualizer";
 import MermaidBlock from "@/components/lesson/MermaidBlock";
@@ -70,10 +72,12 @@ const extractHeadings = (content) => {
 };
 
 // Los items de una lista de tareas (`- [ ] ...`) ya traen su propio checkbox;
-// dibujarles además la viñeta deja dos marcas por línea.
-const ListItem = ({ children, className }) => {
+// dibujarles además la viñeta deja dos marcas por línea. Su texto es la llave
+// con la que TaskCheckbox guarda la marca.
+const ListItem = ({ node, children, className }) => {
   const esTarea = (className || "").includes("task-list-item");
   return (
+  <TaskItemContext.Provider value={esTarea ? hastText(node).trim() : null}>
   <li
     style={{
       padding: 0,
@@ -112,6 +116,7 @@ const ListItem = ({ children, className }) => {
       {children}
     </Typography>
   </li>
+  </TaskItemContext.Provider>
   );
 };
 
@@ -120,7 +125,7 @@ const resolveImageSrc = (src) => {
   return isWebImage ? src : images[src];
 };
 
-const LessonParser = ({ content }) => {
+const LessonParser = ({ content, lessonId }) => {
   const { lessonTitle, subtitles } = extractHeadings(content);
 
   // Consumed in document order by the `h2` renderer below to attach the same
@@ -171,6 +176,14 @@ const LessonParser = ({ content }) => {
       <ol style={{ margin: "0px 0 0px 0px", ...listTextStyle }}>{children}</ol>
     ),
     li: ListItem,
+    // remark-gfm dibuja el checkbox de `- [ ]` deshabilitado; este se puede
+    // marcar y recuerda la marca por lección.
+    input: ({ type, checked, disabled }) =>
+      type === "checkbox" ? (
+        <TaskCheckbox lessonId={lessonId} defaultChecked={checked} />
+      ) : (
+        <input type={type} checked={checked} disabled={disabled} readOnly />
+      ),
     table: LessonTable,
     thead: LessonTableHead,
     th: LessonTableHeaderCell,

@@ -82,7 +82,7 @@ const LessonPage = forwardRef(({ sections }, ref) => {
     // Keyed by the canonical id, not the route param, so an old ordinal link and
     // the current id share one cache entry.
     getOrFetch(section.id, section.url).then(rawContent => {
-      const parsed = LessonParser({ content: rawContent });
+      const parsed = LessonParser({ content: rawContent, lessonId: section.id });
       setParsedContent(parsed);
       setLoading(false);
       window.scrollTo(0, 0);

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ThemeProvider } from '@/theme/ThemeContext';
 
 // Mock assets (import.meta.glob)
@@ -149,6 +149,27 @@ describe('LessonParser — block constructs', () => {
     // dos marcas por línea.
     expect(items[0].querySelector('span')).toBeNull();
     expect(items[1].querySelector('span')).toBeTruthy();
+  });
+
+  it('lets the student tick a task and remembers it per lesson', () => {
+    localStorage.clear();
+    const md = '- [ ] Registrar las rutas\n- [ ] Abrir el detalle\n';
+    const first = renderElements(LessonParser({ content: md, lessonId: 'S0050' }).elements);
+    const boxes = first.container.querySelectorAll('input[type=checkbox]');
+    expect(boxes[0].disabled).toBe(false);
+    fireEvent.click(boxes[0]);
+    expect(boxes[0].checked).toBe(true);
+    first.unmount();
+
+    // Al volver a la lección la marca sigue ahí, y solo en esa lección.
+    const again = renderElements(LessonParser({ content: md, lessonId: 'S0050' }).elements);
+    const [a, b] = again.container.querySelectorAll('input[type=checkbox]');
+    expect(a.checked).toBe(true);
+    expect(b.checked).toBe(false);
+    again.unmount();
+
+    const other = renderElements(LessonParser({ content: md, lessonId: 'S0051' }).elements);
+    expect(other.container.querySelector('input[type=checkbox]').checked).toBe(false);
   });
 
   it('renders a scaleNN image without the white card', () => {

@@ -88,5 +88,8 @@ flutter run -d chrome
 - La playlist del *Ejemplo completo* de *Modelos con copyWith*, separada en archivos.
 - `SongForm`, `SongList` y `SongCard` en `lib/components/`, `Song` con `copyWith` en `lib/models/` y `PlaylistScreen` como dueña de `_songs`.
 - En `lib/main.dart`, la tabla de rutas con una sola entrada, `'/'`. En esta sesión crece a cuatro.
+- `SongDetailScreen` en `lib/screens/`, ya construida: lee la canción de `arguments` y la muestra. Falta registrarla en `routes:` y abrirla.
+- `AddSongScreen` en `lib/screens/`, con su barra y un `Column` vacío. A esa pantalla se muda `SongForm`, que por ahora sigue en la playlist.
+- Tocar una `SongCard` imprime `Navegar a SongDetailScreen` en la consola de depuración. La card todavía no recibe una función para avisar del toque: agregársela es parte del trabajo.
 
 El paquete se llama `playlist_app`, así que los `import` del proyecto empiezan con `package:playlist_app/`.
