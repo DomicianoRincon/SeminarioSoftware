@@ -257,7 +257,7 @@ selectedItemColor: Colors.deepPurple,
 
 Una pantalla con la barra de arriba, el contenido y los tres botones de abajo. Toca los botones y mira la consola: llega el número, pero el resaltado no se mueve.
 
-```dart trycode=PENDIENTE_S66 tab=run
+```dart trycode=d26ef7d7a952d81dd786b68bcd669b55 tab=run
 import 'package:flutter/material.dart';
 
 void main() {

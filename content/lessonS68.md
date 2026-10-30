@@ -164,7 +164,7 @@ En este curso basta con `IndexedStack`.
 
 La Screen con `IndexedStack` y `ChatsPage` con su borrador. Escribe un mensaje, cambia de pestaña y vuelve. Después cambia el `IndexedStack` por el `switch` de la lección anterior y repite.
 
-```dart trycode=PENDIENTE_S68 tab=run
+```dart trycode=62f7a8b267872fb71f59a204f8a24282 tab=run
 import 'package:flutter/material.dart';
 
 void main() {

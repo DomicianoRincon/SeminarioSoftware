@@ -291,7 +291,7 @@ Por eso una Page nunca llama al `Navigator`. Si una Page quiere abrir algo, avis
 
 Una Screen con tres Pages que cambian con la barra. Toca los botones: el resaltado se mueve y el contenido cambia.
 
-```dart trycode=PENDIENTE_S67 tab=run
+```dart trycode=64958c1df962ff69e3815cf8805ae892 tab=run
 import 'package:flutter/material.dart';
 
 void main() {

@@ -206,7 +206,7 @@ Notas:
 
 **Presentación:** ⬜ pendiente (`presentaciones/sesion9/`).
 
-**Pendiente para publicar:** el repositorio `Domiciano/262SeminarioSesion9` está armado en local (`~/Documents/GIT/262SeminarioSesion9`, un commit en `main`) pero no se ha creado en GitHub; los *Ejemplo completo* de `S0066` a `S0068` dicen `trycode=PENDIENTE_S6x` hasta tener su gist, y todavía no pasaron por el analizador de DartPad (sí por `flutter analyze`, sin avisos).
+**Publicación:** los tres *Ejemplo completo* (`S0066` a `S0068`) pasaron `flutter analyze` y el analizador de DartPad sin avisos, tienen gist público en `Domiciano` y abren en *Fire it up!* (`tab=run`). El repositorio `Domiciano/262SeminarioSesion9` es público desde el 2026-10-30, con un solo commit en `main`.
 
 **Punto de partida:** las lecciones no usan la playlist sino un **ejemplo aparte** (decisión del profesor, 2026-10-30): `HomeScreen` con *Inicio*, *Chats* y *Perfil*, la misma barra de `S0027`. La playlist queda para el taller. `S0027` se queda en la sesión 3 como adelanto de cómo se ve la barra; `S0066` la retoma completa.
 
@@ -234,7 +234,7 @@ Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una l
 - **Sesiones 3 a 5**: el proyecto del profesor, `Domiciano/262SeminarioApp1` (paquete `mi_app_1`), en los commits `2d28b37` (componentes), `5a628f0` (`ProfileScreen`) y `2175ee4` (`AGENTS.md` y `docs/`). Se quitó `test/widget_test.dart`, que no compilaba (busca `MyApp`). Las secciones del taller `S0026` no están: el profesor no las sacó a componentes. La sesión 5 trae además las skills `mer-svg` y `flutter-pantallas` en `.agents/skills/`, copiadas de `recursos/sesion4/` (no estaban en el repo del profesor).
 - **Sesión 6**: `flutter create --org icesi.edu.co playlist_app` limpio, con el contador que recorre `S0041`.
 - **Sesiones 7 y 8**: el *Ejemplo completo* de `S0044` y de `S0048`, separados en un archivo por clase con imports `package:playlist_app/`. Sin el taller de la sesión anterior. La sesión 8 trae además, sin registrar en `routes:`, `SongDetailScreen` hecha (sin el botón *Quitar*, que es mejora del taller) y `AddSongScreen` con un `Column` vacío, y `SongCard` con un `GestureDetector` cuyo `onTap` solo hace `debugPrint('Navegar a SongDetailScreen')`, sin parámetro en el constructor (pedido del profesor, 2026-10-28).
-- **Sesión 9**: el *Ejemplo completo* de `S0055`, separado en un archivo por clase con imports `package:playlist_app/`. Sin las dos mejoras del taller de la sesión 8 (el saludo y *Quitar*). Armado el 2026-10-30 a partir de los archivos de plataforma del commit `498eb8a` de `262SeminarioSesion8`; el commit posterior «Semana 13» de ese repositorio es trabajo de clase y no se usó. **Todavía sin crear en GitHub.**
+- **Sesión 9**: el *Ejemplo completo* de `S0055`, separado en un archivo por clase con imports `package:playlist_app/`. Sin las dos mejoras del taller de la sesión 8 (el saludo y *Quitar*). Armado el 2026-10-30 a partir de los archivos de plataforma del commit `498eb8a` de `262SeminarioSesion8`; el commit posterior «Semana 13» de ese repositorio es trabajo de clase y no se usó.
 - Los ocho pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
 - `check.py` marca como error la URL de las figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
 
