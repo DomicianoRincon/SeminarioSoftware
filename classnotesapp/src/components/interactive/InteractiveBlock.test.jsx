@@ -175,6 +175,35 @@ describe('state-tree', () => {
     expect(screen.getByTestId('var-_isOn').textContent).toBe('true');
     expect(container.querySelectorAll('.fs-lines .fs-read')).toHaveLength(3);
   });
+
+  it('tabs: the tapped index goes to the state first and the Page changes at the end', () => {
+    const { container } = renderBlock('state-tree tabs');
+    const page = () => screen.getByTestId('tabs-page').dataset.page;
+    const lit = () => [...container.querySelectorAll('.fs-code-line.fs-on')].map((l) => l.textContent.trim());
+    fireEvent.click(screen.getByLabelText('Pestaña Chats'));
+    expect(lit()).toEqual(['onTap: (index) => setState(() => _currentIndex = index),']);
+    act(() => vi.advanceTimersByTime(STEP));
+    expect(screen.getByTestId('var-_currentIndex').textContent).toBe('1');
+    expect(page()).toBe('HomePage');
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(container.querySelector('[data-node="page"] b').textContent).toBe('ChatsPage()');
+    expect(lit()).toEqual(['switch (_currentIndex) {', 'currentIndex: _currentIndex,']);
+    expect(page()).toBe('HomePage');
+    act(() => vi.advanceTimersByTime(STEP * 2));
+    expect(page()).toBe('ChatsPage');
+    expect(screen.getByLabelText('Pestaña Chats').classList.contains('fs-ts-on')).toBe(true);
+  });
+
+  it('tabs: without setState the index moves but the bar and the body stay', () => {
+    renderBlock('state-tree tabs forget');
+    fireEvent.click(screen.getByLabelText('Olvidar setState'));
+    fireEvent.click(screen.getByLabelText('Pestaña Perfil'));
+    act(() => vi.advanceTimersByTime(STEP * 4));
+    expect(screen.getByTestId('var-_currentIndex').textContent).toBe('2');
+    expect(screen.getByTestId('tabs-page').dataset.page).toBe('HomePage');
+    expect(screen.getByLabelText('Pestaña Inicio').classList.contains('fs-ts-on')).toBe(true);
+    expect(screen.getByText('Flutter no se enteró')).toBeTruthy();
+  });
 });
 
 describe('state-lifecycle', () => {

@@ -77,8 +77,10 @@ const CSS = `
 .fsim .fs-tree{list-style:none;margin:0;padding:0 0 0 14px;border-left:1px dashed #C9C5D0}
 .fsim .fs-tree-root{border-left:0;padding-left:0}
 .fsim .fs-node{display:inline-flex;align-items:center;gap:8px;margin:3px 0;padding:3px 8px;border-radius:8px;
-  border:1px solid var(--fs-line);background:#fff;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12.5px}
-.fsim .fs-node b{font-weight:600}
+  border:1px solid var(--fs-line);background:#fff;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12.5px;
+  max-width:100%;box-sizing:border-box}
+.fsim .fs-node b{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.fsim .fs-node .fs-id{flex:none}
 .fsim .fs-node.fs-stateful{border-color:var(--fs-accent)}
 .fsim .fs-node.fs-state{background:var(--fs-accent-soft);border-color:var(--fs-accent)}
 .fsim .fs-id{font-size:11px;color:#fff;background:#625B71;border-radius:10px;padding:0 7px}
@@ -913,10 +915,96 @@ ${forgot ? `    _songs.add(Song(
       };
     },
   },
+  tabs: {
+    app: 'App',
+    widget: 'HomeScreen',
+    state: '_HomeScreenState',
+    vars: [{ name: '_currentIndex', type: 'int', initial: 0 }],
+    fn: 'onTap',
+    triggerProp: 'onTap',
+    next: (v, index = v._currentIndex) => ({ _currentIndex: index }),
+    nodes: [
+      { key: 'scaffold', depth: 0, label: () => 'Scaffold' },
+      { key: 'appbar', depth: 1, label: () => 'AppBar' },
+      { key: 'page', depth: 1, label: (v) => `${TS_PAGES[v._currentIndex].name}()`, reads: '_currentIndex' },
+      {
+        key: 'bar', depth: 1, label: (v) => `BottomNavigationBar(\u200BcurrentIndex: ${v._currentIndex})`,
+        reads: '_currentIndex', trigger: true,
+      },
+    ],
+    source: (forgot) => `class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  Widget _buildPage() {
+    switch (_currentIndex) {
+      case 0:
+        return const HomePage();
+      case 1:
+        return const ChatsPage();
+      default:
+        return const ProfilePage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Mi app')),
+      body: _buildPage(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+${forgot ? '        onTap: (index) => _currentIndex = index,' : '        onTap: (index) => setState(() => _currentIndex = index),'}
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chats'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        ],
+      ),
+    );
+  }
+}`,
+    lines: (source) => {
+      const at = (test) => source.map((l, i) => (test(l) ? i : -1)).filter((i) => i >= 0);
+      return {
+        trigger: at((l) => l.includes('onTap:')),
+        set: at((l) => l.includes('onTap:')),
+        reads: at((l) => l.includes('switch (_currentIndex)') || l.includes('currentIndex: _currentIndex')),
+      };
+    },
+    file: 'lib/screens/home_screen.dart',
+    triggerName: () => 'un botón de la barra',
+    tapCaption: (index = 0) => `Tocaste ${TS_PAGES[index].label}: la barra llama a onTap con index = ${index}.`,
+    idle: 'Toca Chats o Perfil en la barra y sigue los pasos: primero cambia el número y al final la pantalla.',
+    staleCaption: (painted) => `Flutter no se enteró: build() no corre. El body sigue con ${TS_PAGES[painted._currentIndex].name} y la barra sigue resaltando ${TS_PAGES[painted._currentIndex].label}.`,
+    read: (v) => `Mientras construye, el switch lee _currentIndex y devuelve ${TS_PAGES[v._currentIndex].name}; la barra recibe currentIndex: ${v._currentIndex}.`,
+    paint: (v) => `Flutter pinta los widgets nuevos: el body muestra ${TS_PAGES[v._currentIndex].name} y la barra resalta ${TS_PAGES[v._currentIndex].label}.`,
+    phone: (screen, onTrigger) => {
+      screen.setTitle('Mi app');
+      const tabs = TS_PAGES.map((page, i) => el(
+        'button',
+        { class: 'fs-ts-tab', 'aria-label': `Pestaña ${page.label}`, onclick: () => onTrigger(i) },
+        el('span', {}, tsIcon(page.icon)),
+        page.label
+      ));
+      screen.frame.classList.add('fs-ts-phone');
+      screen.frame.appendChild(el('div', { class: 'fs-ts-bar' }, ...tabs));
+      return {
+        trigger: (index) => tabs[index],
+        paint: (v) => {
+          const page = TS_PAGES[v._currentIndex];
+          const content = el('div', { class: 'fs-center', 'data-testid': 'tabs-page', 'data-page': page.name },
+            el('div', { class: 'fs-ts-icon' }, tsIcon(page.icon)), el('div', { class: 'fs-hello', text: page.label }));
+          screen.body.replaceChildren(content);
+          tabs.forEach((tab, i) => tab.classList.toggle('fs-ts-on', i === v._currentIndex));
+          flash(content);
+        },
+      };
+    },
+  },
 };
 
 const mountTree = (root, args = []) => {
-  const sc = TREE_SCENARIOS[['bulb', 'playlist'].find((name) => args.includes(name)) || 'counter'];
+  const sc = TREE_SCENARIOS[['bulb', 'playlist', 'tabs'].find((name) => args.includes(name)) || 'counter'];
   const uid = ++treeUid;
   const container = card(root);
   const timers = [];
@@ -944,7 +1032,11 @@ const mountTree = (root, args = []) => {
   renewIds();
 
   const screen = phone('');
-  const phoneView = sc.phone(screen, () => start(toggleSteps), (input, value, focusOnly) => onInput(input, value, focusOnly));
+  let tapArg;
+  const phoneView = sc.phone(screen, (arg) => {
+    tapArg = arg;
+    start(toggleSteps);
+  }, (input, value, focusOnly) => onInput(input, value, focusOnly));
 
   const treePanel = el('div', { class: 'fs-panel' });
   const varBoxes = {};
@@ -971,16 +1063,18 @@ const mountTree = (root, args = []) => {
   const code = codePanel(sc.file);
   const varNames = sc.vars.map((v) => v.name);
   const codeLines = {};
+  const triggerProp = sc.triggerProp || 'onPressed';
   const applyCode = (text) => {
     code.setCode(text);
     const source = text.split('\n');
     const buildAt = source.findIndex((l) => l.includes('Widget build('));
     const findLines = (test) => source.map((l, i) => (test(l, i) ? i : -1)).filter((i) => i >= 0);
     Object.assign(codeLines, {
-      trigger: findLines((l) => l.includes('onPressed')),
+      trigger: findLines((l) => l.includes(triggerProp)),
       set: findLines((l, i) => i < buildAt && (l.includes('setState(') || bound.some((n) => l.trim().startsWith(n)))),
       build: [buildAt],
       reads: findLines((l, i) => i > buildAt && bound.some((n) => new RegExp(`\\b${n}\\b`).test(l))),
+      ...(sc.lines ? sc.lines(source) : {}),
     });
     decorateCode();
   };
@@ -990,7 +1084,7 @@ const mountTree = (root, args = []) => {
     });
     if (codeLines.reads.includes(i)) line.classList.add('fs-bind');
     if (codeLines.trigger.includes(i)) {
-      line.innerHTML = line.innerHTML.replace('onPressed', '<span class="fs-trig">onPressed</span>');
+      line.innerHTML = line.innerHTML.replace(triggerProp, `<span class="fs-trig">${triggerProp}</span>`);
     }
   });
   applyCode(sourceOf());
@@ -1219,10 +1313,11 @@ const mountTree = (root, args = []) => {
   };
   const paint = () => phoneView.paint(model.painted, model.paintedLayout);
 
+  const triggerNode = () => (typeof phoneView.trigger === 'function' ? phoneView.trigger(tapArg) : phoneView.trigger);
   const tapStep = () => ({
-    caption: `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
+    caption: sc.tapCaption ? sc.tapCaption(tapArg) : `Pulsaste ${sc.triggerName(model.painted)}: onPressed llama a ${sc.fn}.`,
     fx: () => {
-      pop(phoneView.trigger, 'fs-press');
+      pop(triggerNode(), 'fs-press');
       hot(triggerKey());
       codeAt('trigger');
       activeLines(['write']);
@@ -1232,7 +1327,7 @@ const mountTree = (root, args = []) => {
 
   const forgottenSteps = () => {
     const before = { ...model.vars };
-    const change = sc.next(before);
+    const change = sc.next(before, tapArg);
     const after = { ...before, ...change };
     return {
       names: ['Toque', `${main} cambia`, 'Sin build()'],
@@ -1269,7 +1364,7 @@ const mountTree = (root, args = []) => {
   const toggleSteps = () => {
     if (forgot) return forgottenSteps();
     const before = { ...model.vars };
-    const change = sc.next(before);
+    const change = sc.next(before, tapArg);
     const after = { ...before, ...change };
     return {
       names: ['Toque', 'setState', 'build()', 'Leer el estado', 'Pantalla'],
@@ -1461,7 +1556,7 @@ const mountTree = (root, args = []) => {
     hot();
     codeAt('none');
     activeLines([]);
-    phoneView.trigger.classList.remove('fs-press');
+    triggerNode()?.classList.remove('fs-press');
     scheduleLines();
   };
 

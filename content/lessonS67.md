@@ -28,97 +28,6 @@ bottomNavigationBar: BottomNavigationBar(
 
 `onTap` recibe el número del botón tocado y lo guarda. Como lo guarda dentro de `setState`, Flutter vuelve a correr `build()`, y esta vez `currentIndex` vale el número nuevo: el resaltado se mueve.
 
-```svg
-<svg id="biCiclo" data-steps="5" data-step-seconds="2.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 690" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="biCiclo-ttl biCiclo-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="biCiclo-ttl">Qué pasa al tocar un botón de la barra</title>
-  <desc id="biCiclo-dsc">Animación en cinco pasos. A la izquierda, un celular con la barra Inicio, Chats y Perfil; a la derecha, el estado _currentIndex y cuatro pasos. Uno: se toca Chats y la barra llama a onTap con 1. Dos: setState cambia _currentIndex de 0 a 1. Tres: build corre otra vez. Cuatro: _buildPage entra al switch y devuelve ChatsPage. Cinco: el body muestra ChatsPage y la barra resalta Chats.</desc>
-  <defs>
-    <style>
-      #biCiclo .title{fill:#161A26;font-size:22px;font-weight:700}
-      #biCiclo .sub{fill:#79809A;font-size:13.5px}
-      #biCiclo .h{font-size:12px;font-weight:700;letter-spacing:.08em;fill:#556074}
-      #biCiclo .nt{font-size:15px;font-weight:700;fill:#161A26}
-      #biCiclo .nb{fill:#454C61;font-size:13px}
-      #biCiclo .lbl{fill:#556074;font-size:12px;font-weight:600}
-      #biCiclo .foot{fill:#79809A;font-size:12px}
-      #biCiclo .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
-      #biCiclo .link{fill:none;stroke:#556074;stroke-width:1.75;marker-end:url(#biCiclo-arrow)}
-      #biCiclo .an{opacity:0;animation-duration:12.5s;animation-iteration-count:infinite;animation-timing-function:linear}
-      #biCiclo .r1{animation-name:biCiclo-r1}
-      @keyframes biCiclo-r1{0%{opacity:1} 1.5%{opacity:1} 18.5%{opacity:1} 20.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .r2{animation-name:biCiclo-r2}
-      @keyframes biCiclo-r2{0%{opacity:0} 20.0%{opacity:0} 21.5%{opacity:1} 38.5%{opacity:1} 40.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .r3{animation-name:biCiclo-r3}
-      @keyframes biCiclo-r3{0%{opacity:0} 40.0%{opacity:0} 41.5%{opacity:1} 58.5%{opacity:1} 60.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .r4{animation-name:biCiclo-r4}
-      @keyframes biCiclo-r4{0%{opacity:0} 60.0%{opacity:0} 61.5%{opacity:1} 78.5%{opacity:1} 80.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .tap{animation-name:biCiclo-tap}
-      @keyframes biCiclo-tap{0%{opacity:1} 1.5%{opacity:1} 18.5%{opacity:1} 20.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .v0{animation-name:biCiclo-v0}
-      @keyframes biCiclo-v0{0%{opacity:1} 1.5%{opacity:1} 18.5%{opacity:1} 20.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .v1{animation-name:biCiclo-v1}
-      @keyframes biCiclo-v1{0%{opacity:0} 20.0%{opacity:0} 21.5%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
-      #biCiclo .pg0{animation-name:biCiclo-pg0}
-      @keyframes biCiclo-pg0{0%{opacity:1} 1.5%{opacity:1} 78.5%{opacity:1} 80.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .pg1{animation-name:biCiclo-pg1}
-      @keyframes biCiclo-pg1{0%{opacity:0} 80.0%{opacity:0} 81.5%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
-      #biCiclo .hl{animation-name:biCiclo-hl}
-      @keyframes biCiclo-hl{0%{opacity:0} 80.0%{opacity:0} 81.5%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
-      #biCiclo .c1{animation-name:biCiclo-c1}
-      @keyframes biCiclo-c1{0%{opacity:1} 1.5%{opacity:1} 18.5%{opacity:1} 20.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .c2{animation-name:biCiclo-c2}
-      @keyframes biCiclo-c2{0%{opacity:0} 20.0%{opacity:0} 21.5%{opacity:1} 38.5%{opacity:1} 40.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .c3{animation-name:biCiclo-c3}
-      @keyframes biCiclo-c3{0%{opacity:0} 40.0%{opacity:0} 41.5%{opacity:1} 58.5%{opacity:1} 60.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .c4{animation-name:biCiclo-c4}
-      @keyframes biCiclo-c4{0%{opacity:0} 60.0%{opacity:0} 61.5%{opacity:1} 78.5%{opacity:1} 80.0%{opacity:0} 100%{opacity:0}}
-      #biCiclo .c5{animation-name:biCiclo-c5}
-      @keyframes biCiclo-c5{0%{opacity:0} 80.0%{opacity:0} 81.5%{opacity:1} 98.5%{opacity:1} 100%{opacity:0}}
-      @media (prefers-reduced-motion: reduce){#biCiclo .an{animation:none;opacity:0}#biCiclo .v1,#biCiclo .pg1,#biCiclo .hl,#biCiclo .c5{opacity:1}}
-    </style>
-    <marker id="biCiclo-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#556074"/>
-    </marker>
-    <marker id="biCiclo-push" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#2F6FD6"/></marker><marker id="biCiclo-pop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#C27A0E"/></marker><marker id="biCiclo-tab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#3A8235"/></marker>
-  </defs>
-  <rect width="960" height="690" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">Qué pasa al tocar un botón de la barra</text>
-  <text class="sub" x="48" y="80" data-fit="860">El toque cambia un número en el estado. El resto lo hace build() con ese número.</text>
-  <clipPath id="biCiclo-scr"><rect width="260" height="500" rx="20"/></clipPath><rect x="65" y="113" width="274" height="514" rx="27" fill="#1F2430"/><g transform="translate(72,120)"><g clip-path="url(#biCiclo-scr)"><rect width="260" height="500" rx="20" fill="#FFFFFF"/><rect width="260" height="56" fill="#F1ECF8"/><text x="18" y="35" font-size="17" font-weight="500" fill="#161A26" text-anchor="start">Mi app</text><g class="an pg0"><path transform="translate(130.0,210) scale(3)" d="M-8,1 L0,-7 L8,1 M-6,-0.5 V7 H6 V-0.5" fill="none" stroke="#6750A4" stroke-width="0.67" stroke-linecap="round" stroke-linejoin="round"/><text x="130.0" y="270" font-size="16" font-weight="600" fill="#161A26" text-anchor="middle" class="mono">HomePage</text></g><g class="an pg1"><path transform="translate(130.0,210) scale(3)" d="M-7,-7 h14 a2,2 0 0 1 2,2 v7 a2,2 0 0 1 -2,2 h-8 l-4,3 v-3 h-2 a2,2 0 0 1 -2,-2 v-7 a2,2 0 0 1 2,-2 Z" fill="none" stroke="#0F8478" stroke-width="0.67" stroke-linecap="round" stroke-linejoin="round"/><text x="130.0" y="270" font-size="16" font-weight="600" fill="#161A26" text-anchor="middle" class="mono">ChatsPage</text></g><rect y="436" width="260" height="64" fill="#F3EDF7"/><g class="an pg0"><rect x="17.3" y="447" width="52" height="28" rx="14" fill="#E8DEF8"/><path transform="translate(43.3,461) scale(1.0)" d="M-8,1 L0,-7 L8,1 M-6,-0.5 V7 H6 V-0.5" fill="none" stroke="#6750A4" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/><text x="43.3" y="490" font-size="12" font-weight="600" fill="#6750A4" text-anchor="middle">Inicio</text></g><g class="an pg1"><path transform="translate(43.3,461) scale(1.0)" d="M-8,1 L0,-7 L8,1 M-6,-0.5 V7 H6 V-0.5" fill="none" stroke="#556074" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/><text x="43.3" y="490" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Inicio</text></g><g class="an pg0"><path transform="translate(130.0,461) scale(1.0)" d="M-7,-7 h14 a2,2 0 0 1 2,2 v7 a2,2 0 0 1 -2,2 h-8 l-4,3 v-3 h-2 a2,2 0 0 1 -2,-2 v-7 a2,2 0 0 1 2,-2 Z" fill="none" stroke="#556074" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/><text x="130.0" y="490" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Chats</text></g><g class="an pg1"><rect x="104.0" y="447" width="52" height="28" rx="14" fill="#E8DEF8"/><path transform="translate(130.0,461) scale(1.0)" d="M-7,-7 h14 a2,2 0 0 1 2,2 v7 a2,2 0 0 1 -2,2 h-8 l-4,3 v-3 h-2 a2,2 0 0 1 -2,-2 v-7 a2,2 0 0 1 2,-2 Z" fill="none" stroke="#6750A4" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/><text x="130.0" y="490" font-size="12" font-weight="600" fill="#6750A4" text-anchor="middle">Chats</text></g><path transform="translate(216.7,461) scale(1.0)" d="M-3.5,-4 a3.5,3.5 0 1 0 7,0 a3.5,3.5 0 1 0 -7,0 M-7,7 a7,6 0 0 1 14,0" fill="none" stroke="#556074" stroke-width="2.00" stroke-linecap="round" stroke-linejoin="round"/><text x="216.7" y="490" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Perfil</text><circle class="an tap" cx="130.0" cy="461" r="17" fill="#2F6FD6" fill-opacity=".18" stroke="#2F6FD6" stroke-width="2"/><rect class="an hl" x="4" y="60" width="252" height="370" rx="12" fill="none" stroke="#2F6FD6" stroke-width="2.5"/></g></g>
-  <text x="420" y="130" font-size="12" font-weight="700" fill="#556074" text-anchor="start" class="h">STATE DE HOMESCREEN</text>
-  <rect x="420" y="144" width="492" height="56" rx="12" fill="#FFFFFF" stroke="#C9A6EE" stroke-width="1.5"/>
-  <text x="440" y="178" font-size="15" font-weight="600" fill="#161A26" text-anchor="start" class="mono">int _currentIndex =</text>
-  <g class="an v0"><rect x="644" y="156" width="48" height="32" rx="8" fill="#FFFFFF" stroke="#7439B8" stroke-width="2"/><text x="668" y="178" font-size="17" font-weight="700" fill="#7439B8" text-anchor="middle" class="mono">0</text></g>
-  <g class="an v1"><rect x="644" y="156" width="48" height="32" rx="8" fill="#FFF3DC" stroke="#A96C05" stroke-width="2"/><text x="668" y="178" font-size="17" font-weight="700" fill="#A96C05" text-anchor="middle" class="mono">1</text></g>
-  <path d="M450,266 V524" stroke="#C4CBD8" stroke-width="2"/>
-  <rect x="420" y="232" width="492" height="68" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
-  <rect class="an r1" x="420" y="232" width="492" height="68" rx="12" fill="#EEF4FF" stroke="#2F6FD6" stroke-width="2.5"/>
-  <circle cx="450" cy="266" r="13" fill="#FFFFFF" stroke="#2F6FD6" stroke-width="2"/><text x="450" y="270.5" font-size="13" font-weight="700" fill="#2F6FD6" text-anchor="middle">1</text>
-  <text x="476" y="261" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono" data-fit="420">onTap(1)</text>
-  <text x="476" y="282" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="420">La barra avisa qué botón se tocó.</text>
-  <rect x="420" y="318" width="492" height="68" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
-  <rect class="an r2" x="420" y="318" width="492" height="68" rx="12" fill="#EEF4FF" stroke="#2F6FD6" stroke-width="2.5"/>
-  <circle cx="450" cy="352" r="13" fill="#FFFFFF" stroke="#2F6FD6" stroke-width="2"/><text x="450" y="356.5" font-size="13" font-weight="700" fill="#2F6FD6" text-anchor="middle">2</text>
-  <text x="476" y="347" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono" data-fit="420">setState(() => _currentIndex = 1)</text>
-  <text x="476" y="368" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="420">Cambia el número y pide reconstruir.</text>
-  <rect x="420" y="404" width="492" height="68" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
-  <rect class="an r3" x="420" y="404" width="492" height="68" rx="12" fill="#EEF4FF" stroke="#2F6FD6" stroke-width="2.5"/>
-  <circle cx="450" cy="438" r="13" fill="#FFFFFF" stroke="#2F6FD6" stroke-width="2"/><text x="450" y="442.5" font-size="13" font-weight="700" fill="#2F6FD6" text-anchor="middle">3</text>
-  <text x="476" y="433" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono" data-fit="420">build()</text>
-  <text x="476" y="454" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="420">Flutter vuelve a construir la Screen.</text>
-  <rect x="420" y="490" width="492" height="68" rx="12" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
-  <rect class="an r4" x="420" y="490" width="492" height="68" rx="12" fill="#EEF4FF" stroke="#2F6FD6" stroke-width="2.5"/>
-  <circle cx="450" cy="524" r="13" fill="#FFFFFF" stroke="#2F6FD6" stroke-width="2"/><text x="450" y="528.5" font-size="13" font-weight="700" fill="#2F6FD6" text-anchor="middle">4</text>
-  <text x="476" y="519" font-size="14" font-weight="700" fill="#161A26" text-anchor="start" class="mono" data-fit="420">_buildPage() → ChatsPage()</text>
-  <text x="476" y="540" font-size="13" font-weight="400" fill="#454C61" text-anchor="start" data-fit="420">El switch elige la Page del número.</text>
-  <g class="an c1"><circle cx="434" cy="646" r="13" fill="#2F6FD6"/><text x="434" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text><text x="456" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="452">Tocas Chats: la barra llama a onTap con su índice, 1.</text></g>
-  <g class="an c2"><circle cx="434" cy="646" r="13" fill="#2F6FD6"/><text x="434" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text><text x="456" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="452">setState cambia _currentIndex de 0 a 1.</text></g>
-  <g class="an c3"><circle cx="434" cy="646" r="13" fill="#2F6FD6"/><text x="434" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text><text x="456" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="452">Como hubo setState, build() corre otra vez.</text></g>
-  <g class="an c4"><circle cx="434" cy="646" r="13" fill="#2F6FD6"/><text x="434" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text><text x="456" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="452">En build, _buildPage() entra al switch y devuelve ChatsPage.</text></g>
-  <g class="an c5"><circle cx="434" cy="646" r="13" fill="#2F6FD6"/><text x="434" y="650.5" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text><text x="456" y="651" font-size="14" font-weight="500" fill="#161A26" text-anchor="start" data-fit="452">El body muestra ChatsPage y la barra resalta Chats.</text></g>
-</svg>
-```
-
 Si tocas un botón y el resaltado no se mueve, revisa dos cosas: que `currentIndex` diga `_currentIndex` y no un número escrito a mano, y que el cambio esté dentro de `setState`. Sin `setState` el número cambia, pero nadie vuelve a dibujar la pantalla.
 
 ## Tres Pages
@@ -277,6 +186,16 @@ Widget _buildPage() {
 ```
 
 `default` cumple el papel del último `else`: atrapa cualquier número que no tenga su `case`. Las dos versiones hacen exactamente lo mismo; usa la que te resulte más fácil de leer. Si mañana agregas una cuarta pestaña, en las dos se agrega un caso.
+
+## El ciclo completo
+
+Ahora junta todo. Toca **Chats** o **Perfil** en el simulador y sigue los pasos: primero cambia `_currentIndex` en el estado, después `build()` corre otra vez, el `switch` lee el número y devuelve otra Page, y solo al final cambia la pantalla. En *Código* ves qué línea corre en cada paso.
+
+```interactive
+state-tree tabs forget
+```
+
+Marca *Olvidar setState* y toca otra pestaña: el número cambia en el estado, pero la barra y el `body` se quedan como estaban. Es el error de la barra que no responde.
 
 ## Pestaña o pantalla nueva
 

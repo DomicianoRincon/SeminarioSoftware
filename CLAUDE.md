@@ -255,6 +255,10 @@ playlist cards
   `S0040` con *Reconstruir App*), y `playlist`, que es otro escenario de `state-tree`: `_songs` y los tres controllers
   en el bloque Estado, un nodo del árbol por canción, `forget` como en el contador y `cards`, que alterna `Text` y `SongCard`
   como un hot reload animado (`S0043` y `S0044`). Escribir en un campo cambia el controller sin correr `build()`.
+  `tabs` es otro escenario de `state-tree` (`S0067`, con `forget`): `HomeScreen` con barra de tres pestañas,
+  `_currentIndex` en el Estado y dos lectores (la Page que devuelve el `switch` y `BottomNavigationBar(currentIndex)`).
+  El toque pasa el índice al escenario (`next(v, index)`), y `lines(source)` fija a mano las líneas de toque, setState
+  y lectura porque el `setState` va dentro de `build()`.
   `state-lifecycle` (`S0042`): el teléfono arranca en un launcher; la app *Saludo* tiene un campo y dos botones,
   *Saludar* (setState) y *Cerrar* (dispose, de vuelta al launcher), porque navegación aún no se ha visto. Al lado, solo
   el flujograma: createState, initState, build, setState y dispose unidos por flechas; se enciende la fase y la flecha
