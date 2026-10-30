@@ -1,6 +1,6 @@
 # Taller · Playlist con secciones
 
-<!-- tags: taller de bottom navigation bar, MainScreen, PlaylistPage, FavoritesPage, ProfilePage, lib/pages, cambiar de pestaña es setState, abrir el detalle es push, la Page no navega, el botón + solo en Playlist -->
+<!-- tags: taller de bottom navigation bar, MainScreen, _currentIndex, PlaylistPage, FavoritesPage, ProfilePage, cambiar de pestaña es setState, abrir el detalle es push, la barra no cambia al tocar, la Page no navega -->
 
 En esta sesión la playlist gana una barra abajo con tres secciones: la lista, las favoritas y el perfil. La pantalla sigue siendo una sola; lo que cambia al tocar la barra es el contenido. El taller es la meta: al terminar la sesión, tu app debe verse y moverse así.
 
@@ -57,12 +57,14 @@ Fíjate en los dos tipos de flecha. Pasar de una pestaña a otra no abre nada: e
 
 ## Dónde se trabaja
 
-En el mismo `playlist_app` de las sesiones 6 a 8, o en el repositorio de arranque de esta sesión. No se crea un proyecto nuevo. `PlaylistScreen` pasa a llamarse `MainScreen` y se vuelve la anfitriona: sigue siendo la dueña de `_songs` y además guarda `_currentIndex`. El contenido de cada pestaña es una Page en la carpeta nueva `lib/pages/`. Al terminar, el proyecto queda así:
+En el repositorio de arranque de esta sesión. Ya trae casi todo: `PlaylistScreen` renombrada a `MainScreen`, las tres Pages hechas en `lib/pages/` y el nombre que llega desde el login. Hoy `MainScreen` muestra solo `PlaylistPage`. **Todo el trabajo del taller está en `lib/screens/main_screen.dart`**: ningún otro archivo cambia.
+
+Si prefieres seguir en tu propio `playlist_app`, copia del repositorio la carpeta `lib/pages/`, `main_screen.dart` y `login_screen.dart`, y apunta `'/playlist'` a `MainScreen` en `routes:`.
 
 ```svg
 <svg id="tbCarpetas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 655" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tbCarpetas-ttl tbCarpetas-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="tbCarpetas-ttl">Los archivos de playlist_app al terminar</title>
-  <desc id="tbCarpetas-dsc">La carpeta lib con main.dart, que tiene las cuatro rutas, y cuatro carpetas: models con song.dart; components con song_card.dart, song_form.dart y song_list.dart; pages, nueva, con playlist_page.dart, favorites_page.dart y profile_page.dart, las tres sin estado; y screens con login_screen.dart, main_screen.dart, que reemplaza a playlist_screen.dart y guarda _songs y _currentIndex, song_detail_screen.dart y add_song_screen.dart.</desc>
+  <title id="tbCarpetas-ttl">Los archivos de playlist_app</title>
+  <desc id="tbCarpetas-dsc">La carpeta lib con main.dart, que tiene las cuatro rutas, y cuatro carpetas: models con song.dart; components con song_card.dart, song_form.dart y song_list.dart; pages con playlist_page.dart, favorites_page.dart y profile_page.dart, las tres sin estado; y screens con login_screen.dart, main_screen.dart, que reemplaza a playlist_screen.dart y guarda _songs y _currentIndex, song_detail_screen.dart y add_song_screen.dart. Solo main_screen.dart está marcada: es la que se edita.</desc>
   <defs>
     <style>
       #tbCarpetas .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -81,8 +83,8 @@ En el mismo `playlist_app` de las sesiones 6 a 8, o en el repositorio de arranqu
     <marker id="tbCarpetas-push" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#2F6FD6"/></marker><marker id="tbCarpetas-pop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#C27A0E"/></marker><marker id="tbCarpetas-tab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="strokeWidth" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 L2.4,5 Z" fill="#3A8235"/></marker>
   </defs>
   <rect width="960" height="655" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">Los archivos de <tspan class="mono">playlist_app</tspan> al terminar</text>
-  <text class="sub" x="48" y="80" data-fit="860">Aparece pages/ con tres Pages sin Scaffold. PlaylistScreen se vuelve MainScreen, la anfitriona.</text>
+  <text class="title" x="48" y="56">Los archivos de <tspan class="mono">playlist_app</tspan></text>
+  <text class="sub" x="48" y="80" data-fit="860">Todo viene en el repositorio de arranque. En el taller solo se edita main_screen.dart.</text>
   <rect x="48" y="104" width="864" height="519" rx="14" fill="#FFFFFF" stroke="#D9DEE8" stroke-width="1.5"/>
   <path d="M72,127 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="100" y="140" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">lib/</text>
   <rect x="102" y="154" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="128" y="169" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">main.dart</text><rect x="420" y="154" width="250.4" height="22" rx="11" fill="#EEF1FF" stroke="#A9B4F2"/><text x="545.2" y="169" font-size="12" font-weight="600" fill="#4453C9" text-anchor="middle">'/playlist' construye MainScreen</text>
@@ -93,41 +95,31 @@ En el mismo `playlist_app` de las sesiones 6 a 8, o en el repositorio de arranqu
   <rect x="130" y="299" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="314" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song_form.dart</text><rect x="420" y="299" width="272.0" height="22" rx="11" fill="#F4EBFF" stroke="#C9A6EE"/><text x="556.0" y="314" font-size="12" font-weight="600" fill="#7439B8" text-anchor="middle">StatefulWidget · guarda el borrador</text>
   <rect x="130" y="328" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="343" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song_list.dart</text><rect x="420" y="328" width="84.8" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="462.4" y="343" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless</text>
   <path d="M100,359 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="128" y="372" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">pages/</text>
-  <rect x="812" y="357" width="72" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D"/><text x="848" y="372" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nueva</text>
   <rect x="130" y="386" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="401" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">playlist_page.dart</text><rect x="420" y="386" width="192.8" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="516.4" y="401" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless · recibe songs</text>
-  <rect x="812" y="386" width="72" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D"/><text x="848" y="401" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nueva</text>
   <rect x="130" y="415" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="430" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">favorites_page.dart</text><rect x="420" y="415" width="250.4" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="545.2" y="430" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless · filtra las favoritas</text>
-  <rect x="812" y="415" width="72" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D"/><text x="848" y="430" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nueva</text>
   <rect x="130" y="444" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="459" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">profile_page.dart</text><rect x="420" y="444" width="221.6" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="530.8" y="459" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless · nombre y conteos</text>
-  <rect x="812" y="444" width="72" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D"/><text x="848" y="459" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nueva</text>
   <path d="M100,475 h7 l3,3 h10 v13 h-20 Z" fill="#F0C572" stroke="#A96C05" stroke-width="1.2" stroke-linejoin="round"/><text x="128" y="488" font-size="13.5" font-weight="700" fill="#161A26" text-anchor="start" class="mono">screens/</text>
   <rect x="130" y="502" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="517" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">login_screen.dart</text><rect x="420" y="502" width="207.20000000000002" height="22" rx="11" fill="#F4EBFF" stroke="#C9A6EE"/><text x="523.6" y="517" font-size="12" font-weight="600" fill="#7439B8" text-anchor="middle">StatefulWidget · el nombre</text>
   <rect x="130" y="531" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="546" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">main_screen.dart</text><rect x="420" y="531" width="300.8" height="22" rx="11" fill="#F4EBFF" stroke="#C9A6EE"/><text x="570.4" y="546" font-size="12" font-weight="600" fill="#7439B8" text-anchor="middle">StatefulWidget · _songs y _currentIndex</text>
-  <rect x="812" y="531" width="72" height="22" rx="11" fill="#E8F6E3" stroke="#9FD68D"/><text x="848" y="546" font-size="12" font-weight="700" fill="#3A8235" text-anchor="middle">nueva</text>
+  <rect x="796" y="531" width="88" height="22" rx="11" fill="#FFF3DC" stroke="#F0C572"/><text x="840" y="546" font-size="12" font-weight="700" fill="#A96C05" text-anchor="middle">se edita</text>
   <rect x="130" y="560" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="575" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">song_detail_screen.dart</text><rect x="420" y="560" width="200.0" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="520.0" y="575" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless · lee arguments</text>
   <rect x="130" y="589" width="15" height="18" rx="2" fill="#FFFFFF" stroke="#79809A" stroke-width="1.2"/><text x="156" y="604" font-size="13.5" font-weight="400" fill="#161A26" text-anchor="start" class="mono">add_song_screen.dart</text><rect x="420" y="589" width="257.6" height="22" rx="11" fill="#EFF1F5" stroke="#C4CBD8"/><text x="548.8" y="604" font-size="12" font-weight="600" fill="#556074" text-anchor="middle">Stateless · hospeda el formulario</text>
 </svg>
 ```
 
-Las tres Pages son `StatelessWidget`: reciben las canciones por constructor y avisan con funciones, como `SongList`. Ninguna llama al `Navigator`. Cuando `PlaylistPage` quiere abrir una canción, llama a `onOpen(song)` y es `MainScreen` la que hace el `pushNamed`.
-
-## Las dos mejoras
-
-1. **El botón + solo en Playlist.** En Favoritas y en Perfil no tiene sentido agregar canciones. El `floatingActionButton` del `Scaffold` depende de `_currentIndex`: si vale 0 es el botón, si no es `null`.
-2. **El perfil cuenta.** `ProfilePage` muestra el nombre con el que se entró y cuántas canciones y favoritas hay. No guarda nada: lo calcula de la lista que recibe.
+Mira las tres Pages antes de empezar. Son `StatelessWidget`: reciben las canciones por constructor y avisan con funciones, como `SongList`. Ninguna llama al `Navigator`. Cuando `PlaylistPage` quiere abrir una canción, llama a `onOpen(song)` y es `MainScreen` la que hace el `pushNamed`. `FavoritesPage` recibe las mismas funciones; `ProfilePage` recibe el nombre y la lista.
 
 ## Metas
 
 Para terminar el laboratorio, cumple estas metas en orden. Cada una dice qué lección leer para hacerla. Márcalas a medida que las cumplas: el visor recuerda lo que marcaste en este navegador.
 
-- [ ] Renombra `PlaylistScreen` a `MainScreen` en `lib/screens/main_screen.dart` y apunta `'/playlist'` a ella en `routes:`. Lee: [Rutas nombradas: pushNamed y pop](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0052).
-- [ ] Ponle a `MainScreen` una barra de abajo con Playlist, Favoritas y Perfil. Lee: [BottomNavigationBar: una pieza del Scaffold](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0066).
-- [ ] Guarda `_currentIndex` en el estado y haz que tocar la barra cambie la Page del `body` con un `switch`. Lee: [El índice en el estado](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0067).
-- [ ] Muda la lista a `PlaylistPage`, en `lib/pages/`, sin `Scaffold`. La lista sigue viviendo en `MainScreen` y le llega por constructor. Lee: [El índice en el estado](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0067) · [El estado entra como parámetro](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0046).
-- [ ] Crea `FavoritesPage`, que muestra solo las canciones con `isFavorite`. Desde ahí también se abre el detalle. Lee: [Funciones como parámetro](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0047).
-- [ ] Haz que `LoginScreen` mande el nombre en `arguments` y que `ProfilePage` lo muestre, si no lo hiciste en la sesión 8. Lee: [Pasar datos a la pantalla nueva](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0054).
-- [ ] Muestra el botón + solo en la pestaña Playlist.
-- [ ] Cuenta en `ProfilePage` las canciones y las favoritas.
-- [ ] Prueba qué pasa con el scroll de la lista al ir a Perfil y volver, y decide si te conviene un `IndexedStack`. Lee: [IndexedStack: Pages que recuerdan](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0068).
+- [ ] Ponle a `MainScreen` una barra de abajo con *Playlist*, *Favoritas* y *Perfil*, en `bottomNavigationBar` del `Scaffold`. Lee: [BottomNavigationBar: una pieza del Scaffold](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0066).
+- [ ] Guarda `_currentIndex` en el estado de `MainScreen` y haz que tocar la barra lo cambie con `setState` y mueva el resaltado. Lee: [El índice en el estado](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0067).
+- [ ] Haz que el `body` muestre `PlaylistPage`, `FavoritesPage` o `ProfilePage` según `_currentIndex`, con `if` y `else` o con `switch`. Lee: [El índice en el estado](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0067).
 
-Al final, el proyecto no debe tener errores en el editor, ninguna Page tiene `Scaffold` y solo `MainScreen` y las demás Screens llaman al `Navigator`.
+Al final, el proyecto no debe tener errores en el editor, abrir una canción desde *Playlist* o desde *Favoritas* sigue llevando a su detalle, y *Perfil* cuenta las canciones que agregaste.
+
+## Si te sobra tiempo
+
+- [ ] Muestra el botón + solo en la pestaña *Playlist*: en *Favoritas* y en *Perfil* no tiene sentido agregar canciones. El `floatingActionButton` depende de `_currentIndex`: si vale 0 es el botón, si no es `null`.
+- [ ] Baja la lista, ve a *Perfil* y vuelve: ¿dónde quedó el scroll? Decide si te conviene un `IndexedStack`. Lee: [IndexedStack: Pages que recuerdan](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0068).

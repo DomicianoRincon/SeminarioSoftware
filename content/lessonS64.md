@@ -85,12 +85,11 @@ flutter run -d chrome
 
 ## Qué trae
 
-- La playlist navegable del *Ejemplo completo* de *Devolver un resultado al cerrar*, separada en archivos.
-- Las cuatro pantallas en `lib/screens/` y registradas en `routes:`: `LoginScreen` (`'/'`), `PlaylistScreen` (`'/playlist'`), `SongDetailScreen` (`'/song'`) y `AddSongScreen` (`'/add-song'`).
-- `PlaylistScreen` sigue siendo la dueña de `_songs`. Tocar una canción abre su detalle con la `Song` en `arguments`, y el botón + espera con `await` la canción que devuelve `AddSongScreen`.
-- `SongForm`, `SongList` y `SongCard` en `lib/components/`, y `Song` con `copyWith` en `lib/models/`.
-- No trae las dos mejoras del taller de la sesión 8 (el saludo y *Quitar de la playlist*).
+- La playlist navegable del final de la sesión 8, separada en archivos: login, playlist, detalle de la canción y formulario para agregar, con las cuatro rutas registradas en `routes:`.
+- `PlaylistScreen` ya renombrada a **`MainScreen`**, en `lib/screens/main_screen.dart` y en la ruta `'/playlist'`. Sigue siendo la dueña de `_songs` y la que llama al `Navigator`.
+- La carpeta nueva **`lib/pages/`** con las tres Pages de la sesión, ya hechas y sin `Scaffold`: `PlaylistPage` (la lista), `FavoritesPage` (solo las favoritas) y `ProfilePage` (el nombre y cuántas canciones y favoritas hay).
+- El nombre que se escribe en `LoginScreen` viaja en `arguments` y la barra de arriba dice `Hola, <nombre>`.
 
-En esta sesión aparece una carpeta nueva, `lib/pages/`, y `PlaylistScreen` se vuelve la Screen anfitriona de la barra de abajo.
+Por ahora `MainScreen` muestra solo `PlaylistPage`. Lo que falta es justo lo de esta sesión: la barra de abajo, el índice en el estado y cambiar de Page al tocarla.
 
 El paquete se llama `playlist_app`, así que los `import` del proyecto empiezan con `package:playlist_app/`.

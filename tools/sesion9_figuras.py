@@ -188,15 +188,15 @@ FIGS['tbMeta'] = tb_meta
 
 def tb_carpetas():
     fid = 'tbCarpetas'
-    s = start(fid, 655, 'Los archivos de <tspan class="mono">playlist_app</tspan> al terminar',
-              'Los archivos de playlist_app al terminar',
-              'Aparece pages/ con tres Pages sin Scaffold. PlaylistScreen se vuelve MainScreen, la anfitriona.',
+    s = start(fid, 655, 'Los archivos de <tspan class="mono">playlist_app</tspan>',
+              'Los archivos de playlist_app',
+              'Todo viene en el repositorio de arranque. En el taller solo se edita main_screen.dart.',
               'La carpeta lib con main.dart, que tiene las cuatro rutas, y cuatro carpetas: models con song.dart; '
-              'components con song_card.dart, song_form.dart y song_list.dart; pages, nueva, con playlist_page.dart, '
+              'components con song_card.dart, song_form.dart y song_list.dart; pages con playlist_page.dart, '
               'favorites_page.dart y profile_page.dart, las tres sin estado; y screens con login_screen.dart, '
               'main_screen.dart, que reemplaza a playlist_screen.dart y guarda _songs y _currentIndex, '
-              'song_detail_screen.dart y add_song_screen.dart.')
-    new = ('nueva', 'green')
+              'song_detail_screen.dart y add_song_screen.dart. Solo main_screen.dart está marcada: es la que se edita.')
+    edit = ('se edita', 'amber')
     rows = [
         ('lib/', 0, 'dir', None, None),
         ('main.dart', 1, 'file', ("'/playlist' construye MainScreen", 'indigo'), None),
@@ -206,13 +206,13 @@ def tb_carpetas():
         ('song_card.dart', 2, 'file', ('Stateless', 'slate'), None),
         ('song_form.dart', 2, 'file', ('StatefulWidget · guarda el borrador', 'violet'), None),
         ('song_list.dart', 2, 'file', ('Stateless', 'slate'), None),
-        ('pages/', 1, 'dir', None, new),
-        ('playlist_page.dart', 2, 'file', ('Stateless · recibe songs', 'slate'), new),
-        ('favorites_page.dart', 2, 'file', ('Stateless · filtra las favoritas', 'slate'), new),
-        ('profile_page.dart', 2, 'file', ('Stateless · nombre y conteos', 'slate'), new),
+        ('pages/', 1, 'dir', None, None),
+        ('playlist_page.dart', 2, 'file', ('Stateless · recibe songs', 'slate'), None),
+        ('favorites_page.dart', 2, 'file', ('Stateless · filtra las favoritas', 'slate'), None),
+        ('profile_page.dart', 2, 'file', ('Stateless · nombre y conteos', 'slate'), None),
         ('screens/', 1, 'dir', None, None),
         ('login_screen.dart', 2, 'file', ('StatefulWidget · el nombre', 'violet'), None),
-        ('main_screen.dart', 2, 'file', ('StatefulWidget · _songs y _currentIndex', 'violet'), new),
+        ('main_screen.dart', 2, 'file', ('StatefulWidget · _songs y _currentIndex', 'violet'), edit),
         ('song_detail_screen.dart', 2, 'file', ('Stateless · lee arguments', 'slate'), None),
         ('add_song_screen.dart', 2, 'file', ('Stateless · hospeda el formulario', 'slate'), None),
     ]
@@ -223,8 +223,8 @@ def tb_carpetas():
         if extra:
             label, color = extra
             soft, border, strong = FAM[color]
-            s += (f'  <rect x="812" y="{y - 11}" width="72" height="22" rx="11" fill="{soft}" stroke="{border}"/>'
-                  + txt(848, y + 4, label, 12, 700, strong, 'middle') + '\n')
+            s += (f'  <rect x="796" y="{y - 11}" width="88" height="22" rx="11" fill="{soft}" stroke="{border}"/>'
+                  + txt(840, y + 4, label, 12, 700, strong, 'middle') + '\n')
     return s + '</svg>\n'
 
 
