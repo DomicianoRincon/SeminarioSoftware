@@ -496,6 +496,73 @@ describe('nav-stack', () => {
   });
 });
 
+describe('tab-state', () => {
+  const step = (n = 1) => act(() => vi.advanceTimersByTime(1100 * n));
+  const tab = (label) => fireEvent.click(screen.getByLabelText(`Pestaña ${label}`));
+  const page = () => screen.getByTestId('tab-phone').dataset.page;
+  const kid = (name) => screen.getByTestId('tab-kids').querySelector(`[data-page="${name}"]`).textContent;
+
+  it('loses the draft with a switch: the Page leaves the tree and comes back new', () => {
+    renderBlock('tab-state');
+    expect(kid('ChatsPage')).toContain('no existe');
+    tab('Chats');
+    step(4);
+    expect(page()).toBe('ChatsPage');
+    type('Mensaje', 'Hola');
+    tab('Perfil');
+    step(3);
+    expect(kid('ChatsPage')).toContain('dispose()');
+    step();
+    expect(page()).toBe('ProfilePage');
+    expect(kid('HomePage')).toContain('no existe');
+    tab('Chats');
+    step(4);
+    expect(screen.getByLabelText('Mensaje').value).toBe('');
+    expect(screen.getByText('×2')).toBeTruthy();
+  });
+
+  it('keeps the draft with IndexedStack: the three Pages stay alive', () => {
+    renderBlock('tab-state indexed');
+    expect(kid('ChatsPage')).toContain('sigue viva');
+    tab('Chats');
+    step(3);
+    expect(page()).toBe('ChatsPage');
+    const fields = () => screen.getAllByLabelText('Mensaje');
+    fields()[0].value = 'Hola';
+    fireEvent.input(fields()[0]);
+    tab('Perfil');
+    step(3);
+    expect(page()).toBe('ProfilePage');
+    expect(kid('ChatsPage')).toContain('sigue viva');
+    expect(screen.getByTestId('tab-caption').textContent).toContain('Hola');
+    tab('Chats');
+    step(3);
+    expect(fields()[0].value).toBe('Hola');
+    expect(screen.queryByText('×2')).toBeNull();
+  });
+
+  it('changes one thing per step in step-by-step mode', () => {
+    const { container } = renderBlock('tab-state');
+    const snap = () => [
+      page(),
+      [...container.querySelectorAll('.fs-ts-kid')].map((n) => n.textContent).join('|'),
+      container.querySelector('.fs-panel .fs-row').textContent,
+      [...container.querySelectorAll('.fs-ts-tab')].map((n) => n.className).join('|'),
+    ];
+    fireEvent.click(screen.getByLabelText('Paso a paso'));
+    tab('Chats');
+    let before = snap();
+    for (let i = 0; i < 4; i += 1) {
+      fireEvent.click(screen.getByRole('button', { name: 'Siguiente paso' }));
+      const after = snap();
+      const changed = after.filter((v, k) => v !== before[k] && k !== 3).length;
+      expect(changed).toBeLessThanOrEqual(1);
+      before = after;
+    }
+    expect(page()).toBe('ChatsPage');
+  });
+});
+
 describe('nav-result', () => {
   const step = (n = 1) => act(() => vi.advanceTimersByTime(1100 * n));
   const cards = () => screen.getByTestId('nav-list').querySelectorAll('.fs-card');

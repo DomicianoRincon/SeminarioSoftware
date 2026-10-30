@@ -1,4 +1,4 @@
-"""Figuras SVG de las lecciones «Repositorio de arranque» (S0056 a S0062, sesiones 2 a 8).
+"""Figuras SVG de las lecciones «Repositorio de arranque» (S0056 a S0062 y S0064, sesiones 2 a 9).
 
     python3 tools/arranque_figuras.py <carpeta>     escribe un .svg por figura, para revisarlas
     python3 tools/arranque_figuras.py --inject      reemplaza cada bloque ```svg de esas lecciones
@@ -15,8 +15,9 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from console_frame import frame  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SESSIONS = range(2, 9)
-LESSONS = [f'lessonS{54 + n}.md' for n in SESSIONS]
+SESSIONS = range(2, 10)
+LESSON_OF = {**{n: 54 + n for n in range(2, 9)}, 9: 64}
+LESSONS = [f'lessonS{LESSON_OF[n]}.md' for n in SESSIONS]
 
 FIGS = {}
 

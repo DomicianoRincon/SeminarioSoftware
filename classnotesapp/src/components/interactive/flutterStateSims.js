@@ -256,6 +256,31 @@ const CSS = `
 .fsim .fs-ns-err{flex:1;background:#B3261E;color:#fff;padding:16px;display:flex;flex-direction:column;gap:10px;
   font:12.5px 'JetBrains Mono',Menlo,Consolas,monospace;overflow-wrap:anywhere}
 .fsim .fs-nr-wait{font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px;background:#FFF3DC;color:#A96C05}
+.fsim .fs-ts-phone{height:500px}
+.fsim .fs-ts-page{flex:1;display:flex;flex-direction:column;min-height:0;overflow-y:auto}
+.fsim .fs-ts-page[hidden]{display:none}
+.fsim .fs-ts-page .fs-center{padding:14px}
+.fsim .fs-ts-icon{width:56px;height:56px;display:block}
+.fsim .fs-ts-chats{padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.fsim .fs-ts-chats .fs-field{margin:0}
+.fsim .fs-ts-bar{flex:0 0 64px;display:flex;background:#F3EDF7;border-top:1px solid #E7E0EC}
+.fsim .fs-ts-tab{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font:500 12px Roboto,Arial,sans-serif;color:#49454F;cursor:pointer;padding:6px 0}
+.fsim .fs-ts-tab span{display:flex;align-items:center;justify-content:center;width:56px;height:30px;border-radius:15px}
+.fsim .fs-ts-tab svg{width:22px;height:22px;display:block}
+.fsim .fs-ts-tab.fs-ts-on{color:var(--fs-accent)}
+.fsim .fs-ts-tab.fs-ts-on span{background:#E8DEF8}
+.fsim .fs-ts-tab:disabled{cursor:default}
+.fsim .fs-ts-kids{display:flex;flex-direction:column;gap:6px}
+.fsim .fs-ts-kid{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:8px 10px;border-radius:10px;border:1px solid #C9A6EE;
+  background:#F4EBFF;transition:opacity .4s,transform .4s}
+.fsim .fs-ts-kid.fs-ts-visible{background:#fff;border-color:var(--fs-accent);box-shadow:0 2px 8px rgba(103,80,164,.2)}
+.fsim .fs-ts-kid.fs-ts-ghost{background:transparent;border-style:dashed;border-color:#C4CBD8;opacity:.6}
+.fsim .fs-ts-kid.fs-ts-ghost .fs-ns-sname{text-decoration:line-through;color:var(--fs-muted)}
+.fsim .fs-ts-kid.fs-ts-out{opacity:.45;transform:translateX(28px);border-color:#F3A3B2;background:#FFEBEF}
+.fsim .fs-ts-kid.fs-ts-new{animation:fsimDrop .5s ease-out}
+.fsim .fs-ts-idx{font:600 12px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-muted)}
+.fsim .fs-tag.fs-ts-gone{background:#EFF1F5;color:#556074}
 @container (max-width:780px){.fsim .fs-code-line{font-size:11px}}
 @media (max-width:480px){.fsim{padding:12px;gap:12px}.fsim .fs-tree{padding-left:7px}.fsim .fs-node{font-size:11px;padding:2px 6px;gap:5px}.fsim .fs-panel{padding:10px 8px}.fsim .fs-code-line{font-size:9.5px;padding:0 6px}}
 `;
@@ -292,7 +317,7 @@ const flash = (node) => {
 };
 
 const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false', 'async', 'await', 'is', 'as']);
-const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm']);
+const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm', 'HomePage', 'ChatsPage', 'ProfilePage', 'IndexedStack', 'BottomNavigationBar']);
 const DART_TOKEN = /('[^']*')|(@\w+)|(\b\d+\b)|(\b[A-Za-z_]\w*\b)/g;
 
 const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -3793,6 +3818,299 @@ const mountNavResult = (root, args = []) => {
   };
 };
 
+// ─────────────────────────────── tab-state ───────────────────────────────
+
+// A Screen with a bottom bar and three Pages. Without options the body picks its Page
+// with a switch, so the Page that leaves runs dispose() and loses its draft; with
+// `indexed` the body is an IndexedStack and the three Pages stay alive.
+
+const TS_PAGES = [
+  { name: 'HomePage', label: 'Inicio', icon: 'M4 11l8-7 8 7M6 9.5V20h12V9.5' },
+  { name: 'ChatsPage', label: 'Chats', icon: 'M4 5h16v11H9l-5 4z' },
+  { name: 'ProfilePage', label: 'Perfil', icon: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 7 0 0 1 16 0' },
+];
+
+const TS_CODE = {
+  switch: `int _currentIndex = 0;
+
+Widget _buildPage() {
+  switch (_currentIndex) {
+    case 0:
+      return const HomePage();
+    case 1:
+      return const ChatsPage();
+    default:
+      return const ProfilePage();
+  }
+}
+
+body: _buildPage(),
+bottomNavigationBar: BottomNavigationBar(
+  currentIndex: _currentIndex,
+  onTap: (index) => setState(() => _currentIndex = index),`,
+  indexed: `int _currentIndex = 0;
+
+body: IndexedStack(
+  index: _currentIndex,
+  children: const [
+    HomePage(),
+    ChatsPage(),
+    ProfilePage(),
+  ],
+),
+bottomNavigationBar: BottomNavigationBar(
+  currentIndex: _currentIndex,
+  onTap: (index) => setState(() => _currentIndex = index),`,
+};
+
+const TS_LINES = {
+  switch: { field: 0, onTap: 16, current: 15, body: 13, pick: [5, 7, 9] },
+  indexed: { field: 0, onTap: 12, current: 11, body: 2, pick: [5, 6, 7] },
+};
+
+const tsIcon = (d) => {
+  const icon = svgEl('svg', { viewBox: '0 0 24 24', 'aria-hidden': 'true' });
+  icon.appendChild(svgEl('path', {
+    d,
+    fill: 'none',
+    stroke: 'currentColor',
+    'stroke-width': '2',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  }));
+  return icon;
+};
+
+const mountTabState = (root, args = []) => {
+  const mode = args.includes('indexed') ? 'indexed' : 'switch';
+  const lines = TS_LINES[mode];
+  const container = card(root);
+  const timers = [];
+  let index = 0;
+  let shown = 0;
+  let chats = mode === 'indexed' ? { draft: '' } : null;
+  let inits = mode === 'indexed' ? 1 : 0;
+  let disposes = 0;
+  let tree = [0];
+  let painted = 0;
+  let kidMarks = {};
+
+  const screenHost = el('div', { class: 'fs-ns-screen', 'data-testid': 'tab-phone' });
+  const tabs = TS_PAGES.map((page, i) => el(
+    'button',
+    { class: 'fs-ts-tab', 'aria-label': `Pestaña ${page.label}`, onclick: () => tapTab(i) },
+    el('span', {}, tsIcon(page.icon)),
+    page.label
+  ));
+  const frame = el(
+    'div',
+    { class: 'fs-phone fs-ts-phone' },
+    el('div', { class: 'fs-status' }, el('span', { text: '9:41' }), el('span', { text: '5G' })),
+    el('div', { class: 'fs-appbar' }, el('span', { text: 'Mi app' })),
+    screenHost,
+    el('div', { class: 'fs-ts-bar' }, ...tabs)
+  );
+
+  const screenState = statePanel('State de HomeScreen');
+  const chatsState = statePanel('State de ChatsPage');
+  const kids = el('div', { class: 'fs-ts-kids', 'data-testid': 'tab-kids' });
+  const kidsBox = el('div', { class: 'fs-panel' }, el('h4', { text: mode === 'indexed' ? 'Hijos del IndexedStack' : 'Lo que hay en el body' }), kids);
+  const code = codePanel('Lo que se ejecutó');
+  code.setCode(TS_CODE[mode]);
+  const stepBar = el('div', { class: 'fs-stepbar' });
+  const caption = el('div', { class: 'fs-caption', 'data-testid': 'tab-caption' });
+  let runner = null;
+  const controls = navControls(() => runner, () => restart());
+  runner = navRunner({ stepBar, caption, nextButton: controls.nextButton, timers, onChange: () => paint() });
+
+  const alive = (i) => mode === 'indexed' || tree.includes(i);
+
+  const pageNode = (i) => {
+    const page = TS_PAGES[i];
+    if (i !== 1) {
+      return el('div', { class: 'fs-center' }, el('div', { class: 'fs-ts-icon' }, tsIcon(page.icon)), el('div', { class: 'fs-hello', text: page.label }));
+    }
+    const field = el('input', { class: 'fs-field', placeholder: 'Mensaje', 'aria-label': 'Mensaje' });
+    field.value = chats ? chats.draft : '';
+    field.addEventListener('input', () => {
+      if (!chats) return;
+      chats.draft = field.value;
+      paintChats();
+    });
+    return el('div', { class: 'fs-ts-chats' }, el('div', { class: 'fs-ts-icon' }, tsIcon(page.icon)), field);
+  };
+
+  const paintPhone = () => {
+    screenHost.dataset.page = TS_PAGES[shown].name;
+    const pages = mode === 'indexed' ? [0, 1, 2] : [shown];
+    screenHost.replaceChildren(...pages.map((i) => el('div', { class: 'fs-ts-page', hidden: i !== shown }, pageNode(i))));
+    tabs.forEach((tab, i) => {
+      tab.classList.toggle('fs-ts-on', i === shown);
+      tab.disabled = runner.busy();
+    });
+  };
+
+  const paintChats = () => {
+    chatsState.set(chats
+      ? [['_messageController.text', `'${chats.draft}'`], ['initState()', `×${inits}`], ['dispose()', `×${disposes}`]]
+      : [['_messageController', 'no existe'], ['initState()', `×${inits}`], ['dispose()', `×${disposes}`]]);
+  };
+
+  const KID_TAGS = {
+    out: [' fs-ts-out', 'dispose()', 'fs-lost'],
+    new: [' fs-ts-visible fs-ts-new', 'initState()', 'fs-dirty'],
+    enter: [' fs-ts-visible', 'la devuelve build()', 'fs-dirty'],
+  };
+
+  const paintKids = () => {
+    kids.replaceChildren(...TS_PAGES.map((page, i) => {
+      let [cls, text, tagCls] = [' fs-ts-visible', 'visible', ''];
+      if (KID_TAGS[kidMarks[i]]) [cls, text, tagCls] = KID_TAGS[kidMarks[i]];
+      else if (!alive(i)) [cls, text, tagCls] = [' fs-ts-ghost', 'no existe', 'fs-ts-gone'];
+      else if (mode === 'indexed' && i !== painted) [cls, text, tagCls] = ['', 'oculta · sigue viva', 'fs-ns-alive'];
+      return el(
+        'div',
+        { class: `fs-ts-kid${cls}`, 'data-page': page.name },
+        mode === 'indexed' ? el('span', { class: 'fs-ts-idx', text: `[${i}]` }) : null,
+        el('span', { class: 'fs-ns-sname', text: `${page.name}()` }),
+        el('span', { class: `fs-tag ${tagCls}`, text })
+      );
+    }));
+  };
+
+  const paint = () => {
+    screenState.set([['_currentIndex', String(index)]]);
+    paintChats();
+    paintKids();
+    paintPhone();
+  };
+
+  function tapTab(target) {
+    if (runner.busy() || target === shown) return;
+    const from = shown;
+    const name = TS_PAGES[target].name;
+    const steps = [
+      {
+        name: 'Toque',
+        caption: `Tocaste «${TS_PAGES[target].label}»: la barra llama a onTap con el índice ${target}.`,
+        apply: () => {
+          kidMarks = {};
+          code.mark(lines.onTap);
+          paintKids();
+        },
+      },
+      {
+        name: 'setState',
+        caption: `onTap hace setState: _currentIndex pasa de ${index} a ${target} y Flutter anota que hay que reconstruir.`,
+        apply: () => {
+          index = target;
+          code.mark(lines.field, lines.onTap);
+          screenState.set([['_currentIndex', String(index)]]);
+        },
+      },
+    ];
+    if (mode === 'indexed') {
+      steps.push({
+        name: 'build',
+        caption: `build() corre otra vez. IndexedStack recibe index: ${target}; sus tres hijos ya existen, solo cambia cuál se pinta.`,
+        apply: () => {
+          painted = target;
+          code.mark(lines.body, lines.pick[target]);
+          paintKids();
+        },
+      });
+    } else if (target === 1) {
+      steps.push({
+        name: 'build',
+        caption: 'build() corre otra vez y _buildPage() entra al switch: con 1, devuelve ChatsPage.',
+        apply: () => code.mark(lines.body, lines.pick[target]),
+      }, {
+        name: 'initState',
+        caption: `${TS_PAGES[from].name} sale del árbol. ChatsPage es nueva: Flutter crea un State nuevo, corre initState() y el controller arranca vacío.`,
+        apply: () => {
+          tree = [1];
+          chats = { draft: '' };
+          inits += 1;
+          kidMarks = { 1: 'new' };
+          paintKids();
+          paintChats();
+        },
+      });
+    } else {
+      steps.push({
+        name: 'build',
+        caption: `build() corre otra vez y _buildPage() entra al switch: con ${target}, devuelve ${name}.${from === 1 ? '' : ` ${TS_PAGES[from].name} ya no está en lo que devolvió.`}`,
+        apply: () => {
+          tree = from === 1 ? [1, target] : [target];
+          kidMarks = { [target]: 'enter' };
+          code.mark(lines.body, lines.pick[target]);
+          paintKids();
+        },
+      });
+      if (from === 1) {
+        steps.push({
+          name: 'dispose',
+          caption: `ChatsPage ya no está en lo que devolvió build(): sale del árbol, su State corre dispose() y el borrador «${chats.draft}» se pierde.`,
+          apply: () => {
+            tree = [target];
+            kidMarks = { 1: 'out', [target]: 'enter' };
+            disposes += 1;
+            chats = null;
+            paintKids();
+            paintChats();
+          },
+        });
+      }
+    }
+    steps.push({
+      name: 'Se ve',
+      caption: mode === 'indexed'
+        ? `Se ve ${name} y la barra resalta «${TS_PAGES[target].label}». ${from === 1 ? `ChatsPage quedó oculta, pero viva: su borrador sigue siendo «${chats.draft}».` : 'Las otras dos siguen vivas, ocultas.'}`
+        : `Se ve ${name} y la barra resalta «${TS_PAGES[target].label}».${target === 1 ? ' El campo está vacío: es otro State.' : ''}`,
+      apply: () => {
+        shown = target;
+        code.mark(lines.current);
+        paintPhone();
+      },
+    });
+    runner.start(steps);
+  }
+
+  function restart() {
+    runner.stop();
+    index = 0;
+    shown = 0;
+    chats = mode === 'indexed' ? { draft: '' } : null;
+    inits = mode === 'indexed' ? 1 : 0;
+    disposes = 0;
+    tree = [0];
+    painted = 0;
+    kidMarks = {};
+    code.mark();
+    caption.textContent = mode === 'indexed'
+      ? 'Con IndexedStack las tres Pages se construyen al arrancar: ChatsPage ya hizo su initState(). Escribe en Chats, cambia de pestaña y vuelve.'
+      : 'Ve a Chats, escribe un mensaje y cambia a Perfil. Después vuelve a Chats: ¿sigue ahí lo que escribiste?';
+    paint();
+  }
+
+  container.append(
+    el('div', { class: 'fs-col' }, frame, controls.node),
+    el(
+      'div',
+      { class: 'fs-side' },
+      el('div', { class: 'fs-panel' }, stepBar, caption),
+      el('div', { class: 'fs-row2' }, kidsBox, screenState.box, chatsState.box),
+      code.box
+    )
+  );
+  restart();
+
+  return () => {
+    timers.splice(0).forEach(clearTimeout);
+    root.replaceChildren();
+  };
+};
+
 export const SIMS = Object.freeze({
   'state-counter': mountCounter,
   'hot-reload': (root, args = []) => mountCounter(root, ['reload', ...args]),
@@ -3804,6 +4122,7 @@ export const SIMS = Object.freeze({
   callback: mountCallback,
   'nav-stack': mountNavStack,
   'nav-result': mountNavResult,
+  'tab-state': mountTabState,
 });
 
 export const parseSpec = (spec) => {

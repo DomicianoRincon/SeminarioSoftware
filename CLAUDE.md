@@ -219,7 +219,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion8_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion9_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -278,6 +278,12 @@ playlist cards
   `arguments`, naranja sube en el `pop`), la pila y las variables. Sin opciones, `await` en pausa hasta el `pop(context, song)`
   y `null` al volver con atrás; con `args`, la `Song` viaja al detalle, y *Olvidar arguments* muestra el error del `as Song`.
   Los dos comparten `navRunner` (pasos con *Paso a paso*), `navPhone` y `navStackPanel`.
+  `tab-state` (`S0068`, dos veces): una Screen con barra de tres pestañas y `ChatsPage` con un campo de mensaje. Sin
+  opciones el `body` elige la Page con un `switch`: al salir de *Chats* su State corre `dispose()` y el borrador se pierde,
+  y al volver hay un `initState()` nuevo. Con `indexed` el `body` es un `IndexedStack`: los tres hijos existen desde el
+  arranque y el borrador sobrevive. Paneles de los hijos del `body`, del State de la Screen (`_currentIndex`) y del de
+  `ChatsPage` (texto y contadores). Usa `navRunner` y `navControls`; el panel de hijos cambia en `build`, `dispose` o
+  `initState` y el teléfono solo en el último paso, *Se ve*.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - `skill-files` (`S0063`, sección *IA*) vive en su propio archivo, `skillSims.js`, portado de Computación 2 (`0047`). Pestañas por
   skill, árbol de archivos y botón *Copiar*. Las skills se editan en `tools/skills/<nombre>/` y se pasan al simulador con

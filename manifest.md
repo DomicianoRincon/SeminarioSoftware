@@ -18,7 +18,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 6 | 22 | 11 | 4 | Stateful widget y setState | 🟡 | `S0060` Repositorio de arranque · `S0040` Estado: Stateless frente a Stateful · `S0041` setState: el contador de flutter create · `S0042` Ciclo de vida: initState, dispose y TextEditingController · `S0043` Creador de playlists: la lista en texto · `S0044` Creador de playlists: el componente SongCard |
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | 🟡 | `S0061` Repositorio de arranque · `S0046` El estado entra como parámetro · `S0047` Funciones como parámetro · `S0048` Modelos con copyWith · `S0049` Prop drilling · `S0045` Taller · Playlist con estado elevado |
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0062` Repositorio de arranque · `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
-| 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | ⬜ | |
+| 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | 🟡 | `S0064` Repositorio de arranque · `S0065` Taller · Playlist con secciones · `S0066` BottomNavigationBar: una pieza del Scaffold · `S0067` El índice en el estado · `S0068` IndexedStack: Pages que recuerdan |
 | 10 | 26 | 13 | 3 | Spec Driven Development | ⬜ | |
 | 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | ⬜ | |
 | 12 | 28 | 14 | 3 y 4 | Servicio de autenticación | ⬜ | |
@@ -202,16 +202,41 @@ Notas:
 - **La solución del taller se comprobó** el 2026-10-28 en un proyecto de prueba con un archivo por clase e imports `package:`: `flutter analyze` sin avisos. No se ejecutó en un dispositivo.
 - Las 7 figuras salen de `tools/sesion8_figuras.py`. `check.py` sin errores.
 
+### Sesión 9 · Navegación con bottom navigation bar
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion9/`).
+
+**Pendiente para publicar:** el repositorio `Domiciano/262SeminarioSesion9` está armado en local (`~/Documents/GIT/262SeminarioSesion9`, un commit en `main`) pero no se ha creado en GitHub; los *Ejemplo completo* de `S0066` a `S0068` dicen `trycode=PENDIENTE_S6x` hasta tener su gist, y todavía no pasaron por el analizador de DartPad (sí por `flutter analyze`, sin avisos).
+
+**Punto de partida:** las lecciones no usan la playlist sino un **ejemplo aparte** (decisión del profesor, 2026-10-30): `HomeScreen` con *Inicio*, *Chats* y *Perfil*, la misma barra de `S0027`. La playlist queda para el taller. `S0027` se queda en la sesión 3 como adelanto de cómo se ve la barra; `S0066` la retoma completa.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Navegación horizontal con BottomNavigationBar | `S0066`: la barra como cuarto lugar del `Scaffold` (figura `bpScaffold`), sus partes `items`, `BottomNavigationBarItem` con `icon` y `label`, y `currentIndex` (figura de código `bpPartes`), `onTap` con `debugPrint` y el problema de cuatro botones o más, `shifting` frente a `type: BottomNavigationBarType.fixed` (figura `bpTipos`) |
+| Una Screen anfitriona que cambia de Page según un índice guardado en el estado | `S0067`: `int _currentIndex` en el `State`, `onTap: (index) => setState(...)` (figura animada `biCiclo`, 5 pasos de 2,5 s), tres Pages sin `Scaffold` en `lib/pages/` y `_buildPage()` primero con `if / else if / else` y luego con `switch` (figura `biSwitch`), como pidió el profesor |
+| Cambiar de tab es setState y abrir un detalle es push | Apartado *Pestaña o pantalla nueva* de `S0067`, y la figura `tbMeta` del taller con las dos clases de flecha |
+| *(Pedido del profesor)* Objetos que recuerdan estado | `S0068`: `ChatsPage` con un borrador en su `TextEditingController` y `debugPrint` en `initState` y `dispose`; con el `switch` el borrador se pierde, con `IndexedStack` no. Interactivo `tab-state` (sin opciones y con `indexed`) y figura `isPila`. Cuándo conviene y cuándo el dato debe subir a la Screen. `AutomaticKeepAliveClientMixin` y `PageStorageKey` solo se nombran |
+| *Entrega parcial 1* (maqueta, 3 minutos por equipo) | No es contenido del visor: se hace en clase |
+| *Fuera de clase:* terminar la navegación por secciones de la app del equipo | No se asigna: las sesiones del bloque son de clase y no dejan tarea |
+
+Notas:
+
+- **`S0065` va primero**, como los talleres de las sesiones 7 y 8: `PlaylistScreen` se vuelve `MainScreen` (`'/playlist'`), dueña de `_songs` y `_currentIndex`, y hospeda `PlaylistPage`, `FavoritesPage` y `ProfilePage`, las tres `StatelessWidget` que avisan con funciones. Figuras `tbMeta` y `tbCarpetas`. Dos mejoras: el botón + solo en la pestaña Playlist y el perfil que cuenta canciones y favoritas. El saludo de la sesión 8 entra como meta, porque el repositorio de arranque no lo trae.
+- **La solución del taller se comprobó** el 2026-10-30 en una copia del repositorio de arranque, con un archivo por clase e imports `package:`: `flutter analyze` sin avisos. No se ejecutó en un dispositivo.
+- **Interactivo `tab-state`**: teléfono con barra de tres pestañas y `ChatsPage` con un campo; al lado, lo que hay en el `body` (o los hijos del `IndexedStack`), el `State` de `HomeScreen` con `_currentIndex`, el de `ChatsPage` con el texto del controller y sus contadores de `initState` y `dispose`, y el código con la línea que corre. Usa `navRunner` y `navControls` de `nav-stack`. Un cambio por paso: el panel de hijos cambia en `build`, `dispose` o `initState` y el teléfono solo en *Se ve*.
+- Las 6 figuras salen de `tools/sesion9_figuras.py`; `raClonar9`, de `tools/arranque_figuras.py`. `check.py` sin errores.
+
 ## Repositorios de arranque
 
-Desde el 2026-10-28 (pedido del profesor) cada sesión de la 2 a la 8 abre con una lección **Repositorio de arranque** (`S0056` a `S0062`, siempre la primera de la sesión): el punto de partida de la sesión es lo que quedó al terminar la anterior, en un repositorio público `github.com/Domiciano/262SeminarioSesionN`, con un solo commit en `main`. La lección muestra cómo clonarlo (figura de consola `raClonarN`, de `tools/arranque_figuras.py`) y qué trae.
+Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una lección **Repositorio de arranque** (`S0056` a `S0062` y `S0064` para la sesión 9, siempre la primera de la sesión): el punto de partida de la sesión es lo que quedó al terminar la anterior, en un repositorio público `github.com/Domiciano/262SeminarioSesionN`, con un solo commit en `main`. La lección muestra cómo clonarlo (figura de consola `raClonarN`, de `tools/arranque_figuras.py`) y qué trae.
 
 - **Sesión 2**: `flutter create --org icesi.edu.co miapp1` limpio, lo que deja `S0001`. No se usó el commit «Sesion 2» de `262SeminarioApp1`: ya trae la `HomeScreen` con los ejercicios de `Column` y `Row` de la sesión 2.
 - **Sesiones 3 a 5**: el proyecto del profesor, `Domiciano/262SeminarioApp1` (paquete `mi_app_1`), en los commits `2d28b37` (componentes), `5a628f0` (`ProfileScreen`) y `2175ee4` (`AGENTS.md` y `docs/`). Se quitó `test/widget_test.dart`, que no compilaba (busca `MyApp`). Las secciones del taller `S0026` no están: el profesor no las sacó a componentes. La sesión 5 trae además las skills `mer-svg` y `flutter-pantallas` en `.agents/skills/`, copiadas de `recursos/sesion4/` (no estaban en el repo del profesor).
 - **Sesión 6**: `flutter create --org icesi.edu.co playlist_app` limpio, con el contador que recorre `S0041`.
 - **Sesiones 7 y 8**: el *Ejemplo completo* de `S0044` y de `S0048`, separados en un archivo por clase con imports `package:playlist_app/`. Sin el taller de la sesión anterior. La sesión 8 trae además, sin registrar en `routes:`, `SongDetailScreen` hecha (sin el botón *Quitar*, que es mejora del taller) y `AddSongScreen` con un `Column` vacío, y `SongCard` con un `GestureDetector` cuyo `onTap` solo hace `debugPrint('Navegar a SongDetailScreen')`, sin parámetro en el constructor (pedido del profesor, 2026-10-28).
-- Los siete pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
-- `check.py` marca como error la URL de las siete figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
+- **Sesión 9**: el *Ejemplo completo* de `S0055`, separado en un archivo por clase con imports `package:playlist_app/`. Sin las dos mejoras del taller de la sesión 8 (el saludo y *Quitar*). Armado el 2026-10-30 a partir de los archivos de plataforma del commit `498eb8a` de `262SeminarioSesion8`; el commit posterior «Semana 13» de ese repositorio es trabajo de clase y no se usó. **Todavía sin crear en GitHub.**
+- Los ocho pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
+- `check.py` marca como error la URL de las figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
 
