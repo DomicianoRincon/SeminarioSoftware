@@ -92,6 +92,28 @@ El usuario cambia su foto para que lo reconozcan.
 - 0.1.0 · 2026-11-04 · Primera versión.
 ```
 
+## Los criterios, en Gherkin
+
+Los criterios de aceptación son escenarios de Gherkin. Puedes escribirlos así dentro de la spec:
+
+```gherkin
+# language: es
+Característica: Cambiar la foto de perfil
+
+  Escenario: Foto dentro del límite
+    Dado que el usuario está en su perfil
+    Cuando elige una foto de 2 MB
+    Entonces ve la foto nueva en su perfil
+
+  Escenario: Foto demasiado pesada
+    Dado que el usuario está en su perfil
+    Cuando elige una foto de 8 MB
+    Entonces ve el aviso «La foto pesa demasiado»
+    Y su foto anterior se conserva
+```
+
+Cada `Entonces` describe algo que el usuario ve, no algo del código. Más adelante, cada escenario se convierte en una prueba.
+
 ## Qué sí y qué no
 
 ```svg

@@ -27,6 +27,9 @@ Forma: **Dado** una situación, **cuando** el usuario hace algo, **entonces** pa
 
 Al menos uno por flujo y uno por estado de error.
 
+Si el equipo los prefiere en Gherkin, usa sus palabras en español dentro de un bloque `gherkin`:
+`Escenario`, `Dado`, `Cuando`, `Entonces`, `Y`. Un escenario por criterio.
+
 ## Versiones
 
 - `0.x.y` mientras está en borrador. `1.0.0` cuando el equipo la aprueba.
