@@ -81,6 +81,7 @@
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS71.md | Métricas del conjunto de specs | S0071
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS72.md | La arquitectura: Flutter + Supabase | S0072
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS73.md | Taller · Del contexto al PRD y los requisitos | S0073
+[t] Sesión 11 · Servicio de base de datos
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS74.md | Taller · Spine y specs funcionales | S0074
 [t] Instalación avanzada
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonC1.md | Instalación de Flutter | 0019

@@ -2,7 +2,7 @@
 
 <!-- tags: sdd-arquitectura, sdd-specs, sdd-critica, architectural_spine.md, especifica la arquitectura, specs funcionales, docs/specs, reporte de métricas, subir la versión de una spec, la spec nombra Supabase -->
 
-Sobre el PRD y los requisitos del taller anterior, ahora la spine y las specs.
+Continúa el [taller de la sesión 10](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0073): sobre el PRD y los requisitos que ya tienes, ahora la spine y las specs.
 
 ```svg
 <svg id="tcCrece" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tcCrece-ttl tcCrece-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">

@@ -161,15 +161,15 @@ def sddFases():
 @fig
 def sddHoy():
     fid, h = 'sddHoy', 400
-    o = start(fid, h, 'Lo que haces hoy, documento por documento',
-              'Cinco pasos en tu proyecto. Cada uno lee lo que dejó el anterior.',
+    o = start(fid, h, 'Del contexto a las specs, documento por documento',
+              'Cinco pasos en tu proyecto, en dos sesiones. Cada uno lee lo que dejó el anterior.',
               'Cinco documentos numerados en orden: AGENTS.md, docs/prd.md, docs/requisitos.md, '
               'docs/architectural_spine.md y docs/specs/, cada uno con la fase a la que pertenece. Debajo, atenuados, '
               'los de las próximas sesiones: spec técnica, tareas, código y pruebas.')
     steps = [('AGENTS.md', 'Contexto', 'slate'), ('docs/prd.md', 'Fase 1', 'indigo'),
              ('docs/requisitos.md', 'Fase 1', 'indigo'), ('docs/architectural_spine.md', 'Fase 3 · inicial', 'amber'),
              ('docs/specs/', 'Fase 2', 'teal')]
-    o += txt(48, 128, 'HOY', 12, 700, '#4453C9')
+    o += txt(48, 128, 'SESIONES 10 Y 11', 12, 700, '#4453C9')
     ws, gap = [148, 156, 164, 228, 136], 8
     for i, (name, phase, c) in enumerate(steps):
         w = ws[i]
