@@ -19,7 +19,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 7 | 23 | 12 | 4 | Elevación de estado y funciones como parámetro | 🟡 | `S0061` Repositorio de arranque · `S0046` El estado entra como parámetro · `S0047` Funciones como parámetro · `S0048` Modelos con copyWith · `S0049` Prop drilling · `S0045` Taller · Playlist con estado elevado |
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0062` Repositorio de arranque · `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | 🟡 | `S0064` Repositorio de arranque · `S0065` Taller · Playlist con secciones · `S0066` BottomNavigationBar: una pieza del Scaffold · `S0067` El índice en el estado · `S0068` IndexedStack: Pages que recuerdan |
-| 10 | 26 | 13 | 3 | Spec Driven Development | ⬜ | |
+| 10 | 26 | 13 | 3 | Spec Driven Development | 🟡 | `S0069` ¿Qué es Spec Driven Development? · `S0070` Anatomía de una spec · `S0071` Métricas del conjunto de specs · `S0072` La arquitectura: Flutter + Supabase · `S0073` Taller · Del contexto al PRD y los requisitos · `S0074` Taller · Spine y specs funcionales |
 | 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | ⬜ | |
 | 12 | 28 | 14 | 3 y 4 | Servicio de autenticación | ⬜ | |
 | 13 | 29 | 15 | 3 y 4 | Servicio de storage | ⬜ | |
@@ -226,6 +226,27 @@ Notas:
 - **Interactivo `tab-state`**: teléfono con barra de tres pestañas y `ChatsPage` con un campo; al lado, lo que hay en el `body` (o los hijos del `IndexedStack`), el `State` de `HomeScreen` con `_currentIndex`, el de `ChatsPage` con el texto del controller y sus contadores de `initState` y `dispose`, y el código con la línea que corre. Usa `navRunner` y `navControls` de `nav-stack`. Un cambio por paso: el panel de hijos cambia en `build`, `dispose` o `initState` y el teléfono solo en *Se ve*.
 - Las 6 figuras salen de `tools/sesion9_figuras.py`; `raClonar9`, de `tools/arranque_figuras.py`. `check.py` sin errores.
 
+### Sesión 10 · Spec Driven Development
+
+**Presentación:** ⬜ pendiente (`presentaciones/sesion10/`).
+
+**Sin repositorio de arranque** (decisión del profesor, 2026-11-04): el flujo se aplica en el proyecto de cada equipo. Ejemplo conductor de las lecciones: la red profesional de la sesión 4 (`recursos/sesion4/`), con Auth para las cuentas, PostgREST para usuarios, publicaciones, seguidores y mensajes, y Storage para las fotos de perfil.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Spec Driven Development en su nivel inicial: la spec como contrato antes del código | `S0069`: sin spec el agente adivina (`sddContrato`), las seis fases con retorno de la validación (`sddFases`), lo que se hace hoy documento por documento (`sddHoy`), funcional frente a técnica (`sddQueComo`), spec-first / spec-anchored / spec-as-source, spec-kit, BMAD y Kiro |
+| El sistema de trabajo: estructura, agentes, skills, MCP y workflows | `S0072` (Flutter + Supabase, la capa de servicios, la architectural spine) y los talleres `S0073` y `S0074` (AGENTS.md, skills en `.agents/skills/`, `docs/`) |
+| Skills de generación y de crítica de specs | Cinco skills en `tools/skills/sdd-*`, en el interactivo `skill-files sdd` (`S0073`): `sdd-prd`, `sdd-requisitos`, `sdd-arquitectura`, `sdd-specs` y `sdd-critica` |
+| Versionamiento de las specs y seguimiento de cuáles están implementadas | `S0070`: metadatos (`id`, `version`, `fecha`, `estado`, `requisitos`, `depende_de`), semver y estados (`spVersiones`), índice `docs/specs/README.md` (`spCarpeta`). `S0071`: métrica de avance |
+| *Fuera de clase:* el modelo de datos mínimo en diagrama | No se asigna: las sesiones del bloque son de clase. Las skills `disenador-bd` y `mer-svg` (`S0063`) lo cubren |
+
+Notas:
+
+- **Alcance:** fases 1 a 3 del ciclo, y de la 3 solo la architectural spine. La spec técnica llega con las sesiones de Supabase, con una skill de implementación que conozca las convenciones del front (Screen/Page, `setState`, `components/`, imports `package:`).
+- **Orden del flujo:** contexto → PRD → requisitos → spine → specs funcionales. La spine va antes de las specs funcionales, pero las specs **no nombran tecnología** (la skill `sdd-specs` lo prohíbe y `sdd-critica` lo mide como *pureza funcional*).
+- **Decisiones del profesor (2026-11-04):** app ligera **sin RLS**; en el cliente va la **publishable key**; lecciones muy concisas y gráficas.
+- Las 18 figuras salen de `tools/sesion10_figuras.py`. `check.py` sin errores.
+
 ## Repositorios de arranque
 
 Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una lección **Repositorio de arranque** (`S0056` a `S0062` y `S0064` para la sesión 9, siempre la primera de la sesión): el punto de partida de la sesión es lo que quedó al terminar la anterior, en un repositorio público `github.com/Domiciano/262SeminarioSesionN`, con un solo commit en `main`. La lección muestra cómo clonarlo (figura de consola `raClonarN`, de `tools/arranque_figuras.py`) y qué trae.
@@ -306,3 +327,9 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS43.md` | `S0043` | Creador de playlists: la lista en texto | 6 |
 | `lessonS44.md` | `S0044` | Creador de playlists: el componente SongCard | 6 |
 | `lessonS45.md` | `S0045` | Taller · Playlist, parte 1 | 6 |
+| `lessonS69.md` | `S0069` | ¿Qué es Spec Driven Development? | 10 |
+| `lessonS70.md` | `S0070` | Anatomía de una spec | 10 |
+| `lessonS71.md` | `S0071` | Métricas del conjunto de specs | 10 |
+| `lessonS72.md` | `S0072` | La arquitectura: Flutter + Supabase | 10 |
+| `lessonS73.md` | `S0073` | Taller · Del contexto al PRD y los requisitos | 10 |
+| `lessonS74.md` | `S0074` | Taller · Spine y specs funcionales | 10 |

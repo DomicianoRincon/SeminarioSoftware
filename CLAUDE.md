@@ -219,7 +219,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion9_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion10_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -293,6 +293,10 @@ playlist cards
   skill, árbol de archivos y botón *Copiar*. Las skills se editan en `tools/skills/<nombre>/` y se pasan al simulador con
   `python3 tools/skills_data.py`, que también guarda el color, el resumen y los pedidos de cada pestaña. No editar el bloque
   `<skills-data>` a mano. Sus pruebas están en `skillSims.test.jsx`.
+  Cada skill tiene un `group`: sin opciones el simulador muestra las cuatro de `base` (`S0063`); con
+  `skill-files sdd` muestra las cinco de Spec Driven Development (`sdd-prd`, `sdd-requisitos`,
+  `sdd-arquitectura`, `sdd-specs`, `sdd-critica`; sesión 10, `S0073`). Una segunda opción abre esa skill:
+  `skill-files sdd sdd-specs`.
 - Pruebas en `InteractiveBlock.test.jsx`: una por simulador, con la interacción que enseña.
 - **Es código de plataforma.** Por ahora solo existe en este repo; llevarlo a los otros cursos es copiar
   literal la carpeta `interactive/` y la línea de `LessonParser.jsx`.

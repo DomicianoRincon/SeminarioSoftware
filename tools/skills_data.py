@@ -5,6 +5,9 @@
 Las skills se editan en tools/skills/<nombre>/ y se vuelve a correr este script. El orden de
 SKILLS y los textos de cada pestaña (resumen, pedidos de ejemplo, lo que escribe) viven aquí.
 mer-svg y flutter-pantallas son copia de recursos/sesion4/.agents/skills/ (sesión 4).
+
+Cada skill tiene un grupo: 'base' (las cuatro de S0063, lo que muestra `skill-files` sin
+opciones) o 'sdd' (las cinco de Spec Driven Development, sesión 10: `skill-files sdd`).
 """
 
 import json
@@ -38,6 +41,31 @@ META = [
          prompts=['Saca la tarjeta de producto a un componente',
                   'Haz que tocar la card abra el detalle'],
          writes=['lib/components/', 'lib/models/']),
+    dict(name='sdd-prd', group='sdd', color='#4453C9', soft='#EEF1FF',
+         summary='Te entrevista sobre el proyecto en rondas cortas y escribe el PRD: el problema, '
+                 'los usuarios, los objetivos medibles y lo que queda fuera del alcance.',
+         prompts=['Mi proyecto se trata de…'],
+         writes=['docs/prd.md']),
+    dict(name='sdd-requisitos', group='sdd', color='#0F8478', soft='#E3F6F3',
+         summary='Lee el PRD y saca los requisitos funcionales y no funcionales, numerados, '
+                 'verificables y ligados al objetivo que atienden.',
+         prompts=['Crea los requerimientos'],
+         writes=['docs/requisitos.md']),
+    dict(name='sdd-arquitectura', group='sdd', color='#A96C05', soft='#FFF3DC',
+         summary='Escribe la architectural spine: resumen, diagrama mermaid, stack, qué cubre cada '
+                 'servicio de Supabase y las invariantes que nadie del equipo puede decidir distinto.',
+         prompts=['Mi app está en Flutter y se conecta a Supabase… especifica la arquitectura'],
+         writes=['docs/architectural_spine.md']),
+    dict(name='sdd-specs', group='sdd', color='#7439B8', soft='#F4EBFF',
+         summary='Propone la lista de funcionalidades y escribe una spec funcional por cada una, '
+                 'con metadatos, flujos, estados y criterios de aceptación, más el índice.',
+         prompts=['Crea las specs funcionales'],
+         writes=['docs/specs/F-xx-*.md', 'docs/specs/README.md']),
+    dict(name='sdd-critica', group='sdd', color='#C2354F', soft='#FFEBEF',
+         summary='Revisa todo el conjunto sin cambiarlo, calcula las métricas y propone las '
+                 'correcciones más importantes. Solo las aplica si le dices que sí.',
+         prompts=['Critica las specs'],
+         writes=['docs/specs/reporte.md']),
 ]
 
 
@@ -49,7 +77,7 @@ def files(name):
 
 
 def main():
-    skills = [dict(m, files=files(m['name'])) for m in META]
+    skills = [dict({'group': 'base'}, **m, files=files(m['name'])) for m in META]
     block = '// <skills-data>\nexport const SKILLS = ' + json.dumps(skills, ensure_ascii=False, indent=2) + ';\n// </skills-data>'
     text = SIM.read_text(encoding='utf-8')
     SIM.write_text(re.sub(r'// <skills-data>.*?// </skills-data>', lambda _: block, text, flags=re.S), encoding='utf-8')

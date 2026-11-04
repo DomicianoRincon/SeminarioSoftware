@@ -1,5 +1,5 @@
 // Interactive skill browser, ported from "Skills en Antigravity CLI" (Computación en Internet II).
-// Here it shows the course skills of the IA section (S0063).
+// Here it shows the course skills: the IA section (S0063) and, with `sdd`, session 10.
 // Plain DOM, no React and no imports, same contract as the other simulators:
 // every simulator is `mount(element, args) => destroy`.
 // The file contents come from tools/skills/ — regenerate with `python3 tools/skills_data.py`.
@@ -78,6 +78,7 @@ const el = (tag, attrs = {}, ...children) => {
 // <skills-data>
 export const SKILLS = [
   {
+    "group": "base",
     "name": "disenador-bd",
     "color": "#4453C9",
     "soft": "#EEF1FF",
@@ -109,6 +110,7 @@ export const SKILLS = [
     ]
   },
   {
+    "group": "base",
     "name": "mer-svg",
     "color": "#0F8478",
     "soft": "#E3F6F3",
@@ -135,6 +137,7 @@ export const SKILLS = [
     ]
   },
   {
+    "group": "base",
     "name": "flutter-pantallas",
     "color": "#A96C05",
     "soft": "#FFF3DC",
@@ -166,6 +169,7 @@ export const SKILLS = [
     ]
   },
   {
+    "group": "base",
     "name": "flutter-componentes",
     "color": "#7439B8",
     "soft": "#F4EBFF",
@@ -208,6 +212,146 @@ export const SKILLS = [
         "content": "# Reglas de los componentes\n\n## Quién guarda estado\n\nSolo dos tipos de widget son `StatefulWidget`:\n\n- **La Screen**, dueña de los datos de la pantalla, por ejemplo `List<Product> _products`.\n- **El formulario**, que guarda solo el borrador: sus `TextEditingController` y el aviso de error.\n\nTodo lo demás es `StatelessWidget`: cards, listas, encabezados y botones.\n\n## Los datos bajan\n\n- Llegan por el constructor, en campos `final` con `required`.\n- El componente no los cambia. Para cambiar un objeto, la Screen lo reemplaza con `copyWith`:\n  `_products[index] = product.copyWith(isBought: true)`.\n- Si una lista no usa un dato y solo lo pasa a sus cards, está bien. Si son más de tres niveles, avísalo: es prop drilling.\n\n## Los eventos suben\n\n- Con el tipo función: `Function()` si no lleva datos y `Function(Product)` si lleva el objeto.\n- Nunca uses `VoidCallback` ni `ValueChanged`.\n- Al widget de Flutter se le pasa envuelta: `onPressed: () => onDelete()`.\n- La card avisa sin datos (`onDelete()`) y la lista le agrega el objeto (`onDelete: () => onDelete(product)`).\n- Para tocar una card entera, envuelve su `Container` en un `GestureDetector` con `onTap`.\n- El formulario sube el objeto terminado (`widget.onAdd(product)`), limpia sus campos y no se lo queda.\n\n## Navegación\n\n- Solo la Screen llama al `Navigator`. Un componente avisa con una función, como `onOpen`, y la Screen hace el `pushNamed`.\n- Solo hay rutas nombradas, registradas en `routes:` de `lib/main.dart`.\n- Los datos para la pantalla nueva van en `arguments`.\n\n## Código\n\n- Imports del proyecto con `package:`, nunca relativos.\n- El código va en inglés y los textos que ve el usuario, en español.\n- Sin comentarios, salvo una línea `///` sobre cada clase pública.\n- Un archivo por componente, con el nombre en `snake_case`: `product_card.dart` para `ProductCard`.\n- Para redondear una imagen, usa un `Container` con `borderRadius` y `clipBehavior: Clip.antiAlias`. Nunca uses `ClipRRect`.\n- Si un formulario tiene un `TextEditingController`, debe tener también su `dispose()`.\n"
       }
     ]
+  },
+  {
+    "group": "sdd",
+    "name": "sdd-prd",
+    "color": "#4453C9",
+    "soft": "#EEF1FF",
+    "summary": "Te entrevista sobre el proyecto en rondas cortas y escribe el PRD: el problema, los usuarios, los objetivos medibles y lo que queda fuera del alcance.",
+    "prompts": [
+      "Mi proyecto se trata de…"
+    ],
+    "writes": [
+      "docs/prd.md"
+    ],
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: sdd-prd\ndescription: Entrevista al equipo sobre su proyecto y escribe el PRD, el documento de producto, en docs/prd.md con el problema, los usuarios, los objetivos medibles y el alcance. Úsala cuando digan \"mi proyecto se trata de…\", pidan el PRD o el documento de producto, o quieran definir qué problema resuelve la app y para quién.\n---\n\n# PRD del proyecto\n\nNo inventas el producto: lo sacas de las respuestas del equipo.\n\n## Pasos\n\n1. Lee `AGENTS.md` o `CLAUDE.md` si existen. Si ya hay `docs/prd.md`, pregunta si se actualiza o se parte de cero.\n2. Repite en una frase lo que entendiste del proyecto y pregunta si es así.\n3. **Entrevista.** Haz las preguntas de `references/preguntas.md` en rondas de máximo cuatro y espera las respuestas antes de seguir. Si una respuesta es vaga (\"que sea fácil\", \"rápido\"), pide un ejemplo o un número.\n4. **Borrador.** Muestra en pocas líneas el problema, los usuarios y los objetivos. Pregunta si falta algo.\n5. Escribe `docs/prd.md` con el formato de `assets/prd.md`: fecha de hoy, versión `0.1.0` y estado `borrador`.\n6. Termina con un resumen: cuántos objetivos quedaron, qué quedó fuera del alcance y qué preguntas siguen abiertas. Sugiere seguir con la skill `sdd-requisitos`.\n\n## Reglas\n\n- El PRD dice qué problema se resuelve y para quién. No escribas tecnologías, pantallas, tablas ni código.\n- Cada objetivo tiene id (`O-01`, `O-02`…) y una frase de cómo se sabe que se cumplió.\n- Lo que el equipo no sepa va en *Preguntas abiertas*. No lo inventes.\n- Si actualizas el PRD, sube la versión (la menor si agregas, la mayor si cambia el problema o los usuarios), cambia la fecha y anota el cambio en *Historial*.\n"
+      },
+      {
+        "path": "assets/prd.md",
+        "content": "---\ndocumento: prd\nproyecto: Nombre del proyecto\nversion: 0.1.0\nfecha: AAAA-MM-DD\nestado: borrador\nautores: [Nombre 1, Nombre 2]\n---\n\n# PRD · Nombre del proyecto\n\n## Problema\n\nDos o tres líneas: qué pasa hoy, a quién y por qué es un problema.\n\n## Usuarios\n\n- **Tipo de usuario**: qué quiere lograr cuando abre la app.\n\n## Objetivos\n\n- **O-01** Qué logra el usuario. *Se cumple si* algo que se puede comprobar.\n\n## Alcance\n\n### Incluye\n\n- Lo que hace la primera versión.\n\n### No incluye\n\n- Lo que se dejó por fuera, a propósito.\n\n## Restricciones\n\n- Fecha, equipo, datos, plataformas.\n\n## Preguntas abiertas\n\n- Lo que el equipo todavía no sabe.\n\n## Historial\n\n- 0.1.0 · AAAA-MM-DD · Primera versión.\n"
+      },
+      {
+        "path": "references/preguntas.md",
+        "content": "# Preguntas de la entrevista\n\nHaz las preguntas de una ronda, espera las respuestas y adapta la ronda siguiente.\n\n## Ronda 1 · El problema\n\n- ¿Qué problema resuelve la app, en una frase?\n- ¿A quién le pasa ese problema?\n- ¿Cómo lo resuelven hoy, sin la app?\n- ¿Qué es lo que más les molesta de esa forma actual?\n\n## Ronda 2 · Los usuarios\n\n- ¿Qué tipos de usuario hay? Por ejemplo, quien publica y quien solo mira.\n- ¿Qué quiere lograr cada uno cuando abre la app?\n- ¿Cada cuánto la usaría cada uno?\n- ¿Desde dónde la usan: celular, computador o los dos?\n\n## Ronda 3 · Los objetivos\n\n- Si la app funciona, ¿qué cambia para el usuario?\n- ¿Cómo sabrían que eso pasó? Busca algo que se pueda contar o comprobar.\n- ¿Qué es lo mínimo que tiene que hacer para la entrega final?\n\n## Ronda 4 · El alcance\n\n- ¿Qué sí hace la primera versión?\n- ¿Qué decidieron dejar por fuera, aunque sea buena idea?\n- ¿Hay restricciones: fecha de entrega, tamaño del equipo, datos que no se pueden guardar?\n"
+      }
+    ]
+  },
+  {
+    "group": "sdd",
+    "name": "sdd-requisitos",
+    "color": "#0F8478",
+    "soft": "#E3F6F3",
+    "summary": "Lee el PRD y saca los requisitos funcionales y no funcionales, numerados, verificables y ligados al objetivo que atienden.",
+    "prompts": [
+      "Crea los requerimientos"
+    ],
+    "writes": [
+      "docs/requisitos.md"
+    ],
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: sdd-requisitos\ndescription: Saca los requisitos funcionales y no funcionales del PRD y los deja numerados y verificables en docs/requisitos.md, cada uno ligado al objetivo que atiende. Úsala cuando pidan crear los requerimientos o los requisitos, sacar los RF y RNF, o pasar del PRD a una lista de lo que el sistema debe hacer.\n---\n\n# Requisitos del proyecto\n\nUn requisito es una frase que se puede comprobar. Si no se puede comprobar, todavía no es un requisito.\n\n## Pasos\n\n1. Lee `docs/prd.md`. Si no existe, dilo, sugiere la skill `sdd-prd` y no sigas.\n2. Lee `references/reglas.md`.\n3. Por cada objetivo del PRD (`O-01`, `O-02`…), escribe los requisitos funcionales que lo hacen posible. Después, los no funcionales.\n4. **Muéstralos agrupados por objetivo.** Señala los que dudas y pregunta. Pregunta también la prioridad de cada uno: *Debe*, *Debería* o *Podría*.\n5. Escribe `docs/requisitos.md` con el formato de `assets/requisitos.md`: fecha de hoy, versión `0.1.0`, estado `borrador` y la versión del PRD en que te basaste.\n6. Termina con un resumen: cuántos RF y RNF, cuántos *Debe*, y si algún objetivo del PRD quedó sin requisito (debería ser ninguno). Sugiere seguir con la skill `sdd-arquitectura`.\n\n## Reglas\n\n- Una línea por requisito, con su id (`RF-01`, `RNF-01`) y el objetivo que atiende.\n- Sin tecnología: nada de Supabase, Flutter, tablas, pantallas ni botones.\n- Los ids no se renumeran. Si un requisito se quita, se marca *(retirado)* y su id no se reusa.\n- No agregues requisitos que el equipo no pidió. Si crees que falta algo, pregúntalo.\n"
+      },
+      {
+        "path": "assets/requisitos.md",
+        "content": "---\ndocumento: requisitos\nproyecto: Nombre del proyecto\nversion: 0.1.0\nfecha: AAAA-MM-DD\nestado: borrador\nbasado_en: prd 0.1.0\n---\n\n# Requisitos · Nombre del proyecto\n\n## Funcionales\n\n### O-01 · El objetivo, como está en el PRD\n\n- **RF-01** El sistema debe permitir que el usuario haga algo. *Debe*\n- **RF-02** El sistema debe permitir que el usuario haga otra cosa. *Debería*\n\n## No funcionales\n\n- **RNF-01** Algo medible, con su número o su condición. (O-01) *Debe*\n\n## Preguntas abiertas\n\n- Lo que hay que confirmar con el equipo.\n\n## Historial\n\n- 0.1.0 · AAAA-MM-DD · Primera versión.\n"
+      },
+      {
+        "path": "references/reglas.md",
+        "content": "# Cómo se escribe un requisito\n\n## Funcional (RF)\n\nDice algo que el sistema hace. Forma: *El sistema debe permitir que el <usuario> <acción>.*\n\n- Bien: `RF-04` El sistema debe permitir que el usuario siga a otro usuario. (O-02)\n- Mal: \"Que se pueda seguir gente fácilmente\". No dice quién ni qué, y \"fácilmente\" no se comprueba.\n\n## No funcional (RNF)\n\nDice cómo de bien lo hace. Siempre con un número o una condición que se pueda revisar.\n\n- Bien: `RNF-02` El feed muestra las primeras publicaciones en menos de 2 segundos con wifi.\n- Mal: \"La app debe ser rápida\".\n\nCategorías que suelen aparecer:\n\n- Plataformas: en qué dispositivos o navegadores funciona.\n- Rendimiento: tiempos de carga, tamaño máximo de un archivo.\n- Usabilidad: cuántos pasos toma una tarea, idioma de la interfaz.\n- Disponibilidad y datos: qué pasa sin conexión, qué se guarda y por cuánto tiempo.\n\n## Palabras que delatan un requisito vago\n\nfácil, rápido, intuitivo, amigable, moderno, etc., y/o, varios, algunos, adecuado, mejor.\nSi aparece una, pide un número o un ejemplo.\n\n## Una prueba rápida\n\nPregúntate: *¿cómo demostraría en la entrega que esto se cumple?* Si no hay respuesta, reescríbelo.\n"
+      }
+    ]
+  },
+  {
+    "group": "sdd",
+    "name": "sdd-arquitectura",
+    "color": "#A96C05",
+    "soft": "#FFF3DC",
+    "summary": "Escribe la architectural spine: resumen, diagrama mermaid, stack, qué cubre cada servicio de Supabase y las invariantes que nadie del equipo puede decidir distinto.",
+    "prompts": [
+      "Mi app está en Flutter y se conecta a Supabase… especifica la arquitectura"
+    ],
+    "writes": [
+      "docs/architectural_spine.md"
+    ],
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: sdd-arquitectura\ndescription: Escribe la architectural spine del proyecto en docs/architectural_spine.md, con un resumen, un diagrama mermaid, el stack tecnológico, qué cubre cada servicio y las invariantes que nadie del equipo puede decidir distinto. Pensada para una app Flutter con backend en Supabase (Auth, base de datos con PostgREST y Storage). Úsala cuando pidan especificar o definir la arquitectura, el stack, la spine o el diagrama de la app.\n---\n\n# Architectural spine\n\nLa spine fija solo lo que, si cada integrante lo decide por su lado, rompe la app. Lo demás se deja para después.\n\n## Pasos\n\n1. Lee `docs/prd.md` y `docs/requisitos.md`. Si falta alguno, dilo y sugiere la skill que lo crea. Lee también `AGENTS.md` y `docs/modelo.md` si existen.\n2. Lee `references/supabase.md`.\n3. Si el pedido no lo dice, pregunta en una sola ronda: para qué se usa la autenticación, qué se guarda en la base de datos, qué archivos van a Storage y en qué plataformas corre la app.\n4. **Borrador.** Muestra el diagrama y la lista de invariantes (`AD-01`, `AD-02`…). Pregunta si algo no cuadra.\n5. Escribe `docs/architectural_spine.md` con el formato de `assets/architectural_spine.md`: fecha de hoy, versión `0.1.0`, estado `borrador` y las versiones del PRD y de los requisitos en que te basaste.\n6. Termina con un resumen de tres líneas: el stack, cuántas invariantes y qué quedó en *Diferido*. Sugiere seguir con la skill `sdd-specs`.\n\n## Reglas\n\n- Corta: que quepa en una o dos páginas.\n- Cada invariante tiene **Regla** (lo que siempre se hace) y **Evita** (el problema que previene).\n- Sin código, sin nombres de widgets y sin el detalle de las tablas: para eso está `docs/modelo.md`.\n- El diagrama es un `flowchart` de mermaid que se pueda leer en GitHub.\n- No agregues servicios que el equipo no nombró. Si crees que hace falta uno, ponlo en *Diferido* y pregunta.\n- No agregues paquetes además de `supabase_flutter` sin preguntar.\n"
+      },
+      {
+        "path": "assets/architectural_spine.md",
+        "content": "---\ndocumento: architectural_spine\nproyecto: Nombre del proyecto\nversion: 0.1.0\nfecha: AAAA-MM-DD\nestado: borrador\nbasado_en: [prd 0.1.0, requisitos 0.1.0]\n---\n\n# Architectural spine · Nombre del proyecto\n\n## Resumen\n\nTres líneas: qué es la app, dónde corre y con qué backend.\n\n## Diagrama\n\n```mermaid\nflowchart LR\n  user([Usuario]) --> app[App Flutter]\n  app --> services[Capa de servicios]\n  services --> sdk[supabase_flutter]\n  sdk --> auth[Auth]\n  sdk --> db[(Base de datos · PostgREST)]\n  sdk --> storage[[Storage]]\n```\n\n## Stack\n\n- Frontend: Flutter 3.x y Dart 3.x. Plataformas: web y Android.\n- SDK: `supabase_flutter`.\n- Backend: Supabase con Auth, base de datos (Postgres + PostgREST) y Storage.\n\n## Qué cubre cada servicio\n\n- **Auth**: para qué se usa.\n- **Base de datos**: qué tablas guarda (detalle en `docs/modelo.md`).\n- **Storage**: qué archivos y en qué bucket.\n\n## Invariantes\n\n### AD-01 · Nombre corto\n\n- **Regla:** lo que siempre se hace.\n- **Evita:** el problema que previene.\n\n## Diferido\n\n- Lo que no se decide todavía, y cuándo habría que decidirlo.\n\n## Historial\n\n- 0.1.0 · AAAA-MM-DD · Primera versión.\n"
+      },
+      {
+        "path": "references/supabase.md",
+        "content": "# Flutter + Supabase en el curso\n\n## Los tres servicios\n\n- **Auth** (antes GoTrue): crea cuentas, inicia y cierra sesión. Cada usuario tiene un `uuid`.\n- **Base de datos** (Postgres, expuesto por PostgREST): las tablas de `docs/modelo.md`. La app lee y escribe filas.\n- **Storage**: archivos como fotos o PDF, guardados en buckets.\n\nLa app no llama a cada servicio por separado: usa un solo SDK, `supabase_flutter`, que trae los tres.\n\n## Las llaves\n\n- En la app va la **publishable key** del proyecto. Está hecha para ir en el cliente.\n- La **secret key** nunca va en la app ni en el repositorio.\n\n## Invariantes que casi siempre aplican\n\nÚsalas como punto de partida y ajústalas al proyecto.\n\n- **Sin backend propio.** La app habla directo con Supabase. *Evita* que alguien monte un servidor aparte para una sola pantalla.\n- **Una capa de servicios.** Solo los servicios de la app llaman a Supabase; las pantallas les piden los datos. *Evita* llamadas repetidas y distintas a la misma tabla regadas por las pantallas.\n- **El usuario es el de Auth.** Toda fila que pertenece a alguien guarda el `uuid` de Auth. *Evita* dos identidades para la misma persona.\n- **Los archivos van en Storage.** La tabla guarda solo la ruta del archivo. *Evita* guardar imágenes dentro de la base de datos.\n- **Llaves fuera del código.** La URL y la publishable key se leen de la configuración, no se escriben en cada archivo. *Evita* cambiar de proyecto editando diez archivos.\n\n## Lo que el curso deja por fuera\n\nLa app es ligera. Las políticas de seguridad por filas (RLS), las Edge Functions y Realtime no se usan: si aparecen, van en *Diferido*.\n"
+      }
+    ]
+  },
+  {
+    "group": "sdd",
+    "name": "sdd-specs",
+    "color": "#7439B8",
+    "soft": "#F4EBFF",
+    "summary": "Propone la lista de funcionalidades y escribe una spec funcional por cada una, con metadatos, flujos, estados y criterios de aceptación, más el índice.",
+    "prompts": [
+      "Crea las specs funcionales"
+    ],
+    "writes": [
+      "docs/specs/F-xx-*.md",
+      "docs/specs/README.md"
+    ],
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: sdd-specs\ndescription: Escribe las specs funcionales del proyecto, una por funcionalidad, en docs/specs/, con metadatos (id, versión, fecha, estado), flujos, reglas, estados y criterios de aceptación, más un índice con el estado de cada una. Úsala cuando pidan crear o actualizar las specs funcionales, especificar una funcionalidad o pasar de los requisitos a specs.\n---\n\n# Specs funcionales\n\nUna spec dice qué hace el sistema y cómo se comporta, nunca con qué se construye.\n\n## Pasos\n\n1. Lee `docs/prd.md`, `docs/requisitos.md` y `docs/architectural_spine.md`, y `docs/modelo.md` si existe. Si falta uno de los tres primeros, dilo y sugiere la skill que lo crea.\n2. Lee `references/reglas.md`.\n3. Si ya existe `docs/specs/`, léela: vas a actualizar, no a empezar de cero.\n4. **Propón la lista de funcionalidades** (`F-01`, `F-02`…), cada una con los RF que cubre. Todo RF debe quedar en alguna. Pregunta si la lista está bien antes de escribir.\n5. Escribe cada spec en `docs/specs/F-01-nombre-corto.md` con el formato de `assets/spec.md`: versión `0.1.0`, estado `borrador`, fecha de hoy.\n6. Escribe `docs/specs/README.md` con el formato de `assets/indice.md`.\n7. Termina con un resumen: cuántas specs, si quedó algún RF sin spec y cuántas preguntas abiertas hay. Sugiere revisar el conjunto con la skill `sdd-critica`.\n\n## Reglas\n\n- Sin tecnología: nada de Supabase, Flutter, widgets, `setState`, tablas ni SQL. Los datos se nombran como los nombra el usuario: *publicación*, *foto de perfil*.\n- Una spec, una funcionalidad. Si mezcla dos, pártela.\n- Los ids no se renumeran. Una spec que se quita pasa a estado `obsoleta`.\n- Si cambias una spec, sube su versión, cambia la fecha, anota el cambio en *Historial* y actualiza el índice.\n- Lo que no sepas va en *Preguntas abiertas*. No lo inventes.\n"
+      },
+      {
+        "path": "assets/indice.md",
+        "content": "# Specs funcionales · Nombre del proyecto\n\nActualizado: AAAA-MM-DD\n\n- [F-01 · Nombre](F-01-nombre-corto.md) · v0.1.0 · borrador · RF-01, RF-02\n- [F-02 · Nombre](F-02-nombre-corto.md) · v0.1.0 · borrador · RF-03\n\n## Avance\n\n- Implementadas: 0 de 2.\n- Aprobadas: 0 de 2.\n"
+      },
+      {
+        "path": "assets/spec.md",
+        "content": "---\nid: F-01\ntitulo: Nombre de la funcionalidad\nversion: 0.1.0\nfecha: AAAA-MM-DD\nestado: borrador\nautores: [Nombre 1]\nrequisitos: [RF-01, RF-02]\ndepende_de: []\n---\n\n# F-01 · Nombre de la funcionalidad\n\n## Objetivo\n\nQuién la usa y para qué, en una o dos líneas.\n\n## Flujo principal\n\n1. El usuario hace algo.\n2. El sistema responde algo.\n\n## Flujos alternos\n\n- **A1 · Nombre:** qué cambia y cómo termina.\n\n## Reglas\n\n- Una condición o un límite.\n\n## Estados\n\n- **Cargando:** qué ve el usuario.\n- **Vacío:** qué ve si no hay datos.\n- **Error:** qué ve y qué puede hacer.\n\n## Datos\n\n- Los datos que usa, con las palabras del usuario.\n\n## Criterios de aceptación\n\n- **CA-1** Dado algo, cuando el usuario hace algo, entonces pasa algo.\n\n## Fuera de alcance\n\n- Lo que esta spec no cubre.\n\n## Preguntas abiertas\n\n- Lo que falta decidir.\n\n## Historial\n\n- 0.1.0 · AAAA-MM-DD · Primera versión.\n"
+      },
+      {
+        "path": "references/reglas.md",
+        "content": "# Qué va en una spec funcional\n\n## Sí va\n\n- Quién la usa y para qué.\n- El flujo principal, en pasos numerados, y los flujos alternos.\n- Las reglas del negocio: límites, condiciones, quién puede qué.\n- Los estados que ve el usuario: cargando, vacío y error.\n- Los datos, con las palabras del usuario.\n- Criterios de aceptación que se puedan comprobar.\n- Lo que queda fuera de alcance y las preguntas abiertas.\n\n## No va\n\n- Código, nombres de widgets, cómo se guarda el estado.\n- Tablas, columnas, SQL, nombres de servicios o paquetes.\n- Colores, tamaños y posiciones: eso es del prototipo.\n- Tareas de implementación: eso es del plan.\n- Palabras vagas: fácil, rápido, intuitivo, etc., algunos, adecuado.\n\n## Criterios de aceptación\n\nForma: **Dado** una situación, **cuando** el usuario hace algo, **entonces** pasa algo que se ve.\n\n- Bien: Dado que no hay conexión, cuando el usuario publica, entonces ve \"No se pudo publicar\" y su texto se conserva.\n- Mal: \"La publicación funciona bien\".\n\nAl menos uno por flujo y uno por estado de error.\n\n## Versiones\n\n- `0.x.y` mientras está en borrador. `1.0.0` cuando el equipo la aprueba.\n- Mayor: cambia el comportamiento. Menor: se agrega algo. Parche: solo redacción.\n\n## Estados\n\n`borrador` → `aprobada` → `implementada`. Una que ya no aplica pasa a `obsoleta`.\n"
+      }
+    ]
+  },
+  {
+    "group": "sdd",
+    "name": "sdd-critica",
+    "color": "#C2354F",
+    "soft": "#FFEBEF",
+    "summary": "Revisa todo el conjunto sin cambiarlo, calcula las métricas y propone las correcciones más importantes. Solo las aplica si le dices que sí.",
+    "prompts": [
+      "Critica las specs"
+    ],
+    "writes": [
+      "docs/specs/reporte.md"
+    ],
+    "files": [
+      {
+        "path": "SKILL.md",
+        "content": "---\nname: sdd-critica\ndescription: Revisa el conjunto de specs de docs/ sin cambiarlo, calcula sus métricas (completitud, trazabilidad, verificabilidad, ambigüedad, consistencia, atomicidad, preguntas abiertas, avance y estabilidad) y deja un reporte en docs/specs/reporte.md con lo que hay que corregir. Úsala cuando pidan criticar, revisar, auditar o medir las specs, o saber qué tan listas están.\n---\n\n# Crítica de las specs\n\nEres un revisor exigente pero justo: mides, citas dónde está el problema y propones el arreglo.\n\n## Pasos\n\n1. Lee `docs/prd.md`, `docs/requisitos.md`, `docs/architectural_spine.md`, todo `docs/specs/` y `docs/modelo.md` si existe.\n2. Calcula cada métrica de `references/metricas.md`. Da el número como fracción y porcentaje (`5/6 · 83 %`).\n3. Escribe `docs/specs/reporte.md` con el formato de `assets/reporte.md`, con la fecha de hoy y la versión de cada documento revisado.\n4. Muestra las tres correcciones más importantes, cada una con el archivo y el apartado donde está.\n5. Pregunta si las aplicas. No cambies ninguna spec sin un sí.\n6. Si las aplicas, sube la versión de cada spec que tocaste, anota el cambio en su *Historial* y vuelve a calcular el reporte.\n\n## Reglas\n\n- Solo lees, salvo que te digan que apliques los cambios.\n- Cada problema cita el archivo y el apartado. Nada de \"algunas specs son vagas\".\n- No inventes problemas: si una métrica está bien, dilo.\n- No juzgues la tecnología ni el diseño de la app: revisas las specs.\n"
+      },
+      {
+        "path": "assets/reporte.md",
+        "content": "# Reporte de specs · Nombre del proyecto\n\nFecha: AAAA-MM-DD · Revisado: prd 0.1.0 · requisitos 0.1.0 · spine 0.1.0 · 4 specs\n\n## Métricas\n\n- **Completitud** (verde): 12/12 · 100 %\n- **Trazabilidad** (amarillo): RF → objetivo 11/12 · 92 %; spec → RF 4/4 · 100 %\n- **Verificabilidad** (rojo): 6/10 · 60 %\n- **Ambigüedad** (amarillo): 2 (F-02: \"rápido\"; F-04: \"etc.\")\n- **Consistencia** (verde): 0\n- **Atomicidad** (verde): 0\n- **Pureza funcional** (verde): 0\n- **Preguntas abiertas:** 3\n- **Avance de implementación:** todo en borrador\n- **Estabilidad:** sin cambios mayores\n\n## Correcciones propuestas\n\n1. **F-03 · Criterios de aceptación.** CA-2 dice \"la foto se ve bien\". Propuesta: Dado una foto de más de 5 MB, cuando el usuario la elige, entonces ve \"La foto pesa demasiado\".\n2. Otra corrección, con archivo y apartado.\n3. Otra corrección, con archivo y apartado.\n\n## Lo que está bien\n\n- Lo que no hay que tocar.\n"
+      },
+      {
+        "path": "references/metricas.md",
+        "content": "# Métricas del conjunto de specs\n\nCada métrica con su fórmula y su meta.\n\n## Completitud\n\nRF que aparecen en el campo `requisitos` de alguna spec ÷ RF totales (sin los retirados).\nMeta: 100 %. Lista los RF que no tienen spec.\n\n## Trazabilidad\n\nDos sentidos:\n\n- RF que citan un objetivo `O-xx` del PRD ÷ RF totales.\n- Specs que citan al menos un RF ÷ specs totales.\n\nMeta: 100 % en los dos. Un RF sin objetivo puede sobrar; una spec sin RF puede ser una idea que nadie pidió.\n\n## Verificabilidad\n\nCriterios de aceptación con la forma Dado / cuando / entonces y un resultado que se ve ÷ criterios totales.\nAdemás, ninguna spec sin criterios. Meta: 100 %.\n\n## Ambigüedad\n\nPalabras vagas encontradas en las specs: fácil, rápido, intuitivo, amigable, adecuado, etc., algunos, varios, y/o.\nCuenta por spec. Meta: 0.\n\n## Consistencia\n\nContradicciones entre dos specs, o de una spec con la spine o con `docs/modelo.md`. Por ejemplo, una spec dice que la publicación tiene foto y el modelo no la tiene.\nMeta: 0.\n\n## Atomicidad\n\nSpecs que describen más de una funcionalidad (su título lleva \"y\", o tienen dos flujos principales que no dependen uno del otro).\nMeta: 0.\n\n## Pureza funcional\n\nSpecs que nombran tecnología: Supabase, Flutter, widgets, `setState`, tablas, SQL.\nMeta: 0.\n\n## Preguntas abiertas\n\nTotal de preguntas abiertas en las specs. No es un error: es la deuda de especificación. Debe bajar con cada versión.\n\n## Avance de implementación\n\nSpecs `implementada` ÷ specs `aprobada` + `implementada`. Si todo está en borrador, dilo.\n\n## Estabilidad\n\nPor spec, cuántas veces subió la versión mayor según su *Historial*. Una spec que cambia mucho todavía no está madura.\n\n## Semáforo\n\n- Verde: en la meta.\n- Amarillo: completitud, trazabilidad o verificabilidad entre 80 % y 99 %, o hasta 2 en las métricas de conteo.\n- Rojo: el resto.\n"
+      }
+    ]
   }
 ];
 // </skills-data>
@@ -248,7 +392,11 @@ const mountSkillFiles = (root, args = []) => {
   const container = el('div', { class: 'ksim', 'data-testid': 'skill-files' });
   root.replaceChildren(container);
 
-  let skill = SKILLS.find((item) => item.name === args[0]) || SKILLS[0];
+  const grouped = SKILLS.some((item) => item.group === args[0]);
+  const group = grouped ? args[0] : 'base';
+  const pool = SKILLS.filter((item) => item.group === group);
+  const wanted = grouped ? args[1] : args[0];
+  let skill = pool.find((item) => item.name === wanted) || pool[0];
   let path = skill ? skill.files[0].path : null;
 
   const tabs = el('div', { class: 'ks-tabs', role: 'tablist' });
@@ -297,7 +445,7 @@ const mountSkillFiles = (root, args = []) => {
       el('div', {}, el('b', { text: 'ESCRIBE' }), skill.writes.map((text) => el('span', { class: 'ks-out', text }))));
   };
 
-  SKILLS.forEach((item) => tabs.append(el('button', {
+  pool.forEach((item) => tabs.append(el('button', {
     class: 'ks-tab',
     type: 'button',
     role: 'tab',

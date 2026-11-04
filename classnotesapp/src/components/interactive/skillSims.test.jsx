@@ -8,8 +8,14 @@ const renderBlock = (spec) => render(<ThemeProvider><InteractiveBlock spec={spec
 const skillMd = (skill) => skill.files.find((file) => file.path === 'SKILL.md').content;
 
 describe('SKILLS', () => {
+  const names = (group) => SKILLS.filter((skill) => skill.group === group).map((skill) => skill.name);
+
   it('has the four course skills, in the order they are used', () => {
-    expect(SKILLS.map((skill) => skill.name)).toEqual(['disenador-bd', 'mer-svg', 'flutter-pantallas', 'flutter-componentes']);
+    expect(names('base')).toEqual(['disenador-bd', 'mer-svg', 'flutter-pantallas', 'flutter-componentes']);
+  });
+
+  it('has the five spec driven development skills, in the order they are used', () => {
+    expect(names('sdd')).toEqual(['sdd-prd', 'sdd-requisitos', 'sdd-arquitectura', 'sdd-specs', 'sdd-critica']);
   });
 
   it('opens every skill on its SKILL.md, whose name matches the folder', () => {
@@ -58,5 +64,18 @@ describe('skill-files', () => {
   it('opens on the skill given as option', () => {
     renderBlock('skill-files mer-svg');
     expect(screen.getByTestId('skill-content').textContent).toContain('name: mer-svg');
+  });
+
+  it('shows only the base skills without options', () => {
+    renderBlock('skill-files');
+    expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual(['disenador-bd', 'mer-svg', 'flutter-pantallas', 'flutter-componentes']);
+  });
+
+  it('shows the sdd group and opens on the skill given after it', () => {
+    renderBlock('skill-files sdd sdd-specs');
+    expect(screen.getAllByRole('tab')).toHaveLength(5);
+    expect(screen.getByTestId('skill-content').textContent).toContain('name: sdd-specs');
+    fireEvent.click(screen.getByRole('tab', { name: 'sdd-critica' }));
+    expect(screen.getByTestId('skill-content').textContent).toContain('name: sdd-critica');
   });
 });
