@@ -35,7 +35,7 @@ La app del [repositorio de arranque](https://domicianorincon.github.io/Seminario
 ```svg
 <svg id="tlConsola" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 512" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="tlConsola-ttl tlConsola-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
   <title id="tlConsola-ttl">Instalar supabase_flutter</title>
-  <desc id="tlConsola-dsc">En la carpeta 262SeminarioSesion11, flutter pub add supabase_flutter termina con Changed dependencies. Después flutter run -d chrome lanza la app en Chrome. Un recuadro señala el paquete y otro el resultado.</desc>
+  <desc id="tlConsola-dsc">En la carpeta 262SeminarioSesion12, flutter pub add supabase_flutter termina con Changed dependencies. Después flutter run -d chrome lanza la app en Chrome. Un recuadro señala el paquete y otro el resultado.</desc>
   <defs>
     <style>
       #tlConsola .title{fill:#161A26;font-size:22px;font-weight:700}
@@ -57,12 +57,12 @@ La app del [repositorio de arranque](https://domicianorincon.github.io/Seminario
   <rect x="48" y="112" width="864" height="242" rx="12" fill="#1F2430"/>
   <path d="M48,124 A12,12 0 0 1 60,112 H900 A12,12 0 0 1 912,124 V144 H48 Z" fill="#2A3040"/>
   <circle cx="68" cy="128" r="5" fill="#F14C4C"/><circle cx="84" cy="128" r="5" fill="#E5C07B"/><circle cx="100" cy="128" r="5" fill="#6BCB77"/>
-  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">Terminal · C:\develop\262SeminarioSesion11</text>
-  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">262SeminarioSesion11&gt; </tspan><tspan class="cmd">flutter pub add supabase_flutter</tspan></text>
+  <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">Terminal · C:\develop\262SeminarioSesion12</text>
+  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">262SeminarioSesion12&gt; </tspan><tspan class="cmd">flutter pub add supabase_flutter</tspan></text>
   <text class="tl mono dim" font-size="13" x="72" y="200" data-fit="816">Resolving dependencies...</text>
   <text class="tl mono" font-size="13" x="72" y="226" data-fit="816">+ supabase_flutter 2.x.x</text>
   <text class="tl mono okk" font-size="13" x="72" y="252" data-fit="816">Changed xx dependencies!</text>
-  <text class="tl mono" font-size="13" x="72" y="304" data-fit="816"><tspan class="pf">262SeminarioSesion11&gt; </tspan><tspan class="cmd">flutter run -d chrome</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="304" data-fit="816"><tspan class="pf">262SeminarioSesion12&gt; </tspan><tspan class="cmd">flutter run -d chrome</tspan></text>
   <text class="tl mono dim" font-size="13" x="72" y="330" data-fit="816">Launching lib/main.dart on Chrome in debug mode...</text>
   <rect class="ring" x="364.4" y="158" width="132.8" height="22" rx="5"/>
   <circle class="chipc" cx="497.2" cy="159" r="8"/>

@@ -1,42 +1,42 @@
 # Repositorio de arranque
 
-<!-- tags: 262SeminarioSesion11, git clone, flutter pub get, track_app, Track, TrackService, track_services.dart, Target of URI doesn't exist -->
+<!-- tags: 262SeminarioSesion12, git clone, flutter pub get, track_app, Track, TrackService, track_services.dart, Target of URI doesn't exist -->
 
 El taller de esta sesión no se hace sobre el proyecto de tu equipo, sino sobre una app pequeña de tracks. Clónala aparte, fuera de la carpeta de tu proyecto.
 
 ```svg
-<svg id="raClonar11" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 590" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="raClonar11-ttl raClonar11-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
-  <title id="raClonar11-ttl">Clonar el repositorio de la sesión 11</title>
-  <desc id="raClonar11-dsc">Una terminal parada en la carpeta develop. Primero git clone con la dirección de 262SeminarioSesion11, que crea la carpeta 262SeminarioSesion11. Después cd 262SeminarioSesion11, flutter pub get, que termina con Got dependencies, y flutter run -d chrome, que abre la app en Chrome. Tres recuadros numerados señalan la dirección del repositorio, flutter pub get y flutter run, cada uno con su tarjeta debajo.</desc>
+<svg id="raClonar12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 590" width="100%" style="max-width:960px;display:block;margin:0 auto" role="img" aria-labelledby="raClonar12-ttl raClonar12-dsc" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif">
+  <title id="raClonar12-ttl">Clonar el repositorio de la sesión 12</title>
+  <desc id="raClonar12-dsc">Una terminal parada en la carpeta develop. Primero git clone con la dirección de 262SeminarioSesion12, que crea la carpeta 262SeminarioSesion12. Después cd 262SeminarioSesion12, flutter pub get, que termina con Got dependencies, y flutter run -d chrome, que abre la app en Chrome. Tres recuadros numerados señalan la dirección del repositorio, flutter pub get y flutter run, cada uno con su tarjeta debajo.</desc>
   <defs>
     <style>
-      #raClonar11 .title{fill:#161A26;font-size:22px;font-weight:700}
-      #raClonar11 .sub{fill:#79809A;font-size:13.5px}
-      #raClonar11 .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
-      #raClonar11 .tl{font-size:13px;fill:#C9CFDA;white-space:pre}
-      #raClonar11 .pf{fill:#7F8AA3} #raClonar11 .cmd{fill:#FFFFFF;font-weight:600}
-      #raClonar11 .dim{fill:#8A93A6} #raClonar11 .okk{fill:#6BCB77;font-weight:600}
-      #raClonar11 .ring{fill:none;stroke:#F2C069;stroke-width:2}
-      #raClonar11 .chipc{fill:#F2C069} #raClonar11 .chipt{fill:#1F2430;font-size:11.5px;font-weight:700}
-      #raClonar11 .ct{fill:#161A26;font-size:14px;font-weight:700}
-      #raClonar11 .cb{fill:#454C61;font-size:13px}
-      #raClonar11 .foot{fill:#79809A;font-size:12px}
+      #raClonar12 .title{fill:#161A26;font-size:22px;font-weight:700}
+      #raClonar12 .sub{fill:#79809A;font-size:13.5px}
+      #raClonar12 .mono{font-family:ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace}
+      #raClonar12 .tl{font-size:13px;fill:#C9CFDA;white-space:pre}
+      #raClonar12 .pf{fill:#7F8AA3} #raClonar12 .cmd{fill:#FFFFFF;font-weight:600}
+      #raClonar12 .dim{fill:#8A93A6} #raClonar12 .okk{fill:#6BCB77;font-weight:600}
+      #raClonar12 .ring{fill:none;stroke:#F2C069;stroke-width:2}
+      #raClonar12 .chipc{fill:#F2C069} #raClonar12 .chipt{fill:#1F2430;font-size:11.5px;font-weight:700}
+      #raClonar12 .ct{fill:#161A26;font-size:14px;font-weight:700}
+      #raClonar12 .cb{fill:#454C61;font-size:13px}
+      #raClonar12 .foot{fill:#79809A;font-size:12px}
     </style>
   </defs>
   <rect width="960" height="590" rx="16" fill="#FBFBFD"/>
-  <text class="title" x="48" y="56">Clonar el repositorio de la sesión 11</text>
+  <text class="title" x="48" y="56">Clonar el repositorio de la sesión 12</text>
   <text class="sub" x="48" y="80" data-fit="860">Cuatro comandos, desde la carpeta donde guardas tus proyectos.</text>
   <rect x="48" y="112" width="864" height="320" rx="12" fill="#1F2430"/>
   <path d="M48,124 A12,12 0 0 1 60,112 H900 A12,12 0 0 1 912,124 V144 H48 Z" fill="#2A3040"/>
   <circle cx="68" cy="128" r="5" fill="#F14C4C"/><circle cx="84" cy="128" r="5" fill="#E5C07B"/><circle cx="100" cy="128" r="5" fill="#6BCB77"/>
   <text x="480" y="128" dy="0.35em" text-anchor="middle" fill="#9AA3B5" font-size="12">Terminal · C:\develop</text>
-  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">git clone https://github.com/Domiciano/262SeminarioSesion11.git</tspan></text>
-  <text class="tl mono" font-size="13" x="72" y="200" data-fit="816">Cloning into '262SeminarioSesion11'...</text>
-  <text class="tl mono" font-size="13" x="72" y="252" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">cd 262SeminarioSesion11</tspan></text>
-  <text class="tl mono" font-size="13" x="72" y="278" data-fit="816"><tspan class="pf">262SeminarioSesion11&gt; </tspan><tspan class="cmd">flutter pub get</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="174" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">git clone https://github.com/Domiciano/262SeminarioSesion12.git</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="200" data-fit="816">Cloning into '262SeminarioSesion12'...</text>
+  <text class="tl mono" font-size="13" x="72" y="252" data-fit="816"><tspan class="pf">develop&gt; </tspan><tspan class="cmd">cd 262SeminarioSesion12</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="278" data-fit="816"><tspan class="pf">262SeminarioSesion12&gt; </tspan><tspan class="cmd">flutter pub get</tspan></text>
   <text class="tl mono dim" font-size="13" x="72" y="304" data-fit="816">Resolving dependencies...</text>
   <text class="tl mono okk" font-size="13" x="72" y="330" data-fit="816">Got dependencies!</text>
-  <text class="tl mono" font-size="13" x="72" y="382" data-fit="816"><tspan class="pf">262SeminarioSesion11&gt; </tspan><tspan class="cmd">flutter run -d chrome</tspan></text>
+  <text class="tl mono" font-size="13" x="72" y="382" data-fit="816"><tspan class="pf">262SeminarioSesion12&gt; </tspan><tspan class="cmd">flutter run -d chrome</tspan></text>
   <text class="tl mono dim" font-size="13" x="72" y="408" data-fit="816">Launching lib/main.dart on Chrome in debug mode...</text>
   <rect class="ring" x="216.2" y="158" width="421.4" height="22" rx="5"/>
   <circle class="chipc" cx="637.6" cy="159" r="8"/>
@@ -75,13 +75,13 @@ El taller de esta sesión no se hace sobre el proyecto de tu equipo, sino sobre 
 ```
 
 ```shell
-git clone https://github.com/Domiciano/262SeminarioSesion11.git
-cd 262SeminarioSesion11
+git clone https://github.com/Domiciano/262SeminarioSesion12.git
+cd 262SeminarioSesion12
 flutter pub get
 flutter run -d chrome
 ```
 
-Ábrelo en VS Code con *File › Open Folder* y elige la carpeta `262SeminarioSesion11`. Si el editor marca en rojo los `import` con `Target of URI doesn't exist`, falta el `flutter pub get`.
+Ábrelo en VS Code con *File › Open Folder* y elige la carpeta `262SeminarioSesion12`. Si el editor marca en rojo los `import` con `Target of URI doesn't exist`, falta el `flutter pub get`.
 
 ## Qué trae
 

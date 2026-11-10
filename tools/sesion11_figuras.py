@@ -457,18 +457,18 @@ def tlConsola():
         id='tlConsola',
         title='Instalar supabase_flutter',
         title_plain='Instalar supabase_flutter',
-        desc='En la carpeta 262SeminarioSesion11, flutter pub add supabase_flutter termina con Changed dependencies. '
+        desc='En la carpeta 262SeminarioSesion12, flutter pub add supabase_flutter termina con Changed dependencies. '
              'Después flutter run -d chrome lanza la app en Chrome. Un recuadro señala el paquete y otro el '
              'resultado.',
         sub='Se instala una sola vez, desde la carpeta del proyecto.',
-        term_title='Terminal · C:\\develop\\262SeminarioSesion11',
+        term_title='Terminal · C:\\develop\\262SeminarioSesion12',
         lines=[
-            ('P', 'flutter pub add supabase_flutter', '262SeminarioSesion11'),
+            ('P', 'flutter pub add supabase_flutter', '262SeminarioSesion12'),
             ('D', 'Resolving dependencies...'),
             ('O', '+ supabase_flutter 2.x.x'),
             ('K', 'Changed xx dependencies!'),
             ('B', ''),
-            ('P', 'flutter run -d chrome', '262SeminarioSesion11'),
+            ('P', 'flutter run -d chrome', '262SeminarioSesion12'),
             ('D', 'Launching lib/main.dart on Chrome in debug mode...'),
         ],
         rings=[
