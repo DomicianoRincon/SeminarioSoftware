@@ -20,8 +20,8 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0062` Repositorio de arranque · `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | 🟡 | `S0064` Repositorio de arranque · `S0065` Taller · Playlist con secciones · `S0066` BottomNavigationBar: una pieza del Scaffold · `S0067` El índice en el estado · `S0068` IndexedStack: Pages que recuerdan |
 | 10 | 26 | 13 | 3 | Spec Driven Development | 🟡 | `S0069` ¿Qué es Spec Driven Development? · `S0070` Anatomía de una spec · `S0071` Métricas del conjunto de specs · `S0072` La arquitectura: Flutter + Supabase · `S0073` Taller · Del contexto al PRD y los requisitos |
-| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) · `S0075` Migraciones con el CLI de Supabase |
-| 12 | 28 | 14 | 3 y 4 | Base de datos, parte 2 *(el calendario dice Servicio de autenticación)* | 🟡 | `S0076` Future: pedir y esperar · `S0079` Map<String, dynamic>: la fila como JSON · `S0077` Repositorio de arranque · `S0080` Primeros pasos con Supabase · `S0078` Taller · Tracks en Supabase |
+| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) |
+| 12 | 28 | 14 | 3 y 4 | Base de datos, parte 2 *(el calendario dice Servicio de autenticación)* | 🟡 | `S0076` Future: pedir y esperar · `S0079` Map<String, dynamic>: la fila como JSON · `S0077` Repositorio de arranque · `S0080` Primeros pasos con Supabase · `S0075` Migraciones con el CLI de Supabase · `S0078` Taller · Tracks en Supabase |
 | 13 | 29 | 15 | 3 y 4 | Servicio de storage | ⬜ | |
 | 14 | 30 | 15 | 3 y 4 | Funciones como servicio | ⬜ | |
 | 15 | 31 | 16 | 3 y 4 | Entrega final I (equipos 1 a 3) | ⬜ | |
@@ -252,19 +252,7 @@ Notas:
 
 **Presentación:** ⬜ pendiente.
 
-Abre con `S0074` Taller · Spine y specs funcionales, que viene de la sesión 10 (2026-11-04), y sigue con `S0075` Migraciones con el CLI de Supabase (2026-11-10), en el proyecto del equipo.
-
-| Lo que pide el planeador | Dónde está en el visor |
-|---|---|
-| Conexión, capa de servicio, CRUD y estados asíncronos | Pasaron a la sesión 12 (ver abajo) |
-| *(no está en el planeador)* Migraciones | `S0075`: `init`, `login`, `link`, `migration new`, el modelo nombrado en `AGENTS.md`, el agente llena el esquema inicial, `db push --remote`, `Schema Visualizer`, y la migración `create_tracks` escrita a mano |
-| *Fuera de clase:* data ingest con datos inventados | No se asigna (las sesiones del bloque son de clase) |
-
-Notas:
-
-- **`S0075` va en el proyecto del equipo**; la tabla `tracks` es una segunda migración de ese mismo proyecto. Así la app de práctica de la sesión 12 no tiene carpeta `supabase/` y no hay dos repositorios empujando migraciones al mismo proyecto (eso rompe con `Remote migration versions not found`).
-- **CLI de Supabase 3.x:** `db push` apunta a la base local por defecto; al proyecto enlazado se llega con `--remote` (comprobado con `npx supabase db push --help`, 3.1.0, el 2026-11-10). La salida de `db push` de la figura `mgPush` no se comprobó contra un proyecto real.
-- **Tabla `tracks`:** `id uuid default gen_random_uuid()`, `name`, `artist_name`, `image_url` con `https://picsum.photos/400` por defecto. Sin RLS (`disable row level security` explícito) y `grant` a `anon` y `authenticated`.
+Solo trae `S0074` Taller · Spine y specs funcionales, que viene de la sesión 10 (2026-11-04). El contenido del planeador para esta sesión (SDK, capa de servicio, CRUD, estados asíncronos) quedó en la sesión 12.
 
 ### Sesión 12 · Base de datos, parte 2
 
@@ -279,6 +267,7 @@ El planeador pone la sesión 28 bajo *Servicio de autenticación* en el calendar
 | CRUD por PostgREST | `S0078`: listar, crear y borrar. Editar queda en *Si te sobra tiempo* |
 | Estados de la interfaz frente a una operación asíncrona | `S0076` (Future, await, error con catch). Cargando y error en `S0078` → *Si te sobra tiempo* |
 | *(no está en el planeador)* Primeros pasos con Supabase | `S0080` (pedido del profesor, 2026-11-10: los estudiantes nunca han entrado a Supabase): entrar con GitHub, crear el proyecto, la publishable key, el Project ID y la Project URL, con maquetas de la interfaz (`sbLogin`, `sbNuevo`, `sbLlaves`, `sbRef`) |
+| *(no está en el planeador)* Migraciones | `S0075`: `init`, `login`, `link`, `migration new`, el modelo nombrado en `AGENTS.md`, el agente llena el esquema inicial, `db push --remote`, `Schema Visualizer`, y la migración `create_tracks` escrita a mano |
 | *(no está en el planeador)* El JSON de una fila | `S0079` (pedido del profesor): `Map<String, dynamic>`, leer con `[]`, `as String`, `List<Map<String, dynamic>>` y cómo `fromMap` lo convierte en `Track` |
 
 Notas:
@@ -286,7 +275,10 @@ Notas:
 - **El repositorio de arranque no va de primero**: se usa después de `S0076` y `S0079`. Se creó como `262SeminarioSesion11` y se renombró a `262SeminarioSesion12` el 2026-11-10, al mover estas lecciones a la sesión 12 (GitHub redirige el nombre viejo).
 - **Interactivo `future`:** el `future-stream` de Móviles (`0063`) sin Stream. Sin opciones, App y Servidor con pestañas de tipo (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Con error*). Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear*, *Borrar*, con el código de los dos archivos y el `_tracks` del State.
 - `S0076` (servicio falso con `Future.delayed`) y `S0079` (lista de Maps en un `ListView`) llevan *Ejemplo completo*, pasados por el analizador de DartPad sin avisos. **Gists pendientes**: los bloques todavía no tienen `trycode`.
-- **`S0080` va antes del taller `S0078`** (pedido del profesor), aunque `S0075`, en la sesión 11, ya pide el Project ID: `S0075` enlaza a `S0080` para quien no tenga proyecto. Las maquetas son de la interfaz de Supabase de noviembre de 2026, sin capturas reales.
+- **Orden de la sesión:** `S0076` Future y `S0079` Map, que son de Dart; `S0077` el repositorio de arranque; `S0080` crear el proyecto de Supabase; `S0075` las migraciones, que necesitan el Project ID de `S0080`; y el taller `S0078`, que necesita la tabla `tracks` de `S0075`. `S0075` estuvo en la sesión 11 hasta el 2026-11-10 (pedido del profesor). Las maquetas de `S0080` son de la interfaz de Supabase de noviembre de 2026, sin capturas reales.
+- **`S0075` va en el proyecto del equipo**; la tabla `tracks` es una segunda migración de ese mismo proyecto. Así la app de práctica no tiene carpeta `supabase/` y no hay dos repositorios empujando migraciones al mismo proyecto (eso rompe con `Remote migration versions not found`).
+- **CLI de Supabase 3.x:** `db push` apunta a la base local por defecto; al proyecto enlazado se llega con `--remote` (comprobado con `npx supabase db push --help`, 3.1.0, el 2026-11-10). La salida de `db push` de la figura `mgPush` no se comprobó contra un proyecto real.
+- **Tabla `tracks`:** `id uuid default gen_random_uuid()`, `name`, `artist_name`, `image_url` con `https://picsum.photos/400` por defecto. Sin RLS (`disable row level security` explícito) y `grant` a `anon` y `authenticated`.
 - Las 13 figuras de `S0075` a `S0080` salen de `tools/sesion11_figuras.py`; `raClonar12`, de `tools/arranque_figuras.py`. `check.py` sin errores.
 
 ## Repositorios de arranque
@@ -376,7 +368,7 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS72.md` | `S0072` | La arquitectura: Flutter + Supabase | 10 |
 | `lessonS73.md` | `S0073` | Taller · Del contexto al PRD y los requisitos | 10 |
 | `lessonS74.md` | `S0074` | Taller · Spine y specs funcionales | 11 |
-| `lessonS75.md` | `S0075` | Migraciones con el CLI de Supabase | 11 |
+| `lessonS75.md` | `S0075` | Migraciones con el CLI de Supabase | 12 |
 | `lessonS76.md` | `S0076` | Future: pedir y esperar | 12 |
 | `lessonS79.md` | `S0079` | Map<String, dynamic>: la fila como JSON | 12 |
 | `lessonS77.md` | `S0077` | Repositorio de arranque | 12 |

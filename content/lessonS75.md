@@ -36,7 +36,7 @@ Tú creas el archivo vacío, el agente lo llena a partir del modelo de datos de 
 
 ## 1. Conectar con tu proyecto
 
-Necesitas el proyecto de Supabase de tu equipo, con su Project ID y la contraseña de la base de datos. Si todavía no lo tienen, sigue [Primeros pasos con Supabase](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0080).
+Necesitas el Project ID y la contraseña de la base de datos del proyecto de tu equipo, los de [Primeros pasos con Supabase](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0080).
 
 Necesitas también Node.js (`node --version`): todos los comandos empiezan por `npx supabase`, sin instalar nada más. La primera vez, `npx` pregunta si puede descargar el paquete: responde `y`.
 
