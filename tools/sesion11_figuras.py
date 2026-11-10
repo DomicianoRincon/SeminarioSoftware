@@ -362,7 +362,7 @@ def sbLlaves():
     o += button(x + w - 62, BY + 246, 62, 'Reveal', '#FFFFFF', INK, stroke=LINE)
     o += ring(x, BY + 246, w, 32, 2, FAM['rose'][2])
     o += side_cards([
-        (1, 'Publishable key', ['Va en env.json como', 'SUPABASE_PUBLISHABLE_KEY.', 'Es pública por diseño.'], 'amber'),
+        (1, 'Publishable key', ['Va en main.dart, en', 'Supabase.initialize.', 'Es pública por diseño.'], 'amber'),
         (2, 'Secret key', ['Salta todos los permisos.', 'Nunca en la app ni en', 'el repositorio.'], 'rose'),
     ])
     return o + end(fid, h, 'En tutoriales viejos aparece la anon key: la publishable key la reemplaza.')
@@ -394,7 +394,7 @@ def sbRef():
     o += ring(x + 16, BY + 292, w - 32, 32, 2)
     o += side_cards([
         (1, 'Project ID', ['Es el project ref de', 'npx supabase link', '--project-ref <ID>.'], 'amber'),
-        (2, 'Project URL', ['Va en env.json como', 'SUPABASE_URL. Lleva', 'el mismo ID adentro.'], 'amber'),
+        (2, 'Project URL', ['Va en main.dart, en', 'Supabase.initialize.', 'Lleva el mismo ID.'], 'amber'),
     ])
     return o + end(fid, h)
 
@@ -431,13 +431,11 @@ def acCarpetas():
 def tlPiezas():
     fid, h = 'tlPiezas', 410
     o = start(fid, h, 'Quién habla con quién', 'La pantalla pide, el servicio habla con Supabase, la tabla guarda.',
-              'Arriba, env.json con la URL y la publishable key entra a main.dart, que llama a Supabase.initialize. '
+              'Arriba, main.dart llama a Supabase.initialize con la URL y la publishable key escritas ahí mismo. '
               'Abajo, tres cajas en fila: HomeScreen con _tracks y setState, TrackService con getTracks, createTrack y '
               'deleteTrack, y la tabla tracks en Supabase. Las flechas de ida llevan la llamada y las de vuelta un '
               'Future.')
-    o += box(48, 116, 300, 72, 'slate', 'env.json', ['SUPABASE_URL y la publishable key.'], title_size=13.5, mono_title=True)
-    o += arrow(fid, 'M348,152 H404')
-    o += box(406, 116, 506, 72, 'slate', 'main.dart', ['Supabase.initialize(url, publishableKey) antes de runApp.'],
+    o += box(48, 116, 864, 72, 'slate', 'main.dart', ['Supabase.initialize con la Project URL y la publishable key, antes de runApp.'],
              title_size=13.5, mono_title=True)
     cols = [(48, 'HomeScreen', ['Dueña de _tracks.', 'Llama al servicio con', 'await y luego setState.'], 'indigo'),
             (364, 'TrackService', ['getTracks()', 'createTrack(track)', 'deleteTrack(id)'], 'teal'),
@@ -457,12 +455,12 @@ def tlPiezas():
 def tlConsola():
     return frame(dict(
         id='tlConsola',
-        title='El paquete y las llaves',
-        title_plain='El paquete y las llaves',
+        title='Instalar supabase_flutter',
+        title_plain='Instalar supabase_flutter',
         desc='En la carpeta 262SeminarioSesion11, flutter pub add supabase_flutter termina con Changed dependencies. '
-             'Después flutter run -d chrome con dart-define-from-file igual a env.json lanza la app en Chrome. Un '
-             'recuadro señala el paquete y otro el archivo de llaves.',
-        sub='El paquete se agrega una vez. Las llaves van en cada flutter run.',
+             'Después flutter run -d chrome lanza la app en Chrome. Un recuadro señala el paquete y otro el '
+             'resultado.',
+        sub='Se instala una sola vez, desde la carpeta del proyecto.',
         term_title='Terminal · C:\\develop\\262SeminarioSesion11',
         lines=[
             ('P', 'flutter pub add supabase_flutter', '262SeminarioSesion11'),
@@ -470,16 +468,16 @@ def tlConsola():
             ('O', '+ supabase_flutter 2.x.x'),
             ('K', 'Changed xx dependencies!'),
             ('B', ''),
-            ('P', 'flutter run -d chrome --dart-define-from-file=env.json', '262SeminarioSesion11'),
+            ('P', 'flutter run -d chrome', '262SeminarioSesion11'),
             ('D', 'Launching lib/main.dart on Chrome in debug mode...'),
         ],
         rings=[
             (0, 22 + len('flutter pub add '), len('supabase_flutter'), 1),
-            (5, 22 + len('flutter run -d chrome --dart-define-from-file='), len('env.json'), 2),
+            (3, 0, len('Changed xx dependencies!'), 2),
         ],
         cards=[
-            (1, 'supabase_flutter', ['El SDK. Queda en pubspec.yaml.'], False),
-            (2, 'env.json', ['Las llaves, fuera del código. Sin', 'él, la URL llega vacía.'], False),
+            (1, 'supabase_flutter', ['El SDK de Supabase para Flutter.'], False),
+            (2, 'Changed dependencies', ['Quedó en pubspec.yaml, en', 'dependencies.'], False),
         ],
     ))
 
