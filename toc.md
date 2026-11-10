@@ -84,6 +84,7 @@
 [t] Sesión 11 · Servicio de base de datos
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS74.md | Taller · Spine y specs funcionales | S0074
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS75.md | Migraciones con el CLI de Supabase | S0075
+[t] Sesión 12 · Base de datos, parte 2
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS76.md | Future: pedir y esperar | S0076
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS79.md | Map<String, dynamic>: la fila como JSON | S0079
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS77.md | Repositorio de arranque | S0077
