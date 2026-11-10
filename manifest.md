@@ -20,7 +20,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0062` Repositorio de arranque · `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | 🟡 | `S0064` Repositorio de arranque · `S0065` Taller · Playlist con secciones · `S0066` BottomNavigationBar: una pieza del Scaffold · `S0067` El índice en el estado · `S0068` IndexedStack: Pages que recuerdan |
 | 10 | 26 | 13 | 3 | Spec Driven Development | 🟡 | `S0069` ¿Qué es Spec Driven Development? · `S0070` Anatomía de una spec · `S0071` Métricas del conjunto de specs · `S0072` La arquitectura: Flutter + Supabase · `S0073` Taller · Del contexto al PRD y los requisitos |
-| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) |
+| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) · `S0075` Migraciones con el CLI de Supabase · `S0076` Future: pedir y esperar · `S0079` Map<String, dynamic>: la fila como JSON · `S0077` Repositorio de arranque · `S0078` Taller · Tracks en Supabase |
 | 12 | 28 | 14 | 3 y 4 | Servicio de autenticación | ⬜ | |
 | 13 | 29 | 15 | 3 y 4 | Servicio de storage | ⬜ | |
 | 14 | 30 | 15 | 3 y 4 | Funciones como servicio | ⬜ | |
@@ -250,7 +250,29 @@ Notas:
 
 ### Sesión 11 · Servicio de base de datos
 
-**Por ahora solo trae `S0074` Taller · Spine y specs funcionales**, que viene de la sesión 10: el profesor no da toda la clase y los estudiantes trabajan en el taller (2026-11-04). El contenido del planeador (SDK de Supabase, capa de servicio, CRUD por PostgREST, estados de carga y error) está pendiente.
+**Presentación:** ⬜ pendiente.
+
+Abre con `S0074` Taller · Spine y specs funcionales, que viene de la sesión 10 (2026-11-04). El resto se armó el 2026-11-10 (pedido del profesor) en dos mitades: migraciones en el proyecto del equipo y el CRUD en una app de práctica.
+
+| Lo que pide el planeador | Dónde está en el visor |
+|---|---|
+| Conexión con el SDK de Supabase: llaves y variables de entorno | `S0078` § 1: `supabase_flutter`, `env.json` con la URL y la publishable key, `--dart-define-from-file`, `String.fromEnvironment` y `.vscode/launch.json` |
+| La capa de servicio como frontera entre la interfaz y Postgres | `S0076` (interactivo `future service`: HomeScreen → TrackService → Supabase) y `S0078` § 2, `TrackService` en `lib/services/track_services.dart` |
+| CRUD por PostgREST | `S0078`: listar, crear y borrar. Editar queda en *Si te sobra tiempo* |
+| Estados de la interfaz frente a una operación asíncrona | `S0076` (Future, await, error con catch). Cargando y error en `S0078` → *Si te sobra tiempo* |
+| *(no está en el planeador)* El JSON de una fila | `S0079` (pedido del profesor): `Map<String, dynamic>`, leer con `[]`, `as String`, `List<Map<String, dynamic>>` y cómo `fromMap` lo convierte en `Track` |
+| *(no está en el planeador)* Migraciones | `S0075`: `init`, `login`, `link`, `migration new`, el modelo nombrado en `AGENTS.md`, el agente llena el esquema inicial, `db push --remote`, `Schema Visualizer`, y la migración `create_tracks` escrita a mano |
+| *Fuera de clase:* data ingest con datos inventados | No se asigna (las sesiones del bloque son de clase) |
+
+Notas:
+
+- **Orden:** `S0075` va en el proyecto del equipo; la tabla `tracks` es una segunda migración de ese mismo proyecto. Así la app de práctica no tiene carpeta `supabase/` y no hay dos repositorios empujando migraciones al mismo proyecto (eso rompe con `Remote migration versions not found`).
+- **El repositorio de arranque no va de primero** en esta sesión: se usa en la segunda mitad, después de las migraciones, `S0076` y `S0079`.
+- **CLI de Supabase 3.x:** `db push` apunta a la base local por defecto; al proyecto enlazado se llega con `--remote` (comprobado con `npx supabase db push --help`, 3.1.0, el 2026-11-10). La salida de `db push` de la figura `mgPush` no se comprobó contra un proyecto real.
+- **Tabla `tracks`:** `id uuid default gen_random_uuid()`, `name`, `artist_name`, `image_url` con `https://picsum.photos/400` por defecto. Sin RLS (`disable row level security` explícito) y `grant` a `anon` y `authenticated`.
+- **Interactivo `future`:** el `future-stream` de Móviles (`0063`) sin Stream. Sin opciones, App y Servidor con pestañas de tipo (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Sin await*, *Con error*). Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear*, *Borrar*, con el código de los dos archivos y el `_tracks` del State.
+- `S0076` (servicio falso con `Future.delayed`) y `S0079` (lista de Maps en un `ListView`) llevan *Ejemplo completo*, pasados por el analizador de DartPad sin avisos. **Gists pendientes**: los bloques todavía no tienen `trycode`.
+- Las 9 figuras salen de `tools/sesion11_figuras.py`; `raClonar11`, de `tools/arranque_figuras.py`. `check.py` sin errores.
 
 
 ## Repositorios de arranque
@@ -262,6 +284,7 @@ Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una l
 - **Sesión 6**: `flutter create --org icesi.edu.co playlist_app` limpio, con el contador que recorre `S0041`.
 - **Sesiones 7 y 8**: el *Ejemplo completo* de `S0044` y de `S0048`, separados en un archivo por clase con imports `package:playlist_app/`. Sin el taller de la sesión anterior. La sesión 8 trae además, sin registrar en `routes:`, `SongDetailScreen` hecha (sin el botón *Quitar*, que es mejora del taller) y `AddSongScreen` con un `Column` vacío, y `SongCard` con un `GestureDetector` cuyo `onTap` solo hace `debugPrint('Navegar a SongDetailScreen')`, sin parámetro en el constructor (pedido del profesor, 2026-10-28).
 - **Sesión 9**: el *Ejemplo completo* de `S0055`, separado en un archivo por clase con imports `package:playlist_app/` (commit `2bf9fee`). Un segundo commit, `e39c7ab` (pedido del profesor, 2026-10-30), adelanta todo lo que no es la barra: `PlaylistScreen` renombrada a `MainScreen`, las tres Pages en `lib/pages/` y el nombre del login en `arguments` (`LoginScreen` con `TextField`, título `Hola, <nombre>`). `MainScreen` muestra solo `PlaylistPage`. Sin *Quitar* desde el detalle. Armado el 2026-10-30 a partir de los archivos de plataforma del commit `498eb8a` de `262SeminarioSesion8`; el commit posterior «Semana 13» de ese repositorio es trabajo de clase y no se usó.
+- **Sesión 11**: no viene de la sesión anterior. `Domiciano/262SeminarioSesion11` (paquete `track_app`) es una app de tracks nueva: `HomeScreen` con la lista y el botón *Crear track* (no un FAB), `AddTrackScreen` con `TrackForm` (la URL de la imagen trae `https://picsum.photos/400`), `TrackDetailScreen` con *Eliminar* (devuelve `true` con `pop`), `Track` con `fromMap`/`toMap`/`copyWith`, `AGENTS.md` y `lib/services/track_services.dart` con la clase `TrackService` vacía. Funciona en memoria. Rama `solution` (local, sin publicar): `supabase_flutter`, `Supabase.initialize` con `String.fromEnvironment`, `env.example.json`, `.vscode/launch.json`, el servicio y `HomeScreen` llamándolo. Las dos ramas pasan `flutter analyze` y la solución compila para web; **no se probó contra un proyecto de Supabase real**.
 - Los ocho pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
 - `check.py` marca como error la URL de las figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
 
@@ -339,3 +362,8 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS72.md` | `S0072` | La arquitectura: Flutter + Supabase | 10 |
 | `lessonS73.md` | `S0073` | Taller · Del contexto al PRD y los requisitos | 10 |
 | `lessonS74.md` | `S0074` | Taller · Spine y specs funcionales | 11 |
+| `lessonS75.md` | `S0075` | Migraciones con el CLI de Supabase | 11 |
+| `lessonS76.md` | `S0076` | Future: pedir y esperar | 11 |
+| `lessonS79.md` | `S0079` | Map<String, dynamic>: la fila como JSON | 11 |
+| `lessonS77.md` | `S0077` | Repositorio de arranque | 11 |
+| `lessonS78.md` | `S0078` | Taller · Tracks en Supabase | 11 |

@@ -318,8 +318,8 @@ const flash = (node) => {
   node.classList.add('fs-flash');
 };
 
-const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false', 'async', 'await', 'is', 'as']);
-const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm', 'HomePage', 'ChatsPage', 'ProfilePage', 'IndexedStack', 'BottomNavigationBar']);
+const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false', 'async', 'await', 'is', 'as', 'try', 'catch']);
+const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm', 'HomePage', 'ChatsPage', 'ProfilePage', 'IndexedStack', 'BottomNavigationBar', 'Track', 'TrackService', 'Map']);
 const DART_TOKEN = /('[^']*')|(@\w+)|(\b\d+\b)|(\b[A-Za-z_]\w*\b)/g;
 
 const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -4206,6 +4206,516 @@ const mountTabState = (root, args = []) => {
   };
 };
 
+// ───────────────────────── future: pedir una vez y esperar la respuesta ─────────────────────────
+
+const FC_STYLE_ID = 'fsim-fc-style';
+const FC_CSS = `
+.fsim .fc-full{flex:1 1 100%;min-width:0;display:flex;flex-direction:column;gap:12px}
+.fsim .fc-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.fsim .fc-bar .fs-controls{justify-content:flex-start}
+.fsim .fc-summary{font-size:13.5px;min-height:40px;color:var(--fs-ink)}
+.fsim .fc-tl{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--fs-line);border-radius:12px}
+.fsim .fc-tl text{font-family:Roboto,Arial,sans-serif}
+.fsim .fc-tl .fc-mono{font-family:'JetBrains Mono',Menlo,Consolas,monospace}
+.fsim .fc-clock{font:600 13px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-ink);min-width:72px;text-align:right}
+.fsim .fc-hint{font-size:12.5px;color:var(--fs-muted)}
+.fsim .fc-seg-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.fsim .fc-codes{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;min-width:0}
+.fsim .fc-codes > .fs-dark{flex:1 1 380px;min-width:0}
+.fsim .fc-codes > .fs-panel{flex:1 1 100%;min-width:0}
+`;
+
+const ensureFcStyle = () => {
+  if (typeof document === 'undefined' || document.getElementById(FC_STYLE_ID)) return;
+  document.head.appendChild(el('style', { id: FC_STYLE_ID, text: FC_CSS }));
+};
+
+const segmented = (options, onPick) => {
+  const buttons = options.map(([key, label]) => el('button', { type: 'button', 'data-key': key, text: label, onclick: () => onPick(key) }));
+  const node = el('div', { class: 'fs-seg', role: 'group' }, ...buttons);
+  const select = (key) => buttons.forEach((b) => b.classList.toggle('fs-sel', b.dataset.key === key));
+  return { node, select };
+};
+
+const FC_TRIP = 500;
+const FC_ERROR = 'Exception: sin red';
+const fcSeconds = (ms) => `${(ms / 1000).toFixed(1).replace('.', ',')} s`;
+
+const FC_TYPES = Object.freeze({
+  int: { tab: 'int', type: 'int', name: 'fetchCount', chip: '42', log: '42' },
+  string: { tab: 'String', type: 'String', name: 'fetchGreeting', chip: "'Hola'", log: 'Hola' },
+  object: {
+    tab: 'Track', type: 'Track', name: 'fetchTrack', chip: 'Track(Yellow)', log: 'Track(Yellow)',
+  },
+  list: {
+    tab: 'List<Track>', type: 'List<Track>', name: 'fetchTracks', chip: '[Track, Track]',
+    log: '[Track(Yellow), Track(Clocks)]',
+  },
+});
+
+export const FC_TYPE_KEYS = Object.freeze(Object.keys(FC_TYPES));
+export const FC_ANSWER_KEYS = Object.freeze(['await', 'noawait', 'error']);
+export const FC_OPS = Object.freeze(['list', 'create', 'delete']);
+
+const FC_LANES_BASIC = [
+  { key: 'app', label: 'App', sub: 'Flutter', fill: '#E8EBFF', ink: '#4453C9' },
+  { key: 'server', label: 'Servidor', sub: 'Supabase', fill: '#F4EBFF', ink: '#7439B8' },
+];
+const FC_LANES_SERVICE = [
+  { key: 'screen', label: 'HomeScreen', sub: 'pantalla', fill: '#E8EBFF', ink: '#4453C9' },
+  { key: 'service', label: 'TrackService', sub: 'servicio', fill: '#E3F6F3', ink: '#0F8478' },
+  { key: 'db', label: 'Supabase', sub: 'tabla tracks', fill: '#F4EBFF', ink: '#7439B8' },
+];
+
+const fcBasicCode = (answer, spec) => {
+  if (answer === 'noawait') {
+    return `final value = api.${spec.name}();
+print('llegó $value');`;
+  }
+  if (answer === 'error') {
+    return `try {
+  final ${spec.type} value = await api.${spec.name}();
+  print('llegó $value');
+} catch (e) {
+  print('falló $e');
+}`;
+  }
+  return `final Future<${spec.type}> future = api.${spec.name}();
+final ${spec.type} value = await future;
+print('llegó $value');`;
+};
+
+export const fcBasicScenario = (answer = 'await', typeKey = 'int') => {
+  const spec = FC_TYPES[typeKey];
+  const reply = 2100;
+  const done = reply + FC_TRIP;
+  const base = {
+    kind: 'basic', answer, typeKey, spec, lanes: FC_LANES_BASIC, total: 3200, duration: done + 500,
+    hint: `Future<${spec.type}> · la respuesta llega una sola vez.`,
+    code: { app: fcBasicCode(answer, spec) },
+  };
+  const call = { from: 'app', to: 'server', t0: 0, t1: FC_TRIP, chip: `${spec.name}()`, tone: 'call' };
+  const work = { lane: 'server', t0: FC_TRIP, t1: reply, tone: 'work', label: 'consulta los datos' };
+  if (answer === 'noawait') {
+    return {
+      ...base,
+      hops: [call, { from: 'server', to: 'app', t0: reply, t1: done, chip: spec.chip, tone: 'lost' }],
+      spans: [work, { lane: 'app', t0: 0, t1: done + 500, tone: 'active', label: 'no espera a nadie' }],
+      steps: [
+        { t: 0, panel: 'app', line: 0, say: `Sin await, value guarda el Future<${spec.type}>, la promesa, no el ${spec.type}.` },
+        { t: 250, panel: 'app', line: 1, log: `llegó Instance of 'Future<${spec.type}>'`, logKind: 'err', say: 'La línea del print corre de una, sin esperar: imprime la promesa vacía.' },
+        { t: reply, panel: 'app', line: 1, say: 'El servidor ya tiene la respuesta y la manda.' },
+        { t: done, panel: 'app', line: -1, say: 'La respuesta llegó, pero nadie la estaba esperando: el print ya había pasado. Por eso hace falta el await.' },
+      ],
+    };
+  }
+  if (answer === 'error') {
+    return {
+      ...base,
+      hops: [call, { from: 'server', to: 'app', t0: reply, t1: done, chip: '✕ error', tone: 'error' }],
+      spans: [
+        { ...work, label: 'algo falla' },
+        { lane: 'app', t0: 0, t1: FC_TRIP, tone: 'active' },
+        { lane: 'app', t0: FC_TRIP, t1: done, tone: 'await', label: 'await · en pausa' },
+        { lane: 'app', t0: done, t1: done + 500, tone: 'fail', label: 'catch' },
+      ],
+      steps: [
+        { t: 0, panel: 'app', line: 1, say: 'Dentro del try, la app lanza la petición.' },
+        { t: FC_TRIP, panel: 'app', line: 1, say: 'await: la función queda en pausa hasta que llegue la respuesta.' },
+        { t: reply, panel: 'app', line: 1, say: 'El servidor no pudo responder: el Future se completa con un error, no con un valor.' },
+        { t: done, panel: 'app', line: 4, log: `falló ${FC_ERROR}`, logKind: 'err', say: 'await lanza el error como una excepción y lo atrapa el catch. La línea de «llegó» nunca corre.' },
+      ],
+    };
+  }
+  return {
+    ...base,
+    hops: [call, { from: 'server', to: 'app', t0: reply, t1: done, chip: spec.chip, tone: 'value' }],
+    spans: [
+      work,
+      { lane: 'app', t0: 0, t1: FC_TRIP, tone: 'active' },
+      { lane: 'app', t0: FC_TRIP, t1: done, tone: 'await', label: 'await · en pausa' },
+      { lane: 'app', t0: done, t1: done + 500, tone: 'active', label: 'completado' },
+    ],
+    steps: [
+      { t: 0, panel: 'app', line: 0, say: `La app lanza el Future<${spec.type}>: la petición sale hacia el servidor. El Future todavía está vacío.` },
+      { t: FC_TRIP, panel: 'app', line: 1, say: 'await: la función queda en pausa hasta que llegue la respuesta. La línea de abajo todavía no corre.' },
+      { t: reply, panel: 'app', line: 1, say: `El servidor terminó y responde una sola vez, con un ${spec.type}.` },
+      { t: done, panel: 'app', line: 2, log: `llegó ${spec.log}`, say: 'Llegó el valor: el await se resuelve y sigue la línea de abajo. El Future ya terminó y no entregará nada más.' },
+    ],
+  };
+};
+
+const FC_SERVICE = Object.freeze({
+  list: {
+    tab: 'Listar',
+    screen: `@override
+void initState() {
+  super.initState();
+  _loadTracks();
+}
+
+Future<void> _loadTracks() async {
+  final tracks = await _trackService.getTracks();
+  setState(() {
+    _tracks = tracks;
+  });
+}`,
+    service: `Future<List<Track>> getTracks() async {
+  final rows = await _client.from('tracks').select();
+  return rows.map(Track.fromMap).toList();
+}`,
+    lines: { call: 7, setState: 8, sCall: 1, sReturn: 2 },
+    chips: ['getTracks()', "from('tracks').select()", '[{…}, {…}]', '[Track, Track]'],
+    work: 'lee las filas',
+    before: '[] · 0 tracks',
+    after: '[Track, Track] · 2 tracks',
+    say: [
+      'initState llama a _loadTracks, que le pide los tracks al servicio. La pantalla nunca habla con Supabase.',
+      'TrackService arma la consulta y la manda a la tabla tracks.',
+      'La tabla responde con una lista de filas: cada fila es un Map con las columnas.',
+      'fromMap convierte cada Map en un Track. El servicio devuelve List<Track>.',
+      'El await de la pantalla se resuelve y setState guarda la lista: la pantalla se redibuja con los dos tracks.',
+    ],
+  },
+  create: {
+    tab: 'Crear',
+    screen: `Future<void> _addTrack(Track draft) async {
+  final track = await _trackService.createTrack(draft);
+  setState(() {
+    _tracks = [..._tracks, track];
+  });
+}`,
+    service: `Future<Track> createTrack(Track track) async {
+  final row = await _client
+      .from('tracks')
+      .insert(track.toMap())
+      .select()
+      .single();
+  return Track.fromMap(row);
+}`,
+    lines: { call: 1, setState: 2, sCall: 1, sReturn: 6 },
+    chips: ['createTrack(draft)', 'insert({name, …})', "{id: 'a1f…', …}", "Track(id: 'a1f…')"],
+    work: 'guarda la fila',
+    before: '[Track, Track] · 2 tracks',
+    after: '[Track, Track, Track] · 3 tracks',
+    say: [
+      'El formulario devolvió un borrador con id vacío. _addTrack se lo pasa al servicio.',
+      'TrackService manda la fila con toMap: name, artist_name e image_url. El id no va.',
+      'La base de datos genera el id y, por el select().single(), devuelve la fila completa.',
+      'fromMap la convierte en un Track, ya con su id de verdad.',
+      'setState agrega el track que devolvió la base de datos, no el borrador.',
+    ],
+  },
+  delete: {
+    tab: 'Borrar',
+    screen: `Future<void> _deleteTrack(Track track) async {
+  await _trackService.deleteTrack(track.id);
+  setState(() {
+    _tracks = _tracks.where((t) => t.id != track.id).toList();
+  });
+}`,
+    service: `Future<void> deleteTrack(String id) async {
+  await _client.from('tracks').delete().eq('id', id);
+}`,
+    lines: { call: 1, setState: 2, sCall: 1, sReturn: 1 },
+    chips: ["deleteTrack('a1f…')", "delete().eq('id', …)", 'listo', 'void'],
+    work: 'borra la fila',
+    before: '[Track, Track, Track] · 3 tracks',
+    after: '[Track, Track] · 2 tracks',
+    say: [
+      'El detalle respondió que hay que eliminar. _deleteTrack le pasa el id al servicio.',
+      'TrackService manda el delete con el filtro eq: solo la fila con ese id.',
+      'La tabla borra la fila y avisa que terminó. No hay valor que devolver.',
+      'Future<void>: el servicio termina sin devolver nada. Solo importa que ya terminó.',
+      'Cuando el await se resuelve, setState quita el track de la lista.',
+    ],
+  },
+});
+
+export const fcServiceScenario = (op = 'list') => {
+  const spec = FC_SERVICE[op];
+  const [c1, c2, c3, c4] = spec.chips;
+  const t = { a: 0, b: 450, c: 900, d: 2200, e: 2650, f: 3050, g: 3500, h: 3900 };
+  const mapping = op !== 'delete';
+  return {
+    kind: 'service', op, spec, lanes: FC_LANES_SERVICE, total: 4400, duration: t.h + 400,
+    hint: `${spec.tab}: la pantalla espera al servicio y el servicio espera a Supabase.`,
+    code: { screen: spec.screen, service: spec.service },
+    hops: [
+      { from: 'screen', to: 'service', t0: t.a, t1: t.b, chip: c1, tone: 'call' },
+      { from: 'service', to: 'db', t0: t.b, t1: t.c, chip: c2, tone: 'call' },
+      { from: 'db', to: 'service', t0: t.d, t1: t.e, chip: c3, tone: 'value' },
+      { from: 'service', to: 'screen', t0: t.f, t1: t.g, chip: c4, tone: 'value' },
+    ],
+    spans: [
+      { lane: 'screen', t0: t.b, t1: t.g, tone: 'await', label: 'await · en pausa' },
+      { lane: 'service', t0: t.c, t1: t.e, tone: 'await', label: 'await' },
+      { lane: 'db', t0: t.c, t1: t.d, tone: 'work', label: spec.work },
+      ...(mapping ? [{ lane: 'service', t0: t.e, t1: t.f, tone: 'map', label: 'fromMap' }] : []),
+      { lane: 'screen', t0: t.g, t1: t.h, tone: 'active', label: 'setState' },
+    ],
+    steps: [
+      { t: t.a, panel: 'screen', line: spec.lines.call, say: spec.say[0], state: spec.before },
+      { t: t.b, panel: 'service', line: spec.lines.sCall, say: spec.say[1] },
+      { t: t.d, panel: 'service', line: spec.lines.sCall, say: spec.say[2] },
+      { t: t.e, panel: 'service', line: spec.lines.sReturn, say: spec.say[3] },
+      { t: t.g, panel: 'screen', line: spec.lines.setState, say: spec.say[4], state: spec.after },
+    ],
+  };
+};
+
+export const fcAt = (scenario, time) => {
+  const passed = scenario.steps.filter((step) => step.t <= time);
+  const current = passed[passed.length - 1];
+  const withState = passed.filter((step) => step.state);
+  return {
+    panel: current ? current.panel : null,
+    line: current ? current.line : -1,
+    say: current ? current.say : '',
+    logs: passed.filter((step) => step.log).map((step) => ({ text: step.log, kind: step.logKind })),
+    state: withState.length ? withState[withState.length - 1].state : null,
+    finished: time >= scenario.duration,
+  };
+};
+
+const FC_TONE = { call: '#556074', value: '#A96C05', error: '#C2354F', lost: '#9AA1B5' };
+const FC_W = 760;
+const FC_X0 = 132;
+const FC_X1 = FC_W - 22;
+const FC_GAP = 104;
+const fcChipWidth = (text) => Math.round(text.length * 6.7 + 16);
+
+const mountFuture = (root, args = []) => {
+  ensureFcStyle();
+  const container = card(root);
+  const service = args.includes('service');
+  let answer = 'await';
+  let typeKey = 'int';
+  let op = 'list';
+  const build = () => (service ? fcServiceScenario(op) : fcBasicScenario(answer, typeKey));
+  let scenario = build();
+  let t = 0;
+  let playing = false;
+  let frameId = null;
+  let lastStamp = null;
+  let shown = null;
+  let printed = 0;
+  let parts = [];
+
+  const lanesY = {};
+  scenario.lanes.forEach((lane, i) => { lanesY[lane.key] = 92 + i * FC_GAP; });
+  const height = 92 + (scenario.lanes.length - 1) * FC_GAP + 56;
+  const fcX = (ms) => FC_X0 + (ms * (FC_X1 - FC_X0)) / scenario.total;
+
+  const svg = svgEl('svg', {
+    class: 'fc-tl', viewBox: `0 0 ${FC_W} ${height}`, role: 'img',
+    'aria-label': 'Línea de tiempo: cada carril es una parte de la app y el tiempo corre hacia la derecha.',
+  });
+  const summary = el('div', { class: 'fc-summary', 'data-testid': 'fc-summary', 'aria-live': 'polite' });
+  const clock = el('span', { class: 'fc-clock', 'data-testid': 'fc-clock' });
+  const hint = el('div', { class: 'fc-hint' });
+  const panels = service
+    ? { screen: codePanel('home_screen.dart'), service: codePanel('track_services.dart') }
+    : { app: codePanel('main.dart') };
+  const out = service ? statePanel('State de HomeScreen') : consolePanel('Consola');
+  const playButton = el('button', { class: 'fs-btn fs-solid', type: 'button', onclick: () => toggle() });
+  const resetButton = el('button', { class: 'fs-btn', type: 'button', text: 'Reiniciar', onclick: () => load() });
+  const ops = service ? segmented(FC_OPS.map((key) => [key, FC_SERVICE[key].tab]), (key) => { op = key; load(); }) : null;
+  const types = service ? null : segmented(FC_TYPE_KEYS.map((key) => [key, FC_TYPES[key].tab]), (key) => { typeKey = key; load(); });
+  const answers = service ? null : segmented([['await', 'Con await'], ['noawait', 'Sin await'], ['error', 'Con error']], (key) => { answer = key; load(); });
+
+  const text = (x, y, value, attrs = {}) => {
+    const node = svgEl('text', { x, y, 'font-size': 12, fill: '#556074', ...attrs });
+    node.textContent = value;
+    return node;
+  };
+
+  const drawStatic = () => {
+    svg.replaceChildren();
+    for (let ms = 0; ms <= scenario.total; ms += 500) {
+      const x = fcX(ms);
+      const whole = ms % 1000 === 0;
+      svg.append(svgEl('line', { x1: x, x2: x, y1: 40, y2: height - 14, stroke: whole ? '#EEF0F4' : '#F6F7FA', 'stroke-width': 1 }));
+      if (whole) svg.append(text(x, 28, `${ms / 1000} s`, { 'text-anchor': 'middle', 'font-size': 11, fill: '#9AA1B5', class: 'fc-mono' }));
+    }
+    scenario.lanes.forEach((lane) => {
+      const y = lanesY[lane.key];
+      svg.append(
+        svgEl('line', { x1: FC_X0, x2: FC_X1, y1: y, y2: y, stroke: '#C4CBD8', 'stroke-width': 1.5, 'stroke-dasharray': '4 5' }),
+        svgEl('rect', { x: 8, y: y - 24, width: 112, height: 48, rx: 10, fill: lane.fill, stroke: lane.ink, 'stroke-width': 1.5 }),
+        text(64, y - 6, lane.label, { 'text-anchor': 'middle', dy: '0.35em', 'font-size': 13.5, 'font-weight': 700, fill: lane.ink }),
+        text(64, y + 11, lane.sub, { 'text-anchor': 'middle', dy: '0.35em', 'font-size': 11.5, fill: lane.ink })
+      );
+    });
+    parts = [];
+    const laneInk = Object.fromEntries(scenario.lanes.map((lane) => [lane.key, lane.ink]));
+    const first = scenario.lanes[0].key;
+    scenario.spans.forEach((span) => {
+      const y = lanesY[span.lane];
+      const tone = span.tone;
+      const wide = tone === 'await';
+      const fill = { await: '#FFF3DC', work: '#C9A6EE', map: '#86D3CA', fail: '#F3A3B2' }[tone] || laneInk[span.lane];
+      const node = svgEl('rect', {
+        y: y - (wide ? 8 : 6), height: wide ? 16 : 12, rx: 4, fill,
+        stroke: wide ? '#F0C572' : 'none', 'stroke-width': 1.5, 'stroke-dasharray': wide ? '4 3' : '',
+      });
+      const color = { await: '#A96C05', fail: '#C2354F', map: '#0F8478' }[tone] || laneInk[span.lane];
+      const label = span.label
+        ? text(fcX(span.t0), span.lane === first ? y - 16 : y + 24, span.label, { 'font-size': 11.5, 'font-weight': 600, fill: color })
+        : null;
+      svg.append(node);
+      if (label) svg.append(label);
+      parts.push({ kind: 'span', span, node, label });
+    });
+    scenario.hops.forEach((hop) => {
+      const color = FC_TONE[hop.tone];
+      const line = svgEl('line', { stroke: color, 'stroke-width': 2.2, 'stroke-dasharray': hop.tone === 'lost' ? '5 4' : '' });
+      const head = svgEl('polygon', { fill: color });
+      const w = fcChipWidth(hop.chip);
+      const chip = svgEl('g', { 'data-chip': hop.chip });
+      chip.append(
+        svgEl('rect', { x: -w / 2, y: -11, width: w, height: 22, rx: 11, fill: '#fff', stroke: color, 'stroke-width': 1.5 }),
+        text(0, 0, hop.chip, { 'text-anchor': 'middle', dy: '0.35em', 'font-size': 11.5, 'font-weight': 600, fill: color, class: 'fc-mono' })
+      );
+      svg.append(line, head, chip);
+      parts.push({ kind: 'hop', hop, line, head, chip });
+    });
+    const now = svgEl('line', { y1: 38, y2: height - 12, stroke: '#F2A93B', 'stroke-width': 1.5 });
+    const nowLabel = text(0, height - 2, 'ahora', { 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 700, fill: '#C97F10' });
+    svg.append(now, nowLabel);
+    parts.push({ kind: 'now', now, nowLabel });
+  };
+
+  const paint = () => {
+    parts.forEach((part) => {
+      if (part.kind === 'now') {
+        const x = fcX(Math.min(t, scenario.total));
+        part.now.setAttribute('x1', x);
+        part.now.setAttribute('x2', x);
+        part.nowLabel.setAttribute('x', Math.min(x, FC_X1 - 14));
+        return;
+      }
+      if (part.kind === 'span') {
+        const { span } = part;
+        const visible = t > span.t0;
+        part.node.setAttribute('x', fcX(span.t0));
+        part.node.setAttribute('width', Math.max(0, fcX(Math.min(t, span.t1)) - fcX(span.t0)));
+        part.node.style.display = visible ? '' : 'none';
+        if (part.label) part.label.style.display = visible ? '' : 'none';
+        return;
+      }
+      const { hop } = part;
+      const p = Math.max(0, Math.min(1, (t - hop.t0) / (hop.t1 - hop.t0)));
+      const down = lanesY[hop.to] > lanesY[hop.from];
+      const sx = fcX(hop.t0);
+      const ex = fcX(hop.t1);
+      const sy = lanesY[hop.from] + (down ? 8 : -8);
+      const ey = lanesY[hop.to] + (down ? -10 : 10);
+      const hx = sx + (ex - sx) * p;
+      const hy = sy + (ey - sy) * p;
+      const visible = t > hop.t0;
+      [part.line, part.head, part.chip].forEach((node) => { node.style.display = visible ? '' : 'none'; });
+      part.line.setAttribute('x1', sx);
+      part.line.setAttribute('y1', sy);
+      part.line.setAttribute('x2', hx);
+      part.line.setAttribute('y2', hy);
+      const angle = Math.atan2(ey - sy, ex - sx);
+      const tip = (dx, dy) => `${hx + dx * Math.cos(angle) - dy * Math.sin(angle)},${hy + dx * Math.sin(angle) + dy * Math.cos(angle)}`;
+      part.head.setAttribute('points', `${tip(2, 0)} ${tip(-9, -5)} ${tip(-9, 5)}`);
+      const half = fcChipWidth(hop.chip) / 2;
+      const cx = p < 1 ? hx : (sx + ex) / 2;
+      const cy = p < 1 ? hy : (sy + ey) / 2;
+      const clampX = Math.max(FC_X0 + half, Math.min(FC_X1 - half, cx));
+      part.chip.setAttribute('transform', `translate(${clampX},${cy})`);
+    });
+    const view = fcAt(scenario, t);
+    const mark = `${view.panel}:${view.line}`;
+    if (mark !== shown) {
+      shown = mark;
+      Object.entries(panels).forEach(([key, panel]) => panel.mark(key === view.panel ? view.line : -1));
+    }
+    const say = view.say || 'Pulsa Reproducir y mira quién espera a quién.';
+    if (summary.textContent !== say) summary.textContent = say;
+    if (service) {
+      out.set([['_tracks', view.state || scenario.spec.before]]);
+    } else {
+      while (printed < view.logs.length) {
+        out.print(view.logs[printed].text, view.logs[printed].kind);
+        printed += 1;
+      }
+    }
+    const time = `t = ${fcSeconds(Math.min(t, scenario.duration))}`;
+    if (clock.textContent !== time) clock.textContent = time;
+    const label = playing ? 'Pausar' : view.finished ? 'Repetir' : t > 0 ? 'Continuar' : 'Reproducir';
+    if (playButton.textContent !== label) playButton.textContent = label;
+  };
+
+  const stop = () => {
+    playing = false;
+    if (frameId !== null) cancelRaf(frameId);
+    frameId = null;
+    lastStamp = null;
+  };
+
+  const tick = (stamp) => {
+    const now = typeof stamp === 'number' ? stamp : Date.now();
+    const dt = lastStamp === null ? 0 : Math.min(Math.max(now - lastStamp, 0), 100);
+    lastStamp = now;
+    t = Math.min(scenario.duration, t + dt);
+    if (t >= scenario.duration) stop();
+    paint();
+    if (playing) frameId = raf(tick);
+  };
+
+  const toggle = () => {
+    if (playing) {
+      stop();
+      paint();
+      return;
+    }
+    if (t >= scenario.duration) {
+      t = 0;
+      printed = 0;
+      if (!service) out.clear();
+    }
+    playing = true;
+    paint();
+    frameId = raf(tick);
+  };
+
+  const load = () => {
+    stop();
+    scenario = build();
+    t = 0;
+    printed = 0;
+    if (!service) out.clear();
+    if (ops) ops.select(op);
+    if (types) types.select(typeKey);
+    if (answers) answers.select(answer);
+    hint.textContent = scenario.hint;
+    Object.entries(panels).forEach(([key, panel]) => panel.setCode(scenario.code[key]));
+    shown = null;
+    drawStatic();
+    paint();
+  };
+
+  const selectors = service ? [ops.node] : [types.node, answers.node];
+  container.append(
+    el('div', { class: 'fc-full' },
+      el('div', { class: 'fc-seg-wrap' }, ...selectors),
+      hint,
+      el('div', { class: 'fc-bar' }, el('div', { class: 'fs-controls' }, playButton, resetButton), clock),
+      svg,
+      summary,
+      el('div', { class: 'fc-codes' }, ...Object.values(panels).map((panel) => panel.box), out.box))
+  );
+  load();
+  return () => {
+    stop();
+    root.replaceChildren();
+  };
+};
+
 export const SIMS = Object.freeze({
   'state-counter': mountCounter,
   'hot-reload': (root, args = []) => mountCounter(root, ['reload', ...args]),
@@ -4218,6 +4728,7 @@ export const SIMS = Object.freeze({
   'nav-stack': mountNavStack,
   'nav-result': mountNavResult,
   'tab-state': mountTabState,
+  future: mountFuture,
 });
 
 export const parseSpec = (spec) => {

@@ -2,7 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act, within } from '@testing-library/react';
 import { ThemeProvider } from '@/theme/ThemeContext';
 import InteractiveBlock from './InteractiveBlock';
-import { SIMS, parseSpec } from './flutterStateSims';
+import {
+  SIMS, parseSpec, fcBasicScenario, fcServiceScenario, fcAt, FC_TYPE_KEYS, FC_OPS,
+} from './flutterStateSims';
 
 const renderBlock = (spec) => render(<ThemeProvider><InteractiveBlock spec={spec} /></ThemeProvider>);
 
@@ -638,5 +640,87 @@ describe('nav-result', () => {
     fireEvent.click(screen.getByLabelText('Abrir Yellow'));
     step(4);
     expect(screen.getByTestId('nav-phone').textContent).toContain("type 'Null' is not a subtype of type 'Song'");
+  });
+});
+
+describe('future', () => {
+  it('sends one request and gets exactly one reply, typed for every tab', () => {
+    FC_TYPE_KEYS.forEach((key) => {
+      const sc = fcBasicScenario('await', key);
+      expect(sc.hops.filter((h) => h.from === 'app')).toHaveLength(1);
+      expect(sc.hops.filter((h) => h.from === 'server')).toHaveLength(1);
+      expect(sc.code.app).toContain(`Future<${sc.spec.type}>`);
+      expect(sc.code.app).not.toMatch(/Stream|listen/);
+      const end = fcAt(sc, sc.duration);
+      expect(end.logs).toHaveLength(1);
+      expect(end.finished).toBe(true);
+      expect(sc.duration).toBeLessThanOrEqual(sc.total);
+    });
+  });
+
+  it('runs nothing below the await until the reply arrives', () => {
+    const sc = fcBasicScenario('await', 'string');
+    const mid = fcAt(sc, 1500);
+    expect(mid.line).toBe(1);
+    expect(mid.logs).toHaveLength(0);
+    expect(fcAt(sc, sc.duration).logs[0].text).toBe('llegó Hola');
+  });
+
+  it('prints the empty Future without await, and goes to catch on an error', () => {
+    const lost = fcBasicScenario('noawait', 'list');
+    expect(fcAt(lost, 400).logs[0].text).toBe("llegó Instance of 'Future<List<Track>>'");
+    expect(lost.hops[1].tone).toBe('lost');
+    const failed = fcBasicScenario('error', 'int');
+    expect(failed.code.app).toContain('catch (e)');
+    const logs = fcAt(failed, failed.duration).logs.map((l) => l.text);
+    expect(logs).toEqual(['falló Exception: sin red']);
+  });
+
+  it('chains screen, service and Supabase, and only the screen calls setState', () => {
+    FC_OPS.forEach((op) => {
+      const sc = fcServiceScenario(op);
+      expect(sc.hops.map((h) => `${h.from}>${h.to}`)).toEqual(['screen>service', 'service>db', 'db>service', 'service>screen']);
+      expect(sc.code.service).not.toContain('setState');
+      expect(sc.code.screen).toContain('await _trackService.');
+      expect(sc.code.screen).toContain('setState');
+      expect(sc.code.screen).not.toContain('_client');
+      const before = fcAt(sc, sc.hops[3].t1 - 1).state;
+      const after = fcAt(sc, sc.duration).state;
+      expect(before).not.toBe(after);
+    });
+  });
+
+  it('plays the timeline and switches between answers', () => {
+    const { container } = renderBlock('future');
+    const log = () => container.querySelector('.fs-log').textContent;
+    fireEvent.click(screen.getByRole('button', { name: 'Reproducir' }));
+    act(() => vi.advanceTimersByTime(1500));
+    expect(log()).toBe('');
+    expect(screen.getByTestId('fc-summary').textContent).toMatch(/await/);
+    act(() => vi.advanceTimersByTime(2000));
+    expect(log()).toContain('llegó 42');
+    expect(screen.getByRole('button', { name: 'Repetir' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Sin await' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Track' }));
+    expect(log()).toBe('');
+    fireEvent.click(screen.getByRole('button', { name: 'Reproducir' }));
+    act(() => vi.advanceTimersByTime(600));
+    expect(log()).toContain("Instance of 'Future<Track>'");
+  });
+
+  it('shows the list in the screen state only after the service answers (service)', () => {
+    const { container } = renderBlock('future service');
+    const state = () => container.querySelector('.fs-panel').textContent;
+    expect(state()).toContain('0 tracks');
+    fireEvent.click(screen.getByRole('button', { name: 'Reproducir' }));
+    act(() => vi.advanceTimersByTime(2500));
+    expect(state()).toContain('0 tracks');
+    act(() => vi.advanceTimersByTime(2500));
+    expect(state()).toContain('2 tracks');
+    fireEvent.click(screen.getByRole('button', { name: 'Crear' }));
+    expect(container.textContent).toContain('createTrack(Track track)');
+    fireEvent.click(screen.getByRole('button', { name: 'Reproducir' }));
+    act(() => vi.advanceTimersByTime(5000));
+    expect(state()).toContain('3 tracks');
   });
 });

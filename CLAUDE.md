@@ -219,7 +219,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion10_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion11_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -288,6 +288,12 @@ playlist cards
   arranque y el borrador sobrevive. Paneles de los hijos del `body`, del State de la Screen (`_currentIndex`) y del de
   `ChatsPage` (texto y contadores). Usa `navRunner` y `navControls`; el panel de hijos cambia en `build`, `dispose` o
   `initState` y el teléfono solo en el último paso, *Se ve*.
+  `future` (`S0076`, dos veces): el `future-stream` de Móviles sin la parte de Stream, una línea de tiempo horizontal
+  con un carril por actor y los paquetes viajando entre carriles. Sin opciones, App y Servidor con pestañas de tipo
+  (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Sin await*, *Con error*), código y consola.
+  Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear* y *Borrar*, con el
+  código de `home_screen.dart` y `track_services.dart` y el `_tracks` del State. Trae su propio CSS (`fc-*`) y el
+  helper `segmented`.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - `skill-files` (`S0063`, sección *IA*) vive en su propio archivo, `skillSims.js`, portado de Computación 2 (`0047`). Pestañas por
   skill, árbol de archivos y botón *Copiar*. Las skills se editan en `tools/skills/<nombre>/` y se pasan al simulador con
