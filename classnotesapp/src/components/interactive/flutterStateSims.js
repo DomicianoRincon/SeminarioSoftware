@@ -4254,7 +4254,7 @@ const FC_TYPES = Object.freeze({
 });
 
 export const FC_TYPE_KEYS = Object.freeze(Object.keys(FC_TYPES));
-export const FC_ANSWER_KEYS = Object.freeze(['await', 'noawait', 'error']);
+export const FC_ANSWER_KEYS = Object.freeze(['await', 'error']);
 export const FC_OPS = Object.freeze(['list', 'create', 'delete']);
 
 const FC_LANES_BASIC = [
@@ -4268,10 +4268,6 @@ const FC_LANES_SERVICE = [
 ];
 
 const fcBasicCode = (answer, spec) => {
-  if (answer === 'noawait') {
-    return `final value = api.${spec.name}();
-print('llegó $value');`;
-  }
   if (answer === 'error') {
     return `try {
   final ${spec.type} value = await api.${spec.name}();
@@ -4296,19 +4292,6 @@ export const fcBasicScenario = (answer = 'await', typeKey = 'int') => {
   };
   const call = { from: 'app', to: 'server', t0: 0, t1: FC_TRIP, chip: `${spec.name}()`, tone: 'call' };
   const work = { lane: 'server', t0: FC_TRIP, t1: reply, tone: 'work', label: 'consulta los datos' };
-  if (answer === 'noawait') {
-    return {
-      ...base,
-      hops: [call, { from: 'server', to: 'app', t0: reply, t1: done, chip: spec.chip, tone: 'lost' }],
-      spans: [work, { lane: 'app', t0: 0, t1: done + 500, tone: 'active', label: 'no espera a nadie' }],
-      steps: [
-        { t: 0, panel: 'app', line: 0, say: `Sin await, value guarda el Future<${spec.type}>, la promesa, no el ${spec.type}.` },
-        { t: 250, panel: 'app', line: 1, log: `llegó Instance of 'Future<${spec.type}>'`, logKind: 'err', say: 'La línea del print corre de una, sin esperar: imprime la promesa vacía.' },
-        { t: reply, panel: 'app', line: 1, say: 'El servidor ya tiene la respuesta y la manda.' },
-        { t: done, panel: 'app', line: -1, say: 'La respuesta llegó, pero nadie la estaba esperando: el print ya había pasado. Por eso hace falta el await.' },
-      ],
-    };
-  }
   if (answer === 'error') {
     return {
       ...base,
@@ -4478,7 +4461,7 @@ export const fcAt = (scenario, time) => {
   };
 };
 
-const FC_TONE = { call: '#556074', value: '#A96C05', error: '#C2354F', lost: '#9AA1B5' };
+const FC_TONE = { call: '#556074', value: '#A96C05', error: '#C2354F' };
 const FC_W = 760;
 const FC_X0 = 132;
 const FC_X1 = FC_W - 22;
@@ -4522,7 +4505,7 @@ const mountFuture = (root, args = []) => {
   const resetButton = el('button', { class: 'fs-btn', type: 'button', text: 'Reiniciar', onclick: () => load() });
   const ops = service ? segmented(FC_OPS.map((key) => [key, FC_SERVICE[key].tab]), (key) => { op = key; load(); }) : null;
   const types = service ? null : segmented(FC_TYPE_KEYS.map((key) => [key, FC_TYPES[key].tab]), (key) => { typeKey = key; load(); });
-  const answers = service ? null : segmented([['await', 'Con await'], ['noawait', 'Sin await'], ['error', 'Con error']], (key) => { answer = key; load(); });
+  const answers = service ? null : segmented([['await', 'Con await'], ['error', 'Con error']], (key) => { answer = key; load(); });
 
   const text = (x, y, value, attrs = {}) => {
     const node = svgEl('text', { x, y, 'font-size': 12, fill: '#556074', ...attrs });
@@ -4569,7 +4552,7 @@ const mountFuture = (root, args = []) => {
     });
     scenario.hops.forEach((hop) => {
       const color = FC_TONE[hop.tone];
-      const line = svgEl('line', { stroke: color, 'stroke-width': 2.2, 'stroke-dasharray': hop.tone === 'lost' ? '5 4' : '' });
+      const line = svgEl('line', { stroke: color, 'stroke-width': 2.2, 'stroke-dasharray': '' });
       const head = svgEl('polygon', { fill: color });
       const w = fcChipWidth(hop.chip);
       const chip = svgEl('g', { 'data-chip': hop.chip });

@@ -290,7 +290,7 @@ playlist cards
   `initState` y el teléfono solo en el último paso, *Se ve*.
   `future` (`S0076`, dos veces): el `future-stream` de Móviles sin la parte de Stream, una línea de tiempo horizontal
   con un carril por actor y los paquetes viajando entre carriles. Sin opciones, App y Servidor con pestañas de tipo
-  (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Sin await*, *Con error*), código y consola.
+  (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Con error*), código y consola.
   Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear* y *Borrar*, con el
   código de `home_screen.dart` y `track_services.dart` y el `_tracks` del State. Trae su propio CSS (`fc-*`) y el
   helper `segmented`.

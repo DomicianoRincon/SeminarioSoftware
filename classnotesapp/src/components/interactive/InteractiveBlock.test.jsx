@@ -666,10 +666,7 @@ describe('future', () => {
     expect(fcAt(sc, sc.duration).logs[0].text).toBe('llegó Hola');
   });
 
-  it('prints the empty Future without await, and goes to catch on an error', () => {
-    const lost = fcBasicScenario('noawait', 'list');
-    expect(fcAt(lost, 400).logs[0].text).toBe("llegó Instance of 'Future<List<Track>>'");
-    expect(lost.hops[1].tone).toBe('lost');
+  it('goes to catch on an error', () => {
     const failed = fcBasicScenario('error', 'int');
     expect(failed.code.app).toContain('catch (e)');
     const logs = fcAt(failed, failed.duration).logs.map((l) => l.text);
@@ -700,12 +697,13 @@ describe('future', () => {
     act(() => vi.advanceTimersByTime(2000));
     expect(log()).toContain('llegó 42');
     expect(screen.getByRole('button', { name: 'Repetir' })).toBeTruthy();
-    fireEvent.click(screen.getByRole('button', { name: 'Sin await' }));
+    expect(screen.queryByRole('button', { name: 'Sin await' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Con error' }));
     fireEvent.click(screen.getByRole('button', { name: 'Track' }));
     expect(log()).toBe('');
     fireEvent.click(screen.getByRole('button', { name: 'Reproducir' }));
-    act(() => vi.advanceTimersByTime(600));
-    expect(log()).toContain("Instance of 'Future<Track>'");
+    act(() => vi.advanceTimersByTime(3500));
+    expect(log()).toContain('falló Exception: sin red');
   });
 
   it('shows the list in the screen state only after the service answers (service)', () => {

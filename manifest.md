@@ -283,7 +283,7 @@ El planeador pone la sesión 28 bajo *Servicio de autenticación* en el calendar
 Notas:
 
 - **El repositorio de arranque no va de primero**: se usa después de `S0076` y `S0079`. Se llama `262SeminarioSesion11` porque se creó antes de mover estas lecciones a la sesión 12.
-- **Interactivo `future`:** el `future-stream` de Móviles (`0063`) sin Stream. Sin opciones, App y Servidor con pestañas de tipo (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Sin await*, *Con error*). Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear*, *Borrar*, con el código de los dos archivos y el `_tracks` del State.
+- **Interactivo `future`:** el `future-stream` de Móviles (`0063`) sin Stream. Sin opciones, App y Servidor con pestañas de tipo (`int`, `String`, `Track`, `List<Track>`) y de respuesta (*Con await*, *Con error*). Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear*, *Borrar*, con el código de los dos archivos y el `_tracks` del State.
 - `S0076` (servicio falso con `Future.delayed`) y `S0079` (lista de Maps en un `ListView`) llevan *Ejemplo completo*, pasados por el analizador de DartPad sin avisos. **Gists pendientes**: los bloques todavía no tienen `trycode`.
 - Las 9 figuras de `S0075` a `S0079` salen de `tools/sesion11_figuras.py`; `raClonar11`, de `tools/arranque_figuras.py`. `check.py` sin errores.
 

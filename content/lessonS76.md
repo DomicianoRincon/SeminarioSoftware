@@ -1,6 +1,6 @@
 # Future: pedir y esperar
 
-<!-- tags: Future, await, async, Future<void>, Instance of 'Future<List<Track>>', try catch, The await expression can only be used in an async function, A value of type 'Future' can't be assigned, capa de servicio, Future.delayed -->
+<!-- tags: Future, await, async, Future<void>, try catch, The await expression can only be used in an async function, A value of type 'Future' can't be assigned, capa de servicio, Future.delayed -->
 
 Cuando la app le pide algo a Supabase, la respuesta tarda: viaja por internet, la base de datos busca y vuelve. Dart no se queda congelado esperando. La llamada devuelve de inmediato un **`Future`**: la promesa de un valor que todavía no llega.
 
@@ -13,7 +13,6 @@ future
 Pulsa *Reproducir* y cambia las pestañas:
 
 - **Con await**: la función queda en pausa en el `await` y sigue cuando llega el valor. La respuesta llega **una sola vez**.
-- **Sin await**: la línea de abajo corre de una y el `print` muestra `Instance of 'Future<int>'`, la promesa vacía. Cuando el valor llega, ya nadie lo estaba esperando.
 - **Con error**: el `Future` se completa con un error y el `await` lo lanza como excepción. Lo atrapa el `catch`.
 
 El tipo va entre `<>`: `Future<int>` promete un número, `Future<List<Track>>` una lista de tracks.
