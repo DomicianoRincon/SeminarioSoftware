@@ -16,7 +16,7 @@ from console_frame import frame  # noqa: E402
 from sesion10_figuras import FAM, INK, BODY, MUTED, FAINT, LINE, txt, start, end, box, arrow, pill, tree  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-LESSONS = ['lessonS75.md', 'lessonS76.md', 'lessonS79.md', 'lessonS77.md', 'lessonS78.md']
+LESSONS = ['lessonS75.md', 'lessonS76.md', 'lessonS79.md', 'lessonS77.md', 'lessonS80.md', 'lessonS78.md']
 STAMP = '20261111140000'
 
 FIGS = {}
@@ -216,6 +216,186 @@ def mpFila():
     o += box(48, 364, 864, 40, 'slate', None, [])
     o += txt(64, 389, 'La llave es el nombre de la columna, tal cual: artist_name, no artistName. Una llave que no existe da null.',
              12.5, 400, BODY, fit=830)
+    return o + end(fid, h)
+
+
+# ───────────────────────────── S0080 · Primeros pasos con Supabase
+
+SB_GREEN, SB_DARK = '#3ECF8E', '#1C1C1C'
+BX, BY, BW, BH = 48, 112, 600, 384
+
+
+def browser(url, h=BH):
+    """Ventana de navegador con barra de dirección, a la izquierda de la figura."""
+    return (f'<rect x="{BX}" y="{BY}" width="{BW}" height="{h}" rx="12" fill="#FFFFFF" stroke="{LINE}" stroke-width="1.5"/>'
+            f'<path d="M{BX},{BY + 12} A12,12 0 0 1 {BX + 12},{BY} H{BX + BW - 12} A12,12 0 0 1 {BX + BW},{BY + 12} V{BY + 36} H{BX} Z" fill="#EFF1F5"/>'
+            f'<circle cx="{BX + 18}" cy="{BY + 18}" r="5" fill="#F14C4C"/><circle cx="{BX + 34}" cy="{BY + 18}" r="5" fill="#E5C07B"/>'
+            f'<circle cx="{BX + 50}" cy="{BY + 18}" r="5" fill="#6BCB77"/>'
+            f'<rect x="{BX + 70}" y="{BY + 8}" width="{BW - 86}" height="20" rx="10" fill="#FFFFFF" stroke="{LINE}"/>'
+            + txt(BX + 84, BY + 22, url, 11.5, 400, MUTED, mono=True, fit=BW - 110))
+
+
+def ring(x, y, w, h, n, color='#F2A93B'):
+    return (f'<rect x="{x - 4}" y="{y - 4}" width="{w + 8}" height="{h + 8}" rx="8" fill="none" stroke="{color}" stroke-width="2.5"/>'
+            f'<circle cx="{x + w + 4}" cy="{y - 4}" r="10" fill="{color}"/>'
+            + txt(x + w + 4, y, str(n), 12, 700, '#FFFFFF', 'middle'))
+
+
+def side_cards(cards, y0=BY, gap=12):
+    """Tarjetas numeradas a la derecha: (n, título, líneas, color)."""
+    o = ''
+    x, w = 680, 232
+    y = y0
+    for n, title, lines, color in cards:
+        h = 44 + 18 * len(lines)
+        stroke = '#F2A93B' if color == 'amber' else FAM[color][1]
+        o += f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="#FFFFFF" stroke="{stroke}" stroke-width="1.5"/>'
+        badge = '#F2A93B' if color == 'amber' else FAM[color][2]
+        o += f'<circle cx="{x + 24}" cy="{y + 22}" r="10" fill="{badge}"/>' + txt(x + 24, y + 26, str(n), 12, 700, '#FFFFFF', 'middle')
+        o += txt(x + 42, y + 27, title, 13.5, 700, INK, fit=w - 50)
+        for i, ln in enumerate(lines):
+            o += txt(x + 16, y + 50 + i * 18, ln, 12.5, 400, BODY, fit=w - 24)
+        y += h + gap
+    return o
+
+
+def field(x, y, w, label, value, mono=False, h=32):
+    return (txt(x, y, label, 12, 600, MUTED, fit=w)
+            + f'<rect x="{x}" y="{y + 8}" width="{w}" height="{h}" rx="6" fill="#FFFFFF" stroke="{LINE}" stroke-width="1.2"/>'
+            + txt(x + 12, y + 8 + h / 2 + 4.5, value, 12.5, 400, INK, mono=mono, fit=w - 20))
+
+
+def button(x, y, w, label, fill, fg='#FFFFFF', h=32, stroke=None):
+    st = stroke or fill
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{fill}" stroke="{st}" stroke-width="1.2"/>'
+            + txt(x + w / 2, y + h / 2 + 4.5, label, 12.5, 600, fg, 'middle', fit=w - 8))
+
+
+def settings_nav(active):
+    o = f'<rect x="{BX + 1}" y="{BY + 36}" width="150" height="{BH - 37}" fill="#F7F8FA"/>'
+    o += f'<line x1="{BX + 151}" y1="{BY + 36}" x2="{BX + 151}" y2="{BY + BH}" stroke="{LINE}"/>'
+    o += txt(BX + 16, BY + 64, 'PROJECT SETTINGS', 11, 700, FAINT, fit=130)
+    for i, item in enumerate(('General', 'Compute and Disk', 'Data API', 'API Keys', 'JWT Keys')):
+        y = BY + 92 + i * 30
+        if item == active:
+            o += f'<rect x="{BX + 8}" y="{y - 16}" width="136" height="24" rx="6" fill="#E8F6E3"/>'
+        o += txt(BX + 18, y, item, 12.5, 700 if item == active else 400, INK if item == active else BODY, fit=124)
+    return o
+
+
+@fig
+def sbLogin():
+    fid, h = 'sbLogin', 540
+    o = start(fid, h, 'Entrar a Supabase', 'supabase.com › Start your project. Una sola cuenta para todos tus proyectos.',
+              'Maqueta de la página de inicio de sesión de Supabase: Welcome back, el botón Continue with GitHub '
+              'señalado con el número 1, Continue with SSO, los campos de correo y contraseña y el botón Sign In. A la '
+              'derecha, una tarjeta que dice que se entra con la cuenta de GitHub y una nota sobre Sign up.')
+    o += browser('supabase.com/dashboard/sign-in')
+    cx = BX + BW / 2
+    o += txt(cx - 140, BY + 84, 'Welcome back', 20, 700, INK, fit=280)
+    o += txt(cx - 140, BY + 106, 'Sign in to your account', 13, 400, FAINT, fit=280)
+    o += button(cx - 140, BY + 126, 280, 'Continue with GitHub', SB_DARK)
+    o += ring(cx - 140, BY + 126, 280, 32, 1)
+    o += button(cx - 140, BY + 168, 280, 'Continue with SSO', '#FFFFFF', INK, stroke=LINE)
+    o += f'<line x1="{cx - 140}" y1="{BY + 222}" x2="{cx + 140}" y2="{BY + 222}" stroke="{LINE}"/>'
+    o += f'<rect x="{cx - 14}" y="{BY + 212}" width="28" height="20" fill="#FFFFFF"/>' + txt(cx, BY + 226, 'or', 12, 400, FAINT, 'middle')
+    o += field(cx - 140, BY + 252, 280, 'Email', 'tu@correo.com')
+    o += field(cx - 140, BY + 306, 280, 'Password', '••••••••')
+    o += button(cx - 140, BY + 348, 280, 'Sign In', SB_GREEN, SB_DARK, h=28)
+    o += side_cards([
+        (1, 'Continue with GitHub', ['Entra con la misma cuenta', 'de GitHub de tus', 'repositorios. No hay que', 'inventar otra contraseña.'], 'amber'),
+        ('i', 'Primera vez', ['Si no tienes cuenta,', 'Start your project en', 'supabase.com la crea con', 'el mismo botón de GitHub.'], 'indigo'),
+    ])
+    return o + end(fid, h, 'El plan gratuito alcanza para el curso: dos proyectos activos por cuenta.')
+
+
+@fig
+def sbNuevo():
+    fid, h = 'sbNuevo', 540
+    o = start(fid, h, 'Crear el proyecto', 'Dashboard › New project. Un proyecto es una base de datos con su Auth y su Storage.',
+              'Maqueta del formulario Create a new project: Organization, Project name con el número 1, Database '
+              'password con Generate a password y el número 2, Region con el número 3 y el botón verde Create new '
+              'project con el número 4. A la derecha, una tarjeta por número.')
+    o += browser('supabase.com/dashboard/new/mi-organizacion')
+    x, w = BX + 32, 536
+    o += txt(x, BY + 74, 'Create a new project', 18, 700, INK, fit=320)
+    o += field(x, BY + 100, w, 'Organization', 'mi-organizacion')
+    o += field(x, BY + 156, w, 'Project name', 'mi-app')
+    o += ring(x, BY + 164, w, 32, 1)
+    o += field(x, BY + 222, w - 170, 'Database password', '••••••••••••••')
+    o += txt(x + w - 150, BY + 251, 'Generate a password', 12.5, 600, '#3A8235', fit=150)
+    o += ring(x, BY + 230, w, 32, 2)
+    o += field(x, BY + 288, w, 'Region', 'East US (North Virginia)')
+    o += ring(x, BY + 296, w, 32, 3)
+    o += button(x + w - 170, BY + 344, 170, 'Create new project', SB_GREEN, SB_DARK, h=28)
+    o += ring(x + w - 170, BY + 344, 170, 28, 4)
+    o += side_cards([
+        (1, 'Project name', ['El nombre de tu app.'], 'amber'),
+        (2, 'Database password', ['Genérala y guárdala:', 'link y db push la piden.'], 'amber'),
+        (3, 'Region', ['La más cercana. Para', 'Colombia, East US.'], 'amber'),
+        (4, 'Create new project', ['Tarda un par de minutos', 'en quedar listo.'], 'amber'),
+    ], gap=10)
+    return o + end(fid, h, 'Un proyecto por equipo: todos se conectan al mismo. Quien lo crea invita a los demás en Organization › Team.')
+
+
+@fig
+def sbLlaves():
+    fid, h = 'sbLlaves', 540
+    o = start(fid, h, 'La publishable key', 'Project Settings › API Keys. La que va en la app empieza por sb_publishable_.',
+              'Maqueta de Project Settings con API Keys seleccionado. Arriba, Publishable key con el valor '
+              'sb_publishable_ y un botón Copy, señalados con el número 1. Abajo, Secret keys con el valor oculto, '
+              'señalado en rojo con el número 2. A la derecha, una tarjeta para cada una.')
+    o += browser('supabase.com/dashboard/project/abcdefghijklmnopqrst/settings/api-keys')
+    o += settings_nav('API Keys')
+    x, w = BX + 176, 400
+    o += txt(x, BY + 70, 'API Keys', 18, 700, INK, fit=200)
+    o += txt(x, BY + 104, 'Publishable key', 13.5, 700, INK, fit=200)
+    o += txt(x, BY + 124, 'Safe to use in a browser.', 12, 400, FAINT, fit=w)
+    o += f'<rect x="{x}" y="{BY + 136}" width="{w - 70}" height="32" rx="6" fill="#F7F8FA" stroke="{LINE}"/>'
+    o += txt(x + 12, BY + 156.5, 'sb_publishable_Xy7k2…', 12.5, 400, INK, mono=True, fit=w - 90)
+    o += button(x + w - 62, BY + 136, 62, 'Copy', '#FFFFFF', INK, stroke=LINE)
+    o += ring(x, BY + 136, w, 32, 1)
+    o += txt(x, BY + 214, 'Secret keys', 13.5, 700, INK, fit=200)
+    o += txt(x, BY + 234, 'Full access to your project. Keep it private.', 12, 400, FAINT, fit=w)
+    o += f'<rect x="{x}" y="{BY + 246}" width="{w - 70}" height="32" rx="6" fill="#F7F8FA" stroke="{LINE}"/>'
+    o += txt(x + 12, BY + 266.5, 'sb_secret_••••••••••••', 12.5, 400, INK, mono=True, fit=w - 90)
+    o += button(x + w - 62, BY + 246, 62, 'Reveal', '#FFFFFF', INK, stroke=LINE)
+    o += ring(x, BY + 246, w, 32, 2, FAM['rose'][2])
+    o += side_cards([
+        (1, 'Publishable key', ['Va en env.json como', 'SUPABASE_PUBLISHABLE_KEY.', 'Es pública por diseño.'], 'amber'),
+        (2, 'Secret key', ['Salta todos los permisos.', 'Nunca en la app ni en', 'el repositorio.'], 'rose'),
+    ])
+    return o + end(fid, h, 'En tutoriales viejos aparece la anon key: la publishable key la reemplaza.')
+
+
+@fig
+def sbRef():
+    fid, h = 'sbRef', 540
+    o = start(fid, h, 'El Project ID y la Project URL', 'Project Settings › General. Las mismas veinte letras están en los dos.',
+              'Maqueta de Project Settings con General seleccionado: Project name mi-app y Project ID '
+              'abcdefghijklmnopqrst con un botón Copy, señalado con el número 1. Debajo, la Project URL, que contiene '
+              'el mismo identificador, señalada con el número 2. A la derecha, una tarjeta para cada uno.')
+    o += browser('supabase.com/dashboard/project/abcdefghijklmnopqrst/settings/general')
+    o += settings_nav('General')
+    x, w = BX + 176, 400
+    o += txt(x, BY + 70, 'General settings', 18, 700, INK, fit=240)
+    o += field(x, BY + 100, w, 'Project name', 'mi-app')
+    o += txt(x, BY + 168, 'Project ID', 12, 600, MUTED, fit=w)
+    o += f'<rect x="{x}" y="{BY + 176}" width="{w - 70}" height="32" rx="6" fill="#F7F8FA" stroke="{LINE}"/>'
+    o += txt(x + 12, BY + 196.5, 'abcdefghijklmnopqrst', 12.5, 700, INK, mono=True, fit=w - 90)
+    o += button(x + w - 62, BY + 176, 62, 'Copy', '#FFFFFF', INK, stroke=LINE)
+    o += ring(x, BY + 176, w, 32, 1)
+    o += f'<rect x="{x}" y="{BY + 236}" width="{w}" height="112" rx="10" fill="#F7F8FA" stroke="{LINE}"/>'
+    o += txt(x + 16, BY + 262, 'Project URL', 13, 700, INK, fit=200)
+    o += txt(x + 16, BY + 280, 'En Data API o en el botón Connect.', 12, 400, FAINT, fit=w - 30)
+    o += f'<rect x="{x + 16}" y="{BY + 292}" width="{w - 32}" height="32" rx="6" fill="#FFFFFF" stroke="{LINE}"/>'
+    o += (txt(x + 28, BY + 312.5, 'abcdefghijklmnopqrst', 12.5, 700, '#A96C05', mono=True, fit=160)
+          + txt(x + 178, BY + 312.5, '.supabase.co', 12.5, 400, MUTED, mono=True, fit=100))
+    o += ring(x + 16, BY + 292, w - 32, 32, 2)
+    o += side_cards([
+        (1, 'Project ID', ['Es el project ref de', 'npx supabase link', '--project-ref <ID>.'], 'amber'),
+        (2, 'Project URL', ['Va en env.json como', 'SUPABASE_URL. Lleva', 'el mismo ID adentro.'], 'amber'),
+    ])
     return o + end(fid, h)
 
 

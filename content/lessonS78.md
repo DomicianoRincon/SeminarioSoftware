@@ -32,7 +32,7 @@ La app del [repositorio de arranque](https://domicianorincon.github.io/Seminario
 
 ## 1. El paquete y las llaves
 
-En `Project Settings > API Keys` de tu proyecto copia la `Project URL` y la **publishable key** (`sb_publishable_...`). Crea en la raíz del repositorio el archivo `env.json`:
+Copia la `Project URL` y la **publishable key** (`sb_publishable_...`) de tu proyecto, como en [Primeros pasos con Supabase](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0080). Crea en la raíz del repositorio el archivo `env.json`:
 
 ```json
 {
