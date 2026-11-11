@@ -167,7 +167,15 @@ Pistas: lee qué devuelve cada bloque y compáralo con el tipo de cada método. 
 
 ## 4. Invocar el servicio
 
-La app ya crea, muestra y elimina tracks, pero en memoria. Ahora debe hacerlo con `TrackService`:
+La app ya muestra y elimina tracks, pero en memoria. Crear todavía no hace nada: el track del formulario llega a la pantalla y no se agrega a la lista. Este es el bloque que lo agrega:
+
+```dart
+setState(() {
+  _tracks = [..._tracks, track];
+});
+```
+
+Ahora la app debe trabajar con `TrackService`:
 
 - Al abrir la app, la lista sale de la tabla `tracks`.
 - Al crear un track, se guarda en la tabla y la lista muestra el que devolvió el servicio, con su `id` real.

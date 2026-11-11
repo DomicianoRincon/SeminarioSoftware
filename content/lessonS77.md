@@ -119,7 +119,7 @@ flutter run -d chrome
 
 ## Lo que falta
 
-La app ya crea, muestra y elimina tracks, pero **solo en memoria**: recarga la página y la lista vuelve a quedar vacía. El `id` que ves en el detalle es inventado con la hora.
+La app ya muestra y elimina tracks, pero **solo en memoria**: recarga la página y la lista vuelve a quedar vacía. *Crear track* abre el formulario, pero el track todavía no se agrega a la lista: eso lo haces en el taller. El `id` lo pone Supabase al guardar la fila; mientras tanto viene vacío.
 
 `lib/services/track_services.dart` trae `TrackService` con los tres métodos del CRUD (`getTracks`, `createTrack` y `deleteTrack`), pero vacíos. En el taller los completas y los invocas desde la app para que los tracks se guarden en la tabla `tracks` de Supabase.
 
