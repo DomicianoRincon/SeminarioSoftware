@@ -407,7 +407,7 @@ def acCarpetas():
     o = start(fid, h, 'Lo que trae el repositorio', 'La app ya funciona en memoria. Lo que falta está en services/.',
               'Árbol de lib: main.dart con las tres rutas, models con track.dart, components con track_card, '
               'track_list y track_form, screens con home_screen, add_track_screen y track_detail_screen, y services '
-              'con track_services.dart vacío, señalado como lo que se llena en el taller.')
+              'con track_services.dart, con los métodos vacíos que se completan en el taller.')
     rows = [(0, 'lib/', 'dir', None),
             (1, 'main.dart', 'file', ("rutas '/', '/add-track' y '/track'", 'slate')),
             (1, 'models/', 'dir', None),
@@ -419,7 +419,7 @@ def acCarpetas():
             (2, 'home_screen.dart', 'file', ('dueña de _tracks', 'amber')),
             (2, 'add_track_screen.dart · track_detail_screen.dart', 'file', None),
             (1, 'services/', 'dir', None),
-            (2, 'track_services.dart', 'file', ('vacío: lo llenas tú', 'rose'))]
+            (2, 'track_services.dart', 'file', ('métodos vacíos: los completas', 'rose'))]
     o += f'<rect x="48" y="112" width="864" height="{len(rows) * 26 + 24}" rx="12" fill="#FFFFFF" stroke="{LINE}" stroke-width="1.5"/>'
     o += tree(rows, step=26, tag_x=620)
     return o + end(fid, h)

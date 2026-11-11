@@ -117,53 +117,63 @@ Future<void> main() async {
 
 Corre la app con `flutter run -d chrome`: debe abrir igual que antes.
 
-## 3. Llenar TrackService
+## 3. Completar TrackService
 
-`TrackService` necesita tres métodos, y los tres devuelven un `Future`:
+Abre `lib/services/track_services.dart`. Ya trae los tres métodos del CRUD, pero vacíos: no hablan con Supabase.
 
-- `Future<List<Track>> getTracks()`: todas las filas con `select()`, convertidas con `Track.fromMap`.
-- `Future<Track> createTrack(Track track)`: `insert(track.toMap())` seguido de `.select().single()`, para que vuelva la fila con su `id`.
-- `Future<void> deleteTrack(String id)`: `delete()` con el filtro `.eq('id', id)`.
+```dart
+class TrackService {
+  Future<List<Track>> getTracks() async {
+    return [];
+  }
 
-Pídeselo al agente:
+  Future<Track> createTrack(Track track) async {
+    return track;
+  }
 
-```text
-Llena lib/services/track_services.dart: TrackService con
-getTracks, createTrack y deleteTrack sobre la tabla tracks
-de Supabase, usando Supabase.instance.client.
-Sin paginación ni filtros. Sigue AGENTS.md.
+  Future<void> deleteTrack(String id) async {}
+}
 ```
 
-Revisa lo que escribió: un solo `from('tracks')` por método, `fromMap` y `toMap` del modelo, y nada de `setState` ni de widgets en el servicio.
+Estos son los bloques que faltan, **en desorden**. Cópialos y decide dónde va cada uno: arriba del archivo, dentro de la clase o dentro de cuál método. Lo que un método tenía antes se reemplaza.
+
+```dart
+await _client.from('tracks').delete().eq('id', id);
+```
+
+```dart
+final SupabaseClient _client = Supabase.instance.client;
+```
+
+```dart
+final rows = await _client.from('tracks').select();
+return rows.map(Track.fromMap).toList();
+```
+
+```dart
+import 'package:supabase_flutter/supabase_flutter.dart';
+```
+
+```dart
+final row = await _client
+    .from('tracks')
+    .insert(track.toMap())
+    .select()
+    .single();
+return Track.fromMap(row);
+```
+
+Pistas: lee qué devuelve cada bloque y compáralo con el tipo de cada método. Y mira qué variables usa: `id` y `track` solo existen dentro del método que las recibe.
 
 ## 4. Invocar el servicio
 
-`HomeScreen` sigue siendo la dueña de `_tracks`. Lo que cambia es de dónde sale el dato: ahora la pantalla llama al servicio, espera con `await` y pone el resultado en el estado. Así queda la carga de la lista:
+La app ya crea, muestra y elimina tracks, pero en memoria. Ahora debe hacerlo con `TrackService`:
 
-```dart
-final TrackService _trackService = TrackService();
-List<Track> _tracks = [];
+- Al abrir la app, la lista sale de la tabla `tracks`.
+- Al crear un track, se guarda en la tabla y la lista muestra el que devolvió el servicio, con su `id` real.
+- Al eliminar un track, se borra de la tabla y desaparece de la lista.
 
-@override
-void initState() {
-  super.initState();
-  _loadTracks();
-}
-
-Future<void> _loadTracks() async {
-  final tracks = await _trackService.getTracks();
-  setState(() {
-    _tracks = tracks;
-  });
-}
-```
-
-Haz lo mismo con los otros dos:
-
-- **`_addTrack(draft)`**: llama a `createTrack(draft)` y agrega a `_tracks` el track que **devuelve** el servicio, no el borrador. Ya no hace falta inventar el `id` con la hora.
-- **`_deleteTrack(track)`**: llama a `deleteTrack(track.id)` y, cuando termine, quita el track de `_tracks`.
-
-Los dos pasan a ser `Future<void> ... async`, y quien los llama, `_openAddTrack` y `_openTrack`, los espera con `await`.
+No te decimos dónde va cada llamada: lee el código de `lib/screens/` y encuentra dónde la app maneja hoy la lista, dónde agrega y dónde quita. Recuerda lo de [Future: pedir y esperar](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0076): los métodos devuelven un `Future`, así que se esperan con `await`, y el resultado va al estado con `setState`.
 
 ## 5. Comprobar
 
@@ -176,8 +186,8 @@ Los dos pasan a ser `Future<void> ... async`, y quien los llama, `_openAddTrack`
 
 - [ ] `supabase_flutter` instalado
 - [ ] `Supabase.initialize` en `main.dart` con la URL y la publishable key
-- [ ] `TrackService` con `getTracks`, `createTrack` y `deleteTrack`
-- [ ] La lista se carga desde Supabase en `initState`
+- [ ] Cada bloque en su lugar dentro de `TrackService`
+- [ ] Al abrir la app, la lista sale de Supabase
 - [ ] Crear guarda la fila y la muestra con su `id` real
 - [ ] Eliminar borra la fila de la tabla
 
