@@ -26,3 +26,7 @@ dist/
 # desde la vista /admin y vive en Firestore (rosters/), donde solo la lee el
 # profesor. Ver classnotesapp/firestore/README.md.
 students/
+
+# Entregas de los estudiantes y su dictamen (results/): llevan nombres y notas, y el
+# repo es público. La versión pública del dictamen es content/lessonS82.md.
+results/

@@ -83,6 +83,7 @@
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS73.md | Taller · Del contexto al PRD y los requisitos | S0073
 [t] Sesión 11 · Servicio de base de datos
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS74.md | Taller · Spine y specs funcionales | S0074
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS82.md | Dictamen del taller · Spine y specs | S0082
 [t] Sesión 12 · Base de datos, parte 2
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS76.md | Future: pedir y esperar | S0076
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS79.md | Map<String, dynamic>: la fila como JSON | S0079

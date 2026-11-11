@@ -20,7 +20,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 8 | 24 | 12 | 4 | Navegación entre pantallas | 🟡 | `S0062` Repositorio de arranque · `S0050` Taller · Playlist navegable · `S0051` La pila de pantallas · `S0052` Rutas nombradas: pushNamed y pop · `S0053` pushNamedAndRemoveUntil: rehacer la pila · `S0054` Pasar datos a la pantalla nueva · `S0055` Devolver un resultado al cerrar |
 | 9 | 25 | 13 | 4 | Navegación con bottom navigation bar | 🟡 | `S0064` Repositorio de arranque · `S0065` Taller · Playlist con secciones · `S0066` BottomNavigationBar: una pieza del Scaffold · `S0067` El índice en el estado · `S0068` IndexedStack: Pages que recuerdan |
 | 10 | 26 | 13 | 3 | Spec Driven Development | 🟡 | `S0069` ¿Qué es Spec Driven Development? · `S0070` Anatomía de una spec · `S0071` Métricas del conjunto de specs · `S0072` La arquitectura: Flutter + Supabase · `S0073` Taller · Del contexto al PRD y los requisitos |
-| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) |
+| 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) · `S0082` Dictamen del taller · Spine y specs |
 | 12 | 28 | 14 | 3 y 4 | Base de datos, parte 2 *(el calendario dice Servicio de autenticación)* | 🟡 | `S0076` Future: pedir y esperar · `S0079` Map<String, dynamic>: la fila como JSON · `S0081` El CRUD con el SDK de Supabase · `S0077` Repositorio de arranque · `S0080` Primeros pasos con Supabase · `S0075` Migraciones con el CLI de Supabase · `S0078` Taller · Tracks en Supabase |
 | 13 | 29 | 15 | 3 y 4 | Servicio de storage | ⬜ | |
 | 14 | 30 | 15 | 3 y 4 | Funciones como servicio | ⬜ | |
@@ -252,7 +252,7 @@ Notas:
 
 **Presentación:** ⬜ pendiente.
 
-Solo trae `S0074` Taller · Spine y specs funcionales, que viene de la sesión 10 (2026-11-04). El contenido del planeador para esta sesión (SDK, capa de servicio, CRUD, estados asíncronos) quedó en la sesión 12.
+Trae `S0074` Taller · Spine y specs funcionales, que viene de la sesión 10 (2026-11-04), y `S0082` Dictamen del taller · Spine y specs (2026-11-11): la versión pública del dictamen de `results/dictamen.md`, por proyecto, **sin nombres de estudiantes ni notas** (el repo es público; decisión del profesor). Sus cuatro figuras se copian de `results/*.svg`. El contenido del planeador para esta sesión (SDK, capa de servicio, CRUD, estados asíncronos) quedó en la sesión 12.
 
 ### Sesión 12 · Base de datos, parte 2
 
@@ -369,6 +369,7 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS72.md` | `S0072` | La arquitectura: Flutter + Supabase | 10 |
 | `lessonS73.md` | `S0073` | Taller · Del contexto al PRD y los requisitos | 10 |
 | `lessonS74.md` | `S0074` | Taller · Spine y specs funcionales | 11 |
+| `lessonS82.md` | `S0082` | Dictamen del taller · Spine y specs | 11 |
 | `lessonS75.md` | `S0075` | Migraciones con el CLI de Supabase | 12 |
 | `lessonS76.md` | `S0076` | Future: pedir y esperar | 12 |
 | `lessonS79.md` | `S0079` | Map<String, dynamic>: la fila como JSON | 12 |
