@@ -86,6 +86,7 @@
 [t] Sesión 12 · Base de datos, parte 2
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS76.md | Future: pedir y esperar | S0076
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS79.md | Map<String, dynamic>: la fila como JSON | S0079
+[lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS81.md | El CRUD con el SDK de Supabase | S0081
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS77.md | Repositorio de arranque | S0077
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS80.md | Primeros pasos con Supabase | S0080
 [lesson:url] https://raw.githubusercontent.com/DomicianoRincon/SeminarioSoftware/refs/heads/main/content/lessonS75.md | Migraciones con el CLI de Supabase | S0075

@@ -294,6 +294,10 @@ playlist cards
   Con `service`, tres carriles (HomeScreen, TrackService, Supabase) y pestañas *Listar*, *Crear* y *Borrar*, con el
   código de `home_screen.dart` y `track_services.dart` y el `_tracks` del State. Trae su propio CSS (`fc-*`) y el
   helper `segmented`.
+  `crud` (`S0081`): las cuatro operaciones sobre la tabla `tracks`, hermano del `query-builder` de Móviles. Pestañas
+  *Listar*, *Crear*, *Editar* y *Borrar*, formulario de la operación, el código que la hace, la tabla con las filas que
+  toca (la tabla recuerda cada *Ejecutar* hasta *Reiniciar tabla*) y lo que devuelve el `await`, `PostgrestException`
+  incluida (not null en el insert, delete sin `eq`). CSS propio `cr-*`.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - `skill-files` (`S0063`, sección *IA*) vive en su propio archivo, `skillSims.js`, portado de Computación 2 (`0047`). Pestañas por
   skill, árbol de archivos y botón *Copiar*. Las skills se editan en `tools/skills/<nombre>/` y se pasan al simulador con

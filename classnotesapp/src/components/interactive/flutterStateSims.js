@@ -4699,6 +4699,277 @@ const mountFuture = (root, args = []) => {
   };
 };
 
+// ───────────────────────── crud: las cuatro operaciones sobre la tabla tracks ─────────────────────────
+
+const CR_STYLE_ID = 'fsim-cr-style';
+const CR_CSS = `
+.fsim .cr-form{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 10px;align-items:center;font-size:13px}
+.fsim .cr-form label{color:var(--fs-muted)}
+.fsim .cr-form input[type=text],.fsim .cr-form select{width:100%;min-width:0;border:1px solid #79747E;border-radius:6px;padding:5px 7px;
+  background:#fff;font:12.5px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-ink)}
+.fsim .cr-check{grid-column:1 / -1;display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--fs-ink)}
+.fsim .cr-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.fsim .cr-rows{display:flex;flex-direction:column;gap:4px}
+.fsim .cr-head,.fsim .cr-row{display:grid;grid-template-columns:76px minmax(0,1fr) minmax(0,.9fr) minmax(0,.9fr);gap:6px;align-items:center;
+  padding:4px 8px;font-size:12px}
+.fsim .cr-head{font:700 11px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-muted)}
+.fsim .cr-row{border:1px solid var(--fs-line);border-radius:8px;background:#fff;transition:background .3s}
+.fsim .cr-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fsim .cr-mono{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:11.5px}
+.fsim .cr-null{color:#9E9AA7;font-style:italic}
+.fsim .cr-row.cr-read{background:#E8F6E3;border-color:#9FD68D}
+.fsim .cr-row.cr-new{background:#E3F6F3;border-color:#0F8478;box-shadow:inset 3px 0 0 #0F8478}
+.fsim .cr-row.cr-changed{background:#FFF3DC;border-color:#F0C572;box-shadow:inset 3px 0 0 #A96C05}
+.fsim .cr-row.cr-gone{background:#FFEBEF;border-color:#F3A3B2;opacity:.7}
+.fsim .cr-row.cr-gone span{text-decoration:line-through}
+.fsim .cr-row.cr-target{box-shadow:inset 0 0 0 2px #F2C069}
+.fsim .cr-json{white-space:pre;padding:0 12px;max-height:230px;overflow:auto;color:#CDD6F4}
+.fsim .cr-json.cr-err{color:#F38BA8;white-space:pre-wrap}
+.fsim .cr-json.cr-wait{color:#7F849C;white-space:pre-wrap}
+.fsim .cr-summary{font-size:13px;color:var(--fs-ink);min-height:36px}
+@container (max-width:520px){.fsim .cr-head,.fsim .cr-row{grid-template-columns:62px minmax(0,1fr) minmax(0,1fr)}
+  .fsim .cr-head span:nth-child(4),.fsim .cr-row span:nth-child(4){display:none}}
+`;
+
+const ensureCrStyle = () => {
+  if (typeof document === 'undefined' || document.getElementById(CR_STYLE_ID)) return;
+  document.head.appendChild(el('style', { id: CR_STYLE_ID, text: CR_CSS }));
+};
+
+export const CR_START = Object.freeze([
+  { id: 'a1f3c9e2', name: 'Yellow', artist_name: 'Coldplay', image_url: 'https://picsum.photos/400' },
+  { id: 'b2c4d1f7', name: 'Clocks', artist_name: 'Coldplay', image_url: null },
+  { id: 'c3d5e8a0', name: 'Bohemian Rhapsody', artist_name: 'Queen', image_url: 'https://picsum.photos/400' },
+]);
+const CR_NEW_IDS = ['7c2e9a10', '1a9d44b3', 'e5f08c21', '90b7d3e6', '4d61fa58', 'f0a3b7c2'];
+export const CR_OPS = Object.freeze(['list', 'create', 'update', 'delete']);
+const CR_TABS = { list: 'Listar', create: 'Crear', update: 'Editar', delete: 'Borrar' };
+
+export const crudStart = () => ({ rows: CR_START.map((r) => ({ ...r })), next: 0 });
+
+const crQuote = (v) => `'${String(v).replace(/'/g, "\\'")}'`;
+
+export const crudCode = (op, input, rows) => {
+  const target = rows.find((r) => r.id === input.id);
+  const idArg = target ? crQuote(target.id) : 'id';
+  if (op === 'list') {
+    const cols = input.columns === 'some' ? "'name, artist_name'" : '';
+    return `final rows = await _client.from('tracks').select(${cols});`;
+  }
+  if (op === 'create') {
+    const image = input.image_url.trim() ? `\n  'image_url': ${crQuote(input.image_url.trim())},` : '';
+    const map = `{\n  'name': ${crQuote(input.name)},\n  'artist_name': ${crQuote(input.artist_name)},${image}\n}`;
+    return input.returning
+      ? `final row = await _client\n    .from('tracks')\n    .insert(${map.replace(/\n/g, '\n    ')})\n    .select()\n    .single();`
+      : `await _client.from('tracks').insert(${map});`;
+  }
+  if (op === 'update') {
+    const head = input.returning ? 'final row = await _client' : 'await _client';
+    const tail = input.returning ? "\n    .select()\n    .single();" : ';';
+    return `${head}\n    .from('tracks')\n    .update({'name': ${crQuote(input.name)}})\n    .eq('id', ${idArg})${tail}`;
+  }
+  const filter = input.id === 'all' ? ';' : `\n    .eq('id', ${idArg});`;
+  return `await _client\n    .from('tracks')\n    .delete()${filter}`;
+};
+
+export const runCrud = (state, op, input) => {
+  const rows = state.rows.map((r) => ({ ...r }));
+  if (op === 'list') {
+    const result = rows.map((r) => (input.columns === 'some' ? { name: r.name, artist_name: r.artist_name } : { ...r }));
+    return { state: { ...state, rows }, result, error: null, marks: Object.fromEntries(rows.map((r) => [r.id, 'read'])), gone: [] };
+  }
+  if (op === 'create') {
+    if (!input.name.trim() || !input.artist_name.trim()) {
+      return {
+        state, result: undefined, marks: {}, gone: [],
+        error: { code: '23502', message: `null value in column "${input.name.trim() ? 'artist_name' : 'name'}" violates not-null constraint` },
+      };
+    }
+    const row = {
+      id: CR_NEW_IDS[state.next % CR_NEW_IDS.length],
+      name: input.name.trim(),
+      artist_name: input.artist_name.trim(),
+      image_url: input.image_url.trim() || null,
+    };
+    return {
+      state: { rows: [...rows, row], next: state.next + 1 },
+      result: input.returning ? { ...row } : null, error: null, marks: { [row.id]: 'new' }, gone: [],
+    };
+  }
+  if (op === 'update') {
+    const index = rows.findIndex((r) => r.id === input.id);
+    if (index < 0) return { state, result: input.returning ? undefined : null, error: null, marks: {}, gone: [] };
+    rows[index] = { ...rows[index], name: input.name.trim() || rows[index].name };
+    return {
+      state: { ...state, rows }, result: input.returning ? { ...rows[index] } : null, error: null,
+      marks: { [rows[index].id]: 'changed' }, gone: [],
+    };
+  }
+  if (input.id === 'all') {
+    return { state, result: undefined, marks: {}, gone: [], error: { code: '21000', message: 'DELETE requires a WHERE clause' } };
+  }
+  const gone = rows.filter((r) => r.id === input.id);
+  return { state: { ...state, rows: rows.filter((r) => r.id !== input.id) }, result: null, error: null, marks: {}, gone };
+};
+
+const crSummary = (op, input, run) => {
+  if (run.error) {
+    return op === 'delete'
+      ? 'Sin el filtro eq, el delete borraría la tabla entera. Supabase lo rechaza y lanza PostgrestException: nada se borró.'
+      : 'La columna es not null y llegó vacía: la base de datos rechaza la fila y lanza PostgrestException.';
+  }
+  if (op === 'list') {
+    return `select() trae todas las filas: el await devuelve una List con ${run.result.length} Map${run.result.length === 1 ? '' : 's'}`
+      + (input.columns === 'some' ? ', cada uno solo con las columnas pedidas.' : ', uno por fila.');
+  }
+  if (op === 'create') {
+    const base = 'La fila nueva quedó al final de la tabla con el id que generó la base de datos';
+    const img = input.image_url.trim() ? '' : ' e image_url en null';
+    return input.returning
+      ? `${base}${img}. Con .select().single(), el await devuelve esa fila completa.`
+      : `${base}${img}. Sin .select(), el await no devuelve nada: la app no se entera del id.`;
+  }
+  if (op === 'update') {
+    return input.returning
+      ? 'Solo cambió la fila del eq. Con .select().single(), el await devuelve la fila ya editada.'
+      : 'Solo cambió la fila del eq: las demás quedan igual. Sin .select(), el await no devuelve nada.';
+  }
+  return 'Solo se borró la fila del eq. El await no devuelve nada: basta con que termine.';
+};
+
+const crField = (label, attrs) => [el('label', { text: label }), el('input', { type: 'text', 'aria-label': label, ...attrs })];
+
+const mountCrud = (root) => {
+  ensureCrStyle();
+  const container = card(root);
+  let state = crudStart();
+  let op = 'list';
+  let last = null;
+  const input = { columns: 'all', name: 'Viva la Vida', artist_name: 'Coldplay', image_url: '', id: CR_START[0].id, returning: true };
+
+  const code = codePanel('track_services.dart');
+  const tabs = segmented(CR_OPS.map((key) => [key, CR_TABS[key]]), (key) => pick(key));
+  const form = el('div', { class: 'cr-form' });
+  const rowsBox = el('div', { class: 'cr-rows', 'data-testid': 'cr-rows' });
+  const summary = el('div', { class: 'cr-summary', 'data-testid': 'cr-summary', 'aria-live': 'polite' });
+  const resultTitle = el('h4', { text: 'Lo que devuelve el await' });
+  const json = el('div', { class: 'cr-json', 'data-testid': 'cr-result' });
+  const runButton = el('button', { class: 'fs-btn fs-solid', type: 'button', text: 'Ejecutar', onclick: () => execute() });
+  const resetButton = el('button', { class: 'fs-btn', type: 'button', text: 'Reiniciar tabla', onclick: () => reset() });
+
+  const rowOptions = (withAll) => {
+    const select = el('select', { 'aria-label': 'Fila', onchange: (e) => { input.id = e.target.value; refresh(); } });
+    state.rows.forEach((r) => select.appendChild(el('option', { value: r.id, text: `${r.id} · ${r.name}`, selected: r.id === input.id })));
+    if (withAll) select.appendChild(el('option', { value: 'all', text: 'sin filtro eq', selected: input.id === 'all' }));
+    return [el('label', { text: 'Fila' }), select];
+  };
+
+  const returningBox = () => {
+    const box = el('input', { type: 'checkbox', 'aria-label': 'Encadenar .select().single()', onchange: (e) => { input.returning = e.target.checked; refresh(); } });
+    box.checked = input.returning;
+    return el('label', { class: 'cr-check' }, box, 'Encadenar .select().single()');
+  };
+
+  const text = (label, key, placeholder) => crField(label, {
+    value: input[key], placeholder, oninput: (e) => { input[key] = e.target.value; refresh(); },
+  });
+
+  const buildForm = () => {
+    form.replaceChildren();
+    if (!state.rows.some((r) => r.id === input.id) && input.id !== 'all') input.id = state.rows[0] ? state.rows[0].id : 'all';
+    if (op === 'list') {
+      const select = el('select', { 'aria-label': 'Columnas', onchange: (e) => { input.columns = e.target.value; refresh(); } });
+      [['all', 'select() · todas'], ['some', "select('name, artist_name')"]].forEach(([v, t]) => select.appendChild(el('option', { value: v, text: t, selected: v === input.columns })));
+      form.append(el('label', { text: 'Columnas' }), select);
+    } else if (op === 'create') {
+      form.append(...text('name', 'name'), ...text('artist_name', 'artist_name'), ...text('image_url', 'image_url', 'vacío = null'), returningBox());
+    } else if (op === 'update') {
+      if (input.id === 'all') input.id = state.rows[0] ? state.rows[0].id : 'all';
+      form.append(...rowOptions(false), ...text('Nuevo name', 'name'), returningBox());
+    } else {
+      form.append(...rowOptions(true));
+    }
+  };
+
+  const renderRows = () => {
+    const marks = last ? last.marks : {};
+    const gone = last ? last.gone : [];
+    const target = op === 'update' || op === 'delete' ? input.id : null;
+    const cell = (v) => (v === null ? el('span', { class: 'cr-null', text: 'null' }) : el('span', { text: v }));
+    rowsBox.replaceChildren(el('div', { class: 'cr-head' }, el('span', { text: 'id' }), el('span', { text: 'name' }),
+      el('span', { text: 'artist_name' }), el('span', { text: 'image_url' })));
+    [...state.rows.map((r) => [r, marks[r.id] || '']), ...gone.map((r) => [r, 'gone'])].forEach(([r, mark]) => {
+      const cls = ['cr-row', mark && `cr-${mark}`, (target === 'all' || r.id === target) && mark !== 'gone' ? 'cr-target' : ''].filter(Boolean).join(' ');
+      rowsBox.appendChild(el('div', { class: cls, 'data-id': r.id, 'data-mark': mark || 'none' },
+        el('span', { class: 'cr-mono', text: r.id }), cell(r.name), cell(r.artist_name),
+        r.image_url === null ? el('span', { class: 'cr-null cr-mono', text: 'null' }) : el('span', { class: 'cr-mono', text: 'picsum…' })));
+    });
+    if (!state.rows.length && !gone.length) rowsBox.appendChild(el('div', { class: 'cr-summary', text: 'La tabla está vacía.' }));
+  };
+
+  const showResult = () => {
+    if (!last) {
+      json.className = 'cr-json cr-wait';
+      json.textContent = 'Pulsa Ejecutar para mandar la operación.';
+      summary.textContent = 'Arma la operación y mira el código que la hace.';
+      return;
+    }
+    if (last.error) {
+      json.className = 'cr-json cr-err';
+      json.textContent = `PostgrestException(\n  message: ${last.error.message},\n  code: ${last.error.code}\n)`;
+    } else {
+      json.className = 'cr-json';
+      json.textContent = last.result === null ? 'null' : JSON.stringify(last.result, null, 2);
+    }
+    summary.textContent = last.summary;
+  };
+
+  const refresh = () => {
+    code.setCode(crudCode(op, input, state.rows));
+    renderRows();
+    showResult();
+  };
+
+  const pick = (key) => {
+    op = key;
+    last = null;
+    tabs.select(op);
+    buildForm();
+    refresh();
+  };
+
+  const execute = () => {
+    const run = runCrud(state, op, input);
+    last = { ...run, summary: crSummary(op, input, run) };
+    state = run.state;
+    buildForm();
+    refresh();
+    flash(summary);
+  };
+
+  const reset = () => {
+    state = crudStart();
+    last = null;
+    input.id = CR_START[0].id;
+    buildForm();
+    refresh();
+  };
+
+  container.append(
+    el('div', { class: 'fs-side' },
+      tabs.node,
+      el('div', { class: 'fs-panel' }, el('h4', { text: 'Arma la operación' }), form,
+        el('div', { class: 'cr-actions' }, runButton, resetButton)),
+      code.box),
+    el('div', { class: 'fs-side' },
+      el('div', { class: 'fs-panel' }, el('h4', { text: 'Tabla tracks' }), rowsBox),
+      summary,
+      el('div', { class: 'fs-dark' }, resultTitle, json))
+  );
+  pick('list');
+  return () => root.replaceChildren();
+};
+
 export const SIMS = Object.freeze({
   'state-counter': mountCounter,
   'hot-reload': (root, args = []) => mountCounter(root, ['reload', ...args]),
@@ -4712,6 +4983,7 @@ export const SIMS = Object.freeze({
   'nav-result': mountNavResult,
   'tab-state': mountTabState,
   future: mountFuture,
+  crud: mountCrud,
 });
 
 export const parseSpec = (spec) => {

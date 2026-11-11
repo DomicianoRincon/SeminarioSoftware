@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/theme/ThemeContext';
 import InteractiveBlock from './InteractiveBlock';
 import {
   SIMS, parseSpec, fcBasicScenario, fcServiceScenario, fcAt, FC_TYPE_KEYS, FC_OPS,
+  crudStart, runCrud, crudCode, CR_START,
 } from './flutterStateSims';
 
 const renderBlock = (spec) => render(<ThemeProvider><InteractiveBlock spec={spec} /></ThemeProvider>);
@@ -720,5 +721,62 @@ describe('future', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Reproducir' }));
     act(() => vi.advanceTimersByTime(5000));
     expect(state()).toContain('3 tracks');
+  });
+});
+
+describe('crud', () => {
+  const base = { columns: 'all', name: 'Viva la Vida', artist_name: 'Coldplay', image_url: '', id: CR_START[0].id, returning: true };
+
+  it('lists every row as a list of maps, or only the asked columns', () => {
+    const all = runCrud(crudStart(), 'list', base);
+    expect(all.result).toHaveLength(3);
+    expect(Object.keys(all.result[0])).toEqual(['id', 'name', 'artist_name', 'image_url']);
+    const some = runCrud(crudStart(), 'list', { ...base, columns: 'some' });
+    expect(Object.keys(some.result[0])).toEqual(['name', 'artist_name']);
+    expect(crudCode('list', { ...base, columns: 'some' }, CR_START)).toContain(".select('name, artist_name')");
+  });
+
+  it('creates a row with a generated id and null image, returned only with select().single()', () => {
+    const made = runCrud(crudStart(), 'create', base);
+    expect(made.state.rows).toHaveLength(4);
+    expect(made.result).toMatchObject({ name: 'Viva la Vida', image_url: null });
+    expect(made.result.id).toBeTruthy();
+    expect(runCrud(crudStart(), 'create', { ...base, returning: false }).result).toBeNull();
+    expect(runCrud(crudStart(), 'create', { ...base, name: ' ' }).error.code).toBe('23502');
+    expect(crudCode('create', base, CR_START)).toContain('.select()\n    .single();');
+  });
+
+  it('updates and deletes only the row of the eq filter, and refuses a delete without it', () => {
+    const edited = runCrud(crudStart(), 'update', { ...base, name: 'Paradise' });
+    expect(edited.state.rows.map((r) => r.name)).toEqual(['Paradise', 'Clocks', 'Bohemian Rhapsody']);
+    const deleted = runCrud(crudStart(), 'delete', { ...base, id: CR_START[1].id });
+    expect(deleted.state.rows.map((r) => r.id)).toEqual([CR_START[0].id, CR_START[2].id]);
+    expect(deleted.result).toBeNull();
+    const all = runCrud(crudStart(), 'delete', { ...base, id: 'all' });
+    expect(all.error.message).toBe('DELETE requires a WHERE clause');
+    expect(all.state.rows).toHaveLength(3);
+    expect(crudCode('delete', { ...base, id: 'all' }, CR_START)).not.toContain('.eq(');
+  });
+
+  it('runs each operation against the table shown', () => {
+    const { container } = renderBlock('crud');
+    const rows = () => container.querySelectorAll('[data-testid="cr-rows"] .cr-row');
+    expect(screen.getByTestId('cr-result').textContent).toMatch(/Ejecutar/);
+    fireEvent.click(screen.getByRole('button', { name: 'Ejecutar' }));
+    expect(screen.getByTestId('cr-result').textContent).toContain('"Bohemian Rhapsody"');
+    fireEvent.click(screen.getByRole('button', { name: 'Crear' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Ejecutar' }));
+    expect(rows()).toHaveLength(4);
+    expect(container.querySelector('.cr-row.cr-new').textContent).toContain('Viva la Vida');
+    fireEvent.click(screen.getByRole('button', { name: 'Borrar' }));
+    fireEvent.change(screen.getByLabelText('Fila'), { target: { value: 'all' } });
+    expect(container.textContent).not.toContain(".eq('id'");
+    fireEvent.click(screen.getByRole('button', { name: 'Ejecutar' }));
+    expect(screen.getByTestId('cr-result').textContent).toContain('DELETE requires a WHERE clause');
+    expect(rows()).toHaveLength(4);
+    fireEvent.change(screen.getByLabelText('Fila'), { target: { value: CR_START[0].id } });
+    fireEvent.click(screen.getByRole('button', { name: 'Ejecutar' }));
+    expect(container.querySelectorAll('.cr-row.cr-gone')).toHaveLength(1);
+    expect(container.querySelectorAll('.cr-row:not(.cr-gone)')).toHaveLength(3);
   });
 });
