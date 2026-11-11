@@ -106,10 +106,12 @@ factory Track.fromMap(Map<String, dynamic> map) {
     id: map['id'] as String,
     name: map['name'] as String,
     artistName: map['artist_name'] as String,
-    imageUrl: map['image_url'] as String,
+    imageUrl: map['image_url'] as String? ?? Track.defaultImageUrl,
   );
 }
 ```
+
+`image_url` puede venir `null`. `as String?` acepta el `null` y `??` pone la imagen por defecto en su lugar. Con `as String` a secas, una fila sin imagen fallaría con `type 'Null' is not a subtype of type 'String'`.
 
 `toMap` hace lo contrario: arma el Map con las llaves de las columnas para mandarlo a Supabase. Los dos ya vienen en el repositorio de arranque.
 

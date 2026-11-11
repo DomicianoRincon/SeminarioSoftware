@@ -324,7 +324,7 @@ create table public.tracks (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   artist_name text not null,
-  image_url text not null default 'https://picsum.photos/400'
+  image_url text
 );
 
 grant select, insert, update, delete on public.tracks to anon, authenticated;
@@ -336,7 +336,7 @@ La última línea es el permiso. Desde 2026, Supabase ya no deja que la app use 
 npx supabase db push --remote
 ```
 
-El push solo sube `create_tracks`: la del esquema inicial ya estaba. En `Table Editor > tracks`, usa `Insert > Insert row` para agregar dos tracks con nombre y artista. El `id` y la imagen los pone la base de datos.
+El push solo sube `create_tracks`: la del esquema inicial ya estaba. En `Table Editor > tracks`, usa `Insert > Insert row` para agregar dos tracks con nombre y artista. El `id` lo pone la base de datos, y `image_url` puede quedar vacía (`NULL`).
 
 ## Si algo falla
 
