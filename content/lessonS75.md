@@ -133,7 +133,7 @@ Copia el modelo de datos del equipo a `docs/` (el PDF de la entrega 1, el `docs/
 - Una migración que ya se subió no se edita: se crea otra.
 - Tablas en plural; tablas y columnas en inglés y snake_case.
 - Toda llave primaria es id uuid default gen_random_uuid().
-- Sin RLS. Cada tabla nueva lleva su permiso:
+- Cada tabla nueva lleva su permiso, después del create table:
   grant select, insert, update, delete on <tabla>
   to anon, authenticated;
 ```
@@ -345,4 +345,3 @@ El push solo sube `create_tracks`: la del esquema inicial ya estaba. En `Table E
 - `Remote migration versions not found in local migrations directory`: alguien del equipo subió una migración que tú no tienes. Haz `git pull` antes del push. Que una sola persona suba las migraciones evita el problema.
 - `relation "…" already exists`: la tabla ya existía porque se creó a mano en el dashboard. Si está vacía, bórrala desde el `Table Editor` y vuelve a hacer el push; si tiene datos, pídele ayuda al profesor antes de borrar.
 - Desde la app, `permission denied for table tracks`: falta el `grant` de la tabla. Agrégalo en una migración nueva.
-- La lista sale vacía aunque la tabla tiene filas, o al crear aparece `new row violates row-level security policy`: el proyecto tiene activado *Automatically enable RLS for new tables*. Crea una migración nueva con `alter table public.tracks disable row level security;` y súbela.
