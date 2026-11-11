@@ -192,4 +192,5 @@ Los dos pasan a ser `Future<void> ... async`, y quien los llama, `_openAddTrack`
 - `You must initialize the supabase instance before calling Supabase.instance`: falta el `await Supabase.initialize(...)` en `main`, o va después de `runApp`.
 - `Invalid API key`: la llave de `main.dart` no es la publishable key de este proyecto, o se copió incompleta.
 - `permission denied for table tracks`: a la migración le falta el `grant`.
+- La lista sale vacía aunque la tabla tiene filas, o `new row violates row-level security policy`: el proyecto activó RLS en la tabla. La solución está en *Si algo falla* de [Migraciones con el CLI de Supabase](https://domicianorincon.github.io/SeminarioSoftware/lesson/S0075).
 - `Could not find the table 'public.tracks'`: la migración `create_tracks` no se subió. Corre `npx supabase db push --remote` en el proyecto de tu equipo.
