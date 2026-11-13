@@ -5,6 +5,7 @@ import InteractiveBlock from './InteractiveBlock';
 import {
   SIMS, parseSpec, fcBasicScenario, fcServiceScenario, fcAt, FC_TYPE_KEYS, FC_OPS,
   crudStart, runCrud, crudCode, CR_START,
+  authStart, runAuth, authCode, authValidate,
 } from './flutterStateSims';
 
 const renderBlock = (spec) => render(<ThemeProvider><InteractiveBlock spec={spec} /></ThemeProvider>);
@@ -778,5 +779,50 @@ describe('crud', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Ejecutar' }));
     expect(container.querySelectorAll('.cr-row.cr-gone')).toHaveLength(1);
     expect(container.querySelectorAll('.cr-row:not(.cr-gone)')).toHaveLength(3);
+  });
+});
+
+describe('auth', () => {
+  const draft = { name: 'Luis', email: 'luis@correo.com', password: 'clave12', confirm: 'clave12' };
+
+  it('signs up in two steps: the account in auth.users and its profile with the same id', () => {
+    const run = runAuth(authStart(), 'signup', draft);
+    const user = run.state.users.at(-1);
+    expect(user.email).toBe('luis@correo.com');
+    expect(run.state.profiles.at(-1)).toMatchObject({ id: user.id, name: 'Luis' });
+    expect(run.state.session).toMatchObject({ id: user.id });
+    expect(run.state.route).toBe('/home');
+  });
+
+  it('leaves an account without profile when createProfile is forgotten', () => {
+    const run = runAuth(authStart(), 'signup', { ...draft, forgetProfile: true });
+    expect(run.state.users).toHaveLength(2);
+    expect(run.state.profiles).toHaveLength(1);
+    expect(authCode('signup', { forgetProfile: true })).not.toContain('createProfile');
+  });
+
+  it('rejects a repeated email and wrong credentials with the AuthException messages', () => {
+    expect(runAuth(authStart(), 'signup', { ...draft, email: 'ana@correo.com' }).error).toBe('User already registered');
+    expect(runAuth(authStart(), 'login', { email: 'ana@correo.com', password: 'otra' }).error).toBe('Invalid login credentials');
+    expect(authValidate({ ...draft, confirm: 'x' })).toBe('Las contraseñas no coinciden');
+  });
+
+  it('keeps the session when the app restarts and drops it on sign out', () => {
+    const inside = runAuth(authStart(), 'login', { email: 'ana@correo.com', password: 'secreta1' }).state;
+    expect(runAuth(inside, 'restart').state.route).toBe('/home');
+    const out = runAuth(inside, 'logout').state;
+    expect(out.session).toBeNull();
+    expect(runAuth(out, 'restart').state.route).toBe('/login');
+  });
+
+  it('logs in from the phone and shows the saved session', () => {
+    renderBlock('auth');
+    type('Correo', 'ana@correo.com');
+    type('Contraseña', 'secreta1');
+    fireEvent.click(screen.getByText('Entrar'));
+    expect(screen.getByText('Hola, Ana')).toBeTruthy();
+    expect(screen.getByTestId('au-session').textContent).toContain('ana@correo.com');
+    fireEvent.click(screen.getByText('Cerrar y abrir la app'));
+    expect(screen.getByTestId('au-route').textContent).toContain('/home');
   });
 });

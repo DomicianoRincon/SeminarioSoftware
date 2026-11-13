@@ -22,7 +22,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 10 | 26 | 13 | 3 | Spec Driven Development | 🟡 | `S0069` ¿Qué es Spec Driven Development? · `S0070` Anatomía de una spec · `S0071` Métricas del conjunto de specs · `S0072` La arquitectura: Flutter + Supabase · `S0073` Taller · Del contexto al PRD y los requisitos |
 | 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) · `S0082` Dictamen del taller · Spine y specs |
 | 12 | 28 | 14 | 3 y 4 | Base de datos, parte 2 *(el calendario dice Servicio de autenticación)* | 🟡 | `S0076` Future: pedir y esperar · `S0079` Map<String, dynamic>: la fila como JSON · `S0081` El CRUD con el SDK de Supabase · `S0077` Repositorio de arranque · `S0080` Primeros pasos con Supabase · `S0075` Migraciones con el CLI de Supabase · `S0078` Taller · Tracks en Supabase |
-| 13 | 29 | 15 | 3 y 4 | Servicio de storage | ⬜ | |
+| 13 | 29 | 15 | 3 y 4 | Servicio de autenticación *(el calendario dice Servicio de storage)* | 🟡 | `S0083` Repositorio de arranque · `S0084` Supabase Auth: cuentas y sesiones · `S0085` La tabla profiles: el usuario en tu base de datos · `S0086` Sesión persistente y cerrar sesión · `S0087` Taller · Login y registro con Supabase |
 | 14 | 30 | 15 | 3 y 4 | Funciones como servicio | ⬜ | |
 | 15 | 31 | 16 | 3 y 4 | Entrega final I (equipos 1 a 3) | ⬜ | |
 | 16 | 32 | 16 | 3 y 4 | Entrega final II (equipos 4 a 6) y cierre | ⬜ | |
@@ -282,6 +282,31 @@ Notas:
 - **Interactivo `crud`** (`S0081`): hermano del `query-builder` de Móviles (`0060`). Pestañas *Listar*, *Crear*, *Editar* y *Borrar* sobre una tabla `tracks` de tres filas que recuerda cada *Ejecutar*; formulario de la operación, el código de `track_services.dart` que la hace, las filas que toca (leídas, nueva, editada, borrada) y lo que devuelve el `await`. Muestra `insert` sin y con `.select().single()`, `image_url` en `null` y el `DELETE requires a WHERE clause` del delete sin `eq`. `S0081` no lleva *Ejemplo completo*: `supabase_flutter` no corre en DartPad.
 - Las 13 figuras de `S0075` a `S0080` salen de `tools/sesion11_figuras.py`; `raClonar12`, de `tools/arranque_figuras.py`. `check.py` sin errores.
 
+### Sesión 13 · Servicio de autenticación
+
+**Presentación:** ⬜ pendiente.
+
+El planeador pone la sesión 29 bajo *Servicio de storage* en el calendario, pero lo que dice para la clase es autenticación (el calendario va corrido una sesión desde la 28); el `[t]` del toc usa lo segundo. Armada el 2026-11-13. Sigue la regla del curso: **sin clean architecture**, el estado vive en la Screen y se mueve con `setState`; las pantallas llaman a servicios (`AuthService`, `ProfileService`, `TrackService`) y solo los servicios hablan con Supabase. Se reusó de Móviles el contenido de `lessonH2` (0052), `lessonH15` (0055) y `lessonH4` (0056) — los métodos de `supabase.auth`, los errores típicos y la tabla `profiles` con `references auth.users` —, reescrito sin Bloc ni RLS, por eso son lecciones propias y no copias.
+
+| Lo que pide el planeador (sesión 29) | Dónde está en el visor |
+|---|---|
+| Registro, inicio y cierre de sesión con Supabase Auth | `S0084`: `auth.users` frente a tus tablas (`auDosLugares`), `signUp`, `signInWithPassword`, `signOut`, `currentSession` (`auMetodos`), `AuthException` y apagar *Confirm email* (`auConfirm`). Interactivo `auth`. El taller `S0087` § 1 y 3 |
+| Sesión persistente: recuperar al usuario al abrir la aplicación | `S0086`: `initialRoute: AuthService().isLoggedIn() ? '/home' : '/login'` (`auArranque`), y *Cerrar y abrir la app* en el interactivo `auth`. Taller § 4 |
+| Guardas de navegación | `S0086`: la única guarda es la ruta inicial; nadie llega a `'/home'` sin pasar por login o registro. Cerrar sesión con `signOut` + `pushNamedAndRemoveUntil('/login', (route) => false)` (`auSalir`) |
+| Asociar al usuario los datos que crea | `S0085` § *Los tracks de cada usuario* (`auDueno`): `tracks.user_id` referencia a `profiles(id)`; `TrackService` lo llena con `currentUser!.id` y filtra con `eq('user_id', …)`. Taller § 5 |
+| Hacer registro en base de datos con UUID de Auth | `S0085`: migración `create_profiles` (`auMigracion`), `id uuid primary key references auth.users(id) on delete cascade`, y el registro en dos pasos `signUp` → `createProfile` (`auRegistro`) |
+| *Fuera de clase:* usuarios pueden registrarse y loguearse | No se asigna: las sesiones del bloque son de clase |
+
+Notas:
+
+- **Repositorio de arranque `Domiciano/262SeminarioSesion13`** (paquete `track_app`): la rama `solution` de `262SeminarioSesion12` más `LoginScreen`, `SignupScreen`, `LoginForm`, `SignupForm`, `Profile` y `AuthService`/`ProfileService` vacíos; `initialRoute: '/login'` (pedido del profesor). Ver *Repositorios de arranque*.
+- **Interactivo `auth`** (`S0084` y `S0086`): teléfono con login, registro y home; al lado `auth.users`, `profiles`, la sesión guardada en el dispositivo y el código del método que corrió, con sus líneas marcadas. *Cerrar y abrir la app* evalúa `initialRoute`; *Olvidar createProfile* deja una cuenta sin perfil, en rojo. Errores `User already registered` e `Invalid login credentials`; los avisos del formulario no llegan a Supabase.
+- **Confirmación de correo apagada** para clase (maqueta `auConfirm`, interfaz de noviembre de 2026, sin capturas reales). Con ella encendida, `signUp` no deja sesión y el taller falla en `currentUser!`: está en *Si algo falla*.
+- **Migraciones en el proyecto del equipo**, como en la sesión 12: `create_profiles` y el `alter table tracks add column user_id`, sin RLS (decisión del profesor), con su `grant`.
+- **Sin *Ejemplo completo***: `supabase_flutter` no corre en DartPad (igual que `S0081`).
+- Las 11 figuras salen de `tools/sesion13_figuras.py`; `raClonar13`, de `tools/arranque_figuras.py`. `check.py` sin errores.
+- **No se probó contra un proyecto de Supabase real**: el repositorio pasa `flutter analyze` en las dos ramas y la solución compila para web.
+
 ## Repositorios de arranque
 
 Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una lección **Repositorio de arranque** (`S0056` a `S0062` y `S0064` para la sesión 9, siempre la primera de la sesión): el punto de partida de la sesión es lo que quedó al terminar la anterior, en un repositorio público `github.com/Domiciano/262SeminarioSesionN`, con un solo commit en `main`. La lección muestra cómo clonarlo (figura de consola `raClonarN`, de `tools/arranque_figuras.py`) y qué trae.
@@ -292,7 +317,8 @@ Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una l
 - **Sesiones 7 y 8**: el *Ejemplo completo* de `S0044` y de `S0048`, separados en un archivo por clase con imports `package:playlist_app/`. Sin el taller de la sesión anterior. La sesión 8 trae además, sin registrar en `routes:`, `SongDetailScreen` hecha (sin el botón *Quitar*, que es mejora del taller) y `AddSongScreen` con un `Column` vacío, y `SongCard` con un `GestureDetector` cuyo `onTap` solo hace `debugPrint('Navegar a SongDetailScreen')`, sin parámetro en el constructor (pedido del profesor, 2026-10-28).
 - **Sesión 9**: el *Ejemplo completo* de `S0055`, separado en un archivo por clase con imports `package:playlist_app/` (commit `2bf9fee`). Un segundo commit, `e39c7ab` (pedido del profesor, 2026-10-30), adelanta todo lo que no es la barra: `PlaylistScreen` renombrada a `MainScreen`, las tres Pages en `lib/pages/` y el nombre del login en `arguments` (`LoginScreen` con `TextField`, título `Hola, <nombre>`). `MainScreen` muestra solo `PlaylistPage`. Sin *Quitar* desde el detalle. Armado el 2026-10-30 a partir de los archivos de plataforma del commit `498eb8a` de `262SeminarioSesion8`; el commit posterior «Semana 13» de ese repositorio es trabajo de clase y no se usó.
 - **Sesión 12**: no viene de la sesión anterior. `Domiciano/262SeminarioSesion12` (paquete `track_app`) es una app de tracks nueva: `HomeScreen` con la lista y el botón *Crear track* (no un FAB), `AddTrackScreen` con `TrackForm` (la URL de la imagen trae `https://picsum.photos/400`), `TrackDetailScreen` con *Eliminar* (devuelve `true` con `pop`), `Track` con `fromMap`/`toMap`/`copyWith`, `AGENTS.md` y `lib/services/track_services.dart` con `getTracks`, `createTrack` y `deleteTrack` vacíos (devuelven `[]`, el mismo track y nada). Funciona en memoria, salvo `_addTrack` de `HomeScreen`, que viene vacío: el taller (`S0078` § 4) da el `setState` que agrega el track. El `id` no se inventa en la app: lo genera `gen_random_uuid()` en Supabase. Rama `solution` (local, sin publicar): `supabase_flutter`, `Supabase.initialize` con la URL y la publishable key escritas en `main.dart`, el servicio y `HomeScreen` llamándolo. Las dos ramas pasan `flutter analyze` y la solución compila para web; **no se probó contra un proyecto de Supabase real**.
-- Los ocho pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
+- **Sesión 13**: la rama `solution` de `262SeminarioSesion12` (tracks en Supabase), más el login: `LoginScreen` (ruta inicial `'/login'`) con `LoginForm`, `SignupScreen` con `SignupForm` (nombre, correo, contraseña y repetirla; valida vacíos, mínimo 6 caracteres y que coincidan), el modelo `Profile` y el botón de cerrar sesión en `HomeScreen`. Las pantallas solo navegan con `pushNamedAndRemoveUntil`; `AuthService` (`signUp`, `signIn`, `signOut`, `isLoggedIn`) y `ProfileService` (`createProfile`) vienen vacíos. `AGENTS.md` describe la tabla `profiles`. Rama `solution` (local, sin publicar): los dos servicios, el `try` / `on AuthException` con `_error` en login y registro, `initialRoute` según `isLoggedIn()` y `TrackService` con `user_id`. Las dos ramas pasan `flutter analyze` y la solución compila para web; **no se probó contra un proyecto de Supabase real**.
+- Los nueve pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
 - `check.py` marca como error la URL de las figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
@@ -377,3 +403,8 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS77.md` | `S0077` | Repositorio de arranque | 12 |
 | `lessonS80.md` | `S0080` | Primeros pasos con Supabase | 12 |
 | `lessonS78.md` | `S0078` | Taller · Tracks en Supabase | 12 |
+| `lessonS83.md` | `S0083` | Repositorio de arranque | 13 |
+| `lessonS84.md` | `S0084` | Supabase Auth: cuentas y sesiones | 13 |
+| `lessonS85.md` | `S0085` | La tabla profiles: el usuario en tu base de datos | 13 |
+| `lessonS86.md` | `S0086` | Sesión persistente y cerrar sesión | 13 |
+| `lessonS87.md` | `S0087` | Taller · Login y registro con Supabase | 13 |

@@ -319,7 +319,7 @@ const flash = (node) => {
 };
 
 const DART_KEYWORDS = new Set(['class', 'extends', 'void', 'return', 'final', 'const', 'if', 'for', 'in', 'this', 'super', 'late', 'true', 'false', 'async', 'await', 'is', 'as', 'try', 'catch']);
-const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm', 'HomePage', 'ChatsPage', 'ProfilePage', 'IndexedStack', 'BottomNavigationBar', 'Track', 'TrackService', 'Map']);
+const DART_TYPES = new Set(['int', 'String', 'List', 'Widget', 'State', 'StatefulWidget', 'StatelessWidget', 'BuildContext', 'Scaffold', 'Text', 'TextEditingController', 'Column', 'Song', 'SongCard', 'FloatingActionButton', 'TextField', 'MyHomePage', 'GreetingScreen', 'PlaylistScreen', 'SingleChildScrollView', 'FilledButton', 'AppBar', 'Future', 'Navigator', 'ModalRoute', 'SongForm', 'HomePage', 'ChatsPage', 'ProfilePage', 'IndexedStack', 'BottomNavigationBar', 'Track', 'TrackService', 'Map', 'Profile', 'AuthException', 'AuthService', 'MaterialApp', 'LoginScreen', 'SignupScreen', 'HomeScreen']);
 const DART_TOKEN = /('[^']*')|(@\w+)|(\b\d+\b)|(\b[A-Za-z_]\w*\b)/g;
 
 const escapeHtml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -4970,6 +4970,353 @@ const mountCrud = (root) => {
   return () => root.replaceChildren();
 };
 
+// ───────────────────────── auth: registro, inicio y cierre de sesión con Supabase Auth ─────────────────────────
+
+const AU_STYLE_ID = 'fsim-au-style';
+const AU_CSS = `
+.fsim .au-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column}
+.fsim .au-logo{text-align:center;font-size:22px;font-weight:700;margin:8px 0 14px;color:var(--fs-ink)}
+.fsim .au-logo span{display:block;font-size:30px;color:var(--fs-accent)}
+.fsim .au-link{border:0;background:none;color:var(--fs-accent);font:500 13px Roboto,Arial,sans-serif;cursor:pointer;padding:4px}
+.fsim .au-warn{color:var(--fs-err);font-size:12px;min-height:16px;margin:-4px 0 8px}
+.fsim .au-err{color:var(--fs-err);font-size:12.5px;text-align:center;min-height:18px}
+.fsim .au-route{font:12px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-muted);text-align:center}
+.fsim .au-route b{color:var(--fs-accent)}
+.fsim .au-rows{display:flex;flex-direction:column;gap:4px}
+.fsim .au-head,.fsim .au-row{display:grid;grid-template-columns:84px minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center;
+  padding:4px 8px;font-size:12px}
+.fsim .au-head{font:700 11px 'JetBrains Mono',Menlo,Consolas,monospace;color:var(--fs-muted)}
+.fsim .au-row{border:1px solid var(--fs-line);border-radius:8px;background:#fff}
+.fsim .au-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fsim .au-mono{font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:11.5px}
+.fsim .au-row.au-new{background:#E3F6F3;border-color:#0F8478;box-shadow:inset 3px 0 0 #0F8478}
+.fsim .au-row.au-read{background:#E8F6E3;border-color:#9FD68D}
+.fsim .au-row.au-orphan{background:#FFEBEF;border-color:#F3A3B2}
+.fsim .au-empty{font-size:12.5px;color:#9E9AA7;padding:4px 8px}
+.fsim .au-session{font:12px 'JetBrains Mono',Menlo,Consolas,monospace;padding:6px 8px;border-radius:8px;border:1px dashed #B8BDC9;color:#79809A}
+.fsim .au-session.au-on{border:1px solid #7439B8;background:#F4EBFF;color:var(--fs-ink)}
+.fsim .au-summary{font-size:13px;color:var(--fs-ink);min-height:36px}
+.fsim .au-toggles{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center}
+`;
+
+const ensureAuStyle = () => {
+  if (typeof document === 'undefined' || document.getElementById(AU_STYLE_ID)) return;
+  document.head.appendChild(el('style', { id: AU_STYLE_ID, text: AU_CSS }));
+};
+
+const AU_IDS = ['3f9a1c27', '8b2e6d40', 'c71f05a9', '5d4e9b13', 'a06c72fe', '19e8d3b5'];
+
+export const authStart = () => ({
+  users: [{ id: 'e4b1a7c0', email: 'ana@correo.com', password: 'secreta1' }],
+  profiles: [{ id: 'e4b1a7c0', name: 'Ana', email: 'ana@correo.com' }],
+  session: null,
+  route: '/login',
+  next: 0,
+});
+
+export const authValidate = (form) => {
+  if (!form.name.trim() || !form.email.trim() || !form.password) return 'Llena todos los campos';
+  if (form.password.length < 6) return 'La contraseña debe tener al menos 6 caracteres';
+  if (form.password !== form.confirm) return 'Las contraseñas no coinciden';
+  return '';
+};
+
+export const runAuth = (state, action, input = {}) => {
+  const s = { ...state, users: [...state.users], profiles: [...state.profiles] };
+  if (action === 'signup') {
+    const email = input.email.trim().toLowerCase();
+    if (s.users.some((u) => u.email === email)) {
+      return { state: s, error: 'User already registered', marks: {} };
+    }
+    const id = AU_IDS[s.next % AU_IDS.length];
+    s.next += 1;
+    s.users.push({ id, email, password: input.password });
+    s.session = { id, email };
+    const marks = { users: id };
+    if (!input.forgetProfile) {
+      s.profiles.push({ id, name: input.name.trim(), email });
+      marks.profiles = id;
+    }
+    s.route = '/home';
+    return { state: s, error: null, marks };
+  }
+  if (action === 'login') {
+    const email = input.email.trim().toLowerCase();
+    const user = s.users.find((u) => u.email === email && u.password === input.password);
+    if (!user) return { state: s, error: 'Invalid login credentials', marks: {} };
+    s.session = { id: user.id, email: user.email };
+    s.route = '/home';
+    return { state: s, error: null, marks: { users: user.id, profiles: user.id, read: true } };
+  }
+  if (action === 'logout') {
+    s.session = null;
+    s.route = '/login';
+    return { state: s, error: null, marks: {} };
+  }
+  if (action === 'restart') {
+    s.route = s.session ? '/home' : '/login';
+    return { state: s, error: null, marks: {} };
+  }
+  if (action === 'go') {
+    s.route = input.route;
+    return { state: s, error: null, marks: {} };
+  }
+  return { state: s, error: null, marks: {} };
+};
+
+export const authCode = (action, input = {}) => {
+  if (action === 'signup') {
+    const lines = [
+      'Future<void> _signup(String name, String email, String password) async {',
+      '  try {',
+      '    final id = await _authService.signUp(email, password);',
+    ];
+    if (!input.forgetProfile) {
+      lines.push('    await _profileService.createProfile(', '      Profile(id: id, name: name, email: email),', '    );');
+    }
+    lines.push(
+      '    if (!mounted) return;',
+      "    Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);",
+      '  } on AuthException catch (error) {',
+      '    setState(() {',
+      '      _error = error.message;',
+      '    });',
+      '  }',
+      '}'
+    );
+    return lines.join('\n');
+  }
+  if (action === 'login') {
+    return [
+      'Future<void> _login(String email, String password) async {',
+      '  try {',
+      '    await _authService.signIn(email, password);',
+      '    if (!mounted) return;',
+      "    Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);",
+      '  } on AuthException catch (error) {',
+      '    setState(() {',
+      '      _error = error.message;',
+      '    });',
+      '  }',
+      '}',
+    ].join('\n');
+  }
+  if (action === 'logout') {
+    return [
+      'Future<void> _logout() async {',
+      '  await _authService.signOut();',
+      '  if (!mounted) return;',
+      "  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);",
+      '}',
+    ].join('\n');
+  }
+  return [
+    'class App extends StatelessWidget {',
+    '  @override',
+    '  Widget build(BuildContext context) {',
+    '    return MaterialApp(',
+    "      initialRoute: AuthService().isLoggedIn() ? '/home' : '/login',",
+    '      routes: {',
+    "        '/login': (context) => const LoginScreen(),",
+    "        '/signup': (context) => const SignupScreen(),",
+    "        '/home': (context) => const HomeScreen(),",
+    '      },',
+    '    );',
+    '  }',
+    '}',
+  ].join('\n');
+};
+
+const AU_MARKS = {
+  signup: (input, error) => {
+    if (input.forgetProfile) return error ? [2, 5, 7] : [2, 4];
+    return error ? [2, 8, 10] : [2, 3, 7];
+  },
+  login: (input, error) => (error ? [2, 5, 7] : [2, 4]),
+  logout: () => [1, 3],
+  restart: () => [4],
+};
+
+const AU_FILE = { signup: 'signup_screen.dart', login: 'login_screen.dart', logout: 'home_screen.dart', restart: 'main.dart' };
+
+const auSummary = (action, input, run, before) => {
+  if (action === 'signup') {
+    if (run.error) return 'Ese correo ya tiene cuenta en Auth: signUp lanza AuthException y la pantalla muestra el mensaje. No se creó nada.';
+    return input.forgetProfile
+      ? 'Auth creó la cuenta y guardó la sesión, pero nadie llamó a createProfile: la cuenta quedó sin fila en profiles (en rojo).'
+      : 'Dos pasos: signUp crea la cuenta en auth.users y devuelve su id; createProfile guarda la fila de profiles con ese mismo id.';
+  }
+  if (action === 'login') {
+    return run.error
+      ? 'Correo o contraseña no coinciden con ninguna cuenta: signInWithPassword lanza AuthException con Invalid login credentials.'
+      : 'signInWithPassword no crea nada: busca la cuenta, y si la contraseña coincide guarda la sesión en el dispositivo.';
+  }
+  if (action === 'logout') return 'signOut borra la sesión del dispositivo. La cuenta y su perfil siguen en Supabase.';
+  return before.session
+    ? 'La app se cerró y se volvió a abrir. La sesión seguía guardada en el dispositivo, así que initialRoute es /home.'
+    : 'La app se cerró y se volvió a abrir. Sin sesión guardada, initialRoute es /login.';
+};
+
+const mountAuth = (root) => {
+  ensureAuStyle();
+  const container = card(root);
+  let state = authStart();
+  let last = null;
+  let forgetProfile = false;
+  const form = { name: '', email: '', password: '', confirm: '' };
+  let warning = '';
+  let screenError = '';
+
+  const phone = navPhone();
+  phone.back.addEventListener('click', () => {
+    if (state.route === '/signup') go('/login');
+  });
+  const routeLine = el('div', { class: 'au-route', 'data-testid': 'au-route' });
+  const restartButton = el('button', { class: 'fs-btn', type: 'button', text: 'Cerrar y abrir la app', onclick: () => act('restart') });
+  const resetButton = el('button', { class: 'fs-btn', type: 'button', text: 'Reiniciar', onclick: () => reset() });
+  const forgetBox = el('input', { type: 'checkbox', 'aria-label': 'Olvidar createProfile', onchange: (e) => { forgetProfile = e.target.checked; } });
+  const code = codePanel('main.dart');
+  const usersBox = el('div', { class: 'au-rows', 'data-testid': 'au-users' });
+  const profilesBox = el('div', { class: 'au-rows', 'data-testid': 'au-profiles' });
+  const sessionBox = el('div', { class: 'au-session', 'data-testid': 'au-session' });
+  const summary = el('div', { class: 'au-summary', 'data-testid': 'au-summary', 'aria-live': 'polite' });
+
+  const field = (label, key, type = 'text') => {
+    const input = el('input', { class: 'fs-field', type, 'aria-label': label, placeholder: label, value: form[key], oninput: (e) => { form[key] = e.target.value; } });
+    return input;
+  };
+
+  const go = (route) => {
+    warning = '';
+    screenError = '';
+    state = runAuth(state, 'go', { route }).state;
+    render();
+  };
+
+  const loginScreen = () => el('div', { class: 'au-body' },
+    el('div', { class: 'au-logo' }, el('span', { text: '♪' }), 'Tracks'),
+    field('Correo', 'email', 'email'),
+    field('Contraseña', 'password', 'password'),
+    el('div', { class: 'au-warn', text: warning }),
+    el('button', { class: 'fs-filled', type: 'button', text: 'Entrar', onclick: () => submitLogin() }),
+    el('div', { class: 'au-err', 'data-testid': 'au-error', text: screenError }),
+    el('button', { class: 'au-link', type: 'button', text: '¿No tienes cuenta? Regístrate', onclick: () => go('/signup') }));
+
+  const signupScreen = () => el('div', { style: 'display:flex;flex-direction:column;flex:1;min-height:0' },
+    navAppBar('Crear cuenta', () => go('/login')),
+    el('div', { class: 'au-body' },
+      field('Nombre', 'name'),
+      field('Correo', 'email', 'email'),
+      field('Contraseña', 'password', 'password'),
+      field('Repite la contraseña', 'confirm', 'password'),
+      el('div', { class: 'au-warn', text: warning }),
+      el('button', { class: 'fs-filled', type: 'button', text: 'Crear cuenta', onclick: () => submitSignup() }),
+      el('div', { class: 'au-err', 'data-testid': 'au-error', text: screenError })));
+
+  const homeScreen = () => {
+    const logout = el('button', { class: 'fs-ns-icon', 'aria-label': 'Cerrar sesión', title: 'Cerrar sesión', onclick: () => act('logout') });
+    logout.appendChild(navLogoutIcon());
+    const profile = state.profiles.find((p) => p.id === state.session.id);
+    return el('div', { style: 'display:flex;flex-direction:column;flex:1;min-height:0' },
+      navAppBar('Mis tracks', null, logout),
+      el('div', { class: 'fs-center' },
+        el('div', { class: 'fs-hello', text: profile ? `Hola, ${profile.name}` : 'Hola' }),
+        el('div', { class: 'fs-faint', text: `Sesión de ${state.session.email}` }),
+        profile ? null : el('div', { class: 'au-err', text: 'Sin fila en profiles: no hay nombre que mostrar' })));
+  };
+
+  const rowsOf = (box, list, cols, kind) => {
+    const marks = last ? last.marks : {};
+    box.replaceChildren(el('div', { class: 'au-head' }, ...cols.map((c) => el('span', { text: c }))));
+    if (!list.length) box.appendChild(el('div', { class: 'au-empty', text: 'Sin filas' }));
+    list.forEach((r) => {
+      const orphan = kind === 'users' && !state.profiles.some((p) => p.id === r.id);
+      const mark = marks[kind] === r.id ? (marks.read ? 'au-read' : 'au-new') : '';
+      const cls = ['au-row', mark, orphan ? 'au-orphan' : ''].filter(Boolean).join(' ');
+      box.appendChild(el('div', { class: cls, 'data-id': r.id },
+        el('span', { class: 'au-mono', text: r.id }),
+        ...cols.slice(1).map((c) => el('span', { text: c === 'password' ? '••••••' : r[c] }))));
+    });
+  };
+
+  const render = () => {
+    const screen = state.route === '/signup' ? signupScreen() : state.route === '/home' && state.session ? homeScreen() : loginScreen();
+    phone.screenHost.replaceChildren(screen);
+    routeLine.replaceChildren('ruta actual: ', el('b', { text: state.route }));
+    rowsOf(usersBox, state.users, ['id', 'email', 'password'], 'users');
+    rowsOf(profilesBox, state.profiles, ['id', 'name', 'email'], 'profiles');
+    sessionBox.className = state.session ? 'au-session au-on' : 'au-session';
+    sessionBox.textContent = state.session ? `Session(user: ${state.session.id}, ${state.session.email})` : 'null · no hay sesión guardada';
+    summary.textContent = last ? last.summary : 'Regístrate con un correo nuevo, o entra como ana@correo.com con la contraseña secreta1.';
+  };
+
+  const showCode = (action, input, error) => {
+    code.box.querySelector('h4').textContent = AU_FILE[action];
+    code.setCode(authCode(action, input));
+    code.mark(...AU_MARKS[action](input, error));
+  };
+
+  const act = (action, input = {}) => {
+    const before = state;
+    const run = runAuth(state, action, input);
+    state = run.state;
+    screenError = run.error || '';
+    if (!run.error) { warning = ''; form.password = ''; form.confirm = ''; }
+    last = { marks: run.marks, summary: auSummary(action, input, run, before) };
+    showCode(action, input, run.error);
+    render();
+    flash(summary);
+  };
+
+  const submitLogin = () => {
+    if (!form.email.trim() || !form.password) {
+      warning = 'Escribe tu correo y tu contraseña';
+      screenError = '';
+      last = { marks: {}, summary: 'El formulario detiene el envío: la petición ni sale hacia Supabase.' };
+      render();
+      return;
+    }
+    act('login', { email: form.email, password: form.password });
+  };
+
+  const submitSignup = () => {
+    warning = authValidate(form);
+    if (warning) {
+      screenError = '';
+      last = { marks: {}, summary: 'El formulario detiene el envío: la petición ni sale hacia Supabase.' };
+      render();
+      return;
+    }
+    act('signup', { ...form, forgetProfile });
+  };
+
+  const reset = () => {
+    state = authStart();
+    last = null;
+    warning = '';
+    screenError = '';
+    Object.keys(form).forEach((k) => { form[k] = ''; });
+    showCode('restart');
+    code.mark();
+    render();
+  };
+
+  container.append(
+    el('div', { class: 'fs-col' }, phone.frame, routeLine,
+      el('div', { class: 'au-toggles' },
+        el('label', { class: 'fs-switch' }, forgetBox, 'Olvidar createProfile')),
+      el('div', { class: 'fs-controls' }, restartButton, resetButton)),
+    el('div', { class: 'fs-side' },
+      el('div', { class: 'fs-panel' }, el('h4', { text: 'Supabase Auth · auth.users' }), usersBox),
+      el('div', { class: 'fs-panel' }, el('h4', { text: 'Postgres · tabla profiles' }), profilesBox),
+      el('div', { class: 'fs-panel' }, el('h4', { text: 'Dispositivo · sesión guardada' }), sessionBox),
+      summary,
+      code.box)
+  );
+  reset();
+  return () => root.replaceChildren();
+};
+
 export const SIMS = Object.freeze({
   'state-counter': mountCounter,
   'hot-reload': (root, args = []) => mountCounter(root, ['reload', ...args]),
@@ -4984,6 +5331,7 @@ export const SIMS = Object.freeze({
   'tab-state': mountTabState,
   future: mountFuture,
   crud: mountCrud,
+  auth: mountAuth,
 });
 
 export const parseSpec = (spec) => {

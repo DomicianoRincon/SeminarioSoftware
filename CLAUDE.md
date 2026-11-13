@@ -219,7 +219,7 @@ propiedad a lo que cambia en el resultado. Se generan con `tools/code_frame.py`,
 - Cada línea lleva `textLength`, así el resaltado cae sobre el texto aunque la fuente
   monoespaciada del visitante tenga otro ancho.
 
-Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion11_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
+Las figuras de una sesión viven juntas en un script (`tools/sesion2_figuras.py` a `tools/sesion11_figuras.py`, `tools/sesion13_figuras.py`, más `tools/arranque_figuras.py` y `tools/ia_figuras.py`): con una
 carpeta como argumento escribe los `.svg` para revisarlos, y con `--inject` reemplaza cada
 bloque ` ```svg ` de las lecciones por la figura del mismo `id`. **No editar esos SVG dentro
 del Markdown**: se cambia el script y se vuelve a inyectar.
@@ -298,6 +298,10 @@ playlist cards
   *Listar*, *Crear*, *Editar* y *Borrar*, formulario de la operación, el código que la hace, la tabla con las filas que
   toca (la tabla recuerda cada *Ejecutar* hasta *Reiniciar tabla*) y lo que devuelve el `await`, `PostgrestException`
   incluida (not null en el insert, delete sin `eq`). CSS propio `cr-*`.
+  `auth` (`S0084` y `S0086`): teléfono con login, registro y home de la app de tracks; al lado `auth.users`, la tabla
+  `profiles`, la sesión guardada en el dispositivo y el código del método que corrió. *Cerrar y abrir la app* evalúa
+  `initialRoute` con la sesión; *Olvidar createProfile* deja una cuenta sin perfil (en rojo). Errores `User already
+  registered` e `Invalid login credentials`. Lógica pura en `runAuth` y `authCode`. CSS propio `au-*`.
   Sin uso en ninguna lección, pero registrados: `hot-reload` y `state-counter`.
 - `skill-files` (`S0063`, sección *IA*) vive en su propio archivo, `skillSims.js`, portado de Computación 2 (`0047`). Pestañas por
   skill, árbol de archivos y botón *Copiar*. Las skills se editan en `tools/skills/<nombre>/` y se pasan al simulador con
