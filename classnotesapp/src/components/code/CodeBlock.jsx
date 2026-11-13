@@ -51,7 +51,7 @@ const CodeBlock = ({ children, language, className = "", source = "lesson" }) =>
       className={`flutter-code ${className}`}
       sx={{ 
         position: "relative", 
-        my: 0,
+        my: 1.5,
         maxWidth: '100%',
         boxSizing: 'border-box',
         overflowX: 'auto',
