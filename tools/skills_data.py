@@ -7,7 +7,8 @@ SKILLS y los textos de cada pestaña (resumen, pedidos de ejemplo, lo que escrib
 mer-svg y flutter-pantallas son copia de recursos/sesion4/.agents/skills/ (sesión 4).
 
 Cada skill tiene un grupo: 'base' (las cuatro de S0063, lo que muestra `skill-files` sin
-opciones) o 'sdd' (las cinco de Spec Driven Development, sesión 10: `skill-files sdd`).
+opciones), 'sdd' (las cinco de Spec Driven Development, sesión 10: `skill-files sdd`) o 'impl'
+(spec técnica e implementador, sesión 14: `skill-files impl`).
 """
 
 import json
@@ -66,6 +67,18 @@ META = [
                  'correcciones más importantes. Solo las aplica si le dices que sí.',
          prompts=['Critica las specs'],
          writes=['docs/specs/reporte.md']),
+    dict(name='sdd-tecnicas', group='impl', color='#0F6FB8', soft='#E5F1FB',
+         summary='Pasa una spec funcional a su spec técnica: pantallas, componentes, servicios, datos, '
+                 'paquetes y lo que pide cada plataforma. La parte en tareas T-xx y las deja pendientes '
+                 'en docs/impl_progress.md.',
+         prompts=['Haz la spec técnica de F-04', 'Pasa la spec de foto de perfil a tareas'],
+         writes=['docs/tecnicas/TS-xx-*.md', 'docs/impl_progress.md']),
+    dict(name='sdd-implementar', group='impl', color='#1F9D68', soft='#E5F6EE',
+         summary='Toma una tarea pendiente de docs/impl_progress.md, la implementa siguiendo su spec '
+                 'técnica y docs/standard_code.md, pasa flutter analyze y la marca como hecha con sus '
+                 'archivos y la fecha.',
+         prompts=['Haz la tarea T-09', 'Sigue con la siguiente tarea pendiente'],
+         writes=['lib/', 'docs/impl_progress.md', 'docs/standard_code.md']),
 ]
 
 

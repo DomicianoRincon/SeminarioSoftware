@@ -23,7 +23,7 @@ Este repositorio cubre **las últimas 8 semanas del curso (semanas 9 a 16)**, qu
 | 11 | 27 | 14 | 3 y 4 | Servicio de base de datos | 🟡 | `S0074` Taller · Spine y specs funcionales (viene de la sesión 10) · `S0082` Dictamen del taller · Spine y specs |
 | 12 | 28 | 14 | 3 y 4 | Base de datos, parte 2 *(el calendario dice Servicio de autenticación)* | 🟡 | `S0076` Future: pedir y esperar · `S0079` Map<String, dynamic>: la fila como JSON · `S0081` El CRUD con el SDK de Supabase · `S0077` Repositorio de arranque · `S0080` Primeros pasos con Supabase · `S0075` Migraciones con el CLI de Supabase · `S0078` Taller · Tracks en Supabase |
 | 13 | 29 | 15 | 3 y 4 | Servicio de autenticación *(el calendario dice Servicio de storage)* | 🟡 | `S0083` Repositorio de arranque · `S0084` Supabase Auth: cuentas y sesiones · `S0085` La tabla profiles: el usuario en tu base de datos · `S0086` Sesión persistente y cerrar sesión · `S0087` Taller · Login y registro con Supabase |
-| 14 | 30 | 15 | 3 y 4 | Funciones como servicio | ⬜ | |
+| 14 | 30 | 15 | 3 y 4 | Servicio de storage *(el calendario dice Funciones como servicio)* | 🟡 | `S0088` Repositorio de arranque · `S0089` De spec funcional a spec técnica · `S0090` El implementador e impl_progress.md · `S0091` Supabase Storage: un bucket público · `S0092` Taller · Foto de perfil con el implementador |
 | 15 | 31 | 16 | 3 y 4 | Entrega final I (equipos 1 a 3) | ⬜ | |
 | 16 | 32 | 16 | 3 y 4 | Entrega final II (equipos 4 a 6) y cierre | ⬜ | |
 
@@ -307,6 +307,30 @@ Notas:
 - Las 11 figuras salen de `tools/sesion13_figuras.py`; `raClonar13`, de `tools/arranque_figuras.py`. `check.py` sin errores.
 - **No se probó contra un proyecto de Supabase real**: el repositorio pasa `flutter analyze` en las dos ramas y la solución compila para web.
 
+### Sesión 14 · Servicio de storage
+
+**Presentación:** ⬜ pendiente.
+
+El planeador pone la sesión 30 bajo *Funciones como servicio* en el calendario, pero lo que dice para la clase es Storage: subir un archivo y mostrarlo (el calendario sigue corrido una sesión). Armada el 2026-11-18 a pedido del profesor: un taller muy sencillo de foto de perfil con `image_picker` y un bucket público, **mezclado con Spec Driven Development**. Se cierra el ciclo de la sesión 10 con dos skills nuevas, `sdd-tecnicas` (spec funcional → spec técnica y tareas) y `sdd-implementar` (hace una tarea a la vez y la marca en `docs/impl_progress.md`, siguiendo `docs/standard_code.md`). El estudiante no escribe el código: crea a mano la columna, el bucket y las policies, y le pide las tareas al implementador.
+
+| Lo que pide el planeador (sesión 30) | Dónde está en el visor |
+|---|---|
+| Subida de un archivo desde la aplicación a Supabase Storage y visualización del archivo guardado | `S0091`: bucket, ruta y URL pública (`fpRuta`), público no es «cualquiera sube» (policies de `storage.objects`), un nombre nuevo por subida (`fpMismoNombre`), `uploadBinary` y `getPublicUrl`. Taller `S0092` § 4 |
+| Taller: agregar al reto una pantalla que suba y muestre un archivo | `S0092`: bucket y policies a mano (`fpNuevoBucket`, `fpPolicy`), migración `add_avatar_url` (`fpMigracion`), T-09 obligatoria y una o dos de T-10, T-11 y T-12 (`fpTareas`) |
+| *(SDD, pedido del profesor)* specs técnicas e implementación | `S0089` (`tiCadena`, `tiFuncTec`, `skill-files impl sdd-tecnicas`) y `S0090` (`tiManifiesto`, `tiBucle`, `tiEstandar`, `skill-files impl sdd-implementar`) |
+| *Fuera de clase:* preparar la sustentación final | No se asigna: las sesiones del bloque son de clase |
+
+Notas:
+
+- **Repositorio de arranque `Domiciano/262SeminarioSesion14`** (paquete `track_app`). Ver *Repositorios de arranque*.
+- **Las tareas.** T-09 galería con **modal inferior** (`showModalBottomSheet` + `PhotoSourceSheet`, pedido del profesor); T-10 la foto en el botón de perfil de `HomeScreen`, con la inicial si no hay; T-11 cámara en Android, iOS, web y macOS con `camera` y `camera_macos` (decisión del profesor: `image_picker` no abre la cámara en macOS ni en Chrome de escritorio); T-12 historial: las fotos nunca se sobrescriben ni se borran y se puede elegir cualquiera. T-10 a T-12 solo dependen de T-09.
+- **Diseño de datos.** `profiles.avatar_url` guarda la **URL pública**, no la ruta (más simple para un bucket público; la lección `0092` de Móviles guarda la ruta, por eso no se reusó). Archivos en `avatars/<id del usuario>/<milisegundos>.jpg`, sin paquete `uuid`. Policies `INSERT` y `SELECT` para `authenticated`, sin RLS en las tablas propias.
+- **No se reusaron** `lessonJ0` (0092) ni `lessonJ1` (0066) de Móviles: hablan del laboratorio de Móviles, guardan la ruta, borran la foto vieja y `J0` usa el interactivo `storage-cache`, que no existe aquí. `S0091` es propia y corta.
+- **El implementador se probó** con un agente sobre una copia de `main` haciendo T-09: compiló, marcó `impl_progress.md` bien e hizo el modal solo con la galería. Las ambigüedades que encontró se corrigieron en las skills y en `TS-04` (quién cierra el modal, cómo se muestra el error, qué archivos listar, cuándo se marca).
+- **Maquetas del dashboard** (`fpNuevoBucket`, `fpPolicy`) con la interfaz de noviembre de 2026, sin capturas reales. El taller trae el SQL equivalente de las dos policies.
+- Las 13 figuras salen de `tools/sesion14_figuras.py`; `raClonar14`, de `tools/arranque_figuras.py`. `check.py` sin errores (salvo el falso positivo de la URL en `fpRuta`, que es texto).
+- **No se probó contra un proyecto de Supabase real**, ni la cámara en un dispositivo.
+
 ## Repositorios de arranque
 
 Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una lección **Repositorio de arranque** (`S0056` a `S0062` y `S0064` para la sesión 9, siempre la primera de la sesión): el punto de partida de la sesión es lo que quedó al terminar la anterior, en un repositorio público `github.com/Domiciano/262SeminarioSesionN`, con un solo commit en `main`. La lección muestra cómo clonarlo (figura de consola `raClonarN`, de `tools/arranque_figuras.py`) y qué trae.
@@ -318,7 +342,8 @@ Desde el 2026-10-28 (pedido del profesor) cada sesión desde la 2 abre con una l
 - **Sesión 9**: el *Ejemplo completo* de `S0055`, separado en un archivo por clase con imports `package:playlist_app/` (commit `2bf9fee`). Un segundo commit, `e39c7ab` (pedido del profesor, 2026-10-30), adelanta todo lo que no es la barra: `PlaylistScreen` renombrada a `MainScreen`, las tres Pages en `lib/pages/` y el nombre del login en `arguments` (`LoginScreen` con `TextField`, título `Hola, <nombre>`). `MainScreen` muestra solo `PlaylistPage`. Sin *Quitar* desde el detalle. Armado el 2026-10-30 a partir de los archivos de plataforma del commit `498eb8a` de `262SeminarioSesion8`; el commit posterior «Semana 13» de ese repositorio es trabajo de clase y no se usó.
 - **Sesión 12**: no viene de la sesión anterior. `Domiciano/262SeminarioSesion12` (paquete `track_app`) es una app de tracks nueva: `HomeScreen` con la lista y el botón *Crear track* (no un FAB), `AddTrackScreen` con `TrackForm` (la URL de la imagen trae `https://picsum.photos/400`), `TrackDetailScreen` con *Eliminar* (devuelve `true` con `pop`), `Track` con `fromMap`/`toMap`/`copyWith`, `AGENTS.md` y `lib/services/track_services.dart` con `getTracks`, `createTrack` y `deleteTrack` vacíos (devuelven `[]`, el mismo track y nada). Funciona en memoria, salvo `_addTrack` de `HomeScreen`, que viene vacío: el taller (`S0078` § 4) da el `setState` que agrega el track. El `id` no se inventa en la app: lo genera `gen_random_uuid()` en Supabase. Rama `solution` (local, sin publicar): `supabase_flutter`, `Supabase.initialize` con la URL y la publishable key escritas en `main.dart`, el servicio y `HomeScreen` llamándolo. Las dos ramas pasan `flutter analyze` y la solución compila para web; **no se probó contra un proyecto de Supabase real**.
 - **Sesión 13**: la rama `solution` de `262SeminarioSesion12` (tracks en Supabase), más el login: `LoginScreen` (ruta inicial `'/login'`) con `LoginForm`, `SignupScreen` con `SignupForm` (nombre, correo, contraseña y repetirla; valida vacíos, mínimo 6 caracteres y que coincidan), el modelo `Profile` y el botón de cerrar sesión en `HomeScreen`. Las pantallas solo navegan con `pushNamedAndRemoveUntil`; `AuthService` (`signUp`, `signIn`, `signOut`, `isLoggedIn`) y `ProfileService` (`createProfile`) vienen vacíos. `AGENTS.md` describe la tabla `profiles`. Rama `solution` (local, sin publicar): los dos servicios, el `try` / `on AuthException` con `_error` en login y registro, `initialRoute` según `isLoggedIn()` y `TrackService` con `user_id`. Las dos ramas pasan `flutter analyze` y la solución compila para web; **no se probó contra un proyecto de Supabase real**.
-- Los nueve pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
+- **Sesión 14**: la rama `solution` de `262SeminarioSesion13` más `ProfileScreen` (ruta `/profile`, desde un `IconButton` de la barra de `HomeScreen`), el componente `ProfileAvatar` (foto o inicial), `ProfileService.getMyProfile` y `Profile.avatarUrl`. Trae `docs/` con todo el ciclo SDD ya corrido (PRD, requisitos, spine, specs `F-01` a `F-04`, técnicas `TS-01` a `TS-04`, `impl_progress.md` con 8 de 12 tareas hechas y `standard_code.md`), `AGENTS.md`, `CLAUDE.md` con `@AGENTS.md`, y las once skills copiadas (no enlazadas, por Windows) en `.agents/skills/` (Antigravity CLI) y `.claude/skills/` (Claude Code). Rama `solution` (local, sin publicar): T-09 a T-12 hechas con `image_picker`, `camera` y `camera_macos`, permisos de iOS y macOS, y `impl_progress.md` en 12 de 12. Las dos ramas pasan `flutter analyze` y compilan para web; la solución compila para macOS. **No se probó contra un proyecto de Supabase real.**
+- Los diez pasan `flutter analyze` sin errores; los de las sesiones 3 a 5 dejan los avisos de estilo (`use_key_in_widget_constructors`) del código del profesor.
 - `check.py` marca como error la URL de las figuras `raClonarN`: es texto del comando mostrado, no un recurso que el SVG cargue.
 
 ## Lecciones reutilizadas de Aplicaciones Móviles
@@ -408,3 +433,8 @@ Son copias de las de `FlutterLearning/content/`, con el **mismo nombre de archiv
 | `lessonS85.md` | `S0085` | La tabla profiles: el usuario en tu base de datos | 13 |
 | `lessonS86.md` | `S0086` | Sesión persistente y cerrar sesión | 13 |
 | `lessonS87.md` | `S0087` | Taller · Login y registro con Supabase | 13 |
+| `lessonS88.md` | `S0088` | Repositorio de arranque | 14 |
+| `lessonS89.md` | `S0089` | De spec funcional a spec técnica | 14 |
+| `lessonS90.md` | `S0090` | El implementador e impl_progress.md | 14 |
+| `lessonS91.md` | `S0091` | Supabase Storage: un bucket público | 14 |
+| `lessonS92.md` | `S0092` | Taller · Foto de perfil con el implementador | 14 |

@@ -18,6 +18,10 @@ describe('SKILLS', () => {
     expect(names('sdd')).toEqual(['sdd-prd', 'sdd-requisitos', 'sdd-arquitectura', 'sdd-specs', 'sdd-critica']);
   });
 
+  it('has the technical spec and implementer skills of session 14', () => {
+    expect(names('impl')).toEqual(['sdd-tecnicas', 'sdd-implementar']);
+  });
+
   it('opens every skill on its SKILL.md, whose name matches the folder', () => {
     SKILLS.forEach((skill) => {
       expect(skill.files[0].path).toBe('SKILL.md');
@@ -77,5 +81,11 @@ describe('skill-files', () => {
     expect(screen.getByTestId('skill-content').textContent).toContain('name: sdd-specs');
     fireEvent.click(screen.getByRole('tab', { name: 'sdd-critica' }));
     expect(screen.getByTestId('skill-content').textContent).toContain('name: sdd-critica');
+  });
+
+  it('shows the impl group with the implementer and its standard', () => {
+    renderBlock('skill-files impl sdd-implementar');
+    expect(screen.getAllByRole('tab')).toHaveLength(2);
+    expect(screen.getByTestId('skill-content').textContent).toContain('impl_progress.md');
   });
 });
